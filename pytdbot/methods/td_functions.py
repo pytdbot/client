@@ -1151,7 +1151,7 @@ class TDLibFunctions:
     async def getRepliedMessage(
         self, *, chat_id: int | None = 0, message_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.Message:
-        r"""Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, the message with gift purchase offer for messageUpgradedGiftPurchaseOfferRejected, the message with the request to disable content protection for messageChatHasProtectedContentToggled, and the topic creation message for topic messages without non\-bundled replied message\. Returns a 404 error if the message doesn't exist
+        r"""Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, the message with gift purchase offer for messageUpgradedGiftPurchaseOfferRejected, the message with the request to disable content protection for messageChatHasProtectedContentToggled, the message with the poll for messagePollOptionAdded and messagePollOptionDeleted, and the topic creation message for topic messages without non\-bundled replied message\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -1256,6 +1256,38 @@ class TDLibFunctions:
                 "@type": "getMessageProperties",
                 "chat_id": chat_id,
                 "message_id": message_id,
+            }
+        )
+
+    async def getPollOptionProperties(
+        self,
+        *,
+        chat_id: int | None = 0,
+        message_id: int | None = 0,
+        poll_option_id: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.PollOptionProperties:
+        r"""Returns properties of a poll option\. This is an offline method
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            poll_option_id (:class:`str`):
+                Unique identifier of the answer option, which properties will be returned
+
+        Returns:
+            :class:`~pytdbot.types.PollOptionProperties`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getPollOptionProperties",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "poll_option_id": poll_option_id,
             }
         )
 
@@ -1366,6 +1398,7 @@ class TDLibFunctions:
         | pytdbot.types.FileTypeAnimation
         | pytdbot.types.FileTypeAudio
         | pytdbot.types.FileTypeDocument
+        | pytdbot.types.FileTypeLivePhotoVideo
         | pytdbot.types.FileTypeNotificationSound
         | pytdbot.types.FileTypePhoto
         | pytdbot.types.FileTypePhotoStory
@@ -1373,6 +1406,7 @@ class TDLibFunctions:
         | pytdbot.types.FileTypeSecret
         | pytdbot.types.FileTypeSecretThumbnail
         | pytdbot.types.FileTypeSecure
+        | pytdbot.types.FileTypeSelfDestructingLivePhotoVideo
         | pytdbot.types.FileTypeSelfDestructingPhoto
         | pytdbot.types.FileTypeSelfDestructingVideo
         | pytdbot.types.FileTypeSelfDestructingVideoNote
@@ -2594,6 +2628,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterAudio
         | pytdbot.types.SearchMessagesFilterDocument
         | pytdbot.types.SearchMessagesFilterPhoto
+        | pytdbot.types.SearchMessagesFilterPoll
         | pytdbot.types.SearchMessagesFilterVideo
         | pytdbot.types.SearchMessagesFilterVoiceNote
         | pytdbot.types.SearchMessagesFilterPhotoAndVideo
@@ -2604,6 +2639,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterMention
         | pytdbot.types.SearchMessagesFilterUnreadMention
         | pytdbot.types.SearchMessagesFilterUnreadReaction
+        | pytdbot.types.SearchMessagesFilterUnreadPollVote
         | pytdbot.types.SearchMessagesFilterFailedToSend
         | pytdbot.types.SearchMessagesFilterPinned
         | None = None,
@@ -2668,6 +2704,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterAudio
         | pytdbot.types.SearchMessagesFilterDocument
         | pytdbot.types.SearchMessagesFilterPhoto
+        | pytdbot.types.SearchMessagesFilterPoll
         | pytdbot.types.SearchMessagesFilterVideo
         | pytdbot.types.SearchMessagesFilterVoiceNote
         | pytdbot.types.SearchMessagesFilterPhotoAndVideo
@@ -2678,6 +2715,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterMention
         | pytdbot.types.SearchMessagesFilterUnreadMention
         | pytdbot.types.SearchMessagesFilterUnreadReaction
+        | pytdbot.types.SearchMessagesFilterUnreadPollVote
         | pytdbot.types.SearchMessagesFilterFailedToSend
         | pytdbot.types.SearchMessagesFilterPinned
         | None = None,
@@ -2704,7 +2742,7 @@ class TDLibFunctions:
                 The maximum number of messages to be returned; up to 100\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
             filter (:class:`~pytdbot.types.SearchMessagesFilter`):
-                Additional filter for messages to search; pass null to search for all messages\. Filters searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, searchMessagesFilterFailedToSend, and searchMessagesFilterPinned are unsupported in this function
+                Additional filter for messages to search; pass null to search for all messages\. Filters searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, searchMessagesFilterUnreadPollVote, searchMessagesFilterFailedToSend, and searchMessagesFilterPinned are unsupported in this function
 
             chat_type_filter (:class:`~pytdbot.types.SearchMessagesChatTypeFilter`):
                 Additional filter for type of the chat of the searched messages; pass null to search for messages in all chats
@@ -2745,6 +2783,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterAudio
         | pytdbot.types.SearchMessagesFilterDocument
         | pytdbot.types.SearchMessagesFilterPhoto
+        | pytdbot.types.SearchMessagesFilterPoll
         | pytdbot.types.SearchMessagesFilterVideo
         | pytdbot.types.SearchMessagesFilterVoiceNote
         | pytdbot.types.SearchMessagesFilterPhotoAndVideo
@@ -2755,6 +2794,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterMention
         | pytdbot.types.SearchMessagesFilterUnreadMention
         | pytdbot.types.SearchMessagesFilterUnreadReaction
+        | pytdbot.types.SearchMessagesFilterUnreadPollVote
         | pytdbot.types.SearchMessagesFilterFailedToSend
         | pytdbot.types.SearchMessagesFilterPinned
         | None = None,
@@ -3200,6 +3240,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterAudio
         | pytdbot.types.SearchMessagesFilterDocument
         | pytdbot.types.SearchMessagesFilterPhoto
+        | pytdbot.types.SearchMessagesFilterPoll
         | pytdbot.types.SearchMessagesFilterVideo
         | pytdbot.types.SearchMessagesFilterVoiceNote
         | pytdbot.types.SearchMessagesFilterPhotoAndVideo
@@ -3210,6 +3251,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterMention
         | pytdbot.types.SearchMessagesFilterUnreadMention
         | pytdbot.types.SearchMessagesFilterUnreadReaction
+        | pytdbot.types.SearchMessagesFilterUnreadPollVote
         | pytdbot.types.SearchMessagesFilterFailedToSend
         | pytdbot.types.SearchMessagesFilterPinned
         | None = None,
@@ -3224,7 +3266,7 @@ class TDLibFunctions:
                 Identifier of the chat in which to return information about message positions
 
             filter (:class:`~pytdbot.types.SearchMessagesFilter`):
-                Filter for message content\. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, and searchMessagesFilterUnreadReaction are unsupported in this function
+                Filter for message content\. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterUnreadPollVote are unsupported in this function
 
             from_message_id (:class:`int`):
                 The message identifier from which to return information about message positions
@@ -3264,6 +3306,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterAudio
         | pytdbot.types.SearchMessagesFilterDocument
         | pytdbot.types.SearchMessagesFilterPhoto
+        | pytdbot.types.SearchMessagesFilterPoll
         | pytdbot.types.SearchMessagesFilterVideo
         | pytdbot.types.SearchMessagesFilterVoiceNote
         | pytdbot.types.SearchMessagesFilterPhotoAndVideo
@@ -3274,6 +3317,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterMention
         | pytdbot.types.SearchMessagesFilterUnreadMention
         | pytdbot.types.SearchMessagesFilterUnreadReaction
+        | pytdbot.types.SearchMessagesFilterUnreadPollVote
         | pytdbot.types.SearchMessagesFilterFailedToSend
         | pytdbot.types.SearchMessagesFilterPinned
         | None = None,
@@ -3289,7 +3333,7 @@ class TDLibFunctions:
                 Pass topic identifier to get the result only in specific topic; pass null to get the result in all topics; forum topics and message threads aren't supported
 
             filter (:class:`~pytdbot.types.SearchMessagesFilter`):
-                Filter for message content\. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, and searchMessagesFilterUnreadReaction are unsupported in this function
+                Filter for message content\. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterUnreadPollVote are unsupported in this function
 
             from_message_id (:class:`int`):
                 The message identifier from which to return information about messages; use 0 to get results from the last message
@@ -3322,6 +3366,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterAudio
         | pytdbot.types.SearchMessagesFilterDocument
         | pytdbot.types.SearchMessagesFilterPhoto
+        | pytdbot.types.SearchMessagesFilterPoll
         | pytdbot.types.SearchMessagesFilterVideo
         | pytdbot.types.SearchMessagesFilterVoiceNote
         | pytdbot.types.SearchMessagesFilterPhotoAndVideo
@@ -3332,6 +3377,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterMention
         | pytdbot.types.SearchMessagesFilterUnreadMention
         | pytdbot.types.SearchMessagesFilterUnreadReaction
+        | pytdbot.types.SearchMessagesFilterUnreadPollVote
         | pytdbot.types.SearchMessagesFilterFailedToSend
         | pytdbot.types.SearchMessagesFilterPinned
         | None = None,
@@ -3380,6 +3426,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterAudio
         | pytdbot.types.SearchMessagesFilterDocument
         | pytdbot.types.SearchMessagesFilterPhoto
+        | pytdbot.types.SearchMessagesFilterPoll
         | pytdbot.types.SearchMessagesFilterVideo
         | pytdbot.types.SearchMessagesFilterVoiceNote
         | pytdbot.types.SearchMessagesFilterPhotoAndVideo
@@ -3390,6 +3437,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterMention
         | pytdbot.types.SearchMessagesFilterUnreadMention
         | pytdbot.types.SearchMessagesFilterUnreadReaction
+        | pytdbot.types.SearchMessagesFilterUnreadPollVote
         | pytdbot.types.SearchMessagesFilterFailedToSend
         | pytdbot.types.SearchMessagesFilterPinned
         | None = None,
@@ -3405,7 +3453,7 @@ class TDLibFunctions:
                 Pass topic identifier to get position among messages only in specific topic; pass null to get position among all chat messages; message threads aren't supported
 
             filter (:class:`~pytdbot.types.SearchMessagesFilter`):
-                Filter for message content; searchMessagesFilterEmpty, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterFailedToSend are unsupported in this function
+                Filter for message content; searchMessagesFilterEmpty, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, searchMessagesFilterUnreadPollVote, and searchMessagesFilterFailedToSend are unsupported in this function
 
             message_id (:class:`int`):
                 Message identifier
@@ -3751,6 +3799,8 @@ class TDLibFunctions:
         chat_id: int | None = 0,
         message_id: int | None = 0,
         media_timestamp: int | None = 0,
+        checklist_task_id: int | None = 0,
+        poll_option_id: str | None = "",
         for_album: bool | None = False,
         in_message_thread: bool | None = False,
     ) -> pytdbot.types.Error | pytdbot.types.MessageLink:
@@ -3765,6 +3815,12 @@ class TDLibFunctions:
 
             media_timestamp (:class:`int`):
                 If not 0, timestamp from which the video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the message content or in its link preview
+
+            checklist_task_id (:class:`int`):
+                If not 0, identifier of the checklist task in the message to be linked
+
+            poll_option_id (:class:`str`):
+                If not empty, identifier of the poll option in the message to be linked
 
             for_album (:class:`bool`):
                 Pass true to create a link for the whole media album
@@ -3782,6 +3838,8 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "message_id": message_id,
                 "media_timestamp": media_timestamp,
+                "checklist_task_id": checklist_task_id,
+                "poll_option_id": poll_option_id,
                 "for_album": for_album,
                 "in_message_thread": in_message_thread,
             }
@@ -3839,8 +3897,9 @@ class TDLibFunctions:
         *,
         text: pytdbot.types.FormattedText | None = None,
         to_language_code: str | None = "",
+        tone: str | None = "",
     ) -> pytdbot.types.Error | pytdbot.types.FormattedText:
-        r"""Translates a text to the given language\. If the current user is a Telegram Premium user, then text formatting is preserved
+        r"""Translates a text to the given language; must not be used in secret chats\. If the current user is a Telegram Premium user, then text formatting is preserved
 
         Parameters:
             text (:class:`~pytdbot.types.FormattedText`):
@@ -3848,6 +3907,9 @@ class TDLibFunctions:
 
             to_language_code (:class:`str`):
                 Language code of the language to which the message is translated\. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh\-CN\", \"zh\", \"zh\-Hans\", \"zh\-TW\", \"zh\-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"
+
+            tone (:class:`str`):
+                Tone of the translation; must be one of \"\", \"formal\", \"neutral\", \"casual\"; defaults to \"neutral\"
 
         Returns:
             :class:`~pytdbot.types.FormattedText`
@@ -3858,6 +3920,7 @@ class TDLibFunctions:
                 "@type": "translateText",
                 "text": text,
                 "to_language_code": to_language_code,
+                "tone": tone,
             }
         )
 
@@ -3867,8 +3930,9 @@ class TDLibFunctions:
         chat_id: int | None = 0,
         message_id: int | None = 0,
         to_language_code: str | None = "",
+        tone: str | None = "",
     ) -> pytdbot.types.Error | pytdbot.types.FormattedText:
-        r"""Extracts text or caption of the given message and translates it to the given language\. If the current user is a Telegram Premium user, then text formatting is preserved
+        r"""Extracts text or caption of the given message and translates it to the given language; must not be used in secret chats\. If the current user is a Telegram Premium user, then text formatting is preserved
 
         Parameters:
             chat_id (:class:`int`):
@@ -3880,6 +3944,9 @@ class TDLibFunctions:
             to_language_code (:class:`str`):
                 Language code of the language to which the message is translated\. See translateText\.to\_language\_code for the list of supported values
 
+            tone (:class:`str`):
+                Tone of the translation; see translateText\.tone for the list of supported values
+
         Returns:
             :class:`~pytdbot.types.FormattedText`
         """
@@ -3890,6 +3957,7 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "message_id": message_id,
                 "to_language_code": to_language_code,
+                "tone": tone,
             }
         )
 
@@ -3899,6 +3967,7 @@ class TDLibFunctions:
         chat_id: int | None = 0,
         message_id: int | None = 0,
         translate_to_language_code: str | None = "",
+        tone: str | None = "",
     ) -> pytdbot.types.Error | pytdbot.types.FormattedText:
         r"""Summarizes content of the message with non\-empty summary\_language\_code
 
@@ -3910,7 +3979,10 @@ class TDLibFunctions:
                 Identifier of the message
 
             translate_to_language_code (:class:`str`):
-                Pass a language code to which the summary will be translated; may be empty if translation isn't needed\. See translateText\.to\_language\_code for the list of supported values
+                Pass a language code to which the summary will be translated; pass an empty string if translation isn't needed\. See translateText\.to\_language\_code for the list of supported values
+
+            tone (:class:`str`):
+                Tone of the summarization; see translateText\.tone for the list of supported values
 
         Returns:
             :class:`~pytdbot.types.FormattedText`
@@ -3922,8 +3994,61 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "message_id": message_id,
                 "translate_to_language_code": translate_to_language_code,
+                "tone": tone,
             }
         )
+
+    async def composeTextWithAi(
+        self,
+        *,
+        text: pytdbot.types.FormattedText | None = None,
+        translate_to_language_code: str | None = "",
+        style_name: str | None = "",
+        add_emojis: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.FormattedText:
+        r"""Changes text using an AI model; must not be used in secret chats\. May return an error with a message \"AICOMPOSE\_FLOOD\_PREMIUM\" if Telegram Premium is required to send further requests
+
+        Parameters:
+            text (:class:`~pytdbot.types.FormattedText`):
+                The original text
+
+            translate_to_language_code (:class:`str`):
+                Pass a language code to which the text will be translated; pass an empty string if translation isn't needed\. See translateText\.to\_language\_code for the list of supported values
+
+            style_name (:class:`str`):
+                Name of the style of the resulted text; handle updateTextCompositionStyles to get the list of supported styles; pass an empty string to keep the current style of the text
+
+            add_emojis (:class:`bool`):
+                Pass true to add emoji to the text
+
+        Returns:
+            :class:`~pytdbot.types.FormattedText`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "composeTextWithAi",
+                "text": text,
+                "translate_to_language_code": translate_to_language_code,
+                "style_name": style_name,
+                "add_emojis": add_emojis,
+            }
+        )
+
+    async def fixTextWithAi(
+        self, *, text: pytdbot.types.FormattedText | None = None
+    ) -> pytdbot.types.Error | pytdbot.types.FixedText:
+        r"""Fixes text using an AI model; must not be used in secret chats\. May return an error with a message \"AICOMPOSE\_FLOOD\_PREMIUM\" if Telegram Premium is required to send further requests
+
+        Parameters:
+            text (:class:`~pytdbot.types.FormattedText`):
+                The original text
+
+        Returns:
+            :class:`~pytdbot.types.FixedText`
+        """
+
+        return await self.invoke({"@type": "fixTextWithAi", "text": text})
 
     async def recognizeSpeech(
         self, *, chat_id: int | None = 0, message_id: int | None = 0
@@ -6792,6 +6917,30 @@ class TDLibFunctions:
             }
         )
 
+    async def readAllForumTopicPollVotes(
+        self, *, chat_id: int | None = 0, forum_topic_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Marks all poll votes in a topic in a forum supergroup chat as read
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            forum_topic_id (:class:`int`):
+                Forum topic identifier in which poll votes are marked as read
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "readAllForumTopicPollVotes",
+                "chat_id": chat_id,
+                "forum_topic_id": forum_topic_id,
+            }
+        )
+
     async def unpinAllForumTopicMessages(
         self, *, chat_id: int | None = 0, forum_topic_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -7398,7 +7547,7 @@ class TDLibFunctions:
         | pytdbot.types.TextParseModeHTML
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.FormattedText:
-        r"""Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities from a marked\-up text\. Can be called synchronously
+        r"""Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl, MentionName, and DateTime entities from a marked\-up text\. Can be called synchronously
 
         Parameters:
             text (:class:`str`):
@@ -7599,6 +7748,70 @@ class TDLibFunctions:
             {"@type": "getThemeParametersJsonString", "theme": theme}
         )
 
+    async def addPollOption(
+        self,
+        *,
+        chat_id: int | None = 0,
+        message_id: int | None = 0,
+        option: pytdbot.types.InputPollOption | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Adds an option to a poll
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat to which the poll belongs
+
+            message_id (:class:`int`):
+                Identifier of the message containing the poll\. Use messagePoll\.can\_add\_option to check whether an option can be added
+
+            option (:class:`~pytdbot.types.InputPollOption`):
+                The new option
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addPollOption",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "option": option,
+            }
+        )
+
+    async def deletePollOption(
+        self,
+        *,
+        chat_id: int | None = 0,
+        message_id: int | None = 0,
+        option_id: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Adds an option to a poll
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat to which the poll belongs
+
+            message_id (:class:`int`):
+                Identifier of the message containing the poll
+
+            option_id (:class:`str`):
+                Unique identifier of the option\. Use pollOptionProperties\.can\_be\_deleted to check whether the option can be deleted by the user
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deletePollOption",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "option_id": option_id,
+            }
+        )
+
     async def setPollAnswer(
         self,
         *,
@@ -7606,7 +7819,7 @@ class TDLibFunctions:
         message_id: int | None = 0,
         option_ids: list[int] | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Changes the user answer to a poll\. A poll in quiz mode can be answered only once
+        r"""Changes the user answer to a poll
 
         Parameters:
             chat_id (:class:`int`):
@@ -7640,7 +7853,7 @@ class TDLibFunctions:
         offset: int | None = 0,
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.PollVoters:
-        r"""Returns message senders voted for the specified option in a non\-anonymous polls\. For optimal performance, the number of returned users is chosen by TDLib
+        r"""Returns message senders voted for the specified option in a poll; use poll\.can\_get\_voters to check whether the method can be used\. For optimal performance, the number of returned users is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -7914,8 +8127,9 @@ class TDLibFunctions:
     async def shareUsersWithBot(
         self,
         *,
-        chat_id: int | None = 0,
-        message_id: int | None = 0,
+        source: pytdbot.types.KeyboardButtonSourceMessage
+        | pytdbot.types.KeyboardButtonSourceWebApp
+        | None = None,
         button_id: int | None = 0,
         shared_user_ids: list[int] | None = None,
         only_check: bool | None = False,
@@ -7923,11 +8137,8 @@ class TDLibFunctions:
         r"""Shares users after pressing a keyboardButtonTypeRequestUsers button with the bot
 
         Parameters:
-            chat_id (:class:`int`):
-                Identifier of the chat with the bot
-
-            message_id (:class:`int`):
-                Identifier of the message with the button
+            source (:class:`~pytdbot.types.KeyboardButtonSource`):
+                Source of the button
 
             button_id (:class:`int`):
                 Identifier of the button
@@ -7945,8 +8156,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "shareUsersWithBot",
-                "chat_id": chat_id,
-                "message_id": message_id,
+                "source": source,
                 "button_id": button_id,
                 "shared_user_ids": shared_user_ids,
                 "only_check": only_check,
@@ -7956,8 +8166,9 @@ class TDLibFunctions:
     async def shareChatWithBot(
         self,
         *,
-        chat_id: int | None = 0,
-        message_id: int | None = 0,
+        source: pytdbot.types.KeyboardButtonSourceMessage
+        | pytdbot.types.KeyboardButtonSourceWebApp
+        | None = None,
         button_id: int | None = 0,
         shared_chat_id: int | None = 0,
         only_check: bool | None = False,
@@ -7965,11 +8176,8 @@ class TDLibFunctions:
         r"""Shares a chat after pressing a keyboardButtonTypeRequestChat button with the bot
 
         Parameters:
-            chat_id (:class:`int`):
-                Identifier of the chat with the bot
-
-            message_id (:class:`int`):
-                Identifier of the message with the button
+            source (:class:`~pytdbot.types.KeyboardButtonSource`):
+                Source of the button
 
             button_id (:class:`int`):
                 Identifier of the button
@@ -7987,8 +8195,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "shareChatWithBot",
-                "chat_id": chat_id,
-                "message_id": message_id,
+                "source": source,
                 "button_id": button_id,
                 "shared_chat_id": shared_chat_id,
                 "only_check": only_check,
@@ -8149,6 +8356,57 @@ class TDLibFunctions:
                 "@type": "getPreparedInlineMessage",
                 "bot_user_id": bot_user_id,
                 "prepared_message_id": prepared_message_id,
+            }
+        )
+
+    async def savePreparedKeyboardButton(
+        self,
+        *,
+        user_id: int | None = 0,
+        button: pytdbot.types.KeyboardButton | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Text:
+        r"""Saves a keyboard button to be shown to the given user; for bots only
+
+        Parameters:
+            user_id (:class:`int`):
+                Identifier of the user
+
+            button (:class:`~pytdbot.types.KeyboardButton`):
+                The button; must be of the type keyboardButtonTypeRequestUsers, keyboardButtonTypeRequestChat, or keyboardButtonTypeRequestManagedBot
+
+        Returns:
+            :class:`~pytdbot.types.Text`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "savePreparedKeyboardButton",
+                "user_id": user_id,
+                "button": button,
+            }
+        )
+
+    async def getPreparedKeyboardButton(
+        self, *, bot_user_id: int | None = 0, prepared_button_id: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.KeyboardButton:
+        r"""Returns a keyboard button prepared by the bot for the user\. The button will be of the type keyboardButtonTypeRequestUsers, keyboardButtonTypeRequestChat, or keyboardButtonTypeRequestManagedBot
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the bot that created the button
+
+            prepared_button_id (:class:`str`):
+                Identifier of the prepared button
+
+        Returns:
+            :class:`~pytdbot.types.KeyboardButton`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getPreparedKeyboardButton",
+                "bot_user_id": bot_user_id,
+                "prepared_button_id": prepared_button_id,
             }
         )
 
@@ -9024,6 +9282,77 @@ class TDLibFunctions:
             }
         )
 
+    async def listenToAudio(
+        self, *, audio_file_id: int | None = 0, duration: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Informs TDLib that an audio was listened by the user
+
+        Parameters:
+            audio_file_id (:class:`int`):
+                Identifier of the file with an audio
+
+            duration (:class:`int`):
+                Duration of the listening to the audio, in seconds
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "listenToAudio",
+                "audio_file_id": audio_file_id,
+                "duration": duration,
+            }
+        )
+
+    async def sendMessageViewMetrics(
+        self,
+        *,
+        chat_id: int | None = 0,
+        message_id: int | None = 0,
+        time_in_view_ms: int | None = 0,
+        active_time_in_view_ms: int | None = 0,
+        height_to_viewport_ratio_per_mille: int | None = 0,
+        seen_range_ratio_per_mille: int | None = 0,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Informs TDLib about details of a message view by the user from a chat, a message thread or a forum topic history\. The method must be called if the message wasn't seen for more than 300 milliseconds, the viewport was destroyed, or the total view duration exceeded 5 minutes
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            message_id (:class:`int`):
+                The identifier of the message being viewed
+
+            time_in_view_ms (:class:`int`):
+                The amount of time the message was seen by at least 1 pixel; in milliseconds
+
+            active_time_in_view_ms (:class:`int`):
+                The amount of time the message was seen by at least 1 pixel within 15 seconds after any action from the user; in milliseconds
+
+            height_to_viewport_ratio_per_mille (:class:`int`):
+                The ratio of the post height to the viewport height in 1/1000 fractions
+
+            seen_range_ratio_per_mille (:class:`int`):
+                The ratio of the viewed post height to the full post height in 1/1000 fractions; 0\-1000
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "sendMessageViewMetrics",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "time_in_view_ms": time_in_view_ms,
+                "active_time_in_view_ms": active_time_in_view_ms,
+                "height_to_viewport_ratio_per_mille": height_to_viewport_ratio_per_mille,
+                "seen_range_ratio_per_mille": seen_range_ratio_per_mille,
+            }
+        )
+
     async def getInternalLink(
         self,
         *,
@@ -9067,6 +9396,7 @@ class TDLibFunctions:
         | pytdbot.types.InternalLinkTypeProxy
         | pytdbot.types.InternalLinkTypePublicChat
         | pytdbot.types.InternalLinkTypeQrCodeAuthentication
+        | pytdbot.types.InternalLinkTypeRequestManagedBot
         | pytdbot.types.InternalLinkTypeRestorePurchases
         | pytdbot.types.InternalLinkTypeSavedMessages
         | pytdbot.types.InternalLinkTypeSearch
@@ -9281,6 +9611,21 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "readAllChatReactions", "chat_id": chat_id})
+
+    async def readAllChatPollVotes(
+        self, *, chat_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Marks all poll votes in a chat as read
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "readAllChatPollVotes", "chat_id": chat_id})
 
     async def createPrivateChat(
         self, *, user_id: int | None = 0, force: bool | None = False
@@ -12939,6 +13284,7 @@ class TDLibFunctions:
         | pytdbot.types.FileTypeAnimation
         | pytdbot.types.FileTypeAudio
         | pytdbot.types.FileTypeDocument
+        | pytdbot.types.FileTypeLivePhotoVideo
         | pytdbot.types.FileTypeNotificationSound
         | pytdbot.types.FileTypePhoto
         | pytdbot.types.FileTypePhotoStory
@@ -12946,6 +13292,7 @@ class TDLibFunctions:
         | pytdbot.types.FileTypeSecret
         | pytdbot.types.FileTypeSecretThumbnail
         | pytdbot.types.FileTypeSecure
+        | pytdbot.types.FileTypeSelfDestructingLivePhotoVideo
         | pytdbot.types.FileTypeSelfDestructingPhoto
         | pytdbot.types.FileTypeSelfDestructingVideo
         | pytdbot.types.FileTypeSelfDestructingVideoNote
@@ -13379,7 +13726,7 @@ class TDLibFunctions:
         | None = None,
         attached_files: list[pytdbot.types.InputFile] | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Imports messages exported from another app
+        r"""Imports messages exported from another application
 
         Parameters:
             chat_id (:class:`int`):
@@ -14782,7 +15129,7 @@ class TDLibFunctions:
                 Group call identifier
 
             text (:class:`~pytdbot.types.FormattedText`):
-                Text of the message to send; 1\-getOption\(\"group\_call\_message\_text\_length\_max\"\) characters for non\-live\-stories; see updateGroupCallMessageLevels for live story restrictions, which depends on paid\_message\_star\_count\. Can't contain line feeds for live stories
+                Text of the message to send; 1\-getOption\(\"group\_call\_message\_text\_length\_max\"\) characters for non\-live\-stories; see updateGroupCallMessageLevels for live story restrictions, which depends on paid\_message\_star\_count\. Can't contain line feeds for live stories\. Can contain only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities for live stories
 
             paid_message_star_count (:class:`int`):
                 The number of Telegram Stars the user agreed to pay to send the message; for live stories only; 0\-getOption\(\"paid\_group\_call\_message\_star\_count\_max\"\)\. Must be 0 for messages sent to live stories posted by the current user
@@ -15885,7 +16232,7 @@ class TDLibFunctions:
                 User identifier
 
             note (:class:`~pytdbot.types.FormattedText`):
-                Note to set for the user; 0\-getOption\(\"user\_note\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
+                Note to set for the user; 0\-getOption\(\"user\_note\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -18323,6 +18670,78 @@ class TDLibFunctions:
             }
         )
 
+    async def checkBotUsername(
+        self, *, username: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.CheckChatUsernameResult:
+        r"""Checks whether a username can be set for a new bot\. Use checkChatUsername to check username for other chat types
+
+        Parameters:
+            username (:class:`str`):
+                Username to be checked
+
+        Returns:
+            :class:`~pytdbot.types.CheckChatUsernameResult`
+        """
+
+        return await self.invoke({"@type": "checkBotUsername", "username": username})
+
+    async def createBot(
+        self,
+        *,
+        manager_bot_user_id: int | None = 0,
+        name: str | None = "",
+        username: str | None = "",
+        via_link: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.User:
+        r"""Creates a bot which will be managed by another bot\. Returns the created bot\. May return an error with a message \"BOT\_CREATE\_LIMIT\_EXCEEDED\" if the user already owns the maximum allowed number of bots as per premiumLimitTypeOwnedBotCount\. An internal link \"https://t\.me/BotFather?start\=deletebot\" can be processed to handle the error
+
+        Parameters:
+            manager_bot_user_id (:class:`int`):
+                Identifier of the bot that will manage the created bot
+
+            name (:class:`str`):
+                Name of the bot; 1\-64 characters
+
+            username (:class:`str`):
+                Username of the bot\. The username must end with \"bot\"\. Use checkBotUsername to find whether the name is suitable
+
+            via_link (:class:`bool`):
+                Pass true if the bot is created from an internalLinkTypeRequestManagedBot link
+
+        Returns:
+            :class:`~pytdbot.types.User`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "createBot",
+                "manager_bot_user_id": manager_bot_user_id,
+                "name": name,
+                "username": username,
+                "via_link": via_link,
+            }
+        )
+
+    async def getBotToken(
+        self, *, bot_user_id: int | None = 0, revoke: bool | None = False
+    ) -> pytdbot.types.Error | pytdbot.types.Text:
+        r"""Returns token of a created bot; for bots only
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the created bot
+
+            revoke (:class:`bool`):
+                Pass true to revoke the current token and create a new one
+
+        Returns:
+            :class:`~pytdbot.types.Text`
+        """
+
+        return await self.invoke(
+            {"@type": "getBotToken", "bot_user_id": bot_user_id, "revoke": revoke}
+        )
+
     async def setBotName(
         self,
         *,
@@ -19695,7 +20114,7 @@ class TDLibFunctions:
                 Identifier of the user or the channel chat that will receive the gift; limited gifts can't be sent to channel chats
 
             text (:class:`~pytdbot.types.FormattedText`):
-                Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed\. Must be empty if the receiver enabled paid messages
+                Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed\. Must be empty if the receiver enabled paid messages
 
             is_private (:class:`bool`):
                 Pass true to show gift text and sender only to the gift receiver; otherwise, everyone will be able to see them
@@ -19804,7 +20223,7 @@ class TDLibFunctions:
                 Identifier of the user who will receive the gift
 
             text (:class:`~pytdbot.types.FormattedText`):
-                Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed\. Must be empty if the receiver enabled paid messages
+                Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed\. Must be empty if the receiver enabled paid messages
 
             is_private (:class:`bool`):
                 Pass true to show gift text and sender only to the gift receiver; otherwise, everyone will be able to see them
@@ -20503,6 +20922,7 @@ class TDLibFunctions:
         | pytdbot.types.GiftForResaleOrderNumber
         | None = None,
         for_crafting: bool | None = False,
+        for_stars: bool | None = False,
         attributes: list[pytdbot.types.UpgradedGiftAttributeId] | None = None,
         offset: str | None = "",
         limit: int | None = 0,
@@ -20518,6 +20938,9 @@ class TDLibFunctions:
 
             for_crafting (:class:`bool`):
                 Pass true to get only gifts suitable for crafting
+
+            for_stars (:class:`bool`):
+                Pass true to get only gifts that can be bought using Telegram Stars
 
             attributes (list[:class:`~pytdbot.types.UpgradedGiftAttributeId`]):
                 Attributes used to filter received gifts\. If multiple attributes of the same type are specified, then all of them are allowed\. If none attributes of specific type are specified, then all values for this attribute type are allowed
@@ -20538,6 +20961,7 @@ class TDLibFunctions:
                 "gift_id": gift_id,
                 "order": order,
                 "for_crafting": for_crafting,
+                "for_stars": for_stars,
                 "attributes": attributes,
                 "offset": offset,
                 "limit": limit,
@@ -23285,6 +23709,7 @@ class TDLibFunctions:
         | pytdbot.types.PremiumLimitTypeStoryCaptionLength
         | pytdbot.types.PremiumLimitTypeStorySuggestedReactionAreaCount
         | pytdbot.types.PremiumLimitTypeSimilarChatCount
+        | pytdbot.types.PremiumLimitTypeOwnedBotCount
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.PremiumLimit:
         r"""Returns information about a limit, increased for Premium users\. Returns a 404 error if the limit is unknown
@@ -23384,6 +23809,7 @@ class TDLibFunctions:
         | pytdbot.types.PremiumFeatureChecklists
         | pytdbot.types.PremiumFeaturePaidMessages
         | pytdbot.types.PremiumFeatureProtectPrivateChatContent
+        | pytdbot.types.PremiumFeatureTextComposition
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Informs TDLib that the user viewed detailed information about a Premium feature on the Premium features screen
@@ -23512,7 +23938,7 @@ class TDLibFunctions:
                 Number of months the Telegram Premium subscription will be active for the user
 
             text (:class:`~pytdbot.types.FormattedText`):
-                Text to show to the user receiving Telegram Premium; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
+                Text to show to the user receiving Telegram Premium; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed
 
         Returns:
             :class:`~pytdbot.types.Ok`
