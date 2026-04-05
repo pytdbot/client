@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from asyncio import iscoroutinefunction
 from collections.abc import Callable
+from inspect import iscoroutinefunction
 from logging import getLogger
 
 import pytdbot
