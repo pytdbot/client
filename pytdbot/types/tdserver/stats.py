@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Literal
 
 import pytdbot
@@ -55,12 +56,14 @@ class ServerStats:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "ServerStats" | None:
-        if data:
-            data_class = cls()
-            data_class.my_id = data.get("my_id", None)
-            data_class.uptime = data.get("uptime", None)
-            data_class.updates_count = data.get("updates_count", None)
-            data_class.requests_count = data.get("requests_count", None)
+    def from_dict(cls, data: dict) -> ServerStats | None:
+        if not data:
+            return None
+
+        data_class = cls()
+        data_class.my_id = data.get("my_id", None)
+        data_class.uptime = data.get("uptime", None)
+        data_class.updates_count = data.get("updates_count", None)
+        data_class.requests_count = data.get("requests_count", None)
 
         return data_class

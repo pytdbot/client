@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Literal
 
 import pytdbot
@@ -11,7 +12,7 @@ class ScheduledEvent:
             Unique identifier of the scheduled event
 
         send_at (:class:`int`):
-            Point in time \(Unix timestamp\) when the scheduled event will be sent
+            Point in time (Unix timestamp) when the scheduled event will be sent
     """
 
     def __init__(
@@ -22,7 +23,7 @@ class ScheduledEvent:
         self.event_id = event_id
         r"""Unique identifier of the scheduled event"""
         self.send_at = send_at
-        r"""Point in time \(Unix timestamp\) when the scheduled event will be sent"""
+        r"""Point in time (Unix timestamp) when the scheduled event will be sent"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -41,11 +42,13 @@ class ScheduledEvent:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "ScheduledEvent" | None:
-        if data:
-            data_class = cls()
-            data_class.event_id = data.get("event_id", None)
-            data_class.send_at = data.get("send_at", None)
+    def from_dict(cls, data: dict) -> ScheduledEvent | None:
+        if not data:
+            return None
+
+        data_class = cls()
+        data_class.event_id = data.get("event_id", None)
+        data_class.send_at = data.get("send_at", None)
 
         return data_class
 
@@ -95,11 +98,13 @@ class UpdateScheduledEvent:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "UpdateScheduledEvent" | None:
-        if data:
-            data_class = cls()
-            data_class.name = data.get("name", None)
-            data_class.event_id = data.get("event_id", None)
-            data_class.payload = data.get("payload", None)
+    def from_dict(cls, data: dict) -> UpdateScheduledEvent | None:
+        if not data:
+            return None
+
+        data_class = cls()
+        data_class.name = data.get("name", None)
+        data_class.event_id = data.get("event_id", None)
+        data_class.payload = data.get("payload", None)
 
         return data_class
