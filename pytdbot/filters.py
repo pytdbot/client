@@ -50,7 +50,7 @@ def create(func: Callable) -> Filter:
             async def photo_handler(c,update):
                 await update.reply_text('I got a photo!')
 
-            client.run()
+            asyncio.run(client.run())
 
     Parameters:
         func (``Callable``):

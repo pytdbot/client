@@ -156,4 +156,4 @@ async def handle_auth(_: Client, auth: types.UpdateAuthorizationState):
 
 
 # Run the client
-client.run()
+asyncio.run(client.run())

@@ -94,7 +94,7 @@ async def say_hello(c: Client, message: types.Message):
 
 
 # Run the client
-client.run()
+asyncio.run(client.run())
 
 ```
 

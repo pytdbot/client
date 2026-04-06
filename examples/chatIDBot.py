@@ -157,4 +157,4 @@ async def chat_member(client: Client, update: types.UpdateChatMember):
 
 
 # Run the bot
-client.run()
+asyncio.run(client.run())

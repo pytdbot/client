@@ -1,5 +1,4 @@
 __all__ = [
-    "get_running_loop",
     "escape_html",
     "escape_markdown",
     "JSON_ENCODER",
@@ -36,7 +35,6 @@ __all__ = [
 ]
 
 
-from .asyncio_utils import get_running_loop
 from .escape import escape_html, escape_markdown
 from .json_utils import (
     JSON_ENCODER,

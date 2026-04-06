@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from pytdbot import Client, types
@@ -124,4 +125,4 @@ async def callback_query(c: Client, message: types.UpdateNewCallbackQuery):
 
 
 # Run the client
-client.run()
+asyncio.run(client.run())

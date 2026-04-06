@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from pytdbot import Client, types
@@ -80,4 +81,4 @@ async def echo(_: Client, message: types.Message):
 
 
 # Run the client
-client.run()
+asyncio.run(client.run())

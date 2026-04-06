@@ -29,7 +29,6 @@ from .utils import (
     create_extra_id,
     dict_to_obj,
     get_bot_id_from_token,
-    get_running_loop,
     json_dumps,
     json_loads,
     obj_to_dict,
@@ -89,9 +88,6 @@ class Client(Decorators, Methods):
         use_message_database (``bool``, *optional*):
             If set to true, the library will maintain a cache of chats and messages. Implies use_chat_info_database. Default is ``True``
 
-        loop (:py:class:`asyncio.AbstractEventLoop`, *optional*):
-            Event loop. Default is ``None`` (auto-detect)
-
         options (``dict``, *optional*):
             Pass key-value dictionary to set TDLib options. Check the list of available options at https://core.telegram.org/tdlib/options
 
@@ -132,7 +128,6 @@ class Client(Decorators, Methods):
         use_file_database: bool = True,
         use_chat_info_database: bool = True,
         use_message_database: bool = True,
-        loop: asyncio.AbstractEventLoop | None = None,
         options: dict | None = None,
         workers: int = 5,
         queue_size: int = 1000,
@@ -227,9 +222,7 @@ class Client(Decorators, Methods):
         self.__rconnection = None
         self.__rchannel = None
 
-        self.loop = (
-            loop if isinstance(loop, asyncio.AbstractEventLoop) else get_running_loop()
-        )
+        self.loop = None
 
         if plugins is not None:
             self._load_plugins()
@@ -324,6 +317,8 @@ class Client(Decorators, Methods):
 
         if not self.is_running:
             self.logger.info("Starting pytdbot client...")
+
+            self.loop = asyncio.get_running_loop()
 
             if self.is_rabbitmq:
                 await self.__start_rabbitmq()
@@ -612,12 +607,13 @@ class Client(Decorators, Methods):
 
         return await self.invoke(kwargs)
 
-    def run(self) -> None:
+    async def run(self) -> None:
         r"""Start the client and block until the client is stopped
 
         Example:
             .. code-block:: python
 
+                import asyncio
                 from pytdbot import Client
 
                 client = Client(...)
@@ -626,13 +622,14 @@ class Client(Decorators, Methods):
                 async def new_message(c,update):
                     await update.reply_text('Hello!')
 
-                client.run()
+                asyncio.run(client.run())
         """
+
+        await self.start()
 
         self._register_signal_handlers()
 
-        self.loop.run_until_complete(self.start())
-        self.loop.run_until_complete(self.idle())
+        await self.idle()
 
     async def idle(self):
         r"""Idle and wait until the client is stopped."""
