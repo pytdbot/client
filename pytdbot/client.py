@@ -815,35 +815,41 @@ class Client(Decorators, Methods):
             self.__cache["is_coro_filter"][func] = is_coro
             return is_coro
 
-    async def process_update(self, update):
+    async def process_update(self, update: dict) -> None:
         if not update:
             self.logger.warning("Received None update")
             return
 
-        if (
-            self.logger.root.level >= DEBUG or self.logger.level >= DEBUG
-        ):  # dumping all results may create performance issues
+        is_debug = self.logger.isEnabledFor(DEBUG)
+
+        if extra := update.get("@extra"):
+            result_id = extra["id"]
+
+            if is_debug:
+                self.logger.debug(
+                    f"Received result for {result_id}: {dumps(update, indent=4)}"
+                )
+
+            if result_id and (result := self._results.pop(result_id, None)):
+                result.set_result(dict_to_obj(update, self))
+
+            elif update["@type"] == "error" and "option" in extra:
+                self.logger.error(f"{extra['option']}: {update['message']}")
+
+            return
+
+        if is_debug:
             self.logger.debug(f"Received: {dumps(update, indent=4)}")
 
-        if "@extra" in update:
-            if result := self._results.pop(update["@extra"]["id"], None):
-                obj = dict_to_obj(update, self)
+        update_obj = dict_to_obj(update, self)
 
-                result.set_result(obj)
-            elif update["@type"] == "error" and "option" in update["@extra"]:
-                self.logger.error(f"{update['@extra']['option']}: {update['message']}")
+        if handler := self.__local_handlers.get(update.get("@type")):
+            self.loop.create_task(handler(update_obj))
 
+        if not self.is_rabbitmq and self.__is_queue_worker:
+            self.queue.put_nowait(update_obj)
         else:
-            update_handler = self.__local_handlers.get(update["@type"])
-            update = dict_to_obj(update, self)
-
-            if update_handler:
-                self.loop.create_task(update_handler(update))
-
-            if not self.is_rabbitmq and self.__is_queue_worker:
-                self.queue.put_nowait(update)
-            else:
-                await self._handle_update(update)
+            await self._handle_update(update_obj)
 
     def get_inner_object(self, update: types.TlObject):
         if isinstance(update, types.UpdateNewMessage):
