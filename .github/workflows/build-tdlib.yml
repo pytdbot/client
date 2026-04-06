@@ -98,7 +98,7 @@ jobs:
           TD_FILES="pytdbot/types/td_types.py pytdbot/methods/td_functions.py pytdbot/handlers/td_updates.py"
           python -m pip install ruff
           python -m ruff check $TD_FILES --select I --fix
-          python -m ruff format $TD_FILES
+          python -m ruff format $TD_FILES pytdbot/types/__init__.py
 
           CURRENT_VERSION=${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }}
           sed --binary -i "s/${CURRENT_VERSION//./\\.}/${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}/g" README.md

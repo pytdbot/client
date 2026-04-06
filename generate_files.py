@@ -503,7 +503,7 @@ if __name__ == "__main__":
     with open("pytdbot/handlers/td_updates.py", "w", encoding="utf-8") as updates_file:
         updates_file.write("from __future__ import annotations\n")
         updates_file.write(
-            'import pytdbot\n\nfrom .handler import Handler\nfrom collections.abc import Callable\nfrom asyncio import iscoroutinefunction\nfrom logging import getLogger\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated TDLib updates"""\n\n'
+            'import pytdbot\n\nfrom .handler import Handler\nfrom collections.abc import Callable\nfrom inspect import iscoroutinefunction\nfrom logging import getLogger\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated TDLib updates"""\n\n'
         )
 
         generate_updates(updates_file, tl_json["updates"])

@@ -5,6 +5,7 @@ import signal
 from collections.abc import Callable
 from importlib import import_module
 from importlib import reload as reload_module
+from inspect import iscoroutinefunction
 from json import dumps
 from logging import DEBUG, getLogger
 from os.path import join as join_path
@@ -778,7 +779,7 @@ class Client(Decorators, Methods):
             ]
 
             for handler in handlers_to_load:
-                if asyncio.iscoroutinefunction(handler.func):
+                if iscoroutinefunction(handler.func):
                     self.add_handler(
                         update_type=handler.update_type,
                         func=handler.func,
@@ -810,7 +811,7 @@ class Client(Decorators, Methods):
         if func in self.__cache["is_coro_filter"]:
             return self.__cache["is_coro_filter"][func]
         else:
-            is_coro = asyncio.iscoroutinefunction(func)
+            is_coro = iscoroutinefunction(func)
             self.__cache["is_coro_filter"][func] = is_coro
             return is_coro
 
