@@ -12,7 +12,7 @@ class ScheduledEvent:
             Unique identifier of the scheduled event
 
         send_at (:class:`int`):
-            Point in time (Unix timestamp) when the scheduled event will be sent
+            Point in time \(Unix timestamp\) when the scheduled event will be sent
     """
 
     def __init__(
@@ -23,7 +23,7 @@ class ScheduledEvent:
         self.event_id = event_id
         r"""Unique identifier of the scheduled event"""
         self.send_at = send_at
-        r"""Point in time (Unix timestamp) when the scheduled event will be sent"""
+        r"""Point in time \(Unix timestamp\) when the scheduled event will be sent"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))

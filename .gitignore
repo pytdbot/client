@@ -17,4 +17,3 @@ pip-delete-this-directory.txt
 
 *.log
 docs/
-.idea
