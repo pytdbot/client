@@ -74,7 +74,7 @@ class Methods(TDLibFunctions):
                 "Invalid parse_mode. Currently supported: markdown, markdownv2, html"
             )
 
-        return await self.parseTextEntities(text=text, mode=mode)
+        return await self.parseTextEntities(text=text, parse_mode=mode)
 
     async def getSupergroupId(
         self,
