@@ -179,7 +179,7 @@ def custom_emoji(emoji: str, custom_emoji_id: int, html: bool = True) -> str:
         emoji (``str``):
             The emoji of the custom emoji
 
-        custom_emoji_id (``str``):
+        custom_emoji_id (``int``):
             Identifier of the custom emoji
 
         html (``bool``, *optional*):
