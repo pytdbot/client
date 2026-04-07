@@ -216,6 +216,8 @@ class Client(Decorators, Methods):
         }
         self.__is_queue_worker = False
         self.__is_closing = False
+        self.__idle_event: asyncio.Event = None
+        self.__closed_event: asyncio.Event = None
 
         # RabbitMQ
         self.__rqueues = None
@@ -319,6 +321,8 @@ class Client(Decorators, Methods):
             self.logger.info("Starting pytdbot client...")
 
             self.loop = asyncio.get_running_loop()
+            self.__idle_event = asyncio.Event()
+            self.__closed_event = asyncio.Event()
 
             if self.is_rabbitmq:
                 await self.__start_rabbitmq()
@@ -632,10 +636,12 @@ class Client(Decorators, Methods):
         await self.idle()
 
     async def idle(self):
-        r"""Idle and wait until the client is stopped."""
+        r"""Idle and wait until the client is stopped"""
 
-        while self.is_running:
-            await asyncio.sleep(1)
+        if not self.__idle_event:
+            self.__idle_event = asyncio.Event()
+
+        await self.__idle_event.wait()
 
     async def stop(self) -> bool:
         r"""Stop the client
@@ -664,8 +670,7 @@ class Client(Decorators, Methods):
         }:
             await self.close()
 
-        while self.authorization_state != "authorizationStateClosed":
-            await asyncio.sleep(0.1)
+        await self.__closed_event.wait()
 
         if self.is_rabbitmq:
             await self.__rchannel.close()
@@ -677,6 +682,7 @@ class Client(Decorators, Methods):
             await self.client_manager.close()
 
         self.logger.info("Instance closed")
+        self.__idle_event.set()
 
         return True
 
@@ -1077,11 +1083,10 @@ class Client(Decorators, Methods):
 
         if self.authorization_state == "authorizationStateClosing":
             self.__is_closing = True
-        elif (
-            self.authorization_state == "authorizationStateClosed"
-            and self.__is_closing is False
-        ):
-            await self.stop()
+        elif self.authorization_state == "authorizationStateClosed":
+            self.__closed_event.set()
+            if self.__is_closing is False:
+                await self.stop()
 
     async def __handle_connection_state(self, update: types.UpdateConnectionState):
         self.connection_state: str = update.state.getType()
