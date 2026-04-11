@@ -605,25 +605,25 @@ class Methods(TDLibFunctions):
                 Target chat
 
             title (``str``):
-                Product title (1–32 characters)
+                Product title; 1-32 characters
 
             amount (``int``):
-                Price in the smallest units of the currency
+                Amount of Telegram Stars to be paid
 
             payload (``bytes``):
-                Bot-defined invoice payload
+                The invoice payload
 
             description (``str``, *optional*):
-                Product description (0–255 characters)
+                Product description; 0-255 characters
 
             subscription_period (``int``, *optional*):
-                Number of seconds between recurring payments. ``0`` for one-time payment
+                The number of seconds between consecutive Telegram Star debiting for subscription invoices; 0 if the invoice doesn't create subscription
 
             start_parameter (``str``, *optional*):
-                Deep-link parameter for the invoice. If empty, forwarded invoices can be paid directly
+                Unique invoice bot deep link parameter for the generation of this invoice. If empty, it would be possible to pay directly from forwards of the invoice message
 
             photo_url (``str``, *optional*):
-                Product photo URL
+                Product photo URL; optional
 
             photo_size (``int``, *optional*):
                 Product photo size
@@ -635,10 +635,10 @@ class Methods(TDLibFunctions):
                 Product photo height
 
             recurring_payment_terms_of_service_url (``str``, *optional*):
-                Terms of service URL for recurring payments
+                An HTTP URL with terms of service for recurring payments. If non-empty, the invoice payment will result in recurring payments and the user must accept the terms of service before allowed to pay
 
             terms_of_service_url (``str``, *optional*):
-                Terms of service URL for one-time payments
+                An HTTP URL with terms of service for non-recurring payments. If non-empty, then the user must accept the terms of service before allowed to pay
 
             reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
                 Information about the message or the story this message is replying to; may be null if none
@@ -1532,25 +1532,25 @@ class Methods(TDLibFunctions):
 
         Parameters:
             title (``str``):
-                Product title (1–32 characters)
+                Product title; 1-32 characters
 
             amount (``int``):
-                Price in the smallest units of the currency
+                Amount of Telegram Stars to be paid
 
             payload (``bytes``):
-                Bot-defined invoice payload
+                The invoice payload
 
             description (``str``, *optional*):
-                Product description (0–255 characters)
+                Product description; 0-255 characters
 
             subscription_period (``int``, *optional*):
-                Number of seconds between recurring payments. ``0`` for one-time payment
+                The number of seconds between consecutive Telegram Star debiting for subscription invoices; 0 if the invoice doesn't create subscription
 
             start_parameter (``str``, *optional*):
-                Deep-link parameter for the invoice. If empty, forwarded invoices can be paid directly
+                Unique invoice bot deep link parameter for the generation of this invoice. If empty, it would be possible to pay directly from forwards of the invoice message
 
             photo_url (``str``, *optional*):
-                Product photo URL
+                Product photo URL; optional
 
             photo_size (``int``, *optional*):
                 Product photo size
@@ -1562,10 +1562,10 @@ class Methods(TDLibFunctions):
                 Product photo height
 
             recurring_payment_terms_of_service_url (``str``, *optional*):
-                Terms of service URL for recurring payments
+                An HTTP URL with terms of service for recurring payments. If non-empty, the invoice payment will result in recurring payments and the user must accept the terms of service before allowed to pay
 
             terms_of_service_url (``str``, *optional*):
-                Terms of service URL for one-time payments
+                An HTTP URL with terms of service for non-recurring payments. If non-empty, then the user must accept the terms of service before allowed to pay
 
         Returns:
             :class:`~pytdbot.types.HttpUrl`
