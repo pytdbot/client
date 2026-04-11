@@ -625,6 +625,41 @@ class MessageBoundMethods:
             reply_markup=reply_markup,
         )
 
+    async def reply_invoice(
+        self,
+        title: str,
+        amount: int,
+        payload: bytes,
+        description: str = "",
+        subscription_period: int = 0,
+        start_parameter: str = "",
+        photo_url: str = "",
+        photo_size: int = 0,
+        photo_width: int = 0,
+        photo_height: int = 0,
+        recurring_payment_terms_of_service_url: str = "",
+        terms_of_service_url: str = "",
+        no_reply: bool = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the message with a Telegram Stars invoice. Shortcut for :meth:`~pytdbot.Client.sendInvoice`."""
+
+        return await self._client.sendInvoice(
+            chat_id=self.chat_id,
+            title=title,
+            amount=amount,
+            payload=payload,
+            description=description,
+            subscription_period=subscription_period,
+            start_parameter=start_parameter,
+            photo_url=photo_url,
+            photo_size=photo_size,
+            photo_width=photo_width,
+            photo_height=photo_height,
+            recurring_payment_terms_of_service_url=recurring_payment_terms_of_service_url,
+            terms_of_service_url=terms_of_service_url,
+            reply_to_message_id=self.id if not no_reply else None,
+        )
+
     async def reply_photo(
         self,
         photo: pytdbot.types.InputFile | str,
