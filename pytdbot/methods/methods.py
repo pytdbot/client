@@ -1427,6 +1427,7 @@ class Methods(TDLibFunctions):
         chat_id: int,
         from_chat_id: int,
         message_id: int,
+        topic_id: MessageTopic = None,
         in_game_share: bool = False,
         disable_notification: bool = False,
     ):
@@ -1441,6 +1442,9 @@ class Methods(TDLibFunctions):
 
             message_id (``int``):
                 Identifier of the message to forward
+
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
 
             in_game_share (``bool``, *optional*):
                 True, if a game message is being shared from a launched game; applies only to game messages
@@ -1459,6 +1463,7 @@ class Methods(TDLibFunctions):
                 message_id=message_id,
                 in_game_share=in_game_share,
             ),
+            topic_id=topic_id,
             disable_notification=disable_notification,
         )
 
