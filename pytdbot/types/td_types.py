@@ -133,6 +133,12 @@ class InputPollType:
     pass
 
 
+class PollVoteRestrictionReason:
+    r"""Reason of vote restriction in the poll for the current user"""
+
+    pass
+
+
 class ProfileTab:
     r"""Describes a tab shown in a user or a chat profile"""
 
@@ -2286,7 +2292,7 @@ class DiffText(TlObject):
             The text
 
         entities (list[:class:`~pytdbot.types.DiffEntity`]):
-            Entities describing changes in the text\. Entities doesn't mutually intersect with each other
+            Entities describing changes in the text\. Entities don't mutually intersect with each other
 
     """
 
@@ -2296,7 +2302,7 @@ class DiffText(TlObject):
         self.text = text
         r"""The text"""
         self.entities = entities or []
-        r"""Entities describing changes in the text\. Entities doesn't mutually intersect with each other"""
+        r"""Entities describing changes in the text\. Entities don't mutually intersect with each other"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -2366,6 +2372,57 @@ class FixedText(TlObject):
         return data_class
 
 
+class TextCompositionStyleExample(TlObject):
+    r"""Contains an example of text composition style usage
+
+    Parameters:
+        source_text (:class:`~pytdbot.types.FormattedText`):
+            Source text
+
+        result_text (:class:`~pytdbot.types.FormattedText`):
+            The text after the style was applied to the source text
+
+    """
+
+    def __init__(
+        self,
+        *,
+        source_text: FormattedText | None = None,
+        result_text: FormattedText | None = None,
+    ) -> None:
+        self.source_text = source_text
+        r"""Source text"""
+        self.result_text = result_text
+        r"""The text after the style was applied to the source text"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["textCompositionStyleExample"]:
+        return "textCompositionStyleExample"
+
+    @classmethod
+    def getClass(self) -> Literal["TextCompositionStyleExample"]:
+        return "TextCompositionStyleExample"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "source_text": self.source_text,
+            "result_text": self.result_text,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TextCompositionStyleExample | None:
+        if data:
+            data_class = cls()
+            data_class.source_text = data.get("source_text", None)
+            data_class.result_text = data.get("result_text", None)
+
+        return data_class
+
+
 class TextCompositionStyle(TlObject):
     r"""Describes a style that can be used to compose a text
 
@@ -2374,10 +2431,28 @@ class TextCompositionStyle(TlObject):
             Name of the style
 
         custom_emoji_id (:class:`int`):
-            Identifier of the custom emoji corresponding to the style
+            Identifier of the custom emoji corresponding to the style; 0 if none
 
         title (:class:`str`):
             Title of the style in the user application's language
+
+        is_custom (:class:`bool`):
+            True, if the style is created by a user
+
+        is_creator (:class:`bool`):
+            True, if the user is creator of the style
+
+        install_count (:class:`int`):
+            Number of users that installed the style; for created custom styles only; 0 if unknown
+
+        prompt (:class:`str`):
+            Prompt of the style; for created custom styles only
+
+        creator_user_id (:class:`int`):
+            User identifier of the creator of the style; 0 if none of unknown
+
+        english_example (:class:`~pytdbot.types.TextCompositionStyleExample`):
+            Example of the style usage in English; may be null if unknown
 
     """
 
@@ -2387,13 +2462,31 @@ class TextCompositionStyle(TlObject):
         name: str | None = "",
         custom_emoji_id: int | None = 0,
         title: str | None = "",
+        is_custom: bool | None = False,
+        is_creator: bool | None = False,
+        install_count: int | None = 0,
+        prompt: str | None = "",
+        creator_user_id: int | None = 0,
+        english_example: TextCompositionStyleExample | None = None,
     ) -> None:
         self.name = name
         r"""Name of the style"""
         self.custom_emoji_id = custom_emoji_id
-        r"""Identifier of the custom emoji corresponding to the style"""
+        r"""Identifier of the custom emoji corresponding to the style; 0 if none"""
         self.title = title
         r"""Title of the style in the user application's language"""
+        self.is_custom = is_custom
+        r"""True, if the style is created by a user"""
+        self.is_creator = is_creator
+        r"""True, if the user is creator of the style"""
+        self.install_count = install_count
+        r"""Number of users that installed the style; for created custom styles only; 0 if unknown"""
+        self.prompt = prompt
+        r"""Prompt of the style; for created custom styles only"""
+        self.creator_user_id = creator_user_id
+        r"""User identifier of the creator of the style; 0 if none of unknown"""
+        self.english_example = english_example
+        r"""Example of the style usage in English; may be null if unknown"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -2412,6 +2505,12 @@ class TextCompositionStyle(TlObject):
             "name": self.name,
             "custom_emoji_id": self.custom_emoji_id,
             "title": self.title,
+            "is_custom": self.is_custom,
+            "is_creator": self.is_creator,
+            "install_count": self.install_count,
+            "prompt": self.prompt,
+            "creator_user_id": self.creator_user_id,
+            "english_example": self.english_example,
         }
 
     @classmethod
@@ -2421,6 +2520,12 @@ class TextCompositionStyle(TlObject):
             data_class.name = data.get("name", "")
             data_class.custom_emoji_id = int(data.get("custom_emoji_id", 0))
             data_class.title = data.get("title", "")
+            data_class.is_custom = data.get("is_custom", False)
+            data_class.is_creator = data.get("is_creator", False)
+            data_class.install_count = int(data.get("install_count", 0))
+            data_class.prompt = data.get("prompt", "")
+            data_class.creator_user_id = int(data.get("creator_user_id", 0))
+            data_class.english_example = data.get("english_example", None)
 
         return data_class
 
@@ -2660,6 +2765,9 @@ class AuthorizationStateWaitPremiumPurchase(TlObject, AuthorizationState):
         store_product_id (:class:`str`):
             Identifier of the store product that must be bought
 
+        premium_day_count (:class:`int`):
+            Duration of the Telegram Premium subscription after the purchase; may be 0 if Telegram Premium subscription will not be granted
+
         support_email_address (:class:`str`):
             Email address to use for support if the user has issues with Telegram Premium purchase
 
@@ -2672,11 +2780,14 @@ class AuthorizationStateWaitPremiumPurchase(TlObject, AuthorizationState):
         self,
         *,
         store_product_id: str | None = "",
+        premium_day_count: int | None = 0,
         support_email_address: str | None = "",
         support_email_subject: str | None = "",
     ) -> None:
         self.store_product_id = store_product_id
         r"""Identifier of the store product that must be bought"""
+        self.premium_day_count = premium_day_count
+        r"""Duration of the Telegram Premium subscription after the purchase; may be 0 if Telegram Premium subscription will not be granted"""
         self.support_email_address = support_email_address
         r"""Email address to use for support if the user has issues with Telegram Premium purchase"""
         self.support_email_subject = support_email_subject
@@ -2697,6 +2808,7 @@ class AuthorizationStateWaitPremiumPurchase(TlObject, AuthorizationState):
         return {
             "@type": self.getType(),
             "store_product_id": self.store_product_id,
+            "premium_day_count": self.premium_day_count,
             "support_email_address": self.support_email_address,
             "support_email_subject": self.support_email_subject,
         }
@@ -2706,6 +2818,7 @@ class AuthorizationStateWaitPremiumPurchase(TlObject, AuthorizationState):
         if data:
             data_class = cls()
             data_class.store_product_id = data.get("store_product_id", "")
+            data_class.premium_day_count = int(data.get("premium_day_count", 0))
             data_class.support_email_address = data.get("support_email_address", "")
             data_class.support_email_subject = data.get("support_email_subject", "")
 
@@ -2909,7 +3022,7 @@ class AuthorizationStateWaitOtherDeviceConfirmation(TlObject, AuthorizationState
 
 
 class AuthorizationStateWaitRegistration(TlObject, AuthorizationState):
-    r"""The user is unregistered and need to accept terms of service and enter their first name and last name to finish registration\. Call registerUser to accept the terms of service and provide the data
+    r"""The user is unregistered and needs to accept terms of service and enter their first name and last name to finish registration\. Call registerUser to accept the terms of service and provide the data
 
     Parameters:
         terms_of_service (:class:`~pytdbot.types.TermsOfService`):
@@ -4774,13 +4887,13 @@ class PollOption(TlObject):
 
     Parameters:
         id (:class:`str`):
-            Unique identifier of the option in the poll
+            Unique identifier of the option in the poll; may be empty if yet unassigned
 
         text (:class:`~pytdbot.types.FormattedText`):
             Option text; 1\-100 characters; may contain only custom emoji entities
 
         media (:class:`~pytdbot.types.MessageContent`):
-            Option media\. Currently, can be only of the types messageAnimation, messageLocation, messagePhoto, messageSticker, messageVenue, or messageVideo without caption
+            Option media; may be null if none\. If present, currently, can be only of the types messageAnimation, messageLocation, messagePhoto, messageSticker, messageVenue, or messageVideo without caption
 
         voter_count (:class:`int`):
             Number of voters for this option, available only for closed or voted polls, or if the current user is the creator of the poll
@@ -4920,11 +5033,11 @@ class PollOption(TlObject):
         addition_date: int | None = 0,
     ) -> None:
         self.id = id
-        r"""Unique identifier of the option in the poll"""
+        r"""Unique identifier of the option in the poll; may be empty if yet unassigned"""
         self.text = text
         r"""Option text; 1\-100 characters; may contain only custom emoji entities"""
         self.media = media
-        r"""Option media\. Currently, can be only of the types messageAnimation, messageLocation, messagePhoto, messageSticker, messageVenue, or messageVideo without caption"""
+        r"""Option media; may be null if none\. If present, currently, can be only of the types messageAnimation, messageLocation, messagePhoto, messageSticker, messageVenue, or messageVideo without caption"""
         self.voter_count = voter_count
         r"""Number of voters for this option, available only for closed or voted polls, or if the current user is the creator of the poll"""
         self.vote_percentage = vote_percentage
@@ -4991,11 +5104,42 @@ class InputPollOption(TlObject):
         text (:class:`~pytdbot.types.FormattedText`):
             Option text; 1\-100 characters\. Only custom emoji entities are allowed to be added and only by Premium users
 
+        media (:class:`~pytdbot.types.InputMessageContent`):
+            Option media; pass null if none; ignored in addPollOption\. Must be one of the following types: inputMessageAnimation, non\-live inputMessageLocation, inputMessagePhoto, inputMessageSticker, inputMessageVenue, or inputMessageVideo without caption
+
     """
 
-    def __init__(self, *, text: FormattedText | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        text: FormattedText | None = None,
+        media: InputMessageText
+        | InputMessageAnimation
+        | InputMessageAudio
+        | InputMessageDocument
+        | InputMessagePaidMedia
+        | InputMessagePhoto
+        | InputMessageSticker
+        | InputMessageVideo
+        | InputMessageVideoNote
+        | InputMessageVoiceNote
+        | InputMessageLocation
+        | InputMessageVenue
+        | InputMessageContact
+        | InputMessageDice
+        | InputMessageGame
+        | InputMessageInvoice
+        | InputMessagePoll
+        | InputMessageStakeDice
+        | InputMessageStory
+        | InputMessageChecklist
+        | InputMessageForwarded
+        | None = None,
+    ) -> None:
         self.text = text
         r"""Option text; 1\-100 characters\. Only custom emoji entities are allowed to be added and only by Premium users"""
+        self.media = media
+        r"""Option media; pass null if none; ignored in addPollOption\. Must be one of the following types: inputMessageAnimation, non\-live inputMessageLocation, inputMessagePhoto, inputMessageSticker, inputMessageVenue, or inputMessageVideo without caption"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -5009,13 +5153,14 @@ class InputPollOption(TlObject):
         return "InputPollOption"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "text": self.text}
+        return {"@type": self.getType(), "text": self.text, "media": self.media}
 
     @classmethod
     def from_dict(cls, data: dict) -> InputPollOption | None:
         if data:
             data_class = cls()
             data_class.text = data.get("text", None)
+            data_class.media = data.get("media", None)
 
         return data_class
 
@@ -5059,7 +5204,7 @@ class PollTypeQuiz(TlObject, PollType):
             Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; empty for a yet unanswered poll
 
         explanation_media (:class:`~pytdbot.types.MessageContent`):
-            Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; may be null if none or the poll is unanswered yet\. Currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption
+            Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; may be null if none or the poll is unanswered yet\. If present, currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption
 
     """
 
@@ -5175,7 +5320,7 @@ class PollTypeQuiz(TlObject, PollType):
         self.explanation = explanation
         r"""Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; empty for a yet unanswered poll"""
         self.explanation_media = explanation_media
-        r"""Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; may be null if none or the poll is unanswered yet\. Currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption"""
+        r"""Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; may be null if none or the poll is unanswered yet\. If present, currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -5256,6 +5401,9 @@ class InputPollTypeQuiz(TlObject, InputPollType):
         explanation (:class:`~pytdbot.types.FormattedText`):
             Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; 0\-200 characters with at most 2 line feeds
 
+        explanation_media (:class:`~pytdbot.types.InputMessageContent`):
+            Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; pass null if none\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, non\-live inputMessageLocation, inputMessagePhoto, inputMessageVenue, or inputMessageVideo without caption
+
     """
 
     def __init__(
@@ -5263,11 +5411,35 @@ class InputPollTypeQuiz(TlObject, InputPollType):
         *,
         correct_option_ids: list[int] | None = None,
         explanation: FormattedText | None = None,
+        explanation_media: InputMessageText
+        | InputMessageAnimation
+        | InputMessageAudio
+        | InputMessageDocument
+        | InputMessagePaidMedia
+        | InputMessagePhoto
+        | InputMessageSticker
+        | InputMessageVideo
+        | InputMessageVideoNote
+        | InputMessageVoiceNote
+        | InputMessageLocation
+        | InputMessageVenue
+        | InputMessageContact
+        | InputMessageDice
+        | InputMessageGame
+        | InputMessageInvoice
+        | InputMessagePoll
+        | InputMessageStakeDice
+        | InputMessageStory
+        | InputMessageChecklist
+        | InputMessageForwarded
+        | None = None,
     ) -> None:
         self.correct_option_ids = correct_option_ids or []
         r"""Increasing list of 0\-based identifiers of the correct answer options; must be non\-empty"""
         self.explanation = explanation
         r"""Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; 0\-200 characters with at most 2 line feeds"""
+        self.explanation_media = explanation_media
+        r"""Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; pass null if none\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, non\-live inputMessageLocation, inputMessagePhoto, inputMessageVenue, or inputMessageVideo without caption"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -5285,6 +5457,7 @@ class InputPollTypeQuiz(TlObject, InputPollType):
             "@type": self.getType(),
             "correct_option_ids": self.correct_option_ids,
             "explanation": self.explanation,
+            "explanation_media": self.explanation_media,
         }
 
     @classmethod
@@ -5293,6 +5466,193 @@ class InputPollTypeQuiz(TlObject, InputPollType):
             data_class = cls()
             data_class.correct_option_ids = data.get("correct_option_ids", None)
             data_class.explanation = data.get("explanation", None)
+            data_class.explanation_media = data.get("explanation_media", None)
+
+        return data_class
+
+
+class PollVoteRestrictionReasonClosed(TlObject, PollVoteRestrictionReason):
+    r"""The poll is closed"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollVoteRestrictionReasonClosed"]:
+        return "pollVoteRestrictionReasonClosed"
+
+    @classmethod
+    def getClass(self) -> Literal["PollVoteRestrictionReason"]:
+        return "PollVoteRestrictionReason"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollVoteRestrictionReasonClosed | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class PollVoteRestrictionReasonYetUnsent(TlObject, PollVoteRestrictionReason):
+    r"""The poll isn't sent yet"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollVoteRestrictionReasonYetUnsent"]:
+        return "pollVoteRestrictionReasonYetUnsent"
+
+    @classmethod
+    def getClass(self) -> Literal["PollVoteRestrictionReason"]:
+        return "PollVoteRestrictionReason"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollVoteRestrictionReasonYetUnsent | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class PollVoteRestrictionReasonScheduled(TlObject, PollVoteRestrictionReason):
+    r"""The poll is from a scheduled message"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollVoteRestrictionReasonScheduled"]:
+        return "pollVoteRestrictionReasonScheduled"
+
+    @classmethod
+    def getClass(self) -> Literal["PollVoteRestrictionReason"]:
+        return "PollVoteRestrictionReason"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollVoteRestrictionReasonScheduled | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class PollVoteRestrictionReasonCountryRestricted(TlObject, PollVoteRestrictionReason):
+    r"""The user is from a country, users from which aren't allowed to vote
+
+    Parameters:
+        country_code (:class:`str`):
+            Two\-letter ISO 3166\-1 alpha\-2 code of the current user's country
+
+    """
+
+    def __init__(self, *, country_code: str | None = "") -> None:
+        self.country_code = country_code
+        r"""Two\-letter ISO 3166\-1 alpha\-2 code of the current user's country"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollVoteRestrictionReasonCountryRestricted"]:
+        return "pollVoteRestrictionReasonCountryRestricted"
+
+    @classmethod
+    def getClass(self) -> Literal["PollVoteRestrictionReason"]:
+        return "PollVoteRestrictionReason"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "country_code": self.country_code}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollVoteRestrictionReasonCountryRestricted | None:
+        if data:
+            data_class = cls()
+            data_class.country_code = data.get("country_code", "")
+
+        return data_class
+
+
+class PollVoteRestrictionReasonMembershipRequired(TlObject, PollVoteRestrictionReason):
+    r"""The user must be a member of the chat for at least a day to vote
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat which must be joined for at least a day before the user can vote
+
+    """
+
+    def __init__(self, *, chat_id: int | None = 0) -> None:
+        self.chat_id = chat_id
+        r"""Identifier of the chat which must be joined for at least a day before the user can vote"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollVoteRestrictionReasonMembershipRequired"]:
+        return "pollVoteRestrictionReasonMembershipRequired"
+
+    @classmethod
+    def getClass(self) -> Literal["PollVoteRestrictionReason"]:
+        return "PollVoteRestrictionReason"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "chat_id": self.chat_id}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> PollVoteRestrictionReasonMembershipRequired | None:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+
+        return data_class
+
+
+class PollVoteRestrictionReasonOther(TlObject, PollVoteRestrictionReason):
+    r"""The poll can't be voted by the user due to some other reason"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollVoteRestrictionReasonOther"]:
+        return "pollVoteRestrictionReasonOther"
+
+    @classmethod
+    def getClass(self) -> Literal["PollVoteRestrictionReason"]:
+        return "PollVoteRestrictionReason"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollVoteRestrictionReasonOther | None:
+        if data:
+            data_class = cls()
 
         return data_class
 
@@ -6928,7 +7288,7 @@ class Poll(TlObject):
             Identifiers of recent voters, if the poll is non\-anonymous and poll results are available
 
         can_get_voters (:class:`bool`):
-            True, if the current user can get voters in the poll
+            True, if the current user can get voters in the poll using getPollVoters
 
         is_anonymous (:class:`bool`):
             True, if the poll is anonymous
@@ -6938,6 +7298,12 @@ class Poll(TlObject):
 
         allows_revoting (:class:`bool`):
             True, if the poll can be answered multiple times
+
+        members_only (:class:`bool`):
+            True, if only the users that are members of the chat for more than a day will be able to vote
+
+        country_codes (list[:class:`str`]):
+            The list of two\-letter ISO 3166\-1 alpha\-2 codes of countries, users from which will be able to vote\. If empty, then all users can participate in the poll
 
         option_order (list[:class:`int`]):
             The list of 0\-based poll identifiers in which the options of the poll must be shown; empty if the order of options must not be changed
@@ -6954,6 +7320,9 @@ class Poll(TlObject):
         is_closed (:class:`bool`):
             True, if the poll is closed
 
+        vote_restriction_reason (:class:`~pytdbot.types.PollVoteRestrictionReason`):
+            The reason describing, why the current user can't vote in the poll; may be null if the user can vote in the poll
+
     """
 
     def __init__(
@@ -6968,11 +7337,20 @@ class Poll(TlObject):
         is_anonymous: bool | None = False,
         allows_multiple_answers: bool | None = False,
         allows_revoting: bool | None = False,
+        members_only: bool | None = False,
+        country_codes: list[str] | None = None,
         option_order: list[int] | None = None,
         type: PollTypeRegular | PollTypeQuiz | None = None,
         open_period: int | None = 0,
         close_date: int | None = 0,
         is_closed: bool | None = False,
+        vote_restriction_reason: PollVoteRestrictionReasonClosed
+        | PollVoteRestrictionReasonYetUnsent
+        | PollVoteRestrictionReasonScheduled
+        | PollVoteRestrictionReasonCountryRestricted
+        | PollVoteRestrictionReasonMembershipRequired
+        | PollVoteRestrictionReasonOther
+        | None = None,
     ) -> None:
         self.id = id
         r"""Unique poll identifier"""
@@ -6985,13 +7363,17 @@ class Poll(TlObject):
         self.recent_voter_ids = recent_voter_ids or []
         r"""Identifiers of recent voters, if the poll is non\-anonymous and poll results are available"""
         self.can_get_voters = can_get_voters
-        r"""True, if the current user can get voters in the poll"""
+        r"""True, if the current user can get voters in the poll using getPollVoters"""
         self.is_anonymous = is_anonymous
         r"""True, if the poll is anonymous"""
         self.allows_multiple_answers = allows_multiple_answers
         r"""True, if multiple answer options can be chosen simultaneously"""
         self.allows_revoting = allows_revoting
         r"""True, if the poll can be answered multiple times"""
+        self.members_only = members_only
+        r"""True, if only the users that are members of the chat for more than a day will be able to vote"""
+        self.country_codes = country_codes or []
+        r"""The list of two\-letter ISO 3166\-1 alpha\-2 codes of countries, users from which will be able to vote\. If empty, then all users can participate in the poll"""
         self.option_order = option_order or []
         r"""The list of 0\-based poll identifiers in which the options of the poll must be shown; empty if the order of options must not be changed"""
         self.type = type
@@ -7002,6 +7384,8 @@ class Poll(TlObject):
         r"""Point in time \(Unix timestamp\) when the poll will automatically be closed"""
         self.is_closed = is_closed
         r"""True, if the poll is closed"""
+        self.vote_restriction_reason = vote_restriction_reason
+        r"""The reason describing, why the current user can't vote in the poll; may be null if the user can vote in the poll"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -7026,11 +7410,14 @@ class Poll(TlObject):
             "is_anonymous": self.is_anonymous,
             "allows_multiple_answers": self.allows_multiple_answers,
             "allows_revoting": self.allows_revoting,
+            "members_only": self.members_only,
+            "country_codes": self.country_codes,
             "option_order": self.option_order,
             "type": self.type,
             "open_period": self.open_period,
             "close_date": self.close_date,
             "is_closed": self.is_closed,
+            "vote_restriction_reason": self.vote_restriction_reason,
         }
 
     @classmethod
@@ -7048,11 +7435,16 @@ class Poll(TlObject):
                 "allows_multiple_answers", False
             )
             data_class.allows_revoting = data.get("allows_revoting", False)
+            data_class.members_only = data.get("members_only", False)
+            data_class.country_codes = data.get("country_codes", None)
             data_class.option_order = data.get("option_order", None)
             data_class.type = data.get("type", None)
             data_class.open_period = int(data.get("open_period", 0))
             data_class.close_date = int(data.get("close_date", 0))
             data_class.is_closed = data.get("is_closed", False)
+            data_class.vote_restriction_reason = data.get(
+                "vote_restriction_reason", None
+            )
 
         return data_class
 
@@ -7850,11 +8242,14 @@ class UserTypeBot(TlObject, UserType):
         inline_query_placeholder (:class:`str`):
             Placeholder for inline queries \(displayed on the application input field\)
 
+        supports_guest_queries (:class:`bool`):
+            True, if the bot can be queried by username from any non\-secret chat
+
         need_location (:class:`bool`):
             True, if the location of the user is expected to be sent with every inline query to this bot
 
         can_connect_to_business (:class:`bool`):
-            True, if the bot supports connection to Telegram Business accounts
+            True, if the bot supports connection to user accounts for chat automation
 
         can_be_added_to_attachment_menu (:class:`bool`):
             True, if the bot can be added to attachment or side menu
@@ -7876,6 +8271,7 @@ class UserTypeBot(TlObject, UserType):
         can_manage_bots: bool | None = False,
         is_inline: bool | None = False,
         inline_query_placeholder: str | None = "",
+        supports_guest_queries: bool | None = False,
         need_location: bool | None = False,
         can_connect_to_business: bool | None = False,
         can_be_added_to_attachment_menu: bool | None = False,
@@ -7899,10 +8295,12 @@ class UserTypeBot(TlObject, UserType):
         r"""True, if the bot supports inline queries"""
         self.inline_query_placeholder = inline_query_placeholder
         r"""Placeholder for inline queries \(displayed on the application input field\)"""
+        self.supports_guest_queries = supports_guest_queries
+        r"""True, if the bot can be queried by username from any non\-secret chat"""
         self.need_location = need_location
         r"""True, if the location of the user is expected to be sent with every inline query to this bot"""
         self.can_connect_to_business = can_connect_to_business
-        r"""True, if the bot supports connection to Telegram Business accounts"""
+        r"""True, if the bot supports connection to user accounts for chat automation"""
         self.can_be_added_to_attachment_menu = can_be_added_to_attachment_menu
         r"""True, if the bot can be added to attachment or side menu"""
         self.active_user_count = active_user_count
@@ -7931,6 +8329,7 @@ class UserTypeBot(TlObject, UserType):
             "can_manage_bots": self.can_manage_bots,
             "is_inline": self.is_inline,
             "inline_query_placeholder": self.inline_query_placeholder,
+            "supports_guest_queries": self.supports_guest_queries,
             "need_location": self.need_location,
             "can_connect_to_business": self.can_connect_to_business,
             "can_be_added_to_attachment_menu": self.can_be_added_to_attachment_menu,
@@ -7955,6 +8354,9 @@ class UserTypeBot(TlObject, UserType):
             data_class.is_inline = data.get("is_inline", False)
             data_class.inline_query_placeholder = data.get(
                 "inline_query_placeholder", ""
+            )
+            data_class.supports_guest_queries = data.get(
+                "supports_guest_queries", False
             )
             data_class.need_location = data.get("need_location", False)
             data_class.can_connect_to_business = data.get(
@@ -8130,6 +8532,57 @@ class BotMenuButton(TlObject):
             data_class = cls()
             data_class.text = data.get("text", "")
             data_class.url = data.get("url", "")
+
+        return data_class
+
+
+class BotAccessSettings(TlObject):
+    r"""Describes users that have access to a bot
+
+    Parameters:
+        is_restricted (:class:`bool`):
+            True, if access to the bot is restricted to its owner and selected users
+
+        added_user_ids (list[:class:`int`]):
+            Identifiers of the users who can use the bot additionally to the owner of the bot
+
+    """
+
+    def __init__(
+        self,
+        *,
+        is_restricted: bool | None = False,
+        added_user_ids: list[int] | None = None,
+    ) -> None:
+        self.is_restricted = is_restricted
+        r"""True, if access to the bot is restricted to its owner and selected users"""
+        self.added_user_ids = added_user_ids or []
+        r"""Identifiers of the users who can use the bot additionally to the owner of the bot"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["botAccessSettings"]:
+        return "botAccessSettings"
+
+    @classmethod
+    def getClass(self) -> Literal["BotAccessSettings"]:
+        return "BotAccessSettings"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "is_restricted": self.is_restricted,
+            "added_user_ids": self.added_user_ids,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> BotAccessSettings | None:
+        if data:
+            data_class = cls()
+            data_class.is_restricted = data.get("is_restricted", False)
+            data_class.added_user_ids = data.get("added_user_ids", None)
 
         return data_class
 
@@ -10134,6 +10587,9 @@ class ChatPermissions(TlObject):
         can_add_link_previews (:class:`bool`):
             True, if the user may add a link preview to their messages
 
+        can_react_to_messages (:class:`bool`):
+            True, if the user can react to messages
+
         can_edit_tag (:class:`bool`):
             True, if the user may change the tag of self
 
@@ -10164,6 +10620,7 @@ class ChatPermissions(TlObject):
         can_send_polls: bool | None = False,
         can_send_other_messages: bool | None = False,
         can_add_link_previews: bool | None = False,
+        can_react_to_messages: bool | None = False,
         can_edit_tag: bool | None = False,
         can_change_info: bool | None = False,
         can_invite_users: bool | None = False,
@@ -10190,6 +10647,8 @@ class ChatPermissions(TlObject):
         r"""True, if the user can send animations, games, stickers, and dice and use inline bots"""
         self.can_add_link_previews = can_add_link_previews
         r"""True, if the user may add a link preview to their messages"""
+        self.can_react_to_messages = can_react_to_messages
+        r"""True, if the user can react to messages"""
         self.can_edit_tag = can_edit_tag
         r"""True, if the user may change the tag of self"""
         self.can_change_info = can_change_info
@@ -10225,6 +10684,7 @@ class ChatPermissions(TlObject):
             "can_send_polls": self.can_send_polls,
             "can_send_other_messages": self.can_send_other_messages,
             "can_add_link_previews": self.can_add_link_previews,
+            "can_react_to_messages": self.can_react_to_messages,
             "can_edit_tag": self.can_edit_tag,
             "can_change_info": self.can_change_info,
             "can_invite_users": self.can_invite_users,
@@ -10250,6 +10710,7 @@ class ChatPermissions(TlObject):
                 "can_send_other_messages", False
             )
             data_class.can_add_link_previews = data.get("can_add_link_previews", False)
+            data_class.can_react_to_messages = data.get("can_react_to_messages", False)
             data_class.can_edit_tag = data.get("can_edit_tag", False)
             data_class.can_change_info = data.get("can_change_info", False)
             data_class.can_invite_users = data.get("can_invite_users", False)
@@ -12047,6 +12508,7 @@ class PremiumPaymentOption(TlObject):
         | InternalLinkTypeStickerSet
         | InternalLinkTypeStory
         | InternalLinkTypeStoryAlbum
+        | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
@@ -13573,7 +14035,7 @@ class UpgradedGiftOriginCraft(TlObject, UpgradedGiftOrigin):
 
 
 class UpgradedGiftAttributeRarityPerMille(TlObject, UpgradedGiftAttributeRarity):
-    r"""The rarity is represented as the numeric frequence of the model
+    r"""The rarity is represented as the numeric frequency of the model
 
     Parameters:
         per_mille (:class:`int`):
@@ -21342,6 +21804,7 @@ class BotInfo(TlObject):
         | InternalLinkTypeStickerSet
         | InternalLinkTypeStory
         | InternalLinkTypeStoryAlbum
+        | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
@@ -21399,6 +21862,7 @@ class BotInfo(TlObject):
         | InternalLinkTypeStickerSet
         | InternalLinkTypeStory
         | InternalLinkTypeStoryAlbum
+        | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
@@ -21456,6 +21920,7 @@ class BotInfo(TlObject):
         | InternalLinkTypeStickerSet
         | InternalLinkTypeStory
         | InternalLinkTypeStoryAlbum
+        | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
@@ -21513,6 +21978,7 @@ class BotInfo(TlObject):
         | InternalLinkTypeStickerSet
         | InternalLinkTypeStory
         | InternalLinkTypeStoryAlbum
+        | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
@@ -27658,6 +28124,9 @@ class Message(TlObject, MessageBoundMethods):
         contains_unread_mention (:class:`bool`):
             True, if the message contains an unread mention for the current user
 
+        contains_unread_poll_votes (:class:`bool`):
+            True, if the message is a poll message with unread votes
+
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the message was sent; 0 for scheduled messages
 
@@ -27699,6 +28168,9 @@ class Message(TlObject, MessageBoundMethods):
 
         via_bot_user_id (:class:`int`):
             If non\-zero, the user identifier of the inline bot through which this message was sent
+
+        guest_bot_caller_id (:class:`~pytdbot.types.MessageSender`):
+            The identifier of the user or chat which used a guest bot to send the message; may be null if none
 
         sender_business_bot_user_id (:class:`int`):
             If non\-zero, the user identifier of the business bot that sent this message
@@ -27757,6 +28229,7 @@ class Message(TlObject, MessageBoundMethods):
         is_paid_star_suggested_post: bool | None = False,
         is_paid_ton_suggested_post: bool | None = False,
         contains_unread_mention: bool | None = False,
+        contains_unread_poll_votes: bool | None = False,
         date: int | None = 0,
         edit_date: int | None = 0,
         forward_info: MessageForwardInfo | None = None,
@@ -27777,6 +28250,7 @@ class Message(TlObject, MessageBoundMethods):
         self_destruct_in: float | None = 0.0,
         auto_delete_in: float | None = 0.0,
         via_bot_user_id: int | None = 0,
+        guest_bot_caller_id: MessageSenderUser | MessageSenderChat | None = None,
         sender_business_bot_user_id: int | None = 0,
         sender_boost_count: int | None = 0,
         sender_tag: str | None = "",
@@ -27921,6 +28395,8 @@ class Message(TlObject, MessageBoundMethods):
         r"""True, if the message is a suggested channel post which was paid in Toncoins; a warning must be shown if the message is deleted in less than getOption\(\"suggested\_post\_lifetime\_min\"\) seconds after sending"""
         self.contains_unread_mention = contains_unread_mention
         r"""True, if the message contains an unread mention for the current user"""
+        self.contains_unread_poll_votes = contains_unread_poll_votes
+        r"""True, if the message is a poll message with unread votes"""
         self.date = date
         r"""Point in time \(Unix timestamp\) when the message was sent; 0 for scheduled messages"""
         self.edit_date = edit_date
@@ -27949,6 +28425,8 @@ class Message(TlObject, MessageBoundMethods):
         r"""Time left before the message will be automatically deleted by message\_auto\_delete\_time setting of the chat, in seconds; 0 if never"""
         self.via_bot_user_id = via_bot_user_id
         r"""If non\-zero, the user identifier of the inline bot through which this message was sent"""
+        self.guest_bot_caller_id = guest_bot_caller_id
+        r"""The identifier of the user or chat which used a guest bot to send the message; may be null if none"""
         self.sender_business_bot_user_id = sender_business_bot_user_id
         r"""If non\-zero, the user identifier of the business bot that sent this message"""
         self.sender_boost_count = sender_boost_count
@@ -28000,6 +28478,7 @@ class Message(TlObject, MessageBoundMethods):
             "is_paid_star_suggested_post": self.is_paid_star_suggested_post,
             "is_paid_ton_suggested_post": self.is_paid_ton_suggested_post,
             "contains_unread_mention": self.contains_unread_mention,
+            "contains_unread_poll_votes": self.contains_unread_poll_votes,
             "date": self.date,
             "edit_date": self.edit_date,
             "forward_info": self.forward_info,
@@ -28014,6 +28493,7 @@ class Message(TlObject, MessageBoundMethods):
             "self_destruct_in": self.self_destruct_in,
             "auto_delete_in": self.auto_delete_in,
             "via_bot_user_id": self.via_bot_user_id,
+            "guest_bot_caller_id": self.guest_bot_caller_id,
             "sender_business_bot_user_id": self.sender_business_bot_user_id,
             "sender_boost_count": self.sender_boost_count,
             "sender_tag": self.sender_tag,
@@ -28051,6 +28531,9 @@ class Message(TlObject, MessageBoundMethods):
             data_class.contains_unread_mention = data.get(
                 "contains_unread_mention", False
             )
+            data_class.contains_unread_poll_votes = data.get(
+                "contains_unread_poll_votes", False
+            )
             data_class.date = int(data.get("date", 0))
             data_class.edit_date = int(data.get("edit_date", 0))
             data_class.forward_info = data.get("forward_info", None)
@@ -28065,6 +28548,7 @@ class Message(TlObject, MessageBoundMethods):
             data_class.self_destruct_in = data.get("self_destruct_in", 0.0)
             data_class.auto_delete_in = data.get("auto_delete_in", 0.0)
             data_class.via_bot_user_id = int(data.get("via_bot_user_id", 0))
+            data_class.guest_bot_caller_id = data.get("guest_bot_caller_id", None)
             data_class.sender_business_bot_user_id = int(
                 data.get("sender_business_bot_user_id", 0)
             )
@@ -29347,7 +29831,7 @@ class SponsoredChats(TlObject):
 
 
 class VideoMessageAdvertisement(TlObject):
-    r"""Describes an advertisent to be shown while a video from a message is watched
+    r"""Describes an advertisement to be shown while a video from a message is watched
 
     Parameters:
         unique_id (:class:`int`):
@@ -30170,7 +30654,7 @@ class ScopeNotificationSettings(TlObject):
             Time left before notifications will be unmuted, in seconds
 
         sound_id (:class:`int`):
-            Identifier of the notification sound to be played; 0 if sound is disabled
+            Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound
 
         show_preview (:class:`bool`):
             True, if message content must be displayed in notifications
@@ -30182,7 +30666,7 @@ class ScopeNotificationSettings(TlObject):
             True, if story notifications are disabled
 
         story_sound_id (:class:`int`):
-            Identifier of the notification sound to be played for stories; 0 if sound is disabled
+            Identifier of the notification sound to be played for stories; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound
 
         show_story_poster (:class:`bool`):
             True, if the chat that posted a story must be displayed in notifications
@@ -30211,7 +30695,7 @@ class ScopeNotificationSettings(TlObject):
         self.mute_for = mute_for
         r"""Time left before notifications will be unmuted, in seconds"""
         self.sound_id = sound_id
-        r"""Identifier of the notification sound to be played; 0 if sound is disabled"""
+        r"""Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound"""
         self.show_preview = show_preview
         r"""True, if message content must be displayed in notifications"""
         self.use_default_mute_stories = use_default_mute_stories
@@ -30219,7 +30703,7 @@ class ScopeNotificationSettings(TlObject):
         self.mute_stories = mute_stories
         r"""True, if story notifications are disabled"""
         self.story_sound_id = story_sound_id
-        r"""Identifier of the notification sound to be played for stories; 0 if sound is disabled"""
+        r"""Identifier of the notification sound to be played for stories; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound"""
         self.show_story_poster = show_story_poster
         r"""True, if the chat that posted a story must be displayed in notifications"""
         self.disable_pinned_message_notifications = disable_pinned_message_notifications
@@ -30373,7 +30857,7 @@ class ReactionNotificationSettings(TlObject):
             Source of poll votes for which notifications are shown
 
         sound_id (:class:`int`):
-            Identifier of the notification sound to be played; 0 if sound is disabled
+            Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound
 
         show_preview (:class:`bool`):
             True, if reaction sender and emoji must be displayed in notifications
@@ -30405,7 +30889,7 @@ class ReactionNotificationSettings(TlObject):
         self.poll_vote_source = poll_vote_source
         r"""Source of poll votes for which notifications are shown"""
         self.sound_id = sound_id
-        r"""Identifier of the notification sound to be played; 0 if sound is disabled"""
+        r"""Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound"""
         self.show_preview = show_preview
         r"""True, if reaction sender and emoji must be displayed in notifications"""
 
@@ -39664,6 +40148,7 @@ class WebPageInstantView(TlObject):
         | InternalLinkTypeStickerSet
         | InternalLinkTypeStory
         | InternalLinkTypeStoryAlbum
+        | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
@@ -41133,6 +41618,42 @@ class LinkPreviewTypeSupergroupBoost(TlObject, LinkPreviewType):
         return data_class
 
 
+class LinkPreviewTypeTextCompositionStyle(TlObject, LinkPreviewType):
+    r"""The link is a link to a text composition style
+
+    Parameters:
+        custom_emoji_id (:class:`int`):
+            Identifier of the custom emoji corresponding to the style; 0 if none
+
+    """
+
+    def __init__(self, *, custom_emoji_id: int | None = 0) -> None:
+        self.custom_emoji_id = custom_emoji_id
+        r"""Identifier of the custom emoji corresponding to the style; 0 if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["linkPreviewTypeTextCompositionStyle"]:
+        return "linkPreviewTypeTextCompositionStyle"
+
+    @classmethod
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "custom_emoji_id": self.custom_emoji_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> LinkPreviewTypeTextCompositionStyle | None:
+        if data:
+            data_class = cls()
+            data_class.custom_emoji_id = int(data.get("custom_emoji_id", 0))
+
+        return data_class
+
+
 class LinkPreviewTypeTheme(TlObject, LinkPreviewType):
     r"""The link is a link to a cloud theme\. TDLib has no theme support yet
 
@@ -41602,6 +42123,7 @@ class LinkPreview(TlObject):
         | LinkPreviewTypeStory
         | LinkPreviewTypeStoryAlbum
         | LinkPreviewTypeSupergroupBoost
+        | LinkPreviewTypeTextCompositionStyle
         | LinkPreviewTypeTheme
         | LinkPreviewTypeUnsupported
         | LinkPreviewTypeUpgradedGift
@@ -48105,7 +48627,7 @@ class MessagePoll(TlObject, MessageContent):
             Description of the poll
 
         media (:class:`~pytdbot.types.MessageContent`):
-            Media attached to the poll\. Currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption
+            Media attached to the poll; may be null if none\. If present, currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption
 
         can_add_option (:class:`bool`):
             True, if an option can be added to the poll using addPollOption
@@ -48225,7 +48747,7 @@ class MessagePoll(TlObject, MessageContent):
         self.description = description
         r"""Description of the poll"""
         self.media = media
-        r"""Media attached to the poll\. Currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption"""
+        r"""Media attached to the poll; may be null if none\. If present, currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption"""
         self.can_add_option = can_add_option
         r"""True, if an option can be added to the poll using addPollOption"""
 
@@ -55758,10 +56280,13 @@ class InputMessagePoll(TlObject, InputMessageContent):
             Poll question; 1\-255 characters \(up to 300 characters for bots\)\. Only custom emoji entities are allowed to be added and only by Premium users
 
         options (list[:class:`~pytdbot.types.InputPollOption`]):
-            List of poll answer options; 2\-getOption\(\"poll\_answer\_count\_max\"\) options
+            List of poll answer options; 1\-getOption\(\"poll\_answer\_count\_max\"\) options
 
         description (:class:`~pytdbot.types.FormattedText`):
             Poll description; pass null to use an empty description; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
+
+        media (:class:`~pytdbot.types.InputMessageContent`):
+            Media attached to the poll; pass null if none\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, non\-live inputMessageLocation, inputMessagePhoto, inputMessageVenue, or inputMessageVideo without caption
 
         is_anonymous (:class:`bool`):
             True, if the poll voters are anonymous\. Non\-anonymous polls can't be sent or forwarded to channels
@@ -55771,6 +56296,12 @@ class InputMessagePoll(TlObject, InputMessageContent):
 
         allows_revoting (:class:`bool`):
             True, if the poll can be answered multiple times
+
+        members_only (:class:`bool`):
+            True, if only the users that are members of the chat for more than a day will be able to vote; for channel chats only
+
+        country_codes (list[:class:`str`]):
+            The list of two\-letter ISO 3166\-1 alpha\-2 codes of countries, users from which will be able to vote; for channel chats only\. If empty, then all users can participate in the poll\. There can be up to getOption\(\"poll\_country\_count\_max\"\) chosen countries
 
         shuffle_options (:class:`bool`):
             True, if poll options must be shown in a fixed random order
@@ -55798,9 +56329,33 @@ class InputMessagePoll(TlObject, InputMessageContent):
         question: FormattedText | None = None,
         options: list[InputPollOption] | None = None,
         description: FormattedText | None = None,
+        media: InputMessageText
+        | InputMessageAnimation
+        | InputMessageAudio
+        | InputMessageDocument
+        | InputMessagePaidMedia
+        | InputMessagePhoto
+        | InputMessageSticker
+        | InputMessageVideo
+        | InputMessageVideoNote
+        | InputMessageVoiceNote
+        | InputMessageLocation
+        | InputMessageVenue
+        | InputMessageContact
+        | InputMessageDice
+        | InputMessageGame
+        | InputMessageInvoice
+        | InputMessagePoll
+        | InputMessageStakeDice
+        | InputMessageStory
+        | InputMessageChecklist
+        | InputMessageForwarded
+        | None = None,
         is_anonymous: bool | None = False,
         allows_multiple_answers: bool | None = False,
         allows_revoting: bool | None = False,
+        members_only: bool | None = False,
+        country_codes: list[str] | None = None,
         shuffle_options: bool | None = False,
         hide_results_until_closes: bool | None = False,
         type: InputPollTypeRegular | InputPollTypeQuiz | None = None,
@@ -55811,15 +56366,21 @@ class InputMessagePoll(TlObject, InputMessageContent):
         self.question = question
         r"""Poll question; 1\-255 characters \(up to 300 characters for bots\)\. Only custom emoji entities are allowed to be added and only by Premium users"""
         self.options = options or []
-        r"""List of poll answer options; 2\-getOption\(\"poll\_answer\_count\_max\"\) options"""
+        r"""List of poll answer options; 1\-getOption\(\"poll\_answer\_count\_max\"\) options"""
         self.description = description
         r"""Poll description; pass null to use an empty description; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
+        self.media = media
+        r"""Media attached to the poll; pass null if none\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, non\-live inputMessageLocation, inputMessagePhoto, inputMessageVenue, or inputMessageVideo without caption"""
         self.is_anonymous = is_anonymous
         r"""True, if the poll voters are anonymous\. Non\-anonymous polls can't be sent or forwarded to channels"""
         self.allows_multiple_answers = allows_multiple_answers
         r"""True, if multiple answer options can be chosen simultaneously"""
         self.allows_revoting = allows_revoting
         r"""True, if the poll can be answered multiple times"""
+        self.members_only = members_only
+        r"""True, if only the users that are members of the chat for more than a day will be able to vote; for channel chats only"""
+        self.country_codes = country_codes or []
+        r"""The list of two\-letter ISO 3166\-1 alpha\-2 codes of countries, users from which will be able to vote; for channel chats only\. If empty, then all users can participate in the poll\. There can be up to getOption\(\"poll\_country\_count\_max\"\) chosen countries"""
         self.shuffle_options = shuffle_options
         r"""True, if poll options must be shown in a fixed random order"""
         self.hide_results_until_closes = hide_results_until_closes
@@ -55850,9 +56411,12 @@ class InputMessagePoll(TlObject, InputMessageContent):
             "question": self.question,
             "options": self.options,
             "description": self.description,
+            "media": self.media,
             "is_anonymous": self.is_anonymous,
             "allows_multiple_answers": self.allows_multiple_answers,
             "allows_revoting": self.allows_revoting,
+            "members_only": self.members_only,
+            "country_codes": self.country_codes,
             "shuffle_options": self.shuffle_options,
             "hide_results_until_closes": self.hide_results_until_closes,
             "type": self.type,
@@ -55868,11 +56432,14 @@ class InputMessagePoll(TlObject, InputMessageContent):
             data_class.question = data.get("question", None)
             data_class.options = data.get("options", None)
             data_class.description = data.get("description", None)
+            data_class.media = data.get("media", None)
             data_class.is_anonymous = data.get("is_anonymous", False)
             data_class.allows_multiple_answers = data.get(
                 "allows_multiple_answers", False
             )
             data_class.allows_revoting = data.get("allows_revoting", False)
+            data_class.members_only = data.get("members_only", False)
+            data_class.country_codes = data.get("country_codes", None)
             data_class.shuffle_options = data.get("shuffle_options", False)
             data_class.hide_results_until_closes = data.get(
                 "hide_results_until_closes", False
@@ -56167,6 +56734,9 @@ class MessageProperties(TlObject):
         can_be_shared_in_story (:class:`bool`):
             True, if the message can be shared in a story using inputStoryAreaTypeMessage
 
+        can_delete_reactions (:class:`bool`):
+            True, if the user can delete reactions of other users in the message using the method deleteMessageReactionsFromSender
+
         can_edit_media (:class:`bool`):
             True, if the message can be edited using the method editMessageMedia
 
@@ -56191,6 +56761,9 @@ class MessageProperties(TlObject):
         can_get_message_thread (:class:`bool`):
             True, if information about the message thread is available through getMessageThread and getMessageThreadHistory
 
+        can_get_poll_vote_statistics (:class:`bool`):
+            True, if the message is a poll and vote statistics are available through getPollVoteStatistics
+
         can_get_read_date (:class:`bool`):
             True, if read date of the message can be received through getMessageReadDate
 
@@ -56198,7 +56771,7 @@ class MessageProperties(TlObject):
             True, if message statistics are available through getMessageStatistics and message forwards can be received using getMessagePublicForwards
 
         can_get_video_advertisements (:class:`bool`):
-            True, if advertisements for video of the message can be received though getVideoMessageAdvertisements
+            True, if advertisements for video of the message can be received through getVideoMessageAdvertisements
 
         can_get_viewers (:class:`bool`):
             True, if chat members already viewed the message can be received through getMessageViewers
@@ -56251,6 +56824,7 @@ class MessageProperties(TlObject):
         can_be_replied_in_another_chat: bool | None = False,
         can_be_saved: bool | None = False,
         can_be_shared_in_story: bool | None = False,
+        can_delete_reactions: bool | None = False,
         can_edit_media: bool | None = False,
         can_edit_scheduling_state: bool | None = False,
         can_edit_suggested_post_info: bool | None = False,
@@ -56259,6 +56833,7 @@ class MessageProperties(TlObject):
         can_get_link: bool | None = False,
         can_get_media_timestamp_links: bool | None = False,
         can_get_message_thread: bool | None = False,
+        can_get_poll_vote_statistics: bool | None = False,
         can_get_read_date: bool | None = False,
         can_get_statistics: bool | None = False,
         can_get_video_advertisements: bool | None = False,
@@ -56305,6 +56880,8 @@ class MessageProperties(TlObject):
         r"""True, if content of the message can be saved locally"""
         self.can_be_shared_in_story = can_be_shared_in_story
         r"""True, if the message can be shared in a story using inputStoryAreaTypeMessage"""
+        self.can_delete_reactions = can_delete_reactions
+        r"""True, if the user can delete reactions of other users in the message using the method deleteMessageReactionsFromSender"""
         self.can_edit_media = can_edit_media
         r"""True, if the message can be edited using the method editMessageMedia"""
         self.can_edit_scheduling_state = can_edit_scheduling_state
@@ -56321,12 +56898,14 @@ class MessageProperties(TlObject):
         r"""True, if media timestamp links can be generated for media timestamp entities in the message text, caption or link preview description using getMessageLink"""
         self.can_get_message_thread = can_get_message_thread
         r"""True, if information about the message thread is available through getMessageThread and getMessageThreadHistory"""
+        self.can_get_poll_vote_statistics = can_get_poll_vote_statistics
+        r"""True, if the message is a poll and vote statistics are available through getPollVoteStatistics"""
         self.can_get_read_date = can_get_read_date
         r"""True, if read date of the message can be received through getMessageReadDate"""
         self.can_get_statistics = can_get_statistics
         r"""True, if message statistics are available through getMessageStatistics and message forwards can be received using getMessagePublicForwards"""
         self.can_get_video_advertisements = can_get_video_advertisements
-        r"""True, if advertisements for video of the message can be received though getVideoMessageAdvertisements"""
+        r"""True, if advertisements for video of the message can be received through getVideoMessageAdvertisements"""
         self.can_get_viewers = can_get_viewers
         r"""True, if chat members already viewed the message can be received through getMessageViewers"""
         self.can_mark_tasks_as_done = can_mark_tasks_as_done
@@ -56380,6 +56959,7 @@ class MessageProperties(TlObject):
             "can_be_replied_in_another_chat": self.can_be_replied_in_another_chat,
             "can_be_saved": self.can_be_saved,
             "can_be_shared_in_story": self.can_be_shared_in_story,
+            "can_delete_reactions": self.can_delete_reactions,
             "can_edit_media": self.can_edit_media,
             "can_edit_scheduling_state": self.can_edit_scheduling_state,
             "can_edit_suggested_post_info": self.can_edit_suggested_post_info,
@@ -56388,6 +56968,7 @@ class MessageProperties(TlObject):
             "can_get_link": self.can_get_link,
             "can_get_media_timestamp_links": self.can_get_media_timestamp_links,
             "can_get_message_thread": self.can_get_message_thread,
+            "can_get_poll_vote_statistics": self.can_get_poll_vote_statistics,
             "can_get_read_date": self.can_get_read_date,
             "can_get_statistics": self.can_get_statistics,
             "can_get_video_advertisements": self.can_get_video_advertisements,
@@ -56433,6 +57014,7 @@ class MessageProperties(TlObject):
             data_class.can_be_shared_in_story = data.get(
                 "can_be_shared_in_story", False
             )
+            data_class.can_delete_reactions = data.get("can_delete_reactions", False)
             data_class.can_edit_media = data.get("can_edit_media", False)
             data_class.can_edit_scheduling_state = data.get(
                 "can_edit_scheduling_state", False
@@ -56450,6 +57032,9 @@ class MessageProperties(TlObject):
             )
             data_class.can_get_message_thread = data.get(
                 "can_get_message_thread", False
+            )
+            data_class.can_get_poll_vote_statistics = data.get(
+                "can_get_poll_vote_statistics", False
             )
             data_class.can_get_read_date = data.get("can_get_read_date", False)
             data_class.can_get_statistics = data.get("can_get_statistics", False)
@@ -61103,7 +61688,7 @@ class ChatActiveStories(TlObject):
             Identifier of the story list in which the stories are shown; may be null if the stories aren't shown in a story list
 
         order (:class:`int`):
-            A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list\. Stories must be sorted by the pair \(order, story\_poster\_chat\_id\) in descending order
+            A parameter used to determine order of the stories in the story list; 0 if the stories don't need to be shown in the story list\. Stories must be sorted by the pair \(order, story\_poster\_chat\_id\) in descending order
 
         can_be_archived (:class:`bool`):
             True, if the stories are shown in the main story list and can be archived; otherwise, the stories can be hidden from the main story list only by calling removeTopChat with topChatCategoryUsers and the chat\_id\. Stories of the current user can't be archived nor hidden using removeTopChat
@@ -61131,7 +61716,7 @@ class ChatActiveStories(TlObject):
         self.list = list
         r"""Identifier of the story list in which the stories are shown; may be null if the stories aren't shown in a story list"""
         self.order = order
-        r"""A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list\. Stories must be sorted by the pair \(order, story\_poster\_chat\_id\) in descending order"""
+        r"""A parameter used to determine order of the stories in the story list; 0 if the stories don't need to be shown in the story list\. Stories must be sorted by the pair \(order, story\_poster\_chat\_id\) in descending order"""
         self.can_be_archived = can_be_archived
         r"""True, if the stories are shown in the main story list and can be archived; otherwise, the stories can be hidden from the main story list only by calling removeTopChat with topChatCategoryUsers and the chat\_id\. Stories of the current user can't be archived nor hidden using removeTopChat"""
         self.max_read_story_id = max_read_story_id
@@ -66161,6 +66746,7 @@ class AvailableReactions(TlObject):
         are_tags: bool | None = False,
         unavailability_reason: ReactionUnavailabilityReasonAnonymousAdministrator
         | ReactionUnavailabilityReasonGuest
+        | ReactionUnavailabilityReasonRestricted
         | None = None,
     ) -> None:
         self.top_reactions = top_reactions or []
@@ -66381,6 +66967,34 @@ class ReactionUnavailabilityReasonGuest(TlObject, ReactionUnavailabilityReason):
 
     @classmethod
     def from_dict(cls, data: dict) -> ReactionUnavailabilityReasonGuest | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ReactionUnavailabilityReasonRestricted(TlObject, ReactionUnavailabilityReason):
+    r"""The user is restricted in the chat"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["reactionUnavailabilityReasonRestricted"]:
+        return "reactionUnavailabilityReasonRestricted"
+
+    @classmethod
+    def getClass(self) -> Literal["ReactionUnavailabilityReason"]:
+        return "ReactionUnavailabilityReason"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ReactionUnavailabilityReasonRestricted | None:
         if data:
             data_class = cls()
 
@@ -67116,42 +67730,6 @@ class AttachmentMenuBot(TlObject):
         return data_class
 
 
-class SentWebAppMessage(TlObject):
-    r"""Information about the message sent by answerWebAppQuery
-
-    Parameters:
-        inline_message_id (:class:`str`):
-            Identifier of the sent inline message, if known
-
-    """
-
-    def __init__(self, *, inline_message_id: str | None = "") -> None:
-        self.inline_message_id = inline_message_id
-        r"""Identifier of the sent inline message, if known"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    @classmethod
-    def getType(self) -> Literal["sentWebAppMessage"]:
-        return "sentWebAppMessage"
-
-    @classmethod
-    def getClass(self) -> Literal["SentWebAppMessage"]:
-        return "SentWebAppMessage"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType(), "inline_message_id": self.inline_message_id}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> SentWebAppMessage | None:
-        if data:
-            data_class = cls()
-            data_class.inline_message_id = data.get("inline_message_id", "")
-
-        return data_class
-
-
 class BotWriteAccessAllowReasonConnectedWebsite(TlObject, BotWriteAccessAllowReason):
     r"""The user connected a website by logging in using Telegram Login Widget on it
 
@@ -67554,6 +68132,7 @@ class TargetChatInternalLink(TlObject, TargetChat):
         | InternalLinkTypeStickerSet
         | InternalLinkTypeStory
         | InternalLinkTypeStoryAlbum
+        | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
@@ -69945,6 +70524,42 @@ class InlineQueryResults(TlObject):
             data_class.button = data.get("button", None)
             data_class.results = data.get("results", None)
             data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
+class InlineMessageId(TlObject):
+    r"""Contains identifier of a sent guest message
+
+    Parameters:
+        id (:class:`str`):
+            Unique identifier for the message
+
+    """
+
+    def __init__(self, *, id: str | None = "") -> None:
+        self.id = id
+        r"""Unique identifier for the message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inlineMessageId"]:
+        return "inlineMessageId"
+
+    @classmethod
+    def getClass(self) -> Literal["InlineMessageId"]:
+        return "InlineMessageId"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "id": self.id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InlineMessageId | None:
+        if data:
+            data_class = cls()
+            data_class.id = data.get("id", "")
 
         return data_class
 
@@ -74158,6 +74773,36 @@ class PremiumLimitTypeOwnedBotCount(TlObject, PremiumLimitType):
         return data_class
 
 
+class PremiumLimitTypeCustomTextCompositionStyleCount(TlObject, PremiumLimitType):
+    r"""The maximum number of added text composition styles"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["premiumLimitTypeCustomTextCompositionStyleCount"]:
+        return "premiumLimitTypeCustomTextCompositionStyleCount"
+
+    @classmethod
+    def getClass(self) -> Literal["PremiumLimitType"]:
+        return "PremiumLimitType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> PremiumLimitTypeCustomTextCompositionStyleCount | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class PremiumFeatureIncreasedLimits(TlObject, PremiumFeature):
     r"""Increased limits"""
 
@@ -75486,6 +76131,7 @@ class PremiumLimit(TlObject):
         | PremiumLimitTypeStorySuggestedReactionAreaCount
         | PremiumLimitTypeSimilarChatCount
         | PremiumLimitTypeOwnedBotCount
+        | PremiumLimitTypeCustomTextCompositionStyleCount
         | None = None,
         default_value: int | None = 0,
         premium_value: int | None = 0,
@@ -75596,6 +76242,7 @@ class PremiumFeatures(TlObject):
         | InternalLinkTypeStickerSet
         | InternalLinkTypeStory
         | InternalLinkTypeStoryAlbum
+        | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
@@ -75710,6 +76357,7 @@ class PremiumSourceLimitExceeded(TlObject, PremiumSource):
         | PremiumLimitTypeStorySuggestedReactionAreaCount
         | PremiumLimitTypeSimilarChatCount
         | PremiumLimitTypeOwnedBotCount
+        | PremiumLimitTypeCustomTextCompositionStyleCount
         | None = None,
     ) -> None:
         self.limit_type = limit_type
@@ -87666,7 +88314,7 @@ class InternalLinkTypeRequestManagedBot(TlObject, InternalLinkType):
             Username of the bot which will manage the new bot
 
         suggested_bot_username (:class:`str`):
-            Suggested username for the bot
+            Suggested username for the bot; always ends with \"bot\" case\-insensitive
 
         suggested_bot_name (:class:`str`):
             Suggested name for the bot; may be empty if not specified
@@ -87683,7 +88331,7 @@ class InternalLinkTypeRequestManagedBot(TlObject, InternalLinkType):
         self.manager_bot_username = manager_bot_username
         r"""Username of the bot which will manage the new bot"""
         self.suggested_bot_username = suggested_bot_username
-        r"""Suggested username for the bot"""
+        r"""Suggested username for the bot; always ends with \"bot\" case\-insensitive"""
         self.suggested_bot_name = suggested_bot_name
         r"""Suggested name for the bot; may be empty if not specified"""
 
@@ -88056,6 +88704,42 @@ class InternalLinkTypeStoryAlbum(TlObject, InternalLinkType):
                 "story_album_owner_username", ""
             )
             data_class.story_album_id = int(data.get("story_album_id", 0))
+
+        return data_class
+
+
+class InternalLinkTypeTextCompositionStyle(TlObject, InternalLinkType):
+    r"""The link is a link to a text composition style\. Call searchTextCompositionStyle with the given style name to get information about the style\. If the style is found and the user wants to add it, then call addTextCompositionStyle
+
+    Parameters:
+        style_name (:class:`str`):
+            Name of the style
+
+    """
+
+    def __init__(self, *, style_name: str | None = "") -> None:
+        self.style_name = style_name
+        r"""Name of the style"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["internalLinkTypeTextCompositionStyle"]:
+        return "internalLinkTypeTextCompositionStyle"
+
+    @classmethod
+    def getClass(self) -> Literal["InternalLinkType"]:
+        return "InternalLinkType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "style_name": self.style_name}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InternalLinkTypeTextCompositionStyle | None:
+        if data:
+            data_class = cls()
+            data_class.style_name = data.get("style_name", "")
 
         return data_class
 
@@ -89024,7 +89708,7 @@ class FileTypeSecure(TlObject, FileType):
 
 
 class FileTypeSelfDestructingLivePhotoVideo(TlObject, FileType):
-    r"""The file is a seld\-destructing video for a live photo in a private chat"""
+    r"""The file is a self\-destructing video for a live photo in a private chat"""
 
     def __init__(self) -> None:
         pass
@@ -90875,6 +91559,34 @@ class TopChatCategoryInlineBots(TlObject, TopChatCategory):
         return data_class
 
 
+class TopChatCategoryGuestBots(TlObject, TopChatCategory):
+    r"""A category containing frequently used chats with bots, which were used as guest bots"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["topChatCategoryGuestBots"]:
+        return "topChatCategoryGuestBots"
+
+    @classmethod
+    def getClass(self) -> Literal["TopChatCategory"]:
+        return "TopChatCategory"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TopChatCategoryGuestBots | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class TopChatCategoryWebAppBots(TlObject, TopChatCategory):
     r"""A category containing frequently used chats with bots, which Web Apps were opened"""
 
@@ -92318,6 +93030,9 @@ class AddedProxy(TlObject):
         is_enabled (:class:`bool`):
             True, if the proxy is enabled now
 
+        comment (:class:`str`):
+            Comment for the proxy added by the user
+
         proxy (:class:`~pytdbot.types.Proxy`):
             The proxy
 
@@ -92329,6 +93044,7 @@ class AddedProxy(TlObject):
         id: int | None = 0,
         last_used_date: int | None = 0,
         is_enabled: bool | None = False,
+        comment: str | None = "",
         proxy: Proxy | None = None,
     ) -> None:
         self.id = id
@@ -92337,6 +93053,8 @@ class AddedProxy(TlObject):
         r"""Point in time \(Unix timestamp\) when the proxy was last used; 0 if never"""
         self.is_enabled = is_enabled
         r"""True, if the proxy is enabled now"""
+        self.comment = comment
+        r"""Comment for the proxy added by the user"""
         self.proxy = proxy
         r"""The proxy"""
 
@@ -92357,6 +93075,7 @@ class AddedProxy(TlObject):
             "id": self.id,
             "last_used_date": self.last_used_date,
             "is_enabled": self.is_enabled,
+            "comment": self.comment,
             "proxy": self.proxy,
         }
 
@@ -92367,6 +93086,7 @@ class AddedProxy(TlObject):
             data_class.id = int(data.get("id", 0))
             data_class.last_used_date = int(data.get("last_used_date", 0))
             data_class.is_enabled = data.get("is_enabled", False)
+            data_class.comment = data.get("comment", "")
             data_class.proxy = data.get("proxy", None)
 
         return data_class
@@ -93745,6 +94465,49 @@ class StoryStatistics(TlObject):
                 "story_interaction_graph", None
             )
             data_class.story_reaction_graph = data.get("story_reaction_graph", None)
+
+        return data_class
+
+
+class PollVoteStatistics(TlObject):
+    r"""A detailed statistics about poll votes
+
+    Parameters:
+        vote_graph (:class:`~pytdbot.types.StatisticalGraph`):
+            A graph containing distribution of votes in the poll
+
+    """
+
+    def __init__(
+        self,
+        *,
+        vote_graph: StatisticalGraphData
+        | StatisticalGraphAsync
+        | StatisticalGraphError
+        | None = None,
+    ) -> None:
+        self.vote_graph = vote_graph
+        r"""A graph containing distribution of votes in the poll"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollVoteStatistics"]:
+        return "pollVoteStatistics"
+
+    @classmethod
+    def getClass(self) -> Literal["PollVoteStatistics"]:
+        return "PollVoteStatistics"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "vote_graph": self.vote_graph}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollVoteStatistics | None:
+        if data:
+            data_class = cls()
+            data_class.vote_graph = data.get("vote_graph", None)
 
         return data_class
 
@@ -96117,7 +96880,7 @@ class UpdateMessageUnreadReactions(TlObject, Update):
             The new list of unread reactions
 
         unread_reaction_count (:class:`int`):
-            The new number of messages with unread reactions left in the chat
+            The new number of messages with unread reactions in the chat
 
     """
 
@@ -96136,7 +96899,7 @@ class UpdateMessageUnreadReactions(TlObject, Update):
         self.unread_reactions = unread_reactions or []
         r"""The new list of unread reactions"""
         self.unread_reaction_count = unread_reaction_count
-        r"""The new number of messages with unread reactions left in the chat"""
+        r"""The new number of messages with unread reactions in the chat"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -96166,6 +96929,77 @@ class UpdateMessageUnreadReactions(TlObject, Update):
             data_class.message_id = int(data.get("message_id", 0))
             data_class.unread_reactions = data.get("unread_reactions", None)
             data_class.unread_reaction_count = int(data.get("unread_reaction_count", 0))
+
+        return data_class
+
+
+class UpdateMessageContainsUnreadPollVotes(TlObject, Update):
+    r"""Unread votes were added or removed from a poll message
+
+    Parameters:
+        chat_id (:class:`int`):
+            Chat identifier
+
+        message_id (:class:`int`):
+            Message identifier
+
+        contains_unread_poll_votes (:class:`bool`):
+            True, if the message is a poll message with unread votes
+
+        unread_poll_vote_count (:class:`int`):
+            The new number of messages with unread poll votes in the chat
+
+    """
+
+    def __init__(
+        self,
+        *,
+        chat_id: int | None = 0,
+        message_id: int | None = 0,
+        contains_unread_poll_votes: bool | None = False,
+        unread_poll_vote_count: int | None = 0,
+    ) -> None:
+        self.chat_id = chat_id
+        r"""Chat identifier"""
+        self.message_id = message_id
+        r"""Message identifier"""
+        self.contains_unread_poll_votes = contains_unread_poll_votes
+        r"""True, if the message is a poll message with unread votes"""
+        self.unread_poll_vote_count = unread_poll_vote_count
+        r"""The new number of messages with unread poll votes in the chat"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["updateMessageContainsUnreadPollVotes"]:
+        return "updateMessageContainsUnreadPollVotes"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "message_id": self.message_id,
+            "contains_unread_poll_votes": self.contains_unread_poll_votes,
+            "unread_poll_vote_count": self.unread_poll_vote_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateMessageContainsUnreadPollVotes | None:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.contains_unread_poll_votes = data.get(
+                "contains_unread_poll_votes", False
+            )
+            data_class.unread_poll_vote_count = int(
+                data.get("unread_poll_vote_count", 0)
+            )
 
         return data_class
 
@@ -103724,6 +104558,65 @@ class UpdateNewChosenInlineResult(TlObject, Update):
             data_class.query = data.get("query", "")
             data_class.result_id = data.get("result_id", "")
             data_class.inline_message_id = data.get("inline_message_id", "")
+
+        return data_class
+
+
+class UpdateNewGuestQuery(TlObject, Update):
+    r"""A new incoming guest query; for bots only
+
+    Parameters:
+        id (:class:`int`):
+            Unique query identifier
+
+        message (:class:`~pytdbot.types.Message`):
+            The message with the query
+
+        reference_messages (list[:class:`~pytdbot.types.Message`]):
+            The list of reference messages
+
+    """
+
+    def __init__(
+        self,
+        *,
+        id: int | None = 0,
+        message: Message | None = None,
+        reference_messages: list[Message] | None = None,
+    ) -> None:
+        self.id = id
+        r"""Unique query identifier"""
+        self.message = message
+        r"""The message with the query"""
+        self.reference_messages = reference_messages or []
+        r"""The list of reference messages"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["updateNewGuestQuery"]:
+        return "updateNewGuestQuery"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "message": self.message,
+            "reference_messages": self.reference_messages,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateNewGuestQuery | None:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+            data_class.message = data.get("message", None)
+            data_class.reference_messages = data.get("reference_messages", None)
 
         return data_class
 

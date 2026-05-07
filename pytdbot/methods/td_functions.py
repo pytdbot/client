@@ -136,11 +136,18 @@ class TDLibFunctions:
         )
 
     async def checkAuthenticationPremiumPurchase(
-        self, *, currency: str | None = "", amount: int | None = 0
+        self,
+        *,
+        premium_day_count: int | None = 0,
+        currency: str | None = "",
+        amount: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Checks whether an in\-store purchase of Telegram Premium is possible before authorization\. Works only when the current authorization state is authorizationStateWaitPremiumPurchase
 
         Parameters:
+            premium_day_count (:class:`int`):
+                The number of days for which the Telegram Premium subscription will be granted
+
             currency (:class:`str`):
                 ISO 4217 currency code of the payment currency
 
@@ -154,6 +161,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "checkAuthenticationPremiumPurchase",
+                "premium_day_count": premium_day_count,
                 "currency": currency,
                 "amount": amount,
             }
@@ -166,6 +174,7 @@ class TDLibFunctions:
         | pytdbot.types.StoreTransactionGooglePlay
         | None = None,
         is_restore: bool | None = False,
+        premium_day_count: int | None = 0,
         currency: str | None = "",
         amount: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -177,6 +186,9 @@ class TDLibFunctions:
 
             is_restore (:class:`bool`):
                 Pass true if this is a restore of a Telegram Premium purchase; only for App Store
+
+            premium_day_count (:class:`int`):
+                The number of days for which the Telegram Premium subscription will be granted
 
             currency (:class:`str`):
                 ISO 4217 currency code of the payment currency
@@ -193,6 +205,7 @@ class TDLibFunctions:
                 "@type": "setAuthenticationPremiumPurchaseTransaction",
                 "transaction": transaction,
                 "is_restore": is_restore,
+                "premium_day_count": premium_day_count,
                 "currency": currency,
                 "amount": amount,
             }
@@ -1713,6 +1726,7 @@ class TDLibFunctions:
         | pytdbot.types.TopChatCategoryGroups
         | pytdbot.types.TopChatCategoryChannels
         | pytdbot.types.TopChatCategoryInlineBots
+        | pytdbot.types.TopChatCategoryGuestBots
         | pytdbot.types.TopChatCategoryWebAppBots
         | pytdbot.types.TopChatCategoryCalls
         | pytdbot.types.TopChatCategoryForwardChats
@@ -1744,6 +1758,7 @@ class TDLibFunctions:
         | pytdbot.types.TopChatCategoryGroups
         | pytdbot.types.TopChatCategoryChannels
         | pytdbot.types.TopChatCategoryInlineBots
+        | pytdbot.types.TopChatCategoryGuestBots
         | pytdbot.types.TopChatCategoryWebAppBots
         | pytdbot.types.TopChatCategoryCalls
         | pytdbot.types.TopChatCategoryForwardChats
@@ -3891,6 +3906,169 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "getMessageLinkInfo", "url": url})
+
+    async def createTextCompositionStyle(
+        self,
+        *,
+        title: str | None = "",
+        custom_emoji_id: int | None = 0,
+        prompt: str | None = "",
+        show_creator: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.TextCompositionStyle:
+        r"""Creates a custom text composition style\. May return an error with a message \"TONES\_SAVED\_TOO\_MANY\" if the maximum number of added custom styles has been reached
+
+        Parameters:
+            title (:class:`str`):
+                Title of the style; 1\-getOption\(\"text\_composition\_style\_title\_length\_max\"\) characters
+
+            custom_emoji_id (:class:`int`):
+                Identifier of the custom emoji corresponding to the style
+
+            prompt (:class:`str`):
+                Prompt that will be used for text composition; 1\-getOption\(\"text\_composition\_style\_prompt\_length\_max\"\) characters
+
+            show_creator (:class:`bool`):
+                Pass true if the current user must be shown as the creator of the style
+
+        Returns:
+            :class:`~pytdbot.types.TextCompositionStyle`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "createTextCompositionStyle",
+                "title": title,
+                "custom_emoji_id": custom_emoji_id,
+                "prompt": prompt,
+                "show_creator": show_creator,
+            }
+        )
+
+    async def editTextCompositionStyle(
+        self,
+        *,
+        name: str | None = "",
+        title: str | None = "",
+        custom_emoji_id: int | None = 0,
+        prompt: str | None = "",
+        show_creator: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.TextCompositionStyle:
+        r"""Edits a custom text composition style that was created by the current user
+
+        Parameters:
+            name (:class:`str`):
+                Name of the style
+
+            title (:class:`str`):
+                Title of the style; 1\-getOption\(\"text\_composition\_style\_title\_length\_max\"\) characters
+
+            custom_emoji_id (:class:`int`):
+                Identifier of the custom emoji corresponding to the style
+
+            prompt (:class:`str`):
+                Prompt that will be used for text composition; 1\-getOption\(\"text\_composition\_style\_prompt\_length\_max\"\) characters
+
+            show_creator (:class:`bool`):
+                Pass true if the current user must be shown as the creator of the style
+
+        Returns:
+            :class:`~pytdbot.types.TextCompositionStyle`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editTextCompositionStyle",
+                "name": name,
+                "title": title,
+                "custom_emoji_id": custom_emoji_id,
+                "prompt": prompt,
+                "show_creator": show_creator,
+            }
+        )
+
+    async def deleteTextCompositionStyle(
+        self, *, name: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Deletes a custom text composition style that was created by the current user
+
+        Parameters:
+            name (:class:`str`):
+                Name of the style
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "deleteTextCompositionStyle", "name": name})
+
+    async def searchTextCompositionStyle(
+        self, *, name: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.TextCompositionStyle:
+        r"""Searches a custom text composition style by its name
+
+        Parameters:
+            name (:class:`str`):
+                Name of the style
+
+        Returns:
+            :class:`~pytdbot.types.TextCompositionStyle`
+        """
+
+        return await self.invoke({"@type": "searchTextCompositionStyle", "name": name})
+
+    async def getTextCompositionStyleExample(
+        self, *, name: str | None = "", example_number: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.TextCompositionStyleExample:
+        r"""Returns an example of usage of a custom text composition style
+
+        Parameters:
+            name (:class:`str`):
+                Name of the style
+
+            example_number (:class:`int`):
+                0\-based unique number of the requested example; must be non\-negative and less than getOption\(\"text\_composition\_style\_example\_count\"\)
+
+        Returns:
+            :class:`~pytdbot.types.TextCompositionStyleExample`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getTextCompositionStyleExample",
+                "name": name,
+                "example_number": example_number,
+            }
+        )
+
+    async def addTextCompositionStyle(
+        self, *, name: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Adds a custom text composition style to the list of used by the user styles\. May return an error with a message \"TONES\_SAVED\_TOO\_MANY\" if the maximum number of added custom styles has been reached
+
+        Parameters:
+            name (:class:`str`):
+                Name of the style
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "addTextCompositionStyle", "name": name})
+
+    async def removeTextCompositionStyle(
+        self, *, name: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Removes a custom text composition style from the list of used by the user styles\. If the style was created by the current user, then it can only be deleted
+
+        Parameters:
+            name (:class:`str`):
+                Name of the style
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "removeTextCompositionStyle", "name": name})
 
     async def translateText(
         self,
@@ -7187,6 +7365,69 @@ class TDLibFunctions:
             }
         )
 
+    async def deleteAllRecentMessageReactionsFromSender(
+        self,
+        *,
+        chat_id: int | None = 0,
+        sender_id: pytdbot.types.MessageSenderUser
+        | pytdbot.types.MessageSenderChat
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Deletes all recent reactions added by the specified sender in a chat\. Supported only for basic groups and supergroups; requires can\_delete\_messages administrator right
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            sender_id (:class:`~pytdbot.types.MessageSender`):
+                Identifier of the sender of reactions to delete
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteAllRecentMessageReactionsFromSender",
+                "chat_id": chat_id,
+                "sender_id": sender_id,
+            }
+        )
+
+    async def deleteMessageReactionsFromSender(
+        self,
+        *,
+        chat_id: int | None = 0,
+        message_id: int | None = 0,
+        sender_id: pytdbot.types.MessageSenderUser
+        | pytdbot.types.MessageSenderChat
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Deletes all reactions added by the specified sender on a message
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            message_id (:class:`int`):
+                Identifier of the message containing the reactions\. Use messageProperties\.can\_delete\_reactions to check whether the method can be used for a message
+
+            sender_id (:class:`~pytdbot.types.MessageSender`):
+                Identifier of the sender of reactions to delete
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteMessageReactionsFromSender",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "sender_id": sender_id,
+            }
+        )
+
     async def getChatAvailablePaidMessageReactionSenders(
         self, *, chat_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.MessageSenders:
@@ -7787,7 +8028,7 @@ class TDLibFunctions:
         message_id: int | None = 0,
         option_id: str | None = "",
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Adds an option to a poll
+        r"""Deletes an option from a poll
 
         Parameters:
             chat_id (:class:`int`):
@@ -7883,6 +8124,38 @@ class TDLibFunctions:
                 "option_id": option_id,
                 "offset": offset,
                 "limit": limit,
+            }
+        )
+
+    async def getPollVoteStatistics(
+        self,
+        *,
+        chat_id: int | None = 0,
+        message_id: int | None = 0,
+        is_dark: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.PollVoteStatistics:
+        r"""Returns statistics of poll votes in a poll
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat to which the poll belongs
+
+            message_id (:class:`int`):
+                Identifier of the message containing the poll\. Use messageProperties\.can\_get\_poll\_vote\_statistics to check whether the method can be used for a message
+
+            is_dark (:class:`bool`):
+                Pass true if a dark theme is used by the application
+
+        Returns:
+            :class:`~pytdbot.types.PollVoteStatistics`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getPollVoteStatistics",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "is_dark": is_dark,
             }
         )
 
@@ -8288,6 +8561,45 @@ class TDLibFunctions:
                 "results": results,
                 "cache_time": cache_time,
                 "next_offset": next_offset,
+            }
+        )
+
+    async def answerGuestQuery(
+        self,
+        *,
+        guest_query_id: int | None = 0,
+        result: pytdbot.types.InputInlineQueryResultAnimation
+        | pytdbot.types.InputInlineQueryResultArticle
+        | pytdbot.types.InputInlineQueryResultAudio
+        | pytdbot.types.InputInlineQueryResultContact
+        | pytdbot.types.InputInlineQueryResultDocument
+        | pytdbot.types.InputInlineQueryResultGame
+        | pytdbot.types.InputInlineQueryResultLocation
+        | pytdbot.types.InputInlineQueryResultPhoto
+        | pytdbot.types.InputInlineQueryResultSticker
+        | pytdbot.types.InputInlineQueryResultVenue
+        | pytdbot.types.InputInlineQueryResultVideo
+        | pytdbot.types.InputInlineQueryResultVoiceNote
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.InlineMessageId:
+        r"""Sets the result of a guest query; for bots only
+
+        Parameters:
+            guest_query_id (:class:`int`):
+                Identifier of the guest query
+
+            result (:class:`~pytdbot.types.InputInlineQueryResult`):
+                The result of the query
+
+        Returns:
+            :class:`~pytdbot.types.InlineMessageId`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "answerGuestQuery",
+                "guest_query_id": guest_query_id,
+                "result": result,
             }
         )
 
@@ -8707,7 +9019,7 @@ class TDLibFunctions:
         | pytdbot.types.InputInlineQueryResultVideo
         | pytdbot.types.InputInlineQueryResultVoiceNote
         | None = None,
-    ) -> pytdbot.types.Error | pytdbot.types.SentWebAppMessage:
+    ) -> pytdbot.types.Error | pytdbot.types.InlineMessageId:
         r"""Sets the result of interaction with a Web App and sends corresponding message on behalf of the user to the chat from which the query originated; for bots only
 
         Parameters:
@@ -8718,7 +9030,7 @@ class TDLibFunctions:
                 The result of the query
 
         Returns:
-            :class:`~pytdbot.types.SentWebAppMessage`
+            :class:`~pytdbot.types.InlineMessageId`
         """
 
         return await self.invoke(
@@ -9140,7 +9452,7 @@ class TDLibFunctions:
                 Unique identifier of the draft
 
             text (:class:`~pytdbot.types.FormattedText`):
-                Draft text of the message
+                Draft text of the message; pass null to show a \"Thinking\.\.\.\" placeholder
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -9405,6 +9717,7 @@ class TDLibFunctions:
         | pytdbot.types.InternalLinkTypeStickerSet
         | pytdbot.types.InternalLinkTypeStory
         | pytdbot.types.InternalLinkTypeStoryAlbum
+        | pytdbot.types.InternalLinkTypeTextCompositionStyle
         | pytdbot.types.InternalLinkTypeTheme
         | pytdbot.types.InternalLinkTypeUnknownDeepLink
         | pytdbot.types.InternalLinkTypeUpgradedGift
@@ -11455,7 +11768,7 @@ class TDLibFunctions:
 
     async def getSavedNotificationSound(
         self, *, notification_sound_id: int | None = 0
-    ) -> pytdbot.types.Error | pytdbot.types.NotificationSounds:
+    ) -> pytdbot.types.Error | pytdbot.types.NotificationSound:
         r"""Returns saved notification sound by its identifier\. Returns a 404 error if there is no saved notification sound with the specified identifier
 
         Parameters:
@@ -11463,7 +11776,7 @@ class TDLibFunctions:
                 Identifier of the notification sound
 
         Returns:
-            :class:`~pytdbot.types.NotificationSounds`
+            :class:`~pytdbot.types.NotificationSound`
         """
 
         return await self.invoke(
@@ -16350,6 +16663,26 @@ class TDLibFunctions:
             }
         )
 
+    async def getPersonalChatHistory(
+        self, *, user_id: int | None = 0, limit: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Messages:
+        r"""Returns messages in the personal chat of a given user; for bots only
+
+        Parameters:
+            user_id (:class:`int`):
+                User identifier
+
+            limit (:class:`int`):
+                The maximum number of messages to be returned; 1\-20
+
+        Returns:
+            :class:`~pytdbot.types.Messages`
+        """
+
+        return await self.invoke(
+            {"@type": "getPersonalChatHistory", "user_id": user_id, "limit": limit}
+        )
+
     async def searchUserByPhoneNumber(
         self, *, phone_number: str | None = "", only_local: bool | None = False
     ) -> pytdbot.types.Error | pytdbot.types.User:
@@ -16461,19 +16794,45 @@ class TDLibFunctions:
         return await self.invoke({"@type": "isProfileAudio", "file_id": file_id})
 
     async def addProfileAudio(
-        self, *, file_id: int | None = 0
+        self,
+        *,
+        audio: pytdbot.types.InputFileId
+        | pytdbot.types.InputFileRemote
+        | pytdbot.types.InputFileLocal
+        | pytdbot.types.InputFileGenerated
+        | None = None,
+        duration: int | None = 0,
+        title: str | None = "",
+        performer: str | None = "",
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Adds an audio file to the beginning of the profile audio files of the current user
 
         Parameters:
-            file_id (:class:`int`):
-                Identifier of the audio file to be added\. The file must have been uploaded to the server
+            audio (:class:`~pytdbot.types.InputFile`):
+                The audio file to be added
+
+            duration (:class:`int`):
+                Duration of the audio, in seconds; may be replaced by the server; ignored for already uploaded files
+
+            title (:class:`str`):
+                Title of the audio; 0\-64 characters; may be replaced by the server; ignored for already uploaded files
+
+            performer (:class:`str`):
+                Performer of the audio; 0\-64 characters, may be replaced by the server; ignored for already uploaded files
 
         Returns:
             :class:`~pytdbot.types.Ok`
         """
 
-        return await self.invoke({"@type": "addProfileAudio", "file_id": file_id})
+        return await self.invoke(
+            {
+                "@type": "addProfileAudio",
+                "audio": audio,
+                "duration": duration,
+                "title": title,
+                "performer": performer,
+            }
+        )
 
     async def setProfileAudioPosition(
         self, *, file_id: int | None = 0, after_file_id: int | None = 0
@@ -18722,14 +19081,14 @@ class TDLibFunctions:
             }
         )
 
-    async def getBotToken(
+    async def getManagedBotToken(
         self, *, bot_user_id: int | None = 0, revoke: bool | None = False
     ) -> pytdbot.types.Error | pytdbot.types.Text:
-        r"""Returns token of a created bot; for bots only
+        r"""Returns token of a managed bot; for bots only
 
         Parameters:
             bot_user_id (:class:`int`):
-                Identifier of the created bot
+                Identifier of the managed bot
 
             revoke (:class:`bool`):
                 Pass true to revoke the current token and create a new one
@@ -18739,7 +19098,55 @@ class TDLibFunctions:
         """
 
         return await self.invoke(
-            {"@type": "getBotToken", "bot_user_id": bot_user_id, "revoke": revoke}
+            {
+                "@type": "getManagedBotToken",
+                "bot_user_id": bot_user_id,
+                "revoke": revoke,
+            }
+        )
+
+    async def getManagedBotAccessSettings(
+        self, *, bot_user_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.BotAccessSettings:
+        r"""Returns access settings of a managed bot; for bots only
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the managed bot
+
+        Returns:
+            :class:`~pytdbot.types.BotAccessSettings`
+        """
+
+        return await self.invoke(
+            {"@type": "getManagedBotAccessSettings", "bot_user_id": bot_user_id}
+        )
+
+    async def setManagedBotAccessSettings(
+        self,
+        *,
+        bot_user_id: int | None = 0,
+        settings: pytdbot.types.BotAccessSettings | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Sets access settings of a managed bot; for bots only
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the managed bot
+
+            settings (:class:`~pytdbot.types.BotAccessSettings`):
+                New access settings
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setManagedBotAccessSettings",
+                "bot_user_id": bot_user_id,
+                "settings": settings,
+            }
         )
 
     async def setBotName(
@@ -20872,7 +21279,7 @@ class TDLibFunctions:
     async def getUpgradedGiftsPromotionalAnimation(
         self,
     ) -> pytdbot.types.Error | pytdbot.types.Animation:
-        r"""Returns promotional anumation for upgraded gifts
+        r"""Returns promotional animation for upgraded gifts
 
         Returns:
             :class:`~pytdbot.types.Animation`
@@ -23710,6 +24117,7 @@ class TDLibFunctions:
         | pytdbot.types.PremiumLimitTypeStorySuggestedReactionAreaCount
         | pytdbot.types.PremiumLimitTypeSimilarChatCount
         | pytdbot.types.PremiumLimitTypeOwnedBotCount
+        | pytdbot.types.PremiumLimitTypeCustomTextCompositionStyleCount
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.PremiumLimit:
         r"""Returns information about a limit, increased for Premium users\. Returns a 404 error if the limit is unknown
@@ -24790,7 +25198,11 @@ class TDLibFunctions:
         )
 
     async def addProxy(
-        self, *, proxy: pytdbot.types.Proxy | None = None, enable: bool | None = False
+        self,
+        *,
+        proxy: pytdbot.types.Proxy | None = None,
+        enable: bool | None = False,
+        comment: str | None = "",
     ) -> pytdbot.types.Error | pytdbot.types.AddedProxy:
         r"""Adds a proxy server for network requests\. Can be called before authorization
 
@@ -24801,12 +25213,15 @@ class TDLibFunctions:
             enable (:class:`bool`):
                 Pass true to immediately enable the proxy
 
+            comment (:class:`str`):
+                Comment to set for the proxy
+
         Returns:
             :class:`~pytdbot.types.AddedProxy`
         """
 
         return await self.invoke(
-            {"@type": "addProxy", "proxy": proxy, "enable": enable}
+            {"@type": "addProxy", "proxy": proxy, "enable": enable, "comment": comment}
         )
 
     async def editProxy(
@@ -24815,6 +25230,7 @@ class TDLibFunctions:
         proxy_id: int | None = 0,
         proxy: pytdbot.types.Proxy | None = None,
         enable: bool | None = False,
+        comment: str | None = "",
     ) -> pytdbot.types.Error | pytdbot.types.AddedProxy:
         r"""Edits an existing proxy server for network requests\. Can be called before authorization
 
@@ -24828,6 +25244,9 @@ class TDLibFunctions:
             enable (:class:`bool`):
                 Pass true to immediately enable the proxy
 
+            comment (:class:`str`):
+                New comment for the proxy
+
         Returns:
             :class:`~pytdbot.types.AddedProxy`
         """
@@ -24838,6 +25257,7 @@ class TDLibFunctions:
                 "proxy_id": proxy_id,
                 "proxy": proxy,
                 "enable": enable,
+                "comment": comment,
             }
         )
 
