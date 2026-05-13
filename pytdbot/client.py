@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import signal
+import sys
 from collections.abc import Callable
 from importlib import import_module
 from importlib import reload as reload_module
@@ -13,7 +14,11 @@ from pathlib import Path
 from platform import python_implementation, python_version
 from threading import current_thread, main_thread
 
-import aio_pika
+try:
+    import nats
+except ImportError:
+    nats = None
+
 from deepdiff import DeepDiff
 
 import pytdbot
@@ -48,11 +53,11 @@ class Client(Decorators, Methods):
         api_hash (``str``, *optional*):
             Identifier hash for Telegram API access, which can be obtained at https://my.telegram.org
 
-        rabbitmq_url (``str``, *optional*):
-            URL for RabbitMQ server connection
+        nats_url (``str``, *optional*):
+            URL for NATS server connection
 
         instance_id (``str``, *optional*):
-            Instance ID for RabbitMQ connections and queues. Default is ``None`` (random)
+            Instance ID for NATS connections and queues. Default is ``None`` (random)
 
         lib_path (``str``, *optional*):
             Path to TDLib library. Default is ``None`` (auto-detect)
@@ -115,7 +120,7 @@ class Client(Decorators, Methods):
         token: str | None = None,
         api_id: int | None = None,
         api_hash: str | None = None,
-        rabbitmq_url: str | None = None,
+        nats_url: str | None = None,
         instance_id: str | None = None,
         lib_path: str | None = None,
         plugins: Plugins | None = None,
@@ -137,12 +142,11 @@ class Client(Decorators, Methods):
         td_verbosity: int = 2,
         td_log: LogStream | None = None,
         user_bot: bool = False,
-        server_ack: bool = True,
     ) -> None:
         self.__api_id = api_id
         self.__api_hash = api_hash
-        self.__rabbitmq_url = rabbitmq_url
-        self._rabbitmq_instance_id = (
+        self.__nats_url = nats_url
+        self._nats_instance_id = (
             instance_id if isinstance(instance_id, str) else create_extra_id(4)
         )
         self.__token = token
@@ -170,7 +174,6 @@ class Client(Decorators, Methods):
         self.load_messages_before_reply = load_messages_before_reply
         self.queue = asyncio.Queue()
         self.user_bot = user_bot
-        self.server_ack = server_ack
         self.my_id = (
             get_bot_id_from_token(self.__token)
             if isinstance(self.__token, str)
@@ -186,7 +189,7 @@ class Client(Decorators, Methods):
         self.me: types.User = None
         self.is_authenticated = False
         self.is_reloading_plugins = False
-        self.is_rabbitmq = True if rabbitmq_url else False
+        self.is_nats = True if nats_url else False
         self.options = {}
         self.allow_outgoing_message_types: tuple = (types.MessagePaymentRefunded,)
         self.get_message_methods = {
@@ -203,7 +206,6 @@ class Client(Decorators, Methods):
         self._results: dict[str, asyncio.Future] = {}
         self._workers_tasks = None
         self.__wait_login: asyncio.Event = None
-        self.__rabbitmq_iterator_task = None
         self.__authorization_state: str = None
         self.__cache = {"is_coro_filter": {}}
         self.__local_handlers = {
@@ -219,10 +221,11 @@ class Client(Decorators, Methods):
         self.__idle_event: asyncio.Event = None
         self.__closed_event: asyncio.Event = None
 
-        # RabbitMQ
-        self.__rqueues = None
-        self.__rconnection = None
-        self.__rchannel = None
+        # NATS
+        self.__nc = None
+        self.__requests_subject = f"bot.{self.my_id}.requests"
+        self.__updates_subject = f"bot.{self.my_id}.updates"
+        self.__broadcast_subject = f"bot.{self.my_id}.broadcast"
 
         self.loop = None
 
@@ -252,7 +255,7 @@ class Client(Decorators, Methods):
     ) -> pytdbot.types.ServerStats | pytdbot.types.Error:
         """Returns TDLib Server stats"""
 
-        self._check_rabbitmq()
+        self._check_nats()
 
         return await self.invoke({"@type": "getServerStats"})
 
@@ -272,7 +275,7 @@ class Client(Decorators, Methods):
                 Unix timestamp when the event should be sent
         """
 
-        self._check_rabbitmq()
+        self._check_nats()
 
         if not isinstance(name, str):
             raise ValueError("name must be str")
@@ -300,7 +303,7 @@ class Client(Decorators, Methods):
                 Event ID to cancel
         """
 
-        self._check_rabbitmq()
+        self._check_nats()
 
         if not isinstance(event_id, str):
             raise ValueError("event_id must be str")
@@ -324,8 +327,8 @@ class Client(Decorators, Methods):
             self.__idle_event = asyncio.Event()
             self.__closed_event = asyncio.Event()
 
-            if self.is_rabbitmq:
-                await self.__start_rabbitmq()
+            if self.is_nats:
+                await self.__start_nats()
             elif not self.client_manager:
                 self.__wait_login = asyncio.Event() if not self.user_bot else None
 
@@ -335,25 +338,19 @@ class Client(Decorators, Methods):
                 await self.client_manager.start()
                 self.is_running = True
 
-            if isinstance(self.td_log, LogStream) and not self.is_rabbitmq:
+            if isinstance(self.td_log, LogStream) and not self.is_nats:
                 await self.__send(
                     {"@type": "setLogStream", "log_stream": obj_to_dict(self.td_log)}
                 )
 
-            if isinstance(self.workers, int):
+            if isinstance(self.workers, int) and not self.is_nats:
                 self._workers_tasks = [
-                    self.loop.create_task(
-                        self._queue_update_worker()
-                        if not self.is_rabbitmq
-                        else self.__rabbitmq_worker()
-                    )
+                    self.loop.create_task(self._queue_update_worker())
                     for _ in range(self.workers)
                 ]
                 self.__is_queue_worker = True
 
                 self.logger.info(f"Started with {self.workers} workers")
-            elif self.is_rabbitmq:
-                raise ValueError("workers must be an int when using TDLib Server")
             else:
                 self.__is_queue_worker = False
                 self.logger.info("Started with unlimited updates processes")
@@ -670,11 +667,27 @@ class Client(Decorators, Methods):
         }:
             await self.close()
 
+        if self.is_nats:
+            # fake closing because TDLib Server doesn't allow close() from workers
+            await self.process_update(
+                obj_to_dict(
+                    types.UpdateAuthorizationState(
+                        authorization_state=types.AuthorizationStateClosing()
+                    )
+                )
+            )
+            await self.process_update(
+                obj_to_dict(
+                    types.UpdateAuthorizationState(
+                        authorization_state=types.AuthorizationStateClosed()
+                    )
+                )
+            )
+
         await self.__closed_event.wait()
 
-        if self.is_rabbitmq:
-            await self.__rchannel.close()
-            await self.__rconnection.close()
+        if self.is_nats:
+            await self.__nc.close()
 
         self.__stop_client()
 
@@ -700,25 +713,23 @@ class Client(Decorators, Methods):
         return result
 
     async def __send(self, request: dict) -> None:
-        if self.is_rabbitmq:
-            await self.__rchannel.default_exchange.publish(
-                aio_pika.Message(
-                    json_dumps(request, encode=True),
-                    reply_to=self.__rqueues["responses"].name,
-                ),
-                routing_key=self.__rqueues["requests"].name,
+        if self.is_nats:
+            await self.__on_update(
+                await self.__nc.request(
+                    self.__requests_subject, json_dumps(request, encode=True)
+                )
             )
         else:
             self.client_manager.send(self.client_id, request)
 
-    def _check_rabbitmq(self):
-        assert self.is_rabbitmq, "This method is only available for TDLib Server"
+    def _check_nats(self):
+        assert self.is_nats, "This method is only available for TDLib Server"
 
     def _check_init_args(self):
         if self.user_bot:
             return
 
-        if not self.is_rabbitmq:
+        if not self.is_nats:
             if not isinstance(self.__api_id, int):
                 raise TypeError("api_id must be an int")
             if not isinstance(self.__api_hash, str):
@@ -849,7 +860,7 @@ class Client(Decorators, Methods):
         if handler := self.__local_handlers.get(update.get("@type")):
             self.loop.create_task(handler(update_obj))
 
-        if not self.is_rabbitmq and self.__is_queue_worker:
+        if not self.is_nats and self.__is_queue_worker:
             self.queue.put_nowait(update_obj)
         else:
             await self._handle_update(update_obj)
@@ -997,7 +1008,7 @@ class Client(Decorators, Methods):
             `AuthorizationError`
         """
 
-        if self.is_rabbitmq:
+        if self.is_nats:
             return
 
         if isinstance(self.__database_encryption_key, str):
@@ -1041,13 +1052,15 @@ class Client(Decorators, Methods):
             else:
                 raise ValueError(f"Option {k} has unsupported type {v_type}")
 
-            await self.__send(
-                {
-                    "@type": "setOption",
-                    "name": k,
-                    "value": data,
-                    "@extra": {"option": k, "value": v, "id": ""},
-                }
+            self.loop.create_task(
+                self.__send(
+                    {
+                        "@type": "setOption",
+                        "name": k,
+                        "value": data,
+                        "@extra": {"option": k, "value": v, "id": ""},
+                    }
+                )
             )
             self.logger.debug(f"Option {k} sent with value {v}")
 
@@ -1068,6 +1081,7 @@ class Client(Decorators, Methods):
             await self.__handle_authorization_state_wait_phone_number()
         elif self.authorization_state == "authorizationStateReady":
             self.is_authenticated = True
+            self.__idle_event.clear()
 
             self.me = await self.getMe()
             if isinstance(self.me, types.Error):
@@ -1130,56 +1144,49 @@ class Client(Decorators, Methods):
                 f"Option {update.name} changed to {self.options[update.name]}"
             )
 
-    async def __get_updates_queue(self, retries=10, delay=2):
-        for attempt in range(retries):
-            try:
-                return await self.__rchannel.get_queue(self.my_id + "_updates")
-            except aio_pika.exceptions.ChannelNotFoundEntity:
-                self.logger.warning(
-                    f"Attempt {attempt + 1}: TDLib Server is not running. Retrying in {delay} seconds..."
-                )
-                await asyncio.sleep(delay)
-        self.logger.error(
-            f"Could not connect to TDLib Server after {retries} attempts."
-        )
-        raise AuthorizationError(
-            f"Could not connect to TDLib Server after {delay * retries} seconds timeout"
-        )
+    async def __nc_error_handler(self, e):
+        self.logger.error(f"NATS connection error: {e}")
 
-    async def __start_rabbitmq(self):
-        self.__rconnection = await aio_pika.connect_robust(
-            self.__rabbitmq_url,
-            client_properties={
-                "connection_name": f"Pytdbot instance {self._rabbitmq_instance_id}"
-            },
-        )
-        self.__rchannel = await self.__rconnection.channel()
+    async def __nc_reconnect_handler(self):
+        self.logger.info("Reconnected to NATS server")
 
-        self.logger.info("Connected to TDLib server via RabbitMQ")
+    async def __nc_disconnect_handler(self):
+        self.logger.info("Disconnected from NATS server")
 
-        updates_queue = await self.__get_updates_queue()
+    async def __nc_closed_handler(self):
+        self.logger.info("Closed connection to NATS server")
 
-        notify_queue = await self.__rchannel.declare_queue(
-            f"{self.my_id}_notify_{self._rabbitmq_instance_id}", exclusive=True
-        )
-        await notify_queue.bind(
-            await self.__rchannel.get_exchange(f"{self.my_id}_broadcast")
+    async def __start_nats(self):
+        if not nats:
+            raise ImportError(
+                f"nats-py is not installed, please install it with `{sys.executable} -m pip install --upgrade nats-py`"
+            )
+
+        self.__nc = await nats.connect(
+            self.__nats_url,
+            name=f"Pytdbot instance {self._nats_instance_id}",
+            error_cb=self.__nc_error_handler,
+            reconnected_cb=self.__nc_reconnect_handler,
+            closed_cb=self.__nc_closed_handler,
+            disconnected_cb=self.__nc_disconnect_handler,
+            max_reconnect_attempts=-1,
         )
 
-        responses_queue = await self.__rchannel.declare_queue(
-            f"{self.my_id}_res_{self._rabbitmq_instance_id}", exclusive=True
-        )
-
-        self.__rqueues = {
-            "updates": updates_queue,
-            "requests": await self.__rchannel.get_queue(f"{self.my_id}_requests"),
-            "notify": notify_queue,
-            "responses": responses_queue,
-        }
+        if self.__nc.is_connected:
+            self.logger.info("Connected to TDLib server via NATS")
+        else:
+            raise AuthorizationError("Failed to connect to TDLib server via NATS")
 
         self.is_running = True
 
-        await self.__rqueues["responses"].consume(self.__on_update, no_ack=True)
+        if not self.no_updates:
+            await self.__nc.subscribe(
+                self.__updates_subject,
+                queue="updates",
+                cb=self.__on_update,
+            )
+
+        await self.__nc.subscribe(self.__broadcast_subject, cb=self.__on_update)
 
         await self._set_options()
 
@@ -1189,50 +1196,11 @@ class Client(Decorators, Methods):
             # since it's not part of the object
             await self.process_update(obj_to_dict(update))
 
-        if not self.no_updates:
-            self.__rabbitmq_iterator_task = self.loop.create_task(
-                self.__rabbitmq_iterator()
-            )
-
-        await self.__rqueues["notify"].consume(self.__on_update, no_ack=True)
-
-    async def __rabbitmq_iterator(self):
-        async with self.__rqueues["updates"].iterator(
-            no_ack=not self.server_ack
-        ) as iterator:
-            async for message in iterator:
-                if self.queue.qsize() > self.queue_size:
-                    await message.nack(requeue=True)
-                    continue
-
-                self.queue.put_nowait(message)
-
-    async def __rabbitmq_worker(self):
-        while self.is_running:
-            try:
-                message: aio_pika.IncomingMessage = self.queue.get_nowait()
-            except asyncio.QueueEmpty:
-                message: aio_pika.IncomingMessage = await self.queue.get()
-
-            try:
-                update = json_loads(message.body)
-                if self.__is_closing and not isinstance(
-                    update, types.UpdateAuthorizationState
-                ):
-                    await message.nack(requeue=True)
-                    continue
-
-                await self.process_update(update)
-            except Exception:
-                self.logger.exception("Error processing message")
-
-            await message.ack()  # ack after processing
-
-    async def __handle_rabbitmq_message(self, message: aio_pika.IncomingMessage):
-        await self.process_update(json_loads(message.body))
-
     async def __on_update(self, update):
-        self.loop.create_task(self.__handle_rabbitmq_message(update))
+        try:
+            await self.process_update(json_loads(update.data))
+        except Exception:
+            self.logger.exception("Failed to process update")
 
     async def __handle_update_user(self, update: types.UpdateUser):
         if self.is_authenticated and self.me and update.user.id == self.me.id:
@@ -1249,7 +1217,7 @@ class Client(Decorators, Methods):
 
     async def __handle_authorization_state_wait_phone_number(self):
         if (
-            self.is_rabbitmq
+            self.is_nats
             or self.authorization_state != "authorizationStateWaitPhoneNumber"
             or not self.__token
         ):
@@ -1264,9 +1232,6 @@ class Client(Decorators, Methods):
     def __stop_client(self) -> None:
         self.is_authenticated = False
         self.is_running = False
-
-        if self.__rabbitmq_iterator_task:
-            self.__rabbitmq_iterator_task.cancel()
 
         if self.__is_queue_worker:
             for worker_task in self._workers_tasks:

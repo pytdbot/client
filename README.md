@@ -30,7 +30,6 @@ Pytdbot is an asynchronous [**TDLib**](https://github.com/tdlib/td) wrapper for 
 - Telegram [API key](https://my.telegram.org/apps)
 - [tdjson](https://github.com/AYMENJD/tdjson) or [TDLib](https://github.com/tdlib/td#building)
 - [deepdiff](https://github.com/seperman/deepdiff)
-- [aio-pika](https://github.com/mosquito/aio-pika)
 
 ### Installation
 

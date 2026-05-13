@@ -11,7 +11,7 @@ requires-python = ">=3.10"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "AYMEN A", email = "let.me.code.safe@gmail.com" }]
-dependencies = ["deepdiff", "aio_pika"]
+dependencies = ["deepdiff"]
 keywords = [
     "telegram",
     "tdlib",
@@ -43,6 +43,7 @@ Tracker = "https://github.com/pytdbot/client/issues"
 
 [project.optional-dependencies]
 tdjson = ["tdjson"]
+nats = ["nats-py"]
 
 [tool.setuptools.packages.find]
 exclude = ["examples"]
