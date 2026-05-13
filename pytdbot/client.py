@@ -716,7 +716,9 @@ class Client(Decorators, Methods):
         if self.is_nats:
             await self.__on_update(
                 await self.__nc.request(
-                    self.__requests_subject, json_dumps(request, encode=True)
+                    self.__requests_subject,
+                    json_dumps(request, encode=True),
+                    timeout=None,
                 )
             )
         else:
@@ -1197,10 +1199,7 @@ class Client(Decorators, Methods):
             await self.process_update(obj_to_dict(update))
 
     async def __on_update(self, update):
-        try:
-            await self.process_update(json_loads(update.data))
-        except Exception:
-            self.logger.exception("Failed to process update")
+        self.loop.create_task(self.process_update(json_loads(update.data)))
 
     async def __handle_update_user(self, update: types.UpdateUser):
         if self.is_authenticated and self.me and update.user.id == self.me.id:
