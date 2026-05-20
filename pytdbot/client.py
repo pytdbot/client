@@ -172,7 +172,7 @@ class Client(Decorators, Methods):
         self.default_handlers_timeout = default_handlers_timeout
         self.no_updates = no_updates
         self.load_messages_before_reply = load_messages_before_reply
-        self.queue = asyncio.Queue()
+        self.queue = asyncio.Queue(maxsize=queue_size)
         self.user_bot = user_bot
         self.my_id = (
             get_bot_id_from_token(self.__token)
@@ -711,7 +711,7 @@ class Client(Decorators, Methods):
         if self.is_nats:
             await self.__nc.close()
 
-        self.__stop_client()
+        await self.__stop_client()
 
         if self.client_manager and not self.client_manager.start_clients_on_add:
             await self.client_manager.close()
@@ -965,11 +965,17 @@ class Client(Decorators, Methods):
 
     async def _queue_update_worker(self):
         self.is_running = True
-        while self.is_running:
-            try:
-                await self._handle_update(await self.queue.get())
-            except Exception:
-                self.logger.exception("Got worker exception")
+        try:
+            while self.is_running:
+                update = await self.queue.get()
+                try:
+                    await self._handle_update(update)
+                except Exception:
+                    self.logger.exception("Got worker exception")
+                finally:
+                    self.queue.task_done()
+        except asyncio.CancelledError:
+            pass
 
     async def set_td_parameters(self):
         r"""Make a call to :meth:`~pytdbot.Client.setTdlibParameters` with the current client init parameters
@@ -1197,13 +1203,14 @@ class Client(Decorators, Methods):
             await self.stop()
             raise AuthorizationError(res.message, code=res.code)
 
-    def __stop_client(self) -> None:
+    async def __stop_client(self) -> None:
         self.is_authenticated = False
         self.is_running = False
 
         if self.__is_queue_worker:
             for worker_task in self._workers_tasks:
                 worker_task.cancel()
+            await asyncio.gather(*self._workers_tasks, return_exceptions=True)
 
     def _register_signal_handlers(self):
         def _handle_signal():
