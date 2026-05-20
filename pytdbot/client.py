@@ -1016,6 +1016,7 @@ class Client(Decorators, Methods):
         if not isinstance(self.td_options, dict):
             return
 
+        tasks = []
         for k, v in self.td_options.items():
             v_type = type(v)
 
@@ -1028,7 +1029,7 @@ class Client(Decorators, Methods):
             else:
                 raise ValueError(f"Option {k} has unsupported type {v_type}")
 
-            self.loop.create_task(
+            tasks.append(
                 self.__send(
                     {
                         "@type": "setOption",
@@ -1040,6 +1041,9 @@ class Client(Decorators, Methods):
             )
             if self.logger.isEnabledFor(DEBUG):
                 self.logger.debug(f"Option {k} sent with value {v}")
+
+        if tasks:
+            await asyncio.gather(*tasks, return_exceptions=True)
 
     async def __handle_authorization_state(
         self, update: types.UpdateAuthorizationState
