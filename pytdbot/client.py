@@ -184,15 +184,17 @@ class Client(Decorators, Methods):
         self.logger = getLogger(f"{__name__}:{self.my_id or 0}")
         self.td_verbosity = td_verbosity
         self.td_log = td_log
-        self.connection_state: str = None
-        self.is_running = None
-        self.me: types.User = None
+        self.connection_state: str | None = None
+        self.is_running: bool | None = None
+        self.me: types.User | None = None
         self.is_authenticated = False
         self.is_reloading_plugins = False
         self.is_nats = True if nats_url else False
-        self.options = {}
-        self.allow_outgoing_message_types: tuple = (types.MessagePaymentRefunded,)
-        self.get_message_methods = frozenset(
+        self.options: dict[str, bool | int | str | None] = {}
+        self.allow_outgoing_message_types: tuple[type, ...] = (
+            types.MessagePaymentRefunded,
+        )
+        self.get_message_methods: frozenset[str] = frozenset(
             {
                 "getmessage",
                 "getmessagelocally",
@@ -203,14 +205,17 @@ class Client(Decorators, Methods):
 
         self._check_init_args()
 
-        self._handlers = {"initializer": [], "finalizer": []}
-        self._current_handlers = {}
+        self._handlers: dict[str, list[Handler]] = {
+            "initializer": [],
+            "finalizer": [],
+        }
+        self._current_handlers: dict[str, list[Handler]] = {}
         self._results: dict[str, asyncio.Future] = {}
-        self._workers_tasks = None
-        self.__wait_login: asyncio.Event = None
-        self.__authorization_state: str = None
-        self.__cache = {"is_coro_filter": {}}
-        self.__local_handlers = {
+        self._workers_tasks: list[asyncio.Task] | None = None
+        self.__wait_login: asyncio.Event | None = None
+        self.__authorization_state: str | None = None
+        self.__cache: dict[str, dict] = {"is_coro_filter": {}}
+        self.__local_handlers: dict[str, Callable] = {
             "updateAuthorizationState": self.__handle_authorization_state,
             "updateMessageSendSucceeded": self.__handle_update_message_succeeded,
             "updateMessageSendFailed": self.__handle_update_message_failed,
@@ -218,18 +223,17 @@ class Client(Decorators, Methods):
             "updateOption": self.__handle_update_option,
             "updateUser": self.__handle_update_user,
         }
-        self.__is_queue_worker = False
-        self.__is_closing = False
-        self.__idle_event: asyncio.Event = None
-        self.__closed_event: asyncio.Event = None
+        self.__is_queue_worker: bool = False
+        self.__is_closing: bool = False
+        self.__idle_event: asyncio.Event | None = None
+        self.__closed_event: asyncio.Event | None = None
 
-        # NATS
         self.__nc = None
-        self.__requests_subject = f"bot.{self.my_id}.requests"
-        self.__updates_subject = f"bot.{self.my_id}.updates"
-        self.__broadcast_subject = f"bot.{self.my_id}.broadcast"
+        self.__requests_subject: str = f"bot.{self.my_id}.requests"
+        self.__updates_subject: str = f"bot.{self.my_id}.updates"
+        self.__broadcast_subject: str = f"bot.{self.my_id}.broadcast"
 
-        self.loop = None
+        self.loop: asyncio.AbstractEventLoop | None = None
 
         if plugins is not None:
             self._load_plugins()
