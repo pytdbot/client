@@ -1225,7 +1225,11 @@ class Client(Decorators, Methods):
 
 
 def deepdiff(self, d1, d2):
-    d1 = obj_to_dict(d1)
+    if not isinstance(d1, dict):
+        d1 = obj_to_dict(d1)
+    if not isinstance(d2, dict):
+        d2 = obj_to_dict(d2)
+
     if not isinstance(d1, dict) or not isinstance(d2, dict):
         return d1 == d2
 
