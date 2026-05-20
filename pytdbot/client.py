@@ -1188,7 +1188,9 @@ class Client(Decorators, Methods):
             )
 
             try:
-                deepdiff(self, obj_to_dict(self.me), obj_to_dict(update.user))
+                await asyncio.to_thread(
+                    deepdiff, self, obj_to_dict(self.me), obj_to_dict(update.user)
+                )
             except Exception:
                 self.logger.exception("deepdiff failed")
             self.me = update.user
