@@ -427,10 +427,17 @@ class Client(Decorators, Methods):
         if update_type not in self._handlers:
             self._handlers[update_type] = []
 
-        if isinstance(position, int):
-            self._handlers[update_type].insert(position, handler)
-        else:
-            self._handlers[update_type].append(handler)
+        handlers_list = self._handlers[update_type]
+        _pos = (position is None, position)
+
+        inserted = False
+        for i, h in enumerate(handlers_list):
+            if _pos < (h.position is None, h.position):
+                handlers_list.insert(i, handler)
+                inserted = True
+                break
+        if not inserted:
+            handlers_list.append(handler)
 
         self._update_handlers()
 
@@ -472,10 +479,13 @@ class Client(Decorators, Methods):
 
         removed = False
         for handlers in self._handlers.values():
-            for handler in handlers.copy():
-                if handler.func == func:
-                    handlers.remove(handler)
+            i = 0
+            while i < len(handlers):
+                if handlers[i].func == func:
+                    del handlers[i]
                     removed = True
+                else:
+                    i += 1
 
         if removed:
             self._update_handlers()
