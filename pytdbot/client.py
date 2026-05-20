@@ -554,11 +554,17 @@ class Client(Decorators, Methods):
             ):
                 is_message_attempted_load = True
 
-                self.logger.debug(f"Attempt to load message {message_id} in {chat_id}")
+                if self.logger.isEnabledFor(DEBUG):
+                    self.logger.debug(
+                        f"Attempt to load message {message_id} in {chat_id}"
+                    )
 
                 message = await self.getMessage(chat_id=chat_id, message_id=message_id)
                 if message:
-                    self.logger.debug(f"Message {message_id} in {chat_id} is loaded")
+                    if self.logger.isEnabledFor(DEBUG):
+                        self.logger.debug(
+                            f"Message {message_id} in {chat_id} is loaded"
+                        )
                     continue
                 else:
                     self.logger.debug(
@@ -570,11 +576,13 @@ class Client(Decorators, Methods):
             ):
                 is_chat_attempted_load = True
 
-                self.logger.debug(f"Attempt to load chat {chat_id}")
+                if self.logger.isEnabledFor(DEBUG):
+                    self.logger.debug(f"Attempt to load chat {chat_id}")
 
                 chat = await self.getChat(chat_id=chat_id)
                 if not isinstance(chat, types.Error):
-                    self.logger.debug(f"Chat {chat_id} is loaded")
+                    if self.logger.isEnabledFor(DEBUG):
+                        self.logger.debug(f"Chat {chat_id} is loaded")
 
                     reply_to_message_id = (request.get("reply_to") or {}).get(
                         "message_id", 0
@@ -836,12 +844,12 @@ class Client(Decorators, Methods):
         self.logger.info(f"From {count} plugins got {handlers} handlers")
 
     def is_coro_filter(self, func: Callable) -> bool:
-        if func in self.__cache["is_coro_filter"]:
-            return self.__cache["is_coro_filter"][func]
-        else:
-            is_coro = iscoroutinefunction(func)
-            self.__cache["is_coro_filter"][func] = is_coro
-            return is_coro
+        cache = self.__cache["is_coro_filter"]
+        result = cache.get(func)
+        if result is None:
+            result = iscoroutinefunction(func)
+            cache[func] = result
+        return result
 
     async def process_update(self, update: dict) -> None:
         if not update:
@@ -1022,7 +1030,8 @@ class Client(Decorators, Methods):
                     }
                 )
             )
-            self.logger.debug(f"Option {k} sent with value {v}")
+            if self.logger.isEnabledFor(DEBUG):
+                self.logger.debug(f"Option {k} sent with value {v}")
 
     async def __handle_authorization_state(
         self, update: types.UpdateAuthorizationState
