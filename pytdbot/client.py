@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import signal
 import sys
-from collections.abc import Callable
+from collections.abc import Callable, Coroutine
 from importlib import import_module
 from importlib import reload as reload_module
 from inspect import iscoroutinefunction
@@ -855,7 +855,7 @@ class Client(Decorators, Methods):
             cache[func] = result
         return result
 
-    def _create_task(self, coro):
+    def _create_task(self, coro: Coroutine) -> asyncio.Task:
         task = self.loop.create_task(coro)
         task.add_done_callback(self.__task_done_callback)
         return task

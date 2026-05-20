@@ -26,7 +26,7 @@ class TdJson:
         :py:class:`ValueError`: If library not found
     """
 
-    def __init__(self, lib_path: str = None, verbosity: int = 2) -> None:
+    def __init__(self, lib_path: str | None = None, verbosity: int = 2) -> None:
         self.version = None
         self.commit_hash = None
 
@@ -38,7 +38,7 @@ class TdJson:
     def __exit__(self, exc_type, exc_value, traceback):
         pass
 
-    def _build_client(self, lib_path: str, verbosity: int) -> None:
+    def _build_client(self, lib_path: str | None, verbosity: int) -> None:
         """Build TdJson client
 
         Parameters:
