@@ -244,7 +244,7 @@ class Client(Decorators, Methods):
         try:
             await self.stop()
         except Exception:
-            pass
+            self.logger.exception("Error during client stop")
 
     @property
     def authorization_state(self) -> str:
@@ -1002,7 +1002,7 @@ class Client(Decorators, Methods):
         )
         if isinstance(res, types.Error):
             await self.stop()
-            raise AuthorizationError(res.message)
+            raise AuthorizationError(res.message, code=res.code)
 
     async def _set_options(self):
         if not isinstance(self.td_options, dict):
@@ -1193,7 +1193,7 @@ class Client(Decorators, Methods):
 
         if isinstance(res, types.Error):
             await self.stop()
-            raise AuthorizationError(res.message)
+            raise AuthorizationError(res.message, code=res.code)
 
     def __stop_client(self) -> None:
         self.is_authenticated = False
