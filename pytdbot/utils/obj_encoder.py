@@ -3,6 +3,8 @@ from base64 import b64encode
 
 from .. import types, utils
 
+_type_cache = {}
+
 
 def obj_to_json(obj, **kwargs):
     return json.dumps(obj_to_dict(obj), **kwargs)
@@ -24,7 +26,13 @@ def obj_to_dict(obj):
 def dict_to_obj(dict_obj, client=None):
     if isinstance(dict_obj, dict):
         if "@type" in dict_obj:
-            obj = getattr(types, utils.to_camel_case(dict_obj["@type"])).from_dict(
+            td_type = dict_obj["@type"]
+            obj_type = _type_cache.get(td_type)
+            if obj_type is None:
+                obj_type = getattr(types, utils.to_camel_case(td_type))
+                _type_cache[td_type] = obj_type
+
+            obj = obj_type.from_dict(
                 {key: dict_to_obj(value, client) for key, value in dict_obj.items()}
             )
             if client:

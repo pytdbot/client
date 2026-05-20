@@ -874,52 +874,16 @@ class Client(Decorators, Methods):
             return update.message
         return update
 
-    async def __run_initializers(self, update):
+    async def __run_handler_group(self, update, handlers, label):
         inner_object = self.get_inner_object(update)
 
-        for initializer in self._current_handlers["initializer"]:
-            try:
-                handler_value = inner_object if initializer.inner_object else update
-
-                if initializer.filter is not None:
-                    filter_function = initializer.filter.func
-
-                    if self.is_coro_filter(filter_function):
-                        if not await filter_function(self, handler_value):
-                            continue
-                    elif not filter_function(self, handler_value):
-                        continue
-
-                if (
-                    self.default_handlers_timeout is None
-                    and initializer.timeout is None
-                ):
-                    await initializer(self, handler_value)
-                else:
-                    timeout = initializer.timeout or self.default_handlers_timeout
-                    try:
-                        await asyncio.wait_for(
-                            initializer(self, handler_value),
-                            timeout=timeout,
-                        )
-                    except asyncio.TimeoutError:
-                        self.logger.warning(
-                            f"Initializer {initializer} timed out after {timeout} seconds"
-                        )
-            except StopHandlers as e:
-                raise e
-            except Exception:
-                self.logger.exception(f"Initializer {initializer} failed")
-
-    async def __run_handlers(self, update):
-        inner_object = self.get_inner_object(update)
-
-        for handler in self._current_handlers[update.getType()]:
+        for handler in handlers:
             try:
                 handler_value = inner_object if handler.inner_object else update
 
                 if handler.filter is not None:
                     filter_function = handler.filter.func
+
                     if self.is_coro_filter(filter_function):
                         if not await filter_function(self, handler_value):
                             continue
@@ -932,50 +896,32 @@ class Client(Decorators, Methods):
                     timeout = handler.timeout or self.default_handlers_timeout
                     try:
                         await asyncio.wait_for(
-                            handler(self, handler_value), timeout=timeout
-                        )
-                    except asyncio.TimeoutError:
-                        self.logger.warning(
-                            f"Handler {handler} timed out after {timeout} seconds"
-                        )
-            except StopHandlers as e:
-                raise e
-            except Exception:
-                self.logger.exception(f"Exception in {handler}")
-
-    async def __run_finalizers(self, update):
-        inner_object = self.get_inner_object(update)
-
-        for finalizer in self._current_handlers["finalizer"]:
-            try:
-                handler_value = inner_object if finalizer.inner_object else update
-
-                if finalizer.filter is not None:
-                    filter_function = finalizer.filter.func
-
-                    if self.is_coro_filter(filter_function):
-                        if not await filter_function(self, handler_value):
-                            continue
-                    elif not filter_function(self, handler_value):
-                        continue
-
-                if self.default_handlers_timeout is None and finalizer.timeout is None:
-                    await finalizer(self, handler_value)
-                else:
-                    try:
-                        timeout = finalizer.timeout or self.default_handlers_timeout
-                        await asyncio.wait_for(
-                            finalizer(self, handler_value),
+                            handler(self, handler_value),
                             timeout=timeout,
                         )
                     except asyncio.TimeoutError:
                         self.logger.warning(
-                            f"Finalizer {finalizer} timed out after {timeout} seconds"
+                            f"{label} {handler} timed out after {timeout} seconds"
                         )
             except StopHandlers as e:
                 raise e
             except Exception:
-                self.logger.exception(f"Finalizer {finalizer} failed")
+                self.logger.exception(f"{label} {handler} failed")
+
+    async def __run_initializers(self, update):
+        await self.__run_handler_group(
+            update, self._current_handlers["initializer"], "Initializer"
+        )
+
+    async def __run_handlers(self, update):
+        await self.__run_handler_group(
+            update, self._current_handlers[update.getType()], "Handler"
+        )
+
+    async def __run_finalizers(self, update):
+        await self.__run_handler_group(
+            update, self._current_handlers["finalizer"], "Finalizer"
+        )
 
     async def _handle_update(self, update):
         if update.getType() in self._current_handlers:
