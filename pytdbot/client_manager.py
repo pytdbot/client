@@ -157,22 +157,31 @@ class ClientManager:
                 logger.info("ClientManager started")
 
                 while not self.__should_exit:
-                    update = await self.loop.run_in_executor(
-                        executor,
-                        self.__tdjson.receive,
-                        100000.0,  # Seconds
-                    )
+                    try:
+                        update = await self.loop.run_in_executor(
+                            executor,
+                            self.__tdjson.receive,
+                            100000.0,
+                        )
+                    except Exception:
+                        logger.exception("Error receiving update from TDLib")
+                        continue
 
                     if not update or self.__should_exit:
                         continue
 
-                    client = self.__clients.get(update["@client_id"])
+                    client_id = update.get("@client_id")
+                    if client_id is None:
+                        logger.warning(
+                            "Update missing @client_id: %s", update.get("@type")
+                        )
+                        continue
+
+                    client = self.__clients.get(client_id)
                     if client:
                         self.loop.create_task(client.process_update(update))
                     else:
-                        logger.warning(
-                            f"Unknown client ID in update: {update['@client_id']}"
-                        )
+                        logger.warning(f"Unknown client ID in update: {client_id}")
 
             except Exception:
                 logger.exception("Error in td_receiver")
