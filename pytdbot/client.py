@@ -192,12 +192,14 @@ class Client(Decorators, Methods):
         self.is_nats = True if nats_url else False
         self.options = {}
         self.allow_outgoing_message_types: tuple = (types.MessagePaymentRefunded,)
-        self.get_message_methods = {
-            "getmessage",
-            "getmessagelocally",
-            "getrepliedmessage",
-            "getcallbackquerymessage",
-        }  # TODO: improve this
+        self.get_message_methods = frozenset(
+            {
+                "getmessage",
+                "getmessagelocally",
+                "getrepliedmessage",
+                "getcallbackquerymessage",
+            }
+        )
 
         self._check_init_args()
 
@@ -785,14 +787,14 @@ class Client(Decorators, Methods):
                 continue
 
             plugin_handlers_count = 0
+            seen = set()
             handlers_to_load = []
-            handlers_to_load += [
-                obj._handler
-                for obj in vars(module).values()
-                if hasattr(obj, "_handler")
-                and isinstance(obj._handler, Handler)
-                and obj._handler not in handlers_to_load
-            ]
+            for obj in vars(module).values():
+                if hasattr(obj, "_handler") and isinstance(obj._handler, Handler):
+                    hid = id(obj._handler)
+                    if hid not in seen:
+                        seen.add(hid)
+                        handlers_to_load.append(obj._handler)
 
             for handler in handlers_to_load:
                 if iscoroutinefunction(handler.func):

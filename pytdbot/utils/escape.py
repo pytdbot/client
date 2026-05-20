@@ -21,6 +21,9 @@ def escape_html(text: str, quote: bool = True) -> str:
 special_chars_v1 = r"_\*`\["
 special_chars_v2 = r"\_*[]()~`>#+-=|{}.!"
 
+_special_chars_v1_set = set(special_chars_v1)
+_special_chars_v2_set = set(special_chars_v2)
+
 
 def escape_markdown(text: str, version: int = 2) -> str:
     r"""Escape Markdown characters in the given text
@@ -40,9 +43,9 @@ def escape_markdown(text: str, version: int = 2) -> str:
     """
 
     if version == 1:
-        chars = special_chars_v1
+        chars = _special_chars_v1_set
     elif version == 2:
-        chars = special_chars_v2
+        chars = _special_chars_v2_set
     else:
         raise ValueError("Invalid version. Must be 1 or 2.")
 
