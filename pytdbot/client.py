@@ -357,9 +357,7 @@ class Client(Decorators, Methods):
                 self.__is_queue_worker = False
                 self.logger.info("Started with unlimited updates processes")
 
-        self.loop.create_task(
-            self.getOption(name="version")
-        )  # Ping TDLib to start processing updates
+        self._create_task(self.getOption(name="version"))
 
         if wait_login and self.__wait_login:
             await self.__wait_login.wait()
@@ -853,6 +851,17 @@ class Client(Decorators, Methods):
             cache[func] = result
         return result
 
+    def _create_task(self, coro):
+        task = self.loop.create_task(coro)
+        task.add_done_callback(self.__task_done_callback)
+        return task
+
+    def __task_done_callback(self, task):
+        if task.cancelled():
+            return
+        if exc := task.exception():
+            self.logger.error(f"Background task failed: {exc}", exc_info=exc)
+
     async def process_update(self, update: dict) -> None:
         if not update:
             self.logger.warning("Received None update")
@@ -882,7 +891,7 @@ class Client(Decorators, Methods):
         update_obj = dict_to_obj(update, self)
 
         if handler := self.__local_handlers.get(update.get("@type")):
-            self.loop.create_task(handler(update_obj))
+            self._create_task(handler(update_obj))
 
         if not self.is_nats and self.__is_queue_worker:
             self.queue.put_nowait(update_obj)
@@ -1178,7 +1187,7 @@ class Client(Decorators, Methods):
             await self.process_update(obj_to_dict(update))
 
     async def __on_update(self, update):
-        self.loop.create_task(self.process_update(json_loads(update.data)))
+        self._create_task(self.process_update(json_loads(update.data)))
 
     async def __handle_update_user(self, update: types.UpdateUser):
         if self.is_authenticated and self.me and update.user.id == self.me.id:
@@ -1220,7 +1229,7 @@ class Client(Decorators, Methods):
 
     def _register_signal_handlers(self):
         def _handle_signal():
-            self.loop.create_task(self.stop())
+            self._create_task(self.stop())
             for sig in (
                 signal.SIGINT,
                 signal.SIGTERM,
