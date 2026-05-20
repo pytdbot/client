@@ -25,7 +25,7 @@ def to_camel_case(input_str: str, delimiter: str = ".", is_class: bool = True) -
     return joined[0].lower() + joined[1:]
 
 
-def create_extra_id(bytes_size: int = 9):
+def create_extra_id(bytes_size: int = 9) -> str:
     return binascii.hexlify(os.urandom(bytes_size)).decode()
 
 
