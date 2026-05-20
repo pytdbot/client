@@ -53,6 +53,7 @@ class ClientManager:
         self.check_tdlib_version()
 
         self.__clients: dict[int, pytdbot.Client] = {}
+        self.__update_tasks: set[asyncio.Task] = set()
 
         if isinstance(clients, list):
             self.__pending_clients = clients
@@ -179,7 +180,9 @@ class ClientManager:
 
                     client = self.__clients.get(client_id)
                     if client:
-                        self.loop.create_task(client.process_update(update))
+                        task = self.loop.create_task(client.process_update(update))
+                        self.__update_tasks.add(task)
+                        task.add_done_callback(self.__update_tasks.discard)
                     else:
                         logger.warning(f"Unknown client ID in update: {client_id}")
 
@@ -208,7 +211,11 @@ class ClientManager:
             for client_id in list(self.__clients.keys()):
                 await self.delete_client(client_id, close_client=True)
 
-        # Send dummy request to wake up receiver
+        for task in self.__update_tasks:
+            task.cancel()
+        if self.__update_tasks:
+            await asyncio.gather(*self.__update_tasks, return_exceptions=True)
+
         self.send(0, {"@type": "getOption", "name": "version"})
 
         await self.__receiver_task
