@@ -1227,6 +1227,11 @@ class Client(Decorators, Methods):
                 worker_task.cancel()
             await asyncio.gather(*self._workers_tasks, return_exceptions=True)
 
+        for future in self._results.values():
+            if not future.done():
+                future.cancel()
+        self._results.clear()
+
     def _register_signal_handlers(self):
         def _handle_signal():
             self._create_task(self.stop())
