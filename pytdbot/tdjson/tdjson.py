@@ -97,6 +97,10 @@ class TdJson:
             self.execute({"@type": "getOption", "name": "version"}),
             self.execute({"@type": "getOption", "name": "commit_hash"}),
         )
+        if not isinstance(td_version, dict) or "value" not in td_version:
+            raise RuntimeError(f"TDLib did not return version info: {td_version}")
+        if not isinstance(td_commit_hash, dict) or "value" not in td_commit_hash:
+            raise RuntimeError(f"TDLib did not return commit hash: {td_commit_hash}")
         self.version = td_version["value"]
         self.commit_hash = td_commit_hash["value"]
 

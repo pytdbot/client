@@ -516,6 +516,8 @@ class Client(Decorators, Methods):
         """
 
         request = obj_to_dict(request)
+        if not isinstance(request, dict) or "@type" not in request:
+            raise ValueError("request must be a dict with a '@type' key")
         request["@extra"] = {"id": create_extra_id()}
         request_method = request["@type"].lower()
 
