@@ -45,14 +45,14 @@ empty_callback_data = CallbackData("")
 def load_callback_data(data: bytes) -> CallbackData:
     r"""loads already created callback data by :func:`~pytdbot.utils.callback_data`. Returns empty CallbackData on error"""
 
-    if not (data[0] == 0x5B and data[-1] == 0x5D):
+    if not data or not (data[0] == 0x5B and data[-1] == 0x5D):
         return empty_callback_data
 
     try:
         d = json_loads(data)
         if not isinstance(d, list) or len(d) != 2:
             return empty_callback_data
-    except Exception:
+    except (ValueError, TypeError):
         return empty_callback_data
     else:
         return CallbackData(*d)

@@ -48,5 +48,5 @@ def get_retry_after_time(error_message: str) -> int:
 
     try:
         return int(error_message.removeprefix(RETRY_AFTER_PREFEX))
-    except Exception:
+    except (ValueError, AttributeError):
         return 0
