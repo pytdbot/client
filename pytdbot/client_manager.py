@@ -158,15 +158,11 @@ class ClientManager:
                 logger.info("ClientManager started")
 
                 while not self.__should_exit:
-                    try:
-                        update = await self.loop.run_in_executor(
-                            executor,
-                            self.__tdjson.receive,
-                            100000.0,
-                        )
-                    except Exception:
-                        logger.exception("Error receiving update from TDLib")
-                        continue
+                    update = await self.loop.run_in_executor(
+                        executor,
+                        self.__tdjson.receive,
+                        100000.0, # Seconds
+                    )
 
                     if not update or self.__should_exit:
                         continue
