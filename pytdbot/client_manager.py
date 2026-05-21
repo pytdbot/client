@@ -53,7 +53,6 @@ class ClientManager:
         self.check_tdlib_version()
 
         self.__clients: dict[int, pytdbot.Client] = {}
-        self.__update_tasks: set[asyncio.Task] = set()
 
         if isinstance(clients, list):
             self.__pending_clients = clients
@@ -161,26 +160,19 @@ class ClientManager:
                     update = await self.loop.run_in_executor(
                         executor,
                         self.__tdjson.receive,
-                        100000.0, # Seconds
+                        100000.0,  # Seconds
                     )
 
                     if not update or self.__should_exit:
                         continue
 
-                    client_id = update.get("@client_id")
-                    if client_id is None:
-                        logger.warning(
-                            "Update missing @client_id: %s", update.get("@type")
-                        )
-                        continue
-
-                    client = self.__clients.get(client_id)
+                    client = self.__clients.get(update["@client_id"])
                     if client:
-                        task = self.loop.create_task(client.process_update(update))
-                        self.__update_tasks.add(task)
-                        task.add_done_callback(self.__update_tasks.discard)
+                        self.loop.create_task(client.process_update(update))
                     else:
-                        logger.warning(f"Unknown client ID in update: {client_id}")
+                        logger.warning(
+                            f"Unknown client ID in update: {update['@client_id']}"
+                        )
 
             except Exception:
                 logger.exception("Error in td_receiver")
@@ -207,11 +199,7 @@ class ClientManager:
             for client_id in list(self.__clients.keys()):
                 await self.delete_client(client_id, close_client=True)
 
-        for task in self.__update_tasks:
-            task.cancel()
-        if self.__update_tasks:
-            await asyncio.gather(*self.__update_tasks, return_exceptions=True)
-
+        # Send dummy request to wake up receiver
         self.send(0, {"@type": "getOption", "name": "version"})
 
         await self.__receiver_task
