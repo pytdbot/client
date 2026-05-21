@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import signal
 import sys
-from collections.abc import Callable, Coroutine
+from collections.abc import Callable
 from importlib import import_module
 from importlib import reload as reload_module
 from inspect import iscoroutinefunction
@@ -172,7 +172,7 @@ class Client(Decorators, Methods):
         self.default_handlers_timeout = default_handlers_timeout
         self.no_updates = no_updates
         self.load_messages_before_reply = load_messages_before_reply
-        self.queue = asyncio.Queue(maxsize=queue_size)
+        self.queue = asyncio.Queue()
         self.user_bot = user_bot
         self.my_id = (
             get_bot_id_from_token(self.__token)
@@ -184,38 +184,31 @@ class Client(Decorators, Methods):
         self.logger = getLogger(f"{__name__}:{self.my_id or 0}")
         self.td_verbosity = td_verbosity
         self.td_log = td_log
-        self.connection_state: str | None = None
-        self.is_running: bool | None = None
-        self.me: types.User | None = None
+        self.connection_state: str = None
+        self.is_running = None
+        self.me: types.User = None
         self.is_authenticated = False
         self.is_reloading_plugins = False
         self.is_nats = True if nats_url else False
-        self.options: dict[str, bool | int | str | None] = {}
-        self.allow_outgoing_message_types: tuple[type, ...] = (
-            types.MessagePaymentRefunded,
-        )
-        self.get_message_methods: frozenset[str] = frozenset(
-            {
-                "getmessage",
-                "getmessagelocally",
-                "getrepliedmessage",
-                "getcallbackquerymessage",
-            }
-        )
+        self.options = {}
+        self.allow_outgoing_message_types: tuple = (types.MessagePaymentRefunded,)
+        self.get_message_methods = {
+            "getmessage",
+            "getmessagelocally",
+            "getrepliedmessage",
+            "getcallbackquerymessage",
+        }  # TODO: improve this
 
         self._check_init_args()
 
-        self._handlers: dict[str, list[Handler]] = {
-            "initializer": [],
-            "finalizer": [],
-        }
-        self._current_handlers: dict[str, list[Handler]] = {}
+        self._handlers = {"initializer": [], "finalizer": []}
+        self._current_handlers = {}
         self._results: dict[str, asyncio.Future] = {}
-        self._workers_tasks: list[asyncio.Task] | None = None
-        self.__wait_login: asyncio.Event | None = None
-        self.__authorization_state: str | None = None
-        self.__cache: dict[str, dict] = {"is_coro_filter": {}}
-        self.__local_handlers: dict[str, Callable] = {
+        self._workers_tasks = None
+        self.__wait_login: asyncio.Event = None
+        self.__authorization_state: str = None
+        self.__cache = {"is_coro_filter": {}}
+        self.__local_handlers = {
             "updateAuthorizationState": self.__handle_authorization_state,
             "updateMessageSendSucceeded": self.__handle_update_message_succeeded,
             "updateMessageSendFailed": self.__handle_update_message_failed,
@@ -223,17 +216,18 @@ class Client(Decorators, Methods):
             "updateOption": self.__handle_update_option,
             "updateUser": self.__handle_update_user,
         }
-        self.__is_queue_worker: bool = False
-        self.__is_closing: bool = False
-        self.__idle_event: asyncio.Event | None = None
-        self.__closed_event: asyncio.Event | None = None
+        self.__is_queue_worker = False
+        self.__is_closing = False
+        self.__idle_event: asyncio.Event = None
+        self.__closed_event: asyncio.Event = None
 
+        # NATS
         self.__nc = None
-        self.__requests_subject: str = f"bot.{self.my_id}.requests"
-        self.__updates_subject: str = f"bot.{self.my_id}.updates"
-        self.__broadcast_subject: str = f"bot.{self.my_id}.broadcast"
+        self.__requests_subject = f"bot.{self.my_id}.requests"
+        self.__updates_subject = f"bot.{self.my_id}.updates"
+        self.__broadcast_subject = f"bot.{self.my_id}.broadcast"
 
-        self.loop: asyncio.AbstractEventLoop | None = None
+        self.loop = None
 
         if plugins is not None:
             self._load_plugins()
@@ -248,7 +242,7 @@ class Client(Decorators, Methods):
         try:
             await self.stop()
         except Exception:
-            self.logger.exception("Error during client stop")
+            pass
 
     @property
     def authorization_state(self) -> str:
@@ -361,7 +355,9 @@ class Client(Decorators, Methods):
                 self.__is_queue_worker = False
                 self.logger.info("Started with unlimited updates processes")
 
-        self._create_task(self.getOption(name="version"))
+        self.loop.create_task(
+            self.getOption(name="version")
+        )  # Ping TDLib to start processing updates
 
         if wait_login and self.__wait_login:
             await self.__wait_login.wait()
@@ -429,17 +425,10 @@ class Client(Decorators, Methods):
         if update_type not in self._handlers:
             self._handlers[update_type] = []
 
-        handlers_list = self._handlers[update_type]
-        _pos = (position is None, position)
-
-        inserted = False
-        for i, h in enumerate(handlers_list):
-            if _pos < (h.position is None, h.position):
-                handlers_list.insert(i, handler)
-                inserted = True
-                break
-        if not inserted:
-            handlers_list.append(handler)
+        if isinstance(position, int):
+            self._handlers[update_type].insert(position, handler)
+        else:
+            self._handlers[update_type].append(handler)
 
         self._update_handlers()
 
@@ -481,13 +470,10 @@ class Client(Decorators, Methods):
 
         removed = False
         for handlers in self._handlers.values():
-            i = 0
-            while i < len(handlers):
-                if handlers[i].func == func:
-                    del handlers[i]
+            for handler in handlers.copy():
+                if handler.func == func:
+                    handlers.remove(handler)
                     removed = True
-                else:
-                    i += 1
 
         if removed:
             self._update_handlers()
@@ -518,8 +504,6 @@ class Client(Decorators, Methods):
         """
 
         request = obj_to_dict(request)
-        if not isinstance(request, dict) or "@type" not in request:
-            raise ValueError("request must be a dict with a '@type' key")
         request["@extra"] = {"id": create_extra_id()}
         request_method = request["@type"].lower()
 
@@ -558,17 +542,11 @@ class Client(Decorators, Methods):
             ):
                 is_message_attempted_load = True
 
-                if self.logger.isEnabledFor(DEBUG):
-                    self.logger.debug(
-                        f"Attempt to load message {message_id} in {chat_id}"
-                    )
+                self.logger.debug(f"Attempt to load message {message_id} in {chat_id}")
 
                 message = await self.getMessage(chat_id=chat_id, message_id=message_id)
                 if message:
-                    if self.logger.isEnabledFor(DEBUG):
-                        self.logger.debug(
-                            f"Message {message_id} in {chat_id} is loaded"
-                        )
+                    self.logger.debug(f"Message {message_id} in {chat_id} is loaded")
                     continue
                 else:
                     self.logger.debug(
@@ -580,13 +558,11 @@ class Client(Decorators, Methods):
             ):
                 is_chat_attempted_load = True
 
-                if self.logger.isEnabledFor(DEBUG):
-                    self.logger.debug(f"Attempt to load chat {chat_id}")
+                self.logger.debug(f"Attempt to load chat {chat_id}")
 
                 chat = await self.getChat(chat_id=chat_id)
                 if not isinstance(chat, types.Error):
-                    if self.logger.isEnabledFor(DEBUG):
-                        self.logger.debug(f"Chat {chat_id} is loaded")
+                    self.logger.debug(f"Chat {chat_id} is loaded")
 
                     reply_to_message_id = (request.get("reply_to") or {}).get(
                         "message_id", 0
@@ -713,7 +689,7 @@ class Client(Decorators, Methods):
         if self.is_nats:
             await self.__nc.close()
 
-        await self.__stop_client()
+        self.__stop_client()
 
         if self.client_manager and not self.client_manager.start_clients_on_add:
             await self.client_manager.close()
@@ -809,14 +785,14 @@ class Client(Decorators, Methods):
                 continue
 
             plugin_handlers_count = 0
-            seen = set()
             handlers_to_load = []
-            for obj in vars(module).values():
-                if hasattr(obj, "_handler") and isinstance(obj._handler, Handler):
-                    hid = id(obj._handler)
-                    if hid not in seen:
-                        seen.add(hid)
-                        handlers_to_load.append(obj._handler)
+            handlers_to_load += [
+                obj._handler
+                for obj in vars(module).values()
+                if hasattr(obj, "_handler")
+                and isinstance(obj._handler, Handler)
+                and obj._handler not in handlers_to_load
+            ]
 
             for handler in handlers_to_load:
                 if iscoroutinefunction(handler.func):
@@ -848,23 +824,12 @@ class Client(Decorators, Methods):
         self.logger.info(f"From {count} plugins got {handlers} handlers")
 
     def is_coro_filter(self, func: Callable) -> bool:
-        cache = self.__cache["is_coro_filter"]
-        result = cache.get(func)
-        if result is None:
-            result = iscoroutinefunction(func)
-            cache[func] = result
-        return result
-
-    def _create_task(self, coro: Coroutine) -> asyncio.Task:
-        task = self.loop.create_task(coro)
-        task.add_done_callback(self.__task_done_callback)
-        return task
-
-    def __task_done_callback(self, task):
-        if task.cancelled():
-            return
-        if exc := task.exception():
-            self.logger.error(f"Background task failed: {exc}", exc_info=exc)
+        if func in self.__cache["is_coro_filter"]:
+            return self.__cache["is_coro_filter"][func]
+        else:
+            is_coro = iscoroutinefunction(func)
+            self.__cache["is_coro_filter"][func] = is_coro
+            return is_coro
 
     async def process_update(self, update: dict) -> None:
         if not update:
@@ -895,7 +860,7 @@ class Client(Decorators, Methods):
         update_obj = dict_to_obj(update, self)
 
         if handler := self.__local_handlers.get(update.get("@type")):
-            self._create_task(handler(update_obj))
+            self.loop.create_task(handler(update_obj))
 
         if not self.is_nats and self.__is_queue_worker:
             self.queue.put_nowait(update_obj)
@@ -907,16 +872,52 @@ class Client(Decorators, Methods):
             return update.message
         return update
 
-    async def __run_handler_group(self, update, handlers, label):
+    async def __run_initializers(self, update):
         inner_object = self.get_inner_object(update)
 
-        for handler in handlers:
+        for initializer in self._current_handlers["initializer"]:
+            try:
+                handler_value = inner_object if initializer.inner_object else update
+
+                if initializer.filter is not None:
+                    filter_function = initializer.filter.func
+
+                    if self.is_coro_filter(filter_function):
+                        if not await filter_function(self, handler_value):
+                            continue
+                    elif not filter_function(self, handler_value):
+                        continue
+
+                if (
+                    self.default_handlers_timeout is None
+                    and initializer.timeout is None
+                ):
+                    await initializer(self, handler_value)
+                else:
+                    timeout = initializer.timeout or self.default_handlers_timeout
+                    try:
+                        await asyncio.wait_for(
+                            initializer(self, handler_value),
+                            timeout=timeout,
+                        )
+                    except asyncio.TimeoutError:
+                        self.logger.warning(
+                            f"Initializer {initializer} timed out after {timeout} seconds"
+                        )
+            except StopHandlers as e:
+                raise e
+            except Exception:
+                self.logger.exception(f"Initializer {initializer} failed")
+
+    async def __run_handlers(self, update):
+        inner_object = self.get_inner_object(update)
+
+        for handler in self._current_handlers[update.getType()]:
             try:
                 handler_value = inner_object if handler.inner_object else update
 
                 if handler.filter is not None:
                     filter_function = handler.filter.func
-
                     if self.is_coro_filter(filter_function):
                         if not await filter_function(self, handler_value):
                             continue
@@ -929,32 +930,50 @@ class Client(Decorators, Methods):
                     timeout = handler.timeout or self.default_handlers_timeout
                     try:
                         await asyncio.wait_for(
-                            handler(self, handler_value),
-                            timeout=timeout,
+                            handler(self, handler_value), timeout=timeout
                         )
                     except asyncio.TimeoutError:
                         self.logger.warning(
-                            f"{label} {handler} timed out after {timeout} seconds"
+                            f"Handler {handler} timed out after {timeout} seconds"
                         )
             except StopHandlers as e:
                 raise e
             except Exception:
-                self.logger.exception(f"{label} {handler} failed")
-
-    async def __run_initializers(self, update):
-        await self.__run_handler_group(
-            update, self._current_handlers["initializer"], "Initializer"
-        )
-
-    async def __run_handlers(self, update):
-        await self.__run_handler_group(
-            update, self._current_handlers[update.getType()], "Handler"
-        )
+                self.logger.exception(f"Exception in {handler}")
 
     async def __run_finalizers(self, update):
-        await self.__run_handler_group(
-            update, self._current_handlers["finalizer"], "Finalizer"
-        )
+        inner_object = self.get_inner_object(update)
+
+        for finalizer in self._current_handlers["finalizer"]:
+            try:
+                handler_value = inner_object if finalizer.inner_object else update
+
+                if finalizer.filter is not None:
+                    filter_function = finalizer.filter.func
+
+                    if self.is_coro_filter(filter_function):
+                        if not await filter_function(self, handler_value):
+                            continue
+                    elif not filter_function(self, handler_value):
+                        continue
+
+                if self.default_handlers_timeout is None and finalizer.timeout is None:
+                    await finalizer(self, handler_value)
+                else:
+                    try:
+                        timeout = finalizer.timeout or self.default_handlers_timeout
+                        await asyncio.wait_for(
+                            finalizer(self, handler_value),
+                            timeout=timeout,
+                        )
+                    except asyncio.TimeoutError:
+                        self.logger.warning(
+                            f"Finalizer {finalizer} timed out after {timeout} seconds"
+                        )
+            except StopHandlers as e:
+                raise e
+            except Exception:
+                self.logger.exception(f"Finalizer {finalizer} failed")
 
     async def _handle_update(self, update):
         if update.getType() in self._current_handlers:
@@ -978,17 +997,11 @@ class Client(Decorators, Methods):
 
     async def _queue_update_worker(self):
         self.is_running = True
-        try:
-            while self.is_running:
-                update = await self.queue.get()
-                try:
-                    await self._handle_update(update)
-                except Exception:
-                    self.logger.exception("Got worker exception")
-                finally:
-                    self.queue.task_done()
-        except asyncio.CancelledError:
-            pass
+        while self.is_running:
+            try:
+                await self._handle_update(await self.queue.get())
+            except Exception:
+                self.logger.exception("Got worker exception")
 
     async def set_td_parameters(self):
         r"""Make a call to :meth:`~pytdbot.Client.setTdlibParameters` with the current client init parameters
@@ -1023,13 +1036,12 @@ class Client(Decorators, Methods):
         )
         if isinstance(res, types.Error):
             await self.stop()
-            raise AuthorizationError(res.message, code=res.code)
+            raise AuthorizationError(res.message)
 
     async def _set_options(self):
         if not isinstance(self.td_options, dict):
             return
 
-        tasks = []
         for k, v in self.td_options.items():
             v_type = type(v)
 
@@ -1042,7 +1054,7 @@ class Client(Decorators, Methods):
             else:
                 raise ValueError(f"Option {k} has unsupported type {v_type}")
 
-            tasks.append(
+            self.loop.create_task(
                 self.__send(
                     {
                         "@type": "setOption",
@@ -1052,11 +1064,7 @@ class Client(Decorators, Methods):
                     }
                 )
             )
-            if self.logger.isEnabledFor(DEBUG):
-                self.logger.debug(f"Option {k} sent with value {v}")
-
-        if tasks:
-            await asyncio.gather(*tasks, return_exceptions=True)
+            self.logger.debug(f"Option {k} sent with value {v}")
 
     async def __handle_authorization_state(
         self, update: types.UpdateAuthorizationState
@@ -1191,7 +1199,7 @@ class Client(Decorators, Methods):
             await self.process_update(obj_to_dict(update))
 
     async def __on_update(self, update):
-        self._create_task(self.process_update(json_loads(update.data)))
+        self.loop.create_task(self.process_update(json_loads(update.data)))
 
     async def __handle_update_user(self, update: types.UpdateUser):
         if self.is_authenticated and self.me and update.user.id == self.me.id:
@@ -1201,9 +1209,7 @@ class Client(Decorators, Methods):
             )
 
             try:
-                await asyncio.to_thread(
-                    deepdiff, self, obj_to_dict(self.me), obj_to_dict(update.user)
-                )
+                deepdiff(self, obj_to_dict(self.me), obj_to_dict(update.user))
             except Exception:
                 self.logger.exception("deepdiff failed")
             self.me = update.user
@@ -1220,25 +1226,19 @@ class Client(Decorators, Methods):
 
         if isinstance(res, types.Error):
             await self.stop()
-            raise AuthorizationError(res.message, code=res.code)
+            raise AuthorizationError(res.message)
 
-    async def __stop_client(self) -> None:
+    def __stop_client(self) -> None:
         self.is_authenticated = False
         self.is_running = False
 
         if self.__is_queue_worker:
             for worker_task in self._workers_tasks:
                 worker_task.cancel()
-            await asyncio.gather(*self._workers_tasks, return_exceptions=True)
-
-        for future in self._results.values():
-            if not future.done():
-                future.cancel()
-        self._results.clear()
 
     def _register_signal_handlers(self):
         def _handle_signal():
-            self._create_task(self.stop())
+            self.loop.create_task(self.stop())
             for sig in (
                 signal.SIGINT,
                 signal.SIGTERM,
@@ -1267,11 +1267,7 @@ class Client(Decorators, Methods):
 
 
 def deepdiff(self, d1, d2):
-    if not isinstance(d1, dict):
-        d1 = obj_to_dict(d1)
-    if not isinstance(d2, dict):
-        d2 = obj_to_dict(d2)
-
+    d1 = obj_to_dict(d1)
     if not isinstance(d1, dict) or not isinstance(d2, dict):
         return d1 == d2
 
