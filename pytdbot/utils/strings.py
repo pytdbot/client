@@ -9,23 +9,23 @@ def to_camel_case(input_str: str, delimiter: str = ".", is_class: bool = True) -
         return ""
 
     parts = input_str.split(delimiter)
-    camel_case_str = ""
 
-    for i, part in enumerate(parts):
-        if i > 0:
-            camel_case_str += part[0].upper() + part[1:]
-        else:
-            camel_case_str += part
+    result = [parts[0]]
+    for part in parts[1:]:
+        result.append(part[0].upper())
+        result.append(part[1:])
 
-    if camel_case_str:
-        camel_case_str = (
-            camel_case_str[0].upper() if is_class else camel_case_str[0].lower()
-        ) + camel_case_str[1:]
+    joined = "".join(result)
 
-    return camel_case_str
+    if not joined:
+        return ""
+
+    if is_class:
+        return joined[0].upper() + joined[1:]
+    return joined[0].lower() + joined[1:]
 
 
-def create_extra_id(bytes_size: int = 9):
+def create_extra_id(bytes_size: int = 9) -> str:
     return binascii.hexlify(os.urandom(bytes_size)).decode()
 
 
@@ -48,5 +48,5 @@ def get_retry_after_time(error_message: str) -> int:
 
     try:
         return int(error_message.removeprefix(RETRY_AFTER_PREFEX))
-    except Exception:
+    except (ValueError, AttributeError):
         return 0

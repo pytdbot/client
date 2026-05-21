@@ -11,6 +11,8 @@ from .td_updates import Updates
 
 logger = logging.getLogger(__name__)
 
+HandlerDecorator = Callable[[Callable], Callable]
+
 
 class Decorators(Updates):
     """Decorators class."""
@@ -21,7 +23,7 @@ class Decorators(Updates):
         position: int | None = None,
         inner_object: bool = False,
         timeout: float | None = None,
-    ) -> None:
+    ) -> HandlerDecorator:
         r"""A decorator to initialize an event object before running other handlers
 
         Parameters:
@@ -85,7 +87,7 @@ class Decorators(Updates):
         position: int | None = None,
         inner_object: bool = False,
         timeout: float | None = None,
-    ) -> None:
+    ) -> HandlerDecorator:
         r"""A decorator to finalize an event object after running all handlers
 
         Parameters:
@@ -147,7 +149,7 @@ class Decorators(Updates):
         filters: pytdbot.filters.Filter | None = None,
         position: int | None = None,
         timeout: float | None = None,
-    ) -> None:
+    ) -> HandlerDecorator:
         r"""A decorator to handle ``updateNewMessage`` but with ``Message`` object.
 
         Parameters:
@@ -207,7 +209,7 @@ class Decorators(Updates):
         filters: pytdbot.filters.Filter | None = None,
         position: int | None = None,
         timeout: float | None = None,
-    ) -> None:
+    ) -> HandlerDecorator:
         r"""A scheduled event has been triggered
 
         Parameters:

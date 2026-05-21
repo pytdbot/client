@@ -10,6 +10,16 @@ from ..filters import Filter
 class Handler:
     r"""A handler class."""
 
+    __slots__ = (
+        "func",
+        "update_type",
+        "filter",
+        "position",
+        "inner_object",
+        "timeout",
+        "is_from_plugin",
+    )
+
     def __init__(
         self,
         func: Callable,
