@@ -7,7 +7,6 @@ from collections.abc import Callable
 from importlib import import_module
 from importlib import reload as reload_module
 from inspect import iscoroutinefunction
-from json import dumps
 from logging import DEBUG, getLogger
 from os.path import join as join_path
 from pathlib import Path
@@ -37,6 +36,7 @@ from .utils import (
     json_dumps,
     json_loads,
     obj_to_dict,
+    obj_to_json,
 )
 
 
@@ -510,7 +510,7 @@ class Client(Decorators, Methods):
         if (
             self.logger.root.level >= DEBUG or self.logger.level >= DEBUG
         ):  # dumping all requests may create performance issues
-            self.logger.debug(f"Sending: {dumps(request, indent=4)}")
+            self.logger.debug(f"Sending: {obj_to_json(request, indent=4)}")
 
         is_chat_attempted_load = request_method == "getchat"
         is_message_attempted_load = request_method in self.get_message_methods
@@ -843,7 +843,7 @@ class Client(Decorators, Methods):
 
             if is_debug:
                 self.logger.debug(
-                    f"Received result for {result_id}: {dumps(update, indent=4)}"
+                    f"Received result for {result_id}: {obj_to_json(update, indent=4)}"
                 )
 
             if result_id and (result := self._results.pop(result_id, None)):
@@ -855,7 +855,7 @@ class Client(Decorators, Methods):
             return
 
         if is_debug:
-            self.logger.debug(f"Received: {dumps(update, indent=4)}")
+            self.logger.debug(f"Received: {obj_to_json(update, indent=4)}")
 
         update_obj = dict_to_obj(update, self)
 
