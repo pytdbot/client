@@ -1,3 +1,4 @@
+import json
 from base64 import b64encode
 from typing import Any
 
@@ -7,7 +8,7 @@ _type_cache: dict[str, type] = {}
 
 
 def obj_to_json(obj: Any, **kwargs: Any) -> str:
-    return utils.json_dumps(obj_to_dict(obj), **kwargs)
+    return json.dumps(obj_to_dict(obj), **kwargs)
 
 
 def obj_to_dict(obj: Any) -> Any:
@@ -25,7 +26,8 @@ def obj_to_dict(obj: Any) -> Any:
 
 def dict_to_obj(dict_obj: Any, client: Any = None) -> Any:
     if isinstance(dict_obj, dict):
-        if td_type := dict_obj.get("@type"):
+        if "@type" in dict_obj:
+            td_type = dict_obj["@type"]
             obj_type = _type_cache.get(td_type)
             if obj_type is None:
                 obj_type = getattr(types, utils.to_camel_case(td_type))
