@@ -410,7 +410,7 @@ class Methods(TDLibFunctions):
                 return parse
             caption = parse
         else:
-            caption = FormattedText(caption)
+            caption = FormattedText(text=caption)
 
         if isinstance(animation, str):
             animation = InputFileRemote(id=animation)
@@ -531,7 +531,7 @@ class Methods(TDLibFunctions):
                 return parse
             caption = parse
         else:
-            caption = FormattedText(caption)
+            caption = FormattedText(text=caption)
 
         if isinstance(audio, str):
             audio = InputFileRemote(id=audio)
@@ -641,7 +641,7 @@ class Methods(TDLibFunctions):
                 return parse
             caption = parse
         else:
-            caption = FormattedText(caption)
+            caption = FormattedText(text=caption)
 
         if isinstance(document, str):
             document = InputFileRemote(id=document)
@@ -864,7 +864,7 @@ class Methods(TDLibFunctions):
                 return parse
             caption = parse
         else:
-            caption = FormattedText(caption)
+            caption = FormattedText(text=caption)
 
         if isinstance(photo, str):
             photo = InputFileRemote(id=photo)
