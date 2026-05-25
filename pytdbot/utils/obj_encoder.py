@@ -26,8 +26,7 @@ def obj_to_dict(obj: Any) -> Any:
 
 def dict_to_obj(dict_obj: Any, client: Any = None) -> Any:
     if isinstance(dict_obj, dict):
-        if "@type" in dict_obj:
-            td_type = dict_obj["@type"]
+        if td_type := dict_obj.get("@type"):
             obj_type = _type_cache.get(td_type)
             if obj_type is None:
                 obj_type = getattr(types, utils.to_camel_case(td_type))
