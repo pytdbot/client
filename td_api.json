@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
     "version": "1.8.64",
-    "commit_hash": "7f163d850abbebecf749e99fb412271cc1f4e805",
+    "commit_hash": "e0943d068ce90b5010f1aea946e6901e25b43bf6",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -40129,7 +40129,7 @@
                     "type": "formattedText"
                 },
                 "to_language_code": {
-                    "description": "Language code of the language to which the message is translated. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh-CN\", \"zh\", \"zh-Hans\", \"zh-TW\", \"zh-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"",
+                    "description": "Language code of the language to which the message is translated. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh-CN\", \"zh\", \"zh-Hans\", \"zh-TW\", \"zh-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pt-BR\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -44896,7 +44896,7 @@
             "type": "Ok"
         },
         "getChatOwnerAfterLeaving": {
-            "description": "Returns the user who will become the owner of the chat after 7 days if the current user does not return to the supergroup or channel during that period or immediately for basic groups; requires owner privileges in the chat. Available only for supergroups and channel chats",
+            "description": "Returns the user who will become the owner of the chat after 7 days if the current user does not return to the supergroup or channel during that period or immediately for basic groups; requires owner privileges in the chat. Available only for basic groups, supergroups, and channel chats",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
