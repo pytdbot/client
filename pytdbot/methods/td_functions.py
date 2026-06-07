@@ -4084,7 +4084,7 @@ class TDLibFunctions:
                 Text to translate
 
             to_language_code (:class:`str`):
-                Language code of the language to which the message is translated\. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh\-CN\", \"zh\", \"zh\-Hans\", \"zh\-TW\", \"zh\-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"
+                Language code of the language to which the message is translated\. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh\-CN\", \"zh\", \"zh\-Hans\", \"zh\-TW\", \"zh\-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pt\-BR\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"
 
             tone (:class:`str`):
                 Tone of the translation; must be one of \"\", \"formal\", \"neutral\", \"casual\"; defaults to \"neutral\"
@@ -11633,7 +11633,7 @@ class TDLibFunctions:
     async def getChatOwnerAfterLeaving(
         self, *, chat_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.User:
-        r"""Returns the user who will become the owner of the chat after 7 days if the current user does not return to the supergroup or channel during that period or immediately for basic groups; requires owner privileges in the chat\. Available only for supergroups and channel chats
+        r"""Returns the user who will become the owner of the chat after 7 days if the current user does not return to the supergroup or channel during that period or immediately for basic groups; requires owner privileges in the chat\. Available only for basic groups, supergroups, and channel chats
 
         Parameters:
             chat_id (:class:`int`):
