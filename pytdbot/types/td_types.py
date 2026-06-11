@@ -73,6 +73,12 @@ class EmailAddressResetState:
     pass
 
 
+class RichMessageSource:
+    r"""Describes source of a rich message"""
+
+    pass
+
+
 class AuthorizationState:
     r"""Represents the current authorization state of the TDLib client"""
 
@@ -165,6 +171,12 @@ class ChatPhotoStickerType:
 
 class InputChatPhoto:
     r"""Describes a photo to be set as a user profile or chat photo"""
+
+    pass
+
+
+class WebAppOpenMode:
+    r"""Describes mode in which a Web App is opened"""
 
     pass
 
@@ -337,6 +349,18 @@ class SupergroupMembersFilter:
     pass
 
 
+class ChatJoinResult:
+    r"""Describes result of join of a chat by the current user"""
+
+    pass
+
+
+class ChatJoinRequestResult:
+    r"""Describes result of a chat join request"""
+
+    pass
+
+
 class InviteLinkChatType:
     r"""Describes the type of chat to which points an invite link"""
 
@@ -433,6 +457,12 @@ class ReactionNotificationSource:
     pass
 
 
+class DraftMessageContent:
+    r"""Content of the message draft"""
+
+    pass
+
+
 class ChatType:
     r"""Describes the type of chat"""
 
@@ -501,12 +531,6 @@ class ReplyMarkup:
 
 class LoginUrlInfo:
     r"""Contains information about an inline button of type inlineKeyboardButtonTypeLoginUrl or an external link"""
-
-    pass
-
-
-class WebAppOpenMode:
-    r"""Describes mode in which a Web App is opened"""
 
     pass
 
@@ -631,6 +655,12 @@ class InputPassportElementErrorSource:
     pass
 
 
+class PollMedia:
+    r"""Contains the media in a poll"""
+
+    pass
+
+
 class MessageContent:
     r"""Contains the content of a message"""
 
@@ -679,6 +709,12 @@ class MessageSelfDestructType:
     pass
 
 
+class InputPollMedia:
+    r"""The content of a poll media to send"""
+
+    pass
+
+
 class InputMessageContent:
     r"""The content of a message to send"""
 
@@ -692,7 +728,13 @@ class SearchMessagesFilter:
 
 
 class SearchMessagesChatTypeFilter:
-    r"""Represents a filter for type of the chats in which to search messages"""
+    r"""Represents a filter for type of the chats in which to search for messages"""
+
+    pass
+
+
+class SearchChatTypeFilter:
+    r"""Represents a filter for type of the chats to search for"""
 
     pass
 
@@ -1094,7 +1136,13 @@ class CanSendMessageToUserResult:
 
 
 class SessionType:
-    r"""Represents the type of session"""
+    r"""Describes type of user session"""
+
+    pass
+
+
+class SessionDeviceType:
+    r"""Represents the type of device from which session was created"""
 
     pass
 
@@ -1155,6 +1203,12 @@ class NetworkStatisticsEntry:
 
 class AutosaveSettingsScope:
     r"""Describes scope of autosave settings"""
+
+    pass
+
+
+class WebBrowserType:
+    r"""Describes the type of web browser"""
 
     pass
 
@@ -2222,6 +2276,198 @@ class FormattedText(TlObject):
         return data_class
 
 
+class RichMessage(TlObject):
+    r"""Describes a message with rich formatting
+
+    Parameters:
+        blocks (list[:class:`~pytdbot.types.PageBlock`]):
+            Content of the message
+
+        is_rtl (:class:`bool`):
+            True, if the message must be shown from right to left
+
+        is_full (:class:`bool`):
+            True, if the object contains the full message\. Otherwise, getFullRichMessage must be used to get the full message
+
+    """
+
+    def __init__(
+        self,
+        *,
+        blocks: list[PageBlock] | None = None,
+        is_rtl: bool | None = False,
+        is_full: bool | None = False,
+    ) -> None:
+        self.blocks = blocks or []
+        r"""Content of the message"""
+        self.is_rtl = is_rtl
+        r"""True, if the message must be shown from right to left"""
+        self.is_full = is_full
+        r"""True, if the object contains the full message\. Otherwise, getFullRichMessage must be used to get the full message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richMessage"]:
+        return "richMessage"
+
+    @classmethod
+    def getClass(self) -> Literal["RichMessage"]:
+        return "RichMessage"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "blocks": self.blocks,
+            "is_rtl": self.is_rtl,
+            "is_full": self.is_full,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichMessage | None:
+        if data:
+            data_class = cls()
+            data_class.blocks = data.get("blocks", None)
+            data_class.is_rtl = data.get("is_rtl", False)
+            data_class.is_full = data.get("is_full", False)
+
+        return data_class
+
+
+class RichMessageSourceMarkdown(TlObject, RichMessageSource):
+    r"""A Markdown\-formatted rich message; for bots only
+
+    Parameters:
+        text (:class:`str`):
+            Markdown\-formatted text of the message
+
+    """
+
+    def __init__(self, *, text: str | None = "") -> None:
+        self.text = text
+        r"""Markdown\-formatted text of the message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richMessageSourceMarkdown"]:
+        return "richMessageSourceMarkdown"
+
+    @classmethod
+    def getClass(self) -> Literal["RichMessageSource"]:
+        return "RichMessageSource"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichMessageSourceMarkdown | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", "")
+
+        return data_class
+
+
+class RichMessageSourceHtml(TlObject, RichMessageSource):
+    r"""An HTML\-formatted rich message; for bots only
+
+    Parameters:
+        text (:class:`str`):
+            HTML\-formatted text of the message
+
+    """
+
+    def __init__(self, *, text: str | None = "") -> None:
+        self.text = text
+        r"""HTML\-formatted text of the message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richMessageSourceHtml"]:
+        return "richMessageSourceHtml"
+
+    @classmethod
+    def getClass(self) -> Literal["RichMessageSource"]:
+        return "RichMessageSource"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichMessageSourceHtml | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", "")
+
+        return data_class
+
+
+class InputRichMessage(TlObject):
+    r"""A rich message to send
+
+    Parameters:
+        source (:class:`~pytdbot.types.RichMessageSource`):
+            Source of the rich message
+
+        is_rtl (:class:`bool`):
+            Pass true if the message must be shown from right to left
+
+        detect_automatic_blocks (:class:`bool`):
+            Pass true to enable detection of URLs, email addresses and other automatic blocks
+
+    """
+
+    def __init__(
+        self,
+        *,
+        source: RichMessageSourceMarkdown | RichMessageSourceHtml | None = None,
+        is_rtl: bool | None = False,
+        detect_automatic_blocks: bool | None = False,
+    ) -> None:
+        self.source = source
+        r"""Source of the rich message"""
+        self.is_rtl = is_rtl
+        r"""Pass true if the message must be shown from right to left"""
+        self.detect_automatic_blocks = detect_automatic_blocks
+        r"""Pass true to enable detection of URLs, email addresses and other automatic blocks"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputRichMessage"]:
+        return "inputRichMessage"
+
+    @classmethod
+    def getClass(self) -> Literal["InputRichMessage"]:
+        return "InputRichMessage"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "source": self.source,
+            "is_rtl": self.is_rtl,
+            "detect_automatic_blocks": self.detect_automatic_blocks,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputRichMessage | None:
+        if data:
+            data_class = cls()
+            data_class.source = data.get("source", None)
+            data_class.is_rtl = data.get("is_rtl", False)
+            data_class.detect_automatic_blocks = data.get(
+                "detect_automatic_blocks", False
+            )
+
+        return data_class
+
+
 class DiffEntity(TlObject):
     r"""Represents a change of a text
 
@@ -2731,7 +2977,7 @@ class AuthorizationStateWaitTdlibParameters(TlObject, AuthorizationState):
 
 
 class AuthorizationStateWaitPhoneNumber(TlObject, AuthorizationState):
-    r"""TDLib needs the user's phone number to authorize\. Call setAuthenticationPhoneNumber to provide the phone number, or use requestQrCodeAuthentication, getAuthenticationPasskeyParameters, or checkAuthenticationBotToken for other authentication options"""
+    r"""TDLib needs the user's phone number to authorize\. Call setAuthenticationPhoneNumber to provide the phone number, or use requestQrCodeAuthentication, getAuthenticationPasskeyParameters, checkAuthenticationWebToken, or checkAuthenticationBotToken for other authentication options"""
 
     def __init__(self) -> None:
         pass
@@ -4892,8 +5138,8 @@ class PollOption(TlObject):
         text (:class:`~pytdbot.types.FormattedText`):
             Option text; 1\-100 characters; may contain only custom emoji entities
 
-        media (:class:`~pytdbot.types.MessageContent`):
-            Option media; may be null if none\. If present, currently, can be only of the types messageAnimation, messageLocation, messagePhoto, messageSticker, messageVenue, or messageVideo without caption
+        media (:class:`~pytdbot.types.PollMedia`):
+            Option media; may be null if none\. If present, currently, can be only of the types pollMediaAnimation, pollMediaLink, pollMediaLocation, pollMediaPhoto, pollMediaSticker, pollMediaVenue, or pollMediaVideo
 
         voter_count (:class:`int`):
             Number of voters for this option, available only for closed or voted polls, or if the current user is the creator of the poll
@@ -4923,106 +5169,15 @@ class PollOption(TlObject):
         *,
         id: str | None = "",
         text: FormattedText | None = None,
-        media: MessageText
-        | MessageAnimation
-        | MessageAudio
-        | MessageDocument
-        | MessagePaidMedia
-        | MessagePhoto
-        | MessageSticker
-        | MessageVideo
-        | MessageVideoNote
-        | MessageVoiceNote
-        | MessageExpiredPhoto
-        | MessageExpiredVideo
-        | MessageExpiredVideoNote
-        | MessageExpiredVoiceNote
-        | MessageLocation
-        | MessageVenue
-        | MessageContact
-        | MessageAnimatedEmoji
-        | MessageDice
-        | MessageGame
-        | MessagePoll
-        | MessageStakeDice
-        | MessageStory
-        | MessageChecklist
-        | MessageInvoice
-        | MessageCall
-        | MessageGroupCall
-        | MessageVideoChatScheduled
-        | MessageVideoChatStarted
-        | MessageVideoChatEnded
-        | MessageInviteVideoChatParticipants
-        | MessagePollOptionAdded
-        | MessagePollOptionDeleted
-        | MessageBasicGroupChatCreate
-        | MessageSupergroupChatCreate
-        | MessageChatChangeTitle
-        | MessageChatChangePhoto
-        | MessageChatDeletePhoto
-        | MessageChatOwnerLeft
-        | MessageChatOwnerChanged
-        | MessageChatHasProtectedContentToggled
-        | MessageChatHasProtectedContentDisableRequested
-        | MessageChatAddMembers
-        | MessageChatJoinByLink
-        | MessageChatJoinByRequest
-        | MessageChatDeleteMember
-        | MessageChatUpgradeTo
-        | MessageChatUpgradeFrom
-        | MessagePinMessage
-        | MessageScreenshotTaken
-        | MessageChatSetBackground
-        | MessageChatSetTheme
-        | MessageChatSetMessageAutoDeleteTime
-        | MessageChatBoost
-        | MessageForumTopicCreated
-        | MessageForumTopicEdited
-        | MessageForumTopicIsClosedToggled
-        | MessageForumTopicIsHiddenToggled
-        | MessageSuggestProfilePhoto
-        | MessageSuggestBirthdate
-        | MessageCustomServiceAction
-        | MessageGameScore
-        | MessageManagedBotCreated
-        | MessagePaymentSuccessful
-        | MessagePaymentSuccessfulBot
-        | MessagePaymentRefunded
-        | MessageGiftedPremium
-        | MessagePremiumGiftCode
-        | MessageGiveawayCreated
-        | MessageGiveaway
-        | MessageGiveawayCompleted
-        | MessageGiveawayWinners
-        | MessageGiftedStars
-        | MessageGiftedTon
-        | MessageGiveawayPrizeStars
-        | MessageGift
-        | MessageUpgradedGift
-        | MessageRefundedUpgradedGift
-        | MessageUpgradedGiftPurchaseOffer
-        | MessageUpgradedGiftPurchaseOfferRejected
-        | MessagePaidMessagesRefunded
-        | MessagePaidMessagePriceChanged
-        | MessageDirectMessagePriceChanged
-        | MessageChecklistTasksDone
-        | MessageChecklistTasksAdded
-        | MessageSuggestedPostApprovalFailed
-        | MessageSuggestedPostApproved
-        | MessageSuggestedPostDeclined
-        | MessageSuggestedPostPaid
-        | MessageSuggestedPostRefunded
-        | MessageContactRegistered
-        | MessageUsersShared
-        | MessageChatShared
-        | MessageBotWriteAccessAllowed
-        | MessageWebAppDataSent
-        | MessageWebAppDataReceived
-        | MessagePassportDataSent
-        | MessagePassportDataReceived
-        | MessageProximityAlertTriggered
-        | MessageUnsupported
+        media: PollMediaAnimation
+        | PollMediaAudio
+        | PollMediaDocument
+        | PollMediaLink
+        | PollMediaLocation
+        | PollMediaPhoto
+        | PollMediaSticker
+        | PollMediaVenue
+        | PollMediaVideo
         | None = None,
         voter_count: int | None = 0,
         vote_percentage: int | None = 0,
@@ -5037,7 +5192,7 @@ class PollOption(TlObject):
         self.text = text
         r"""Option text; 1\-100 characters; may contain only custom emoji entities"""
         self.media = media
-        r"""Option media; may be null if none\. If present, currently, can be only of the types messageAnimation, messageLocation, messagePhoto, messageSticker, messageVenue, or messageVideo without caption"""
+        r"""Option media; may be null if none\. If present, currently, can be only of the types pollMediaAnimation, pollMediaLink, pollMediaLocation, pollMediaPhoto, pollMediaSticker, pollMediaVenue, or pollMediaVideo"""
         self.voter_count = voter_count
         r"""Number of voters for this option, available only for closed or voted polls, or if the current user is the creator of the poll"""
         self.vote_percentage = vote_percentage
@@ -5104,8 +5259,8 @@ class InputPollOption(TlObject):
         text (:class:`~pytdbot.types.FormattedText`):
             Option text; 1\-100 characters\. Only custom emoji entities are allowed to be added and only by Premium users
 
-        media (:class:`~pytdbot.types.InputMessageContent`):
-            Option media; pass null if none; ignored in addPollOption\. Must be one of the following types: inputMessageAnimation, non\-live inputMessageLocation, inputMessagePhoto, inputMessageSticker, inputMessageVenue, or inputMessageVideo without caption
+        media (:class:`~pytdbot.types.InputPollMedia`):
+            Option media; pass null if none; ignored in addPollOption\. Must be one of the following types: inputPollMediaAnimation, inputPollMediaLink, inputPollMediaLocation, inputPollMediaPhoto, inputPollMediaSticker, inputPollMediaVenue, or inputPollMediaVideo without caption
 
     """
 
@@ -5113,33 +5268,21 @@ class InputPollOption(TlObject):
         self,
         *,
         text: FormattedText | None = None,
-        media: InputMessageText
-        | InputMessageAnimation
-        | InputMessageAudio
-        | InputMessageDocument
-        | InputMessagePaidMedia
-        | InputMessagePhoto
-        | InputMessageSticker
-        | InputMessageVideo
-        | InputMessageVideoNote
-        | InputMessageVoiceNote
-        | InputMessageLocation
-        | InputMessageVenue
-        | InputMessageContact
-        | InputMessageDice
-        | InputMessageGame
-        | InputMessageInvoice
-        | InputMessagePoll
-        | InputMessageStakeDice
-        | InputMessageStory
-        | InputMessageChecklist
-        | InputMessageForwarded
+        media: InputPollMediaAnimation
+        | InputPollMediaAudio
+        | InputPollMediaDocument
+        | InputPollMediaLink
+        | InputPollMediaLocation
+        | InputPollMediaPhoto
+        | InputPollMediaSticker
+        | InputPollMediaVenue
+        | InputPollMediaVideo
         | None = None,
     ) -> None:
         self.text = text
         r"""Option text; 1\-100 characters\. Only custom emoji entities are allowed to be added and only by Premium users"""
         self.media = media
-        r"""Option media; pass null if none; ignored in addPollOption\. Must be one of the following types: inputMessageAnimation, non\-live inputMessageLocation, inputMessagePhoto, inputMessageSticker, inputMessageVenue, or inputMessageVideo without caption"""
+        r"""Option media; pass null if none; ignored in addPollOption\. Must be one of the following types: inputPollMediaAnimation, inputPollMediaLink, inputPollMediaLocation, inputPollMediaPhoto, inputPollMediaSticker, inputPollMediaVenue, or inputPollMediaVideo without caption"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -5203,8 +5346,8 @@ class PollTypeQuiz(TlObject, PollType):
         explanation (:class:`~pytdbot.types.FormattedText`):
             Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; empty for a yet unanswered poll
 
-        explanation_media (:class:`~pytdbot.types.MessageContent`):
-            Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; may be null if none or the poll is unanswered yet\. If present, currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption
+        explanation_media (:class:`~pytdbot.types.PollMedia`):
+            Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; may be null if none or the poll is unanswered yet\. If present, currently, can be only of the types pollMediaAnimation, pollMediaAudio, pollMediaDocument, pollMediaLocation, pollMediaPhoto, pollMediaVenue, or pollMediaVideo
 
     """
 
@@ -5213,106 +5356,15 @@ class PollTypeQuiz(TlObject, PollType):
         *,
         correct_option_ids: list[int] | None = None,
         explanation: FormattedText | None = None,
-        explanation_media: MessageText
-        | MessageAnimation
-        | MessageAudio
-        | MessageDocument
-        | MessagePaidMedia
-        | MessagePhoto
-        | MessageSticker
-        | MessageVideo
-        | MessageVideoNote
-        | MessageVoiceNote
-        | MessageExpiredPhoto
-        | MessageExpiredVideo
-        | MessageExpiredVideoNote
-        | MessageExpiredVoiceNote
-        | MessageLocation
-        | MessageVenue
-        | MessageContact
-        | MessageAnimatedEmoji
-        | MessageDice
-        | MessageGame
-        | MessagePoll
-        | MessageStakeDice
-        | MessageStory
-        | MessageChecklist
-        | MessageInvoice
-        | MessageCall
-        | MessageGroupCall
-        | MessageVideoChatScheduled
-        | MessageVideoChatStarted
-        | MessageVideoChatEnded
-        | MessageInviteVideoChatParticipants
-        | MessagePollOptionAdded
-        | MessagePollOptionDeleted
-        | MessageBasicGroupChatCreate
-        | MessageSupergroupChatCreate
-        | MessageChatChangeTitle
-        | MessageChatChangePhoto
-        | MessageChatDeletePhoto
-        | MessageChatOwnerLeft
-        | MessageChatOwnerChanged
-        | MessageChatHasProtectedContentToggled
-        | MessageChatHasProtectedContentDisableRequested
-        | MessageChatAddMembers
-        | MessageChatJoinByLink
-        | MessageChatJoinByRequest
-        | MessageChatDeleteMember
-        | MessageChatUpgradeTo
-        | MessageChatUpgradeFrom
-        | MessagePinMessage
-        | MessageScreenshotTaken
-        | MessageChatSetBackground
-        | MessageChatSetTheme
-        | MessageChatSetMessageAutoDeleteTime
-        | MessageChatBoost
-        | MessageForumTopicCreated
-        | MessageForumTopicEdited
-        | MessageForumTopicIsClosedToggled
-        | MessageForumTopicIsHiddenToggled
-        | MessageSuggestProfilePhoto
-        | MessageSuggestBirthdate
-        | MessageCustomServiceAction
-        | MessageGameScore
-        | MessageManagedBotCreated
-        | MessagePaymentSuccessful
-        | MessagePaymentSuccessfulBot
-        | MessagePaymentRefunded
-        | MessageGiftedPremium
-        | MessagePremiumGiftCode
-        | MessageGiveawayCreated
-        | MessageGiveaway
-        | MessageGiveawayCompleted
-        | MessageGiveawayWinners
-        | MessageGiftedStars
-        | MessageGiftedTon
-        | MessageGiveawayPrizeStars
-        | MessageGift
-        | MessageUpgradedGift
-        | MessageRefundedUpgradedGift
-        | MessageUpgradedGiftPurchaseOffer
-        | MessageUpgradedGiftPurchaseOfferRejected
-        | MessagePaidMessagesRefunded
-        | MessagePaidMessagePriceChanged
-        | MessageDirectMessagePriceChanged
-        | MessageChecklistTasksDone
-        | MessageChecklistTasksAdded
-        | MessageSuggestedPostApprovalFailed
-        | MessageSuggestedPostApproved
-        | MessageSuggestedPostDeclined
-        | MessageSuggestedPostPaid
-        | MessageSuggestedPostRefunded
-        | MessageContactRegistered
-        | MessageUsersShared
-        | MessageChatShared
-        | MessageBotWriteAccessAllowed
-        | MessageWebAppDataSent
-        | MessageWebAppDataReceived
-        | MessagePassportDataSent
-        | MessagePassportDataReceived
-        | MessageProximityAlertTriggered
-        | MessageUnsupported
+        explanation_media: PollMediaAnimation
+        | PollMediaAudio
+        | PollMediaDocument
+        | PollMediaLink
+        | PollMediaLocation
+        | PollMediaPhoto
+        | PollMediaSticker
+        | PollMediaVenue
+        | PollMediaVideo
         | None = None,
     ) -> None:
         self.correct_option_ids = correct_option_ids or []
@@ -5320,7 +5372,7 @@ class PollTypeQuiz(TlObject, PollType):
         self.explanation = explanation
         r"""Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; empty for a yet unanswered poll"""
         self.explanation_media = explanation_media
-        r"""Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; may be null if none or the poll is unanswered yet\. If present, currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption"""
+        r"""Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; may be null if none or the poll is unanswered yet\. If present, currently, can be only of the types pollMediaAnimation, pollMediaAudio, pollMediaDocument, pollMediaLocation, pollMediaPhoto, pollMediaVenue, or pollMediaVideo"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -5401,8 +5453,8 @@ class InputPollTypeQuiz(TlObject, InputPollType):
         explanation (:class:`~pytdbot.types.FormattedText`):
             Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; 0\-200 characters with at most 2 line feeds
 
-        explanation_media (:class:`~pytdbot.types.InputMessageContent`):
-            Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; pass null if none\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, non\-live inputMessageLocation, inputMessagePhoto, inputMessageVenue, or inputMessageVideo without caption
+        explanation_media (:class:`~pytdbot.types.InputPollMedia`):
+            Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; pass null if none\. Must be one of the following types: inputPollMediaAnimation, inputPollMediaAudio, inputPollMediaDocument, inputPollMediaLocation, inputPollMediaPhoto, inputPollMediaVenue, or inputPollMediaVideo without caption
 
     """
 
@@ -5411,27 +5463,15 @@ class InputPollTypeQuiz(TlObject, InputPollType):
         *,
         correct_option_ids: list[int] | None = None,
         explanation: FormattedText | None = None,
-        explanation_media: InputMessageText
-        | InputMessageAnimation
-        | InputMessageAudio
-        | InputMessageDocument
-        | InputMessagePaidMedia
-        | InputMessagePhoto
-        | InputMessageSticker
-        | InputMessageVideo
-        | InputMessageVideoNote
-        | InputMessageVoiceNote
-        | InputMessageLocation
-        | InputMessageVenue
-        | InputMessageContact
-        | InputMessageDice
-        | InputMessageGame
-        | InputMessageInvoice
-        | InputMessagePoll
-        | InputMessageStakeDice
-        | InputMessageStory
-        | InputMessageChecklist
-        | InputMessageForwarded
+        explanation_media: InputPollMediaAnimation
+        | InputPollMediaAudio
+        | InputPollMediaDocument
+        | InputPollMediaLink
+        | InputPollMediaLocation
+        | InputPollMediaPhoto
+        | InputPollMediaSticker
+        | InputPollMediaVenue
+        | InputPollMediaVideo
         | None = None,
     ) -> None:
         self.correct_option_ids = correct_option_ids or []
@@ -5439,7 +5479,7 @@ class InputPollTypeQuiz(TlObject, InputPollType):
         self.explanation = explanation
         r"""Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; 0\-200 characters with at most 2 line feeds"""
         self.explanation_media = explanation_media
-        r"""Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; pass null if none\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, non\-live inputMessageLocation, inputMessagePhoto, inputMessageVenue, or inputMessageVideo without caption"""
+        r"""Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; pass null if none\. Must be one of the following types: inputPollMediaAnimation, inputPollMediaAudio, inputPollMediaDocument, inputPollMediaLocation, inputPollMediaPhoto, inputPollMediaVenue, or inputPollMediaVideo without caption"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -6932,6 +6972,75 @@ class Location(TlObject):
         return data_class
 
 
+class LiveLocation(TlObject):
+    r"""A live location
+
+    Parameters:
+        location (:class:`~pytdbot.types.Location`):
+            The current location
+
+        live_period (:class:`int`):
+            Time relative to the message send date, for which the location can be updated, in seconds; if 0x7FFFFFFF, then location can be updated forever
+
+        heading (:class:`int`):
+            The direction in which the location moves, in degrees; 1\-360; 0 if unknown
+
+        proximity_alert_radius (:class:`int`):
+            The maximum distance to another chat member for proximity alerts, in meters \(0\-100000\)\. 0 if the notification is disabled\. Can't be enabled in direct messages chats, channels and Saved Messages\. Available only to the message sender
+
+    """
+
+    def __init__(
+        self,
+        *,
+        location: Location | None = None,
+        live_period: int | None = 0,
+        heading: int | None = 0,
+        proximity_alert_radius: int | None = 0,
+    ) -> None:
+        self.location = location
+        r"""The current location"""
+        self.live_period = live_period
+        r"""Time relative to the message send date, for which the location can be updated, in seconds; if 0x7FFFFFFF, then location can be updated forever"""
+        self.heading = heading
+        r"""The direction in which the location moves, in degrees; 1\-360; 0 if unknown"""
+        self.proximity_alert_radius = proximity_alert_radius
+        r"""The maximum distance to another chat member for proximity alerts, in meters \(0\-100000\)\. 0 if the notification is disabled\. Can't be enabled in direct messages chats, channels and Saved Messages\. Available only to the message sender"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["liveLocation"]:
+        return "liveLocation"
+
+    @classmethod
+    def getClass(self) -> Literal["LiveLocation"]:
+        return "LiveLocation"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "location": self.location,
+            "live_period": self.live_period,
+            "heading": self.heading,
+            "proximity_alert_radius": self.proximity_alert_radius,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> LiveLocation | None:
+        if data:
+            data_class = cls()
+            data_class.location = data.get("location", None)
+            data_class.live_period = int(data.get("live_period", 0))
+            data_class.heading = int(data.get("heading", 0))
+            data_class.proximity_alert_radius = int(
+                data.get("proximity_alert_radius", 0)
+            )
+
+        return data_class
+
+
 class Venue(TlObject):
     r"""Describes a venue
 
@@ -7290,6 +7399,9 @@ class Poll(TlObject):
         can_get_voters (:class:`bool`):
             True, if the current user can get voters in the poll using getPollVoters
 
+        can_see_results (:class:`bool`):
+            True, if the current user can see results of the poll
+
         is_anonymous (:class:`bool`):
             True, if the poll is anonymous
 
@@ -7334,6 +7446,7 @@ class Poll(TlObject):
         total_voter_count: int | None = 0,
         recent_voter_ids: list[MessageSender] | None = None,
         can_get_voters: bool | None = False,
+        can_see_results: bool | None = False,
         is_anonymous: bool | None = False,
         allows_multiple_answers: bool | None = False,
         allows_revoting: bool | None = False,
@@ -7364,6 +7477,8 @@ class Poll(TlObject):
         r"""Identifiers of recent voters, if the poll is non\-anonymous and poll results are available"""
         self.can_get_voters = can_get_voters
         r"""True, if the current user can get voters in the poll using getPollVoters"""
+        self.can_see_results = can_see_results
+        r"""True, if the current user can see results of the poll"""
         self.is_anonymous = is_anonymous
         r"""True, if the poll is anonymous"""
         self.allows_multiple_answers = allows_multiple_answers
@@ -7407,6 +7522,7 @@ class Poll(TlObject):
             "total_voter_count": self.total_voter_count,
             "recent_voter_ids": self.recent_voter_ids,
             "can_get_voters": self.can_get_voters,
+            "can_see_results": self.can_see_results,
             "is_anonymous": self.is_anonymous,
             "allows_multiple_answers": self.allows_multiple_answers,
             "allows_revoting": self.allows_revoting,
@@ -7430,6 +7546,7 @@ class Poll(TlObject):
             data_class.total_voter_count = int(data.get("total_voter_count", 0))
             data_class.recent_voter_ids = data.get("recent_voter_ids", None)
             data_class.can_get_voters = data.get("can_get_voters", False)
+            data_class.can_see_results = data.get("can_see_results", False)
             data_class.is_anonymous = data.get("is_anonymous", False)
             data_class.allows_multiple_answers = data.get(
                 "allows_multiple_answers", False
@@ -8245,6 +8362,9 @@ class UserTypeBot(TlObject, UserType):
         supports_guest_queries (:class:`bool`):
             True, if the bot can be queried by username from any non\-secret chat
 
+        is_guard (:class:`bool`):
+            True, if the bot can be set as a guard bot in supergroup chats
+
         need_location (:class:`bool`):
             True, if the location of the user is expected to be sent with every inline query to this bot
 
@@ -8272,6 +8392,7 @@ class UserTypeBot(TlObject, UserType):
         is_inline: bool | None = False,
         inline_query_placeholder: str | None = "",
         supports_guest_queries: bool | None = False,
+        is_guard: bool | None = False,
         need_location: bool | None = False,
         can_connect_to_business: bool | None = False,
         can_be_added_to_attachment_menu: bool | None = False,
@@ -8297,6 +8418,8 @@ class UserTypeBot(TlObject, UserType):
         r"""Placeholder for inline queries \(displayed on the application input field\)"""
         self.supports_guest_queries = supports_guest_queries
         r"""True, if the bot can be queried by username from any non\-secret chat"""
+        self.is_guard = is_guard
+        r"""True, if the bot can be set as a guard bot in supergroup chats"""
         self.need_location = need_location
         r"""True, if the location of the user is expected to be sent with every inline query to this bot"""
         self.can_connect_to_business = can_connect_to_business
@@ -8330,6 +8453,7 @@ class UserTypeBot(TlObject, UserType):
             "is_inline": self.is_inline,
             "inline_query_placeholder": self.inline_query_placeholder,
             "supports_guest_queries": self.supports_guest_queries,
+            "is_guard": self.is_guard,
             "need_location": self.need_location,
             "can_connect_to_business": self.can_connect_to_business,
             "can_be_added_to_attachment_menu": self.can_be_added_to_attachment_menu,
@@ -8358,6 +8482,7 @@ class UserTypeBot(TlObject, UserType):
             data_class.supports_guest_queries = data.get(
                 "supports_guest_queries", False
             )
+            data_class.is_guard = data.get("is_guard", False)
             data_class.need_location = data.get("need_location", False)
             data_class.can_connect_to_business = data.get(
                 "can_connect_to_business", False
@@ -9473,7 +9598,7 @@ class BusinessBotRights(TlObject):
 
 
 class BusinessConnectedBot(TlObject):
-    r"""Describes a bot connected to a business account
+    r"""Describes a business bot connected to an account
 
     Parameters:
         bot_user_id (:class:`int`):
@@ -9527,6 +9652,73 @@ class BusinessConnectedBot(TlObject):
             data_class.bot_user_id = int(data.get("bot_user_id", 0))
             data_class.recipients = data.get("recipients", None)
             data_class.rights = data.get("rights", None)
+
+        return data_class
+
+
+class BusinessConnectedBotInfo(TlObject):
+    r"""Describes a connection of a bot to an account
+
+    Parameters:
+        bot (:class:`~pytdbot.types.BusinessConnectedBot`):
+            Information about the bot
+
+        connection_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the bot was added; may be 0 if unknown
+
+        device_model (:class:`str`):
+            Model of the device that was used for the bot connection, as provided by the application; may be empty if unknown
+
+        location (:class:`str`):
+            A human\-readable description of the location from which the bot was connected, based on the IP address; may be empty if unknown
+
+    """
+
+    def __init__(
+        self,
+        *,
+        bot: BusinessConnectedBot | None = None,
+        connection_date: int | None = 0,
+        device_model: str | None = "",
+        location: str | None = "",
+    ) -> None:
+        self.bot = bot
+        r"""Information about the bot"""
+        self.connection_date = connection_date
+        r"""Point in time \(Unix timestamp\) when the bot was added; may be 0 if unknown"""
+        self.device_model = device_model
+        r"""Model of the device that was used for the bot connection, as provided by the application; may be empty if unknown"""
+        self.location = location
+        r"""A human\-readable description of the location from which the bot was connected, based on the IP address; may be empty if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["businessConnectedBotInfo"]:
+        return "businessConnectedBotInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["BusinessConnectedBotInfo"]:
+        return "BusinessConnectedBotInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "bot": self.bot,
+            "connection_date": self.connection_date,
+            "device_model": self.device_model,
+            "location": self.location,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> BusinessConnectedBotInfo | None:
+        if data:
+            data_class = cls()
+            data_class.bot = data.get("bot", None)
+            data_class.connection_date = int(data.get("connection_date", 0))
+            data_class.device_model = data.get("device_model", "")
+            data_class.location = data.get("location", "")
 
         return data_class
 
@@ -10558,7 +10750,7 @@ class ChatPermissions(TlObject):
 
     Parameters:
         can_send_basic_messages (:class:`bool`):
-            True, if the user can send text messages, contacts, giveaways, giveaway winners, invoices, locations, and venues
+            True, if the user can send text messages, rich messages, contacts, giveaways, giveaway winners, invoices, locations, and venues
 
         can_send_audios (:class:`bool`):
             True, if the user can send music files
@@ -10628,7 +10820,7 @@ class ChatPermissions(TlObject):
         can_create_topics: bool | None = False,
     ) -> None:
         self.can_send_basic_messages = can_send_basic_messages
-        r"""True, if the user can send text messages, contacts, giveaways, giveaway winners, invoices, locations, and venues"""
+        r"""True, if the user can send text messages, rich messages, contacts, giveaways, giveaway winners, invoices, locations, and venues"""
         self.can_send_audios = can_send_audios
         r"""True, if the user can send music files"""
         self.can_send_documents = can_send_documents
@@ -10891,6 +11083,522 @@ class ChatAdministratorRights(TlObject):
             )
             data_class.can_manage_tags = data.get("can_manage_tags", False)
             data_class.is_anonymous = data.get("is_anonymous", False)
+
+        return data_class
+
+
+class ThemeParameters(TlObject):
+    r"""Contains parameters of the application theme
+
+    Parameters:
+        background_color (:class:`int`):
+            A color of the background in the RGB format
+
+        secondary_background_color (:class:`int`):
+            A secondary color for the background in the RGB format
+
+        header_background_color (:class:`int`):
+            A color of the header background in the RGB format
+
+        bottom_bar_background_color (:class:`int`):
+            A color of the bottom bar background in the RGB format
+
+        section_background_color (:class:`int`):
+            A color of the section background in the RGB format
+
+        section_separator_color (:class:`int`):
+            A color of the section separator in the RGB format
+
+        text_color (:class:`int`):
+            A color of text in the RGB format
+
+        accent_text_color (:class:`int`):
+            An accent color of the text in the RGB format
+
+        section_header_text_color (:class:`int`):
+            A color of text on the section headers in the RGB format
+
+        subtitle_text_color (:class:`int`):
+            A color of the subtitle text in the RGB format
+
+        destructive_text_color (:class:`int`):
+            A color of the text for destructive actions in the RGB format
+
+        hint_color (:class:`int`):
+            A color of hints in the RGB format
+
+        link_color (:class:`int`):
+            A color of links in the RGB format
+
+        button_color (:class:`int`):
+            A color of the buttons in the RGB format
+
+        button_text_color (:class:`int`):
+            A color of text on the buttons in the RGB format
+
+    """
+
+    def __init__(
+        self,
+        *,
+        background_color: int | None = 0,
+        secondary_background_color: int | None = 0,
+        header_background_color: int | None = 0,
+        bottom_bar_background_color: int | None = 0,
+        section_background_color: int | None = 0,
+        section_separator_color: int | None = 0,
+        text_color: int | None = 0,
+        accent_text_color: int | None = 0,
+        section_header_text_color: int | None = 0,
+        subtitle_text_color: int | None = 0,
+        destructive_text_color: int | None = 0,
+        hint_color: int | None = 0,
+        link_color: int | None = 0,
+        button_color: int | None = 0,
+        button_text_color: int | None = 0,
+    ) -> None:
+        self.background_color = background_color
+        r"""A color of the background in the RGB format"""
+        self.secondary_background_color = secondary_background_color
+        r"""A secondary color for the background in the RGB format"""
+        self.header_background_color = header_background_color
+        r"""A color of the header background in the RGB format"""
+        self.bottom_bar_background_color = bottom_bar_background_color
+        r"""A color of the bottom bar background in the RGB format"""
+        self.section_background_color = section_background_color
+        r"""A color of the section background in the RGB format"""
+        self.section_separator_color = section_separator_color
+        r"""A color of the section separator in the RGB format"""
+        self.text_color = text_color
+        r"""A color of text in the RGB format"""
+        self.accent_text_color = accent_text_color
+        r"""An accent color of the text in the RGB format"""
+        self.section_header_text_color = section_header_text_color
+        r"""A color of text on the section headers in the RGB format"""
+        self.subtitle_text_color = subtitle_text_color
+        r"""A color of the subtitle text in the RGB format"""
+        self.destructive_text_color = destructive_text_color
+        r"""A color of the text for destructive actions in the RGB format"""
+        self.hint_color = hint_color
+        r"""A color of hints in the RGB format"""
+        self.link_color = link_color
+        r"""A color of links in the RGB format"""
+        self.button_color = button_color
+        r"""A color of the buttons in the RGB format"""
+        self.button_text_color = button_text_color
+        r"""A color of text on the buttons in the RGB format"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["themeParameters"]:
+        return "themeParameters"
+
+    @classmethod
+    def getClass(self) -> Literal["ThemeParameters"]:
+        return "ThemeParameters"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "background_color": self.background_color,
+            "secondary_background_color": self.secondary_background_color,
+            "header_background_color": self.header_background_color,
+            "bottom_bar_background_color": self.bottom_bar_background_color,
+            "section_background_color": self.section_background_color,
+            "section_separator_color": self.section_separator_color,
+            "text_color": self.text_color,
+            "accent_text_color": self.accent_text_color,
+            "section_header_text_color": self.section_header_text_color,
+            "subtitle_text_color": self.subtitle_text_color,
+            "destructive_text_color": self.destructive_text_color,
+            "hint_color": self.hint_color,
+            "link_color": self.link_color,
+            "button_color": self.button_color,
+            "button_text_color": self.button_text_color,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ThemeParameters | None:
+        if data:
+            data_class = cls()
+            data_class.background_color = int(data.get("background_color", 0))
+            data_class.secondary_background_color = int(
+                data.get("secondary_background_color", 0)
+            )
+            data_class.header_background_color = int(
+                data.get("header_background_color", 0)
+            )
+            data_class.bottom_bar_background_color = int(
+                data.get("bottom_bar_background_color", 0)
+            )
+            data_class.section_background_color = int(
+                data.get("section_background_color", 0)
+            )
+            data_class.section_separator_color = int(
+                data.get("section_separator_color", 0)
+            )
+            data_class.text_color = int(data.get("text_color", 0))
+            data_class.accent_text_color = int(data.get("accent_text_color", 0))
+            data_class.section_header_text_color = int(
+                data.get("section_header_text_color", 0)
+            )
+            data_class.subtitle_text_color = int(data.get("subtitle_text_color", 0))
+            data_class.destructive_text_color = int(
+                data.get("destructive_text_color", 0)
+            )
+            data_class.hint_color = int(data.get("hint_color", 0))
+            data_class.link_color = int(data.get("link_color", 0))
+            data_class.button_color = int(data.get("button_color", 0))
+            data_class.button_text_color = int(data.get("button_text_color", 0))
+
+        return data_class
+
+
+class WebAppOpenModeCompact(TlObject, WebAppOpenMode):
+    r"""The Web App is opened in the compact mode"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["webAppOpenModeCompact"]:
+        return "webAppOpenModeCompact"
+
+    @classmethod
+    def getClass(self) -> Literal["WebAppOpenMode"]:
+        return "WebAppOpenMode"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebAppOpenModeCompact | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class WebAppOpenModeFullSize(TlObject, WebAppOpenMode):
+    r"""The Web App is opened in the full\-size mode"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["webAppOpenModeFullSize"]:
+        return "webAppOpenModeFullSize"
+
+    @classmethod
+    def getClass(self) -> Literal["WebAppOpenMode"]:
+        return "WebAppOpenMode"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebAppOpenModeFullSize | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class WebAppOpenModeFullScreen(TlObject, WebAppOpenMode):
+    r"""The Web App is opened in the full\-screen mode"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["webAppOpenModeFullScreen"]:
+        return "webAppOpenModeFullScreen"
+
+    @classmethod
+    def getClass(self) -> Literal["WebAppOpenMode"]:
+        return "WebAppOpenMode"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebAppOpenModeFullScreen | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class FoundWebApp(TlObject):
+    r"""Contains information about a Web App found by its short name
+
+    Parameters:
+        web_app (:class:`~pytdbot.types.WebApp`):
+            The Web App
+
+        request_write_access (:class:`bool`):
+            True, if the user must be asked for the permission to the bot to send them messages
+
+        skip_confirmation (:class:`bool`):
+            True, if there is no need to show an ordinary open URL confirmation before opening the Web App\. The field must be ignored and confirmation must be shown anyway if the Web App link was hidden
+
+    """
+
+    def __init__(
+        self,
+        *,
+        web_app: WebApp | None = None,
+        request_write_access: bool | None = False,
+        skip_confirmation: bool | None = False,
+    ) -> None:
+        self.web_app = web_app
+        r"""The Web App"""
+        self.request_write_access = request_write_access
+        r"""True, if the user must be asked for the permission to the bot to send them messages"""
+        self.skip_confirmation = skip_confirmation
+        r"""True, if there is no need to show an ordinary open URL confirmation before opening the Web App\. The field must be ignored and confirmation must be shown anyway if the Web App link was hidden"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["foundWebApp"]:
+        return "foundWebApp"
+
+    @classmethod
+    def getClass(self) -> Literal["FoundWebApp"]:
+        return "FoundWebApp"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "web_app": self.web_app,
+            "request_write_access": self.request_write_access,
+            "skip_confirmation": self.skip_confirmation,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> FoundWebApp | None:
+        if data:
+            data_class = cls()
+            data_class.web_app = data.get("web_app", None)
+            data_class.request_write_access = data.get("request_write_access", False)
+            data_class.skip_confirmation = data.get("skip_confirmation", False)
+
+        return data_class
+
+
+class WebAppUrl(TlObject):
+    r"""Contains information about a Web App URL
+
+    Parameters:
+        url (:class:`str`):
+            The Web App URL to open in a web view
+
+        require_same_origin (:class:`bool`):
+            True, if events from the Web App must be accepted only from the same origin as the URL
+
+    """
+
+    def __init__(
+        self, *, url: str | None = "", require_same_origin: bool | None = False
+    ) -> None:
+        self.url = url
+        r"""The Web App URL to open in a web view"""
+        self.require_same_origin = require_same_origin
+        r"""True, if events from the Web App must be accepted only from the same origin as the URL"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["webAppUrl"]:
+        return "webAppUrl"
+
+    @classmethod
+    def getClass(self) -> Literal["WebAppUrl"]:
+        return "WebAppUrl"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "url": self.url,
+            "require_same_origin": self.require_same_origin,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebAppUrl | None:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.require_same_origin = data.get("require_same_origin", False)
+
+        return data_class
+
+
+class WebAppInfo(TlObject):
+    r"""Contains information about a Web App
+
+    Parameters:
+        launch_id (:class:`int`):
+            Unique identifier for the Web App launch
+
+        url (:class:`~pytdbot.types.WebAppUrl`):
+            The Web App URL to open in a web view
+
+    """
+
+    def __init__(
+        self, *, launch_id: int | None = 0, url: WebAppUrl | None = None
+    ) -> None:
+        self.launch_id = launch_id
+        r"""Unique identifier for the Web App launch"""
+        self.url = url
+        r"""The Web App URL to open in a web view"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["webAppInfo"]:
+        return "webAppInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["WebAppInfo"]:
+        return "WebAppInfo"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "launch_id": self.launch_id, "url": self.url}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebAppInfo | None:
+        if data:
+            data_class = cls()
+            data_class.launch_id = int(data.get("launch_id", 0))
+            data_class.url = data.get("url", None)
+
+        return data_class
+
+
+class MainWebApp(TlObject):
+    r"""Contains information about the main Web App of a bot
+
+    Parameters:
+        url (:class:`~pytdbot.types.WebAppUrl`):
+            URL of the Web App to open
+
+        mode (:class:`~pytdbot.types.WebAppOpenMode`):
+            The mode in which the Web App must be opened
+
+    """
+
+    def __init__(
+        self,
+        *,
+        url: WebAppUrl | None = None,
+        mode: WebAppOpenModeCompact
+        | WebAppOpenModeFullSize
+        | WebAppOpenModeFullScreen
+        | None = None,
+    ) -> None:
+        self.url = url
+        r"""URL of the Web App to open"""
+        self.mode = mode
+        r"""The mode in which the Web App must be opened"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["mainWebApp"]:
+        return "mainWebApp"
+
+    @classmethod
+    def getClass(self) -> Literal["MainWebApp"]:
+        return "MainWebApp"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "url": self.url, "mode": self.mode}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> MainWebApp | None:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", None)
+            data_class.mode = data.get("mode", None)
+
+        return data_class
+
+
+class WebAppOpenParameters(TlObject):
+    r"""Options to be used when a Web App is opened
+
+    Parameters:
+        theme (:class:`~pytdbot.types.ThemeParameters`):
+            Preferred Web App theme; pass null to use the default theme
+
+        application_name (:class:`str`):
+            Short name of the current application; 0\-64 English letters, digits, and underscores
+
+        mode (:class:`~pytdbot.types.WebAppOpenMode`):
+            The mode in which the Web App is opened; pass null to open in webAppOpenModeFullSize
+
+    """
+
+    def __init__(
+        self,
+        *,
+        theme: ThemeParameters | None = None,
+        application_name: str | None = "",
+        mode: WebAppOpenModeCompact
+        | WebAppOpenModeFullSize
+        | WebAppOpenModeFullScreen
+        | None = None,
+    ) -> None:
+        self.theme = theme
+        r"""Preferred Web App theme; pass null to use the default theme"""
+        self.application_name = application_name
+        r"""Short name of the current application; 0\-64 English letters, digits, and underscores"""
+        self.mode = mode
+        r"""The mode in which the Web App is opened; pass null to open in webAppOpenModeFullSize"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["webAppOpenParameters"]:
+        return "webAppOpenParameters"
+
+    @classmethod
+    def getClass(self) -> Literal["WebAppOpenParameters"]:
+        return "WebAppOpenParameters"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "theme": self.theme,
+            "application_name": self.application_name,
+            "mode": self.mode,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebAppOpenParameters | None:
+        if data:
+            data_class = cls()
+            data_class.theme = data.get("theme", None)
+            data_class.application_name = data.get("application_name", "")
+            data_class.mode = data.get("mode", None)
 
         return data_class
 
@@ -20728,6 +21436,81 @@ class GiveawayPrizeStars(TlObject, GiveawayPrize):
         return data_class
 
 
+class LinkPreviewOptions(TlObject):
+    r"""Options to be used for generation of a link preview
+
+    Parameters:
+        is_disabled (:class:`bool`):
+            True, if link preview must be disabled
+
+        url (:class:`str`):
+            URL to use for link preview\. If empty, then the first URL found in the message text will be used
+
+        force_small_media (:class:`bool`):
+            True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified
+
+        force_large_media (:class:`bool`):
+            True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified
+
+        show_above_text (:class:`bool`):
+            True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats
+
+    """
+
+    def __init__(
+        self,
+        *,
+        is_disabled: bool | None = False,
+        url: str | None = "",
+        force_small_media: bool | None = False,
+        force_large_media: bool | None = False,
+        show_above_text: bool | None = False,
+    ) -> None:
+        self.is_disabled = is_disabled
+        r"""True, if link preview must be disabled"""
+        self.url = url
+        r"""URL to use for link preview\. If empty, then the first URL found in the message text will be used"""
+        self.force_small_media = force_small_media
+        r"""True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified"""
+        self.force_large_media = force_large_media
+        r"""True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified"""
+        self.show_above_text = show_above_text
+        r"""True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["linkPreviewOptions"]:
+        return "linkPreviewOptions"
+
+    @classmethod
+    def getClass(self) -> Literal["LinkPreviewOptions"]:
+        return "LinkPreviewOptions"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "is_disabled": self.is_disabled,
+            "url": self.url,
+            "force_small_media": self.force_small_media,
+            "force_large_media": self.force_large_media,
+            "show_above_text": self.show_above_text,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> LinkPreviewOptions | None:
+        if data:
+            data_class = cls()
+            data_class.is_disabled = data.get("is_disabled", False)
+            data_class.url = data.get("url", "")
+            data_class.force_small_media = data.get("force_small_media", False)
+            data_class.force_large_media = data.get("force_large_media", False)
+            data_class.show_above_text = data.get("show_above_text", False)
+
+        return data_class
+
+
 class AccentColor(TlObject):
     r"""Contains information about supported accent color for user/chat name, background of empty chat photo, replies to messages and link previews
 
@@ -23509,6 +24292,241 @@ class SupergroupMembersFilterBots(TlObject, SupergroupMembersFilter):
         return data_class
 
 
+class ChatJoinResultSuccess(TlObject, ChatJoinResult):
+    r"""The chat was joined successfully
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat
+
+    """
+
+    def __init__(self, *, chat_id: int | None = 0) -> None:
+        self.chat_id = chat_id
+        r"""Identifier of the chat"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["chatJoinResultSuccess"]:
+        return "chatJoinResultSuccess"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatJoinResult"]:
+        return "ChatJoinResult"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "chat_id": self.chat_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ChatJoinResultSuccess | None:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+
+        return data_class
+
+
+class ChatJoinResultRequestSent(TlObject, ChatJoinResult):
+    r"""The join request was sent and have to be approved by administrators of the chat"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["chatJoinResultRequestSent"]:
+        return "chatJoinResultRequestSent"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatJoinResult"]:
+        return "ChatJoinResult"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ChatJoinResultRequestSent | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ChatJoinResultGuardBotApprovalRequired(TlObject, ChatJoinResult):
+    r"""An approval from a guard bot through a Web App is required to join the chat
+
+    Parameters:
+        bot_user_id (:class:`int`):
+            Identifier of the guard bot
+
+        url (:class:`~pytdbot.types.WebAppUrl`):
+            The URL of the Web App to open
+
+        query_id (:class:`int`):
+            Unique identifier of the join request, which will be used in updateChatJoinResult
+
+    """
+
+    def __init__(
+        self,
+        *,
+        bot_user_id: int | None = 0,
+        url: WebAppUrl | None = None,
+        query_id: int | None = 0,
+    ) -> None:
+        self.bot_user_id = bot_user_id
+        r"""Identifier of the guard bot"""
+        self.url = url
+        r"""The URL of the Web App to open"""
+        self.query_id = query_id
+        r"""Unique identifier of the join request, which will be used in updateChatJoinResult"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["chatJoinResultGuardBotApprovalRequired"]:
+        return "chatJoinResultGuardBotApprovalRequired"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatJoinResult"]:
+        return "ChatJoinResult"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "bot_user_id": self.bot_user_id,
+            "url": self.url,
+            "query_id": self.query_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ChatJoinResultGuardBotApprovalRequired | None:
+        if data:
+            data_class = cls()
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
+            data_class.url = data.get("url", None)
+            data_class.query_id = int(data.get("query_id", 0))
+
+        return data_class
+
+
+class ChatJoinResultDeclined(TlObject, ChatJoinResult):
+    r"""The join was declined by the guard bot"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["chatJoinResultDeclined"]:
+        return "chatJoinResultDeclined"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatJoinResult"]:
+        return "ChatJoinResult"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ChatJoinResultDeclined | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ChatJoinRequestResultApproved(TlObject, ChatJoinRequestResult):
+    r"""The request was approved"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["chatJoinRequestResultApproved"]:
+        return "chatJoinRequestResultApproved"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatJoinRequestResult"]:
+        return "ChatJoinRequestResult"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ChatJoinRequestResultApproved | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ChatJoinRequestResultDeclined(TlObject, ChatJoinRequestResult):
+    r"""The request was decline"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["chatJoinRequestResultDeclined"]:
+        return "chatJoinRequestResultDeclined"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatJoinRequestResult"]:
+        return "ChatJoinRequestResult"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ChatJoinRequestResultDeclined | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ChatJoinRequestResultQueued(TlObject, ChatJoinRequestResult):
+    r"""The request was postponed without a decision"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["chatJoinRequestResultQueued"]:
+        return "chatJoinRequestResultQueued"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatJoinRequestResult"]:
+        return "ChatJoinRequestResult"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ChatJoinRequestResultQueued | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class ChatInviteLink(TlObject):
     r"""Contains a chat invite link
 
@@ -24592,7 +25610,7 @@ class Supergroup(TlObject):
             True, if users need to join the supergroup before they can send messages\. May be false only for discussion supergroups and channel direct messages groups
 
         join_by_request (:class:`bool`):
-            True, if all users directly joining the supergroup need to be approved by supergroup administrators\. May be true only for non\-broadcast supergroups with username, location, or a linked chat
+            True, if all users directly joining the supergroup need to be approved by supergroup administrators
 
         is_slow_mode_enabled (:class:`bool`):
             True, if the slow mode is enabled in the supergroup
@@ -24695,7 +25713,7 @@ class Supergroup(TlObject):
         self.join_to_send_messages = join_to_send_messages
         r"""True, if users need to join the supergroup before they can send messages\. May be false only for discussion supergroups and channel direct messages groups"""
         self.join_by_request = join_by_request
-        r"""True, if all users directly joining the supergroup need to be approved by supergroup administrators\. May be true only for non\-broadcast supergroups with username, location, or a linked chat"""
+        r"""True, if all users directly joining the supergroup need to be approved by supergroup administrators"""
         self.is_slow_mode_enabled = is_slow_mode_enabled
         r"""True, if the slow mode is enabled in the supergroup"""
         self.is_channel = is_channel
@@ -24916,6 +25934,9 @@ class SupergroupFullInfo(TlObject):
         invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             Primary invite link for the chat; may be null\. For chat administrators with can\_invite\_users right only
 
+        guard_bot_user_id (:class:`int`):
+            User identifier of the guard bot in the group; for chat administrators only
+
         bot_commands (list[:class:`~pytdbot.types.BotCommands`]):
             List of commands of bots in the group
 
@@ -24971,6 +25992,7 @@ class SupergroupFullInfo(TlObject):
         custom_emoji_sticker_set_id: int | None = 0,
         location: ChatLocation | None = None,
         invite_link: ChatInviteLink | None = None,
+        guard_bot_user_id: int | None = 0,
         bot_commands: list[BotCommands] | None = None,
         bot_verification: BotVerification | None = None,
         main_profile_tab: ProfileTabPosts
@@ -25055,6 +26077,8 @@ class SupergroupFullInfo(TlObject):
         r"""Location to which the supergroup is connected; may be null if none"""
         self.invite_link = invite_link
         r"""Primary invite link for the chat; may be null\. For chat administrators with can\_invite\_users right only"""
+        self.guard_bot_user_id = guard_bot_user_id
+        r"""User identifier of the guard bot in the group; for chat administrators only"""
         self.bot_commands = bot_commands or []
         r"""List of commands of bots in the group"""
         self.bot_verification = bot_verification
@@ -25115,6 +26139,7 @@ class SupergroupFullInfo(TlObject):
             "custom_emoji_sticker_set_id": self.custom_emoji_sticker_set_id,
             "location": self.location,
             "invite_link": self.invite_link,
+            "guard_bot_user_id": self.guard_bot_user_id,
             "bot_commands": self.bot_commands,
             "bot_verification": self.bot_verification,
             "main_profile_tab": self.main_profile_tab,
@@ -25189,6 +26214,7 @@ class SupergroupFullInfo(TlObject):
             )
             data_class.location = data.get("location", None)
             data_class.invite_link = data.get("invite_link", None)
+            data_class.guard_bot_user_id = int(data.get("guard_bot_user_id", 0))
             data_class.bot_commands = data.get("bot_commands", None)
             data_class.bot_verification = data.get("bot_verification", None)
             data_class.main_profile_tab = data.get("main_profile_tab", None)
@@ -27634,6 +28660,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         | None = None,
         origin_send_date: int | None = 0,
         content: MessageText
+        | MessageRichMessage
         | MessageAnimation
         | MessageAudio
         | MessageDocument
@@ -27647,6 +28674,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         | MessageExpiredVideo
         | MessageExpiredVideoNote
         | MessageExpiredVoiceNote
+        | MessageLiveLocation
         | MessageLocation
         | MessageVenue
         | MessageContact
@@ -28261,6 +29289,7 @@ class Message(TlObject, MessageBoundMethods):
         restriction_info: RestrictionInfo | None = None,
         summary_language_code: str | None = "",
         content: MessageText
+        | MessageRichMessage
         | MessageAnimation
         | MessageAudio
         | MessageDocument
@@ -28274,6 +29303,7 @@ class Message(TlObject, MessageBoundMethods):
         | MessageExpiredVideo
         | MessageExpiredVideoNote
         | MessageExpiredVoiceNote
+        | MessageLiveLocation
         | MessageLocation
         | MessageVenue
         | MessageContact
@@ -29502,6 +30532,7 @@ class SponsoredMessage(TlObject):
         is_recommended: bool | None = False,
         can_be_reported: bool | None = False,
         content: MessageText
+        | MessageRichMessage
         | MessageAnimation
         | MessageAudio
         | MessageDocument
@@ -29515,6 +30546,7 @@ class SponsoredMessage(TlObject):
         | MessageExpiredVideo
         | MessageExpiredVideoNote
         | MessageExpiredVoiceNote
+        | MessageLiveLocation
         | MessageLocation
         | MessageVenue
         | MessageContact
@@ -30929,6 +31961,231 @@ class ReactionNotificationSettings(TlObject):
         return data_class
 
 
+class DraftMessageContentText(TlObject, DraftMessageContent):
+    r"""A text message draft
+
+    Parameters:
+        text (:class:`~pytdbot.types.FormattedText`):
+            Formatted text to be saved as a draft; 0\-getOption\(\"message\_text\_length\_max\"\) characters
+
+        link_preview_options (:class:`~pytdbot.types.LinkPreviewOptions`):
+            Options to be used for generation of a link preview; may be null if none; pass null to use default link preview options
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: FormattedText | None = None,
+        link_preview_options: LinkPreviewOptions | None = None,
+    ) -> None:
+        self.text = text
+        r"""Formatted text to be saved as a draft; 0\-getOption\(\"message\_text\_length\_max\"\) characters"""
+        self.link_preview_options = link_preview_options
+        r"""Options to be used for generation of a link preview; may be null if none; pass null to use default link preview options"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["draftMessageContentText"]:
+        return "draftMessageContentText"
+
+    @classmethod
+    def getClass(self) -> Literal["DraftMessageContent"]:
+        return "DraftMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "text": self.text,
+            "link_preview_options": self.link_preview_options,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> DraftMessageContentText | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.link_preview_options = data.get("link_preview_options", None)
+
+        return data_class
+
+
+class DraftMessageContentRichMessage(TlObject, DraftMessageContent):
+    r"""A rich message draft; not supported in setChatDraftMessage
+
+    Parameters:
+        message (:class:`~pytdbot.types.RichMessage`):
+            The rich message; the message must not have not yet uploaded media
+
+    """
+
+    def __init__(self, *, message: RichMessage | None = None) -> None:
+        self.message = message
+        r"""The rich message; the message must not have not yet uploaded media"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["draftMessageContentRichMessage"]:
+        return "draftMessageContentRichMessage"
+
+    @classmethod
+    def getClass(self) -> Literal["DraftMessageContent"]:
+        return "DraftMessageContent"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "message": self.message}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> DraftMessageContentRichMessage | None:
+        if data:
+            data_class = cls()
+            data_class.message = data.get("message", None)
+
+        return data_class
+
+
+class DraftMessageContentVideoNote(TlObject, DraftMessageContent):
+    r"""A video note message draft
+
+    Parameters:
+        file_path (:class:`str`):
+            Path to the file with the video note
+
+        duration (:class:`int`):
+            Duration of the video, in seconds; 0\-60
+
+        length (:class:`int`):
+            Video width and height; must be positive and not greater than 640
+
+        self_destruct_type (:class:`~pytdbot.types.MessageSelfDestructType`):
+            Video note self\-destruct type; may be null if none; pass null if none; private chats only
+
+    """
+
+    def __init__(
+        self,
+        *,
+        file_path: str | None = "",
+        duration: int | None = 0,
+        length: int | None = 0,
+        self_destruct_type: MessageSelfDestructTypeTimer
+        | MessageSelfDestructTypeImmediately
+        | None = None,
+    ) -> None:
+        self.file_path = file_path
+        r"""Path to the file with the video note"""
+        self.duration = duration
+        r"""Duration of the video, in seconds; 0\-60"""
+        self.length = length
+        r"""Video width and height; must be positive and not greater than 640"""
+        self.self_destruct_type = self_destruct_type
+        r"""Video note self\-destruct type; may be null if none; pass null if none; private chats only"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["draftMessageContentVideoNote"]:
+        return "draftMessageContentVideoNote"
+
+    @classmethod
+    def getClass(self) -> Literal["DraftMessageContent"]:
+        return "DraftMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "file_path": self.file_path,
+            "duration": self.duration,
+            "length": self.length,
+            "self_destruct_type": self.self_destruct_type,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> DraftMessageContentVideoNote | None:
+        if data:
+            data_class = cls()
+            data_class.file_path = data.get("file_path", "")
+            data_class.duration = int(data.get("duration", 0))
+            data_class.length = int(data.get("length", 0))
+            data_class.self_destruct_type = data.get("self_destruct_type", None)
+
+        return data_class
+
+
+class DraftMessageContentVoiceNote(TlObject, DraftMessageContent):
+    r"""A voice note message draft
+
+    Parameters:
+        file_path (:class:`str`):
+            Path to the file with the voice note
+
+        duration (:class:`int`):
+            Duration of the voice note, in seconds
+
+        waveform (:class:`bytes`):
+            Waveform representation of the voice note in 5\-bit format
+
+        self_destruct_type (:class:`~pytdbot.types.MessageSelfDestructType`):
+            Voice note self\-destruct type; may be null if none; pass null if none; private chats only
+
+    """
+
+    def __init__(
+        self,
+        *,
+        file_path: str | None = "",
+        duration: int | None = 0,
+        waveform: bytes | None = b"",
+        self_destruct_type: MessageSelfDestructTypeTimer
+        | MessageSelfDestructTypeImmediately
+        | None = None,
+    ) -> None:
+        self.file_path = file_path
+        r"""Path to the file with the voice note"""
+        self.duration = duration
+        r"""Duration of the voice note, in seconds"""
+        self.waveform = waveform
+        r"""Waveform representation of the voice note in 5\-bit format"""
+        self.self_destruct_type = self_destruct_type
+        r"""Voice note self\-destruct type; may be null if none; pass null if none; private chats only"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["draftMessageContentVoiceNote"]:
+        return "draftMessageContentVoiceNote"
+
+    @classmethod
+    def getClass(self) -> Literal["DraftMessageContent"]:
+        return "DraftMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "file_path": self.file_path,
+            "duration": self.duration,
+            "waveform": self.waveform,
+            "self_destruct_type": self.self_destruct_type,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> DraftMessageContentVoiceNote | None:
+        if data:
+            data_class = cls()
+            data_class.file_path = data.get("file_path", "")
+            data_class.duration = int(data.get("duration", 0))
+            data_class.waveform = b64decode(data.get("waveform", b""))
+            data_class.self_destruct_type = data.get("self_destruct_type", None)
+
+        return data_class
+
+
 class DraftMessage(TlObject):
     r"""Contains information about a message draft
 
@@ -30939,8 +32196,8 @@ class DraftMessage(TlObject):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the draft was created
 
-        input_message_text (:class:`~pytdbot.types.InputMessageContent`):
-            Content of the message draft; must be of the type inputMessageText, inputMessageVideoNote, or inputMessageVoiceNote
+        content (:class:`~pytdbot.types.DraftMessageContent`):
+            Content of the message draft
 
         effect_id (:class:`int`):
             Identifier of the effect to apply to the message when it is sent; 0 if none
@@ -30958,27 +32215,10 @@ class DraftMessage(TlObject):
         | InputMessageReplyToStory
         | None = None,
         date: int | None = 0,
-        input_message_text: InputMessageText
-        | InputMessageAnimation
-        | InputMessageAudio
-        | InputMessageDocument
-        | InputMessagePaidMedia
-        | InputMessagePhoto
-        | InputMessageSticker
-        | InputMessageVideo
-        | InputMessageVideoNote
-        | InputMessageVoiceNote
-        | InputMessageLocation
-        | InputMessageVenue
-        | InputMessageContact
-        | InputMessageDice
-        | InputMessageGame
-        | InputMessageInvoice
-        | InputMessagePoll
-        | InputMessageStakeDice
-        | InputMessageStory
-        | InputMessageChecklist
-        | InputMessageForwarded
+        content: DraftMessageContentText
+        | DraftMessageContentRichMessage
+        | DraftMessageContentVideoNote
+        | DraftMessageContentVoiceNote
         | None = None,
         effect_id: int | None = 0,
         suggested_post_info: InputSuggestedPostInfo | None = None,
@@ -30987,8 +32227,8 @@ class DraftMessage(TlObject):
         r"""Information about the message to be replied; inputMessageReplyToStory is unsupported; may be null if none"""
         self.date = date
         r"""Point in time \(Unix timestamp\) when the draft was created"""
-        self.input_message_text = input_message_text
-        r"""Content of the message draft; must be of the type inputMessageText, inputMessageVideoNote, or inputMessageVoiceNote"""
+        self.content = content
+        r"""Content of the message draft"""
         self.effect_id = effect_id
         r"""Identifier of the effect to apply to the message when it is sent; 0 if none"""
         self.suggested_post_info = suggested_post_info
@@ -31010,7 +32250,7 @@ class DraftMessage(TlObject):
             "@type": self.getType(),
             "reply_to": self.reply_to,
             "date": self.date,
-            "input_message_text": self.input_message_text,
+            "content": self.content,
             "effect_id": self.effect_id,
             "suggested_post_info": self.suggested_post_info,
         }
@@ -31021,7 +32261,7 @@ class DraftMessage(TlObject):
             data_class = cls()
             data_class.reply_to = data.get("reply_to", None)
             data_class.date = int(data.get("date", 0))
-            data_class.input_message_text = data.get("input_message_text", None)
+            data_class.content = data.get("content", None)
             data_class.effect_id = int(data.get("effect_id", 0))
             data_class.suggested_post_info = data.get("suggested_post_info", None)
 
@@ -35095,472 +36335,6 @@ class OauthLinkInfo(TlObject):
         return data_class
 
 
-class ThemeParameters(TlObject):
-    r"""Contains parameters of the application theme
-
-    Parameters:
-        background_color (:class:`int`):
-            A color of the background in the RGB format
-
-        secondary_background_color (:class:`int`):
-            A secondary color for the background in the RGB format
-
-        header_background_color (:class:`int`):
-            A color of the header background in the RGB format
-
-        bottom_bar_background_color (:class:`int`):
-            A color of the bottom bar background in the RGB format
-
-        section_background_color (:class:`int`):
-            A color of the section background in the RGB format
-
-        section_separator_color (:class:`int`):
-            A color of the section separator in the RGB format
-
-        text_color (:class:`int`):
-            A color of text in the RGB format
-
-        accent_text_color (:class:`int`):
-            An accent color of the text in the RGB format
-
-        section_header_text_color (:class:`int`):
-            A color of text on the section headers in the RGB format
-
-        subtitle_text_color (:class:`int`):
-            A color of the subtitle text in the RGB format
-
-        destructive_text_color (:class:`int`):
-            A color of the text for destructive actions in the RGB format
-
-        hint_color (:class:`int`):
-            A color of hints in the RGB format
-
-        link_color (:class:`int`):
-            A color of links in the RGB format
-
-        button_color (:class:`int`):
-            A color of the buttons in the RGB format
-
-        button_text_color (:class:`int`):
-            A color of text on the buttons in the RGB format
-
-    """
-
-    def __init__(
-        self,
-        *,
-        background_color: int | None = 0,
-        secondary_background_color: int | None = 0,
-        header_background_color: int | None = 0,
-        bottom_bar_background_color: int | None = 0,
-        section_background_color: int | None = 0,
-        section_separator_color: int | None = 0,
-        text_color: int | None = 0,
-        accent_text_color: int | None = 0,
-        section_header_text_color: int | None = 0,
-        subtitle_text_color: int | None = 0,
-        destructive_text_color: int | None = 0,
-        hint_color: int | None = 0,
-        link_color: int | None = 0,
-        button_color: int | None = 0,
-        button_text_color: int | None = 0,
-    ) -> None:
-        self.background_color = background_color
-        r"""A color of the background in the RGB format"""
-        self.secondary_background_color = secondary_background_color
-        r"""A secondary color for the background in the RGB format"""
-        self.header_background_color = header_background_color
-        r"""A color of the header background in the RGB format"""
-        self.bottom_bar_background_color = bottom_bar_background_color
-        r"""A color of the bottom bar background in the RGB format"""
-        self.section_background_color = section_background_color
-        r"""A color of the section background in the RGB format"""
-        self.section_separator_color = section_separator_color
-        r"""A color of the section separator in the RGB format"""
-        self.text_color = text_color
-        r"""A color of text in the RGB format"""
-        self.accent_text_color = accent_text_color
-        r"""An accent color of the text in the RGB format"""
-        self.section_header_text_color = section_header_text_color
-        r"""A color of text on the section headers in the RGB format"""
-        self.subtitle_text_color = subtitle_text_color
-        r"""A color of the subtitle text in the RGB format"""
-        self.destructive_text_color = destructive_text_color
-        r"""A color of the text for destructive actions in the RGB format"""
-        self.hint_color = hint_color
-        r"""A color of hints in the RGB format"""
-        self.link_color = link_color
-        r"""A color of links in the RGB format"""
-        self.button_color = button_color
-        r"""A color of the buttons in the RGB format"""
-        self.button_text_color = button_text_color
-        r"""A color of text on the buttons in the RGB format"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    @classmethod
-    def getType(self) -> Literal["themeParameters"]:
-        return "themeParameters"
-
-    @classmethod
-    def getClass(self) -> Literal["ThemeParameters"]:
-        return "ThemeParameters"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "background_color": self.background_color,
-            "secondary_background_color": self.secondary_background_color,
-            "header_background_color": self.header_background_color,
-            "bottom_bar_background_color": self.bottom_bar_background_color,
-            "section_background_color": self.section_background_color,
-            "section_separator_color": self.section_separator_color,
-            "text_color": self.text_color,
-            "accent_text_color": self.accent_text_color,
-            "section_header_text_color": self.section_header_text_color,
-            "subtitle_text_color": self.subtitle_text_color,
-            "destructive_text_color": self.destructive_text_color,
-            "hint_color": self.hint_color,
-            "link_color": self.link_color,
-            "button_color": self.button_color,
-            "button_text_color": self.button_text_color,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> ThemeParameters | None:
-        if data:
-            data_class = cls()
-            data_class.background_color = int(data.get("background_color", 0))
-            data_class.secondary_background_color = int(
-                data.get("secondary_background_color", 0)
-            )
-            data_class.header_background_color = int(
-                data.get("header_background_color", 0)
-            )
-            data_class.bottom_bar_background_color = int(
-                data.get("bottom_bar_background_color", 0)
-            )
-            data_class.section_background_color = int(
-                data.get("section_background_color", 0)
-            )
-            data_class.section_separator_color = int(
-                data.get("section_separator_color", 0)
-            )
-            data_class.text_color = int(data.get("text_color", 0))
-            data_class.accent_text_color = int(data.get("accent_text_color", 0))
-            data_class.section_header_text_color = int(
-                data.get("section_header_text_color", 0)
-            )
-            data_class.subtitle_text_color = int(data.get("subtitle_text_color", 0))
-            data_class.destructive_text_color = int(
-                data.get("destructive_text_color", 0)
-            )
-            data_class.hint_color = int(data.get("hint_color", 0))
-            data_class.link_color = int(data.get("link_color", 0))
-            data_class.button_color = int(data.get("button_color", 0))
-            data_class.button_text_color = int(data.get("button_text_color", 0))
-
-        return data_class
-
-
-class WebAppOpenModeCompact(TlObject, WebAppOpenMode):
-    r"""The Web App is opened in the compact mode"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    @classmethod
-    def getType(self) -> Literal["webAppOpenModeCompact"]:
-        return "webAppOpenModeCompact"
-
-    @classmethod
-    def getClass(self) -> Literal["WebAppOpenMode"]:
-        return "WebAppOpenMode"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> WebAppOpenModeCompact | None:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class WebAppOpenModeFullSize(TlObject, WebAppOpenMode):
-    r"""The Web App is opened in the full\-size mode"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    @classmethod
-    def getType(self) -> Literal["webAppOpenModeFullSize"]:
-        return "webAppOpenModeFullSize"
-
-    @classmethod
-    def getClass(self) -> Literal["WebAppOpenMode"]:
-        return "WebAppOpenMode"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> WebAppOpenModeFullSize | None:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class WebAppOpenModeFullScreen(TlObject, WebAppOpenMode):
-    r"""The Web App is opened in the full\-screen mode"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    @classmethod
-    def getType(self) -> Literal["webAppOpenModeFullScreen"]:
-        return "webAppOpenModeFullScreen"
-
-    @classmethod
-    def getClass(self) -> Literal["WebAppOpenMode"]:
-        return "WebAppOpenMode"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> WebAppOpenModeFullScreen | None:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class FoundWebApp(TlObject):
-    r"""Contains information about a Web App found by its short name
-
-    Parameters:
-        web_app (:class:`~pytdbot.types.WebApp`):
-            The Web App
-
-        request_write_access (:class:`bool`):
-            True, if the user must be asked for the permission to the bot to send them messages
-
-        skip_confirmation (:class:`bool`):
-            True, if there is no need to show an ordinary open URL confirmation before opening the Web App\. The field must be ignored and confirmation must be shown anyway if the Web App link was hidden
-
-    """
-
-    def __init__(
-        self,
-        *,
-        web_app: WebApp | None = None,
-        request_write_access: bool | None = False,
-        skip_confirmation: bool | None = False,
-    ) -> None:
-        self.web_app = web_app
-        r"""The Web App"""
-        self.request_write_access = request_write_access
-        r"""True, if the user must be asked for the permission to the bot to send them messages"""
-        self.skip_confirmation = skip_confirmation
-        r"""True, if there is no need to show an ordinary open URL confirmation before opening the Web App\. The field must be ignored and confirmation must be shown anyway if the Web App link was hidden"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    @classmethod
-    def getType(self) -> Literal["foundWebApp"]:
-        return "foundWebApp"
-
-    @classmethod
-    def getClass(self) -> Literal["FoundWebApp"]:
-        return "FoundWebApp"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "web_app": self.web_app,
-            "request_write_access": self.request_write_access,
-            "skip_confirmation": self.skip_confirmation,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> FoundWebApp | None:
-        if data:
-            data_class = cls()
-            data_class.web_app = data.get("web_app", None)
-            data_class.request_write_access = data.get("request_write_access", False)
-            data_class.skip_confirmation = data.get("skip_confirmation", False)
-
-        return data_class
-
-
-class WebAppInfo(TlObject):
-    r"""Contains information about a Web App
-
-    Parameters:
-        launch_id (:class:`int`):
-            Unique identifier for the Web App launch
-
-        url (:class:`str`):
-            A Web App URL to open in a web view
-
-    """
-
-    def __init__(self, *, launch_id: int | None = 0, url: str | None = "") -> None:
-        self.launch_id = launch_id
-        r"""Unique identifier for the Web App launch"""
-        self.url = url
-        r"""A Web App URL to open in a web view"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    @classmethod
-    def getType(self) -> Literal["webAppInfo"]:
-        return "webAppInfo"
-
-    @classmethod
-    def getClass(self) -> Literal["WebAppInfo"]:
-        return "WebAppInfo"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType(), "launch_id": self.launch_id, "url": self.url}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> WebAppInfo | None:
-        if data:
-            data_class = cls()
-            data_class.launch_id = int(data.get("launch_id", 0))
-            data_class.url = data.get("url", "")
-
-        return data_class
-
-
-class MainWebApp(TlObject):
-    r"""Contains information about the main Web App of a bot
-
-    Parameters:
-        url (:class:`str`):
-            URL of the Web App to open
-
-        mode (:class:`~pytdbot.types.WebAppOpenMode`):
-            The mode in which the Web App must be opened
-
-    """
-
-    def __init__(
-        self,
-        *,
-        url: str | None = "",
-        mode: WebAppOpenModeCompact
-        | WebAppOpenModeFullSize
-        | WebAppOpenModeFullScreen
-        | None = None,
-    ) -> None:
-        self.url = url
-        r"""URL of the Web App to open"""
-        self.mode = mode
-        r"""The mode in which the Web App must be opened"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    @classmethod
-    def getType(self) -> Literal["mainWebApp"]:
-        return "mainWebApp"
-
-    @classmethod
-    def getClass(self) -> Literal["MainWebApp"]:
-        return "MainWebApp"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType(), "url": self.url, "mode": self.mode}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> MainWebApp | None:
-        if data:
-            data_class = cls()
-            data_class.url = data.get("url", "")
-            data_class.mode = data.get("mode", None)
-
-        return data_class
-
-
-class WebAppOpenParameters(TlObject):
-    r"""Options to be used when a Web App is opened
-
-    Parameters:
-        theme (:class:`~pytdbot.types.ThemeParameters`):
-            Preferred Web App theme; pass null to use the default theme
-
-        application_name (:class:`str`):
-            Short name of the current application; 0\-64 English letters, digits, and underscores
-
-        mode (:class:`~pytdbot.types.WebAppOpenMode`):
-            The mode in which the Web App is opened; pass null to open in webAppOpenModeFullSize
-
-    """
-
-    def __init__(
-        self,
-        *,
-        theme: ThemeParameters | None = None,
-        application_name: str | None = "",
-        mode: WebAppOpenModeCompact
-        | WebAppOpenModeFullSize
-        | WebAppOpenModeFullScreen
-        | None = None,
-    ) -> None:
-        self.theme = theme
-        r"""Preferred Web App theme; pass null to use the default theme"""
-        self.application_name = application_name
-        r"""Short name of the current application; 0\-64 English letters, digits, and underscores"""
-        self.mode = mode
-        r"""The mode in which the Web App is opened; pass null to open in webAppOpenModeFullSize"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    @classmethod
-    def getType(self) -> Literal["webAppOpenParameters"]:
-        return "webAppOpenParameters"
-
-    @classmethod
-    def getClass(self) -> Literal["WebAppOpenParameters"]:
-        return "WebAppOpenParameters"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "theme": self.theme,
-            "application_name": self.application_name,
-            "mode": self.mode,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> WebAppOpenParameters | None:
-        if data:
-            data_class = cls()
-            data_class.theme = data.get("theme", None)
-            data_class.application_name = data.get("application_name", "")
-            data_class.mode = data.get("mode", None)
-
-        return data_class
-
-
 class MessageThreadInfo(TlObject):
     r"""Contains information about a message thread
 
@@ -36346,81 +37120,6 @@ class ForumTopics(TlObject):
         return data_class
 
 
-class LinkPreviewOptions(TlObject):
-    r"""Options to be used for generation of a link preview
-
-    Parameters:
-        is_disabled (:class:`bool`):
-            True, if link preview must be disabled
-
-        url (:class:`str`):
-            URL to use for link preview\. If empty, then the first URL found in the message text will be used
-
-        force_small_media (:class:`bool`):
-            True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified
-
-        force_large_media (:class:`bool`):
-            True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified
-
-        show_above_text (:class:`bool`):
-            True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats
-
-    """
-
-    def __init__(
-        self,
-        *,
-        is_disabled: bool | None = False,
-        url: str | None = "",
-        force_small_media: bool | None = False,
-        force_large_media: bool | None = False,
-        show_above_text: bool | None = False,
-    ) -> None:
-        self.is_disabled = is_disabled
-        r"""True, if link preview must be disabled"""
-        self.url = url
-        r"""URL to use for link preview\. If empty, then the first URL found in the message text will be used"""
-        self.force_small_media = force_small_media
-        r"""True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified"""
-        self.force_large_media = force_large_media
-        r"""True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified"""
-        self.show_above_text = show_above_text
-        r"""True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    @classmethod
-    def getType(self) -> Literal["linkPreviewOptions"]:
-        return "linkPreviewOptions"
-
-    @classmethod
-    def getClass(self) -> Literal["LinkPreviewOptions"]:
-        return "LinkPreviewOptions"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "is_disabled": self.is_disabled,
-            "url": self.url,
-            "force_small_media": self.force_small_media,
-            "force_large_media": self.force_large_media,
-            "show_above_text": self.show_above_text,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> LinkPreviewOptions | None:
-        if data:
-            data_class = cls()
-            data_class.is_disabled = data.get("is_disabled", False)
-            data_class.url = data.get("url", "")
-            data_class.force_small_media = data.get("force_small_media", False)
-            data_class.force_large_media = data.get("force_large_media", False)
-            data_class.show_above_text = data.get("show_above_text", False)
-
-        return data_class
-
-
 class SharedUser(TlObject):
     r"""Contains information about a user shared with a bot
 
@@ -36851,15 +37550,26 @@ class RichTextBold(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -36908,15 +37618,26 @@ class RichTextItalic(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -36965,15 +37686,26 @@ class RichTextUnderline(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37022,15 +37754,26 @@ class RichTextStrikethrough(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37062,6 +37805,467 @@ class RichTextStrikethrough(TlObject, RichText):
         return data_class
 
 
+class RichTextSpoiler(TlObject, RichText):
+    r"""A spoilered rich text
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextBankCardNumber
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+    ) -> None:
+        self.text = text
+        r"""Text"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richTextSpoiler"]:
+        return "richTextSpoiler"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextSpoiler | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+
+        return data_class
+
+
+class RichTextDateTime(TlObject, RichText):
+    r"""A date and time
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Original text
+
+        unix_time (:class:`int`):
+            Point in time \(Unix timestamp\) representing the date and time
+
+        formatting_type (:class:`~pytdbot.types.DateTimeFormattingType`):
+            Date and time formatting type; may be null if none and the original text must not be changed
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextBankCardNumber
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        unix_time: int | None = 0,
+        formatting_type: DateTimeFormattingTypeRelative
+        | DateTimeFormattingTypeAbsolute
+        | None = None,
+    ) -> None:
+        self.text = text
+        r"""Original text"""
+        self.unix_time = unix_time
+        r"""Point in time \(Unix timestamp\) representing the date and time"""
+        self.formatting_type = formatting_type
+        r"""Date and time formatting type; may be null if none and the original text must not be changed"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richTextDateTime"]:
+        return "richTextDateTime"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "text": self.text,
+            "unix_time": self.unix_time,
+            "formatting_type": self.formatting_type,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextDateTime | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.unix_time = int(data.get("unix_time", 0))
+            data_class.formatting_type = data.get("formatting_type", None)
+
+        return data_class
+
+
+class RichTextMention(TlObject, RichText):
+    r"""A mention of a Telegram user or chat by a username
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text
+
+        username (:class:`str`):
+            The username
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextBankCardNumber
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        username: str | None = "",
+    ) -> None:
+        self.text = text
+        r"""Text"""
+        self.username = username
+        r"""The username"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richTextMention"]:
+        return "richTextMention"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text, "username": self.username}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextMention | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.username = data.get("username", "")
+
+        return data_class
+
+
+class RichTextHashtag(TlObject, RichText):
+    r"""A hashtag
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text
+
+        hashtag (:class:`str`):
+            The hashtag
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextBankCardNumber
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        hashtag: str | None = "",
+    ) -> None:
+        self.text = text
+        r"""Text"""
+        self.hashtag = hashtag
+        r"""The hashtag"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richTextHashtag"]:
+        return "richTextHashtag"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text, "hashtag": self.hashtag}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextHashtag | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.hashtag = data.get("hashtag", "")
+
+        return data_class
+
+
+class RichTextCashtag(TlObject, RichText):
+    r"""A cashtag
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text
+
+        cashtag (:class:`str`):
+            The cashtag
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextBankCardNumber
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        cashtag: str | None = "",
+    ) -> None:
+        self.text = text
+        r"""Text"""
+        self.cashtag = cashtag
+        r"""The cashtag"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richTextCashtag"]:
+        return "richTextCashtag"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text, "cashtag": self.cashtag}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextCashtag | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.cashtag = data.get("cashtag", "")
+
+        return data_class
+
+
+class RichTextBotCommand(TlObject, RichText):
+    r"""A bot command
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text
+
+        bot_command (:class:`str`):
+            The bot command
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextBankCardNumber
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        bot_command: str | None = "",
+    ) -> None:
+        self.text = text
+        r"""Text"""
+        self.bot_command = bot_command
+        r"""The bot command"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richTextBotCommand"]:
+        return "richTextBotCommand"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "text": self.text,
+            "bot_command": self.bot_command,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextBotCommand | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.bot_command = data.get("bot_command", "")
+
+        return data_class
+
+
 class RichTextFixed(TlObject, RichText):
     r"""A fixed\-width rich text
 
@@ -37079,15 +38283,26 @@ class RichTextFixed(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37119,18 +38334,15 @@ class RichTextFixed(TlObject, RichText):
         return data_class
 
 
-class RichTextUrl(TlObject, RichText):
-    r"""A rich text URL link
+class RichTextMentionName(TlObject, RichText):
+    r"""A rich text that serves as a mention of a user
 
     Parameters:
         text (:class:`~pytdbot.types.RichText`):
             Text
 
-        url (:class:`str`):
-            URL
-
-        is_cached (:class:`bool`):
-            True, if the URL has cached instant view server\-side
+        user_id (:class:`int`):
+            Identifier of the mentioned user
 
     """
 
@@ -37142,15 +38354,104 @@ class RichTextUrl(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        user_id: int | None = 0,
+    ) -> None:
+        self.text = text
+        r"""Text"""
+        self.user_id = user_id
+        r"""Identifier of the mentioned user"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richTextMentionName"]:
+        return "richTextMentionName"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text, "user_id": self.user_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextMentionName | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.user_id = int(data.get("user_id", 0))
+
+        return data_class
+
+
+class RichTextUrl(TlObject, RichText):
+    r"""A rich text URL link
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text
+
+        url (:class:`str`):
+            URL
+
+        is_cached (:class:`bool`):
+            True, if the URL has cached instant view server\-side; instant view only
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextBankCardNumber
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37163,7 +38464,7 @@ class RichTextUrl(TlObject, RichText):
         self.url = url
         r"""URL"""
         self.is_cached = is_cached
-        r"""True, if the URL has cached instant view server\-side"""
+        r"""True, if the URL has cached instant view server\-side; instant view only"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37196,7 +38497,7 @@ class RichTextUrl(TlObject, RichText):
 
 
 class RichTextEmailAddress(TlObject, RichText):
-    r"""A rich text email link
+    r"""A rich text email address
 
     Parameters:
         text (:class:`~pytdbot.types.RichText`):
@@ -37215,15 +38516,26 @@ class RichTextEmailAddress(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37263,6 +38575,85 @@ class RichTextEmailAddress(TlObject, RichText):
         return data_class
 
 
+class RichTextBankCardNumber(TlObject, RichText):
+    r"""A bank card number
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text
+
+        bank_card_number (:class:`str`):
+            The number of the bank card
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextBankCardNumber
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        bank_card_number: str | None = "",
+    ) -> None:
+        self.text = text
+        r"""Text"""
+        self.bank_card_number = bank_card_number
+        r"""The number of the bank card"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richTextBankCardNumber"]:
+        return "richTextBankCardNumber"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "text": self.text,
+            "bank_card_number": self.bank_card_number,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextBankCardNumber | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.bank_card_number = data.get("bank_card_number", "")
+
+        return data_class
+
+
 class RichTextSubscript(TlObject, RichText):
     r"""A subscript rich text
 
@@ -37280,15 +38671,26 @@ class RichTextSubscript(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37337,15 +38739,26 @@ class RichTextSuperscript(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37394,15 +38807,26 @@ class RichTextMarked(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37454,15 +38878,26 @@ class RichTextPhoneNumber(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37502,8 +38937,56 @@ class RichTextPhoneNumber(TlObject, RichText):
         return data_class
 
 
+class RichTextCustomEmoji(TlObject, RichText):
+    r"""A custom emoji
+
+    Parameters:
+        custom_emoji_id (:class:`int`):
+            Unique identifier of the custom emoji
+
+        alternative_text (:class:`str`):
+            Alternative text for the custom emoji
+
+    """
+
+    def __init__(
+        self, *, custom_emoji_id: int | None = 0, alternative_text: str | None = ""
+    ) -> None:
+        self.custom_emoji_id = custom_emoji_id
+        r"""Unique identifier of the custom emoji"""
+        self.alternative_text = alternative_text
+        r"""Alternative text for the custom emoji"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richTextCustomEmoji"]:
+        return "richTextCustomEmoji"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "custom_emoji_id": self.custom_emoji_id,
+            "alternative_text": self.alternative_text,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextCustomEmoji | None:
+        if data:
+            data_class = cls()
+            data_class.custom_emoji_id = int(data.get("custom_emoji_id", 0))
+            data_class.alternative_text = data.get("alternative_text", "")
+
+        return data_class
+
+
 class RichTextIcon(TlObject, RichText):
-    r"""A small image inside the text
+    r"""A small image inside the text; instant view only
 
     Parameters:
         document (:class:`~pytdbot.types.Document`):
@@ -37561,51 +39044,92 @@ class RichTextIcon(TlObject, RichText):
         return data_class
 
 
-class RichTextReference(TlObject, RichText):
-    r"""A reference to a richTexts object on the same page
+class RichTextMathematicalExpression(TlObject, RichText):
+    r"""A mathematical expression
 
     Parameters:
+        expression (:class:`str`):
+            The expression in LaTeX format
+
+    """
+
+    def __init__(self, *, expression: str | None = "") -> None:
+        self.expression = expression
+        r"""The expression in LaTeX format"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richTextMathematicalExpression"]:
+        return "richTextMathematicalExpression"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "expression": self.expression}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextMathematicalExpression | None:
+        if data:
+            data_class = cls()
+            data_class.expression = data.get("expression", "")
+
+        return data_class
+
+
+class RichTextReference(TlObject, RichText):
+    r"""A reference
+
+    Parameters:
+        name (:class:`str`):
+            Reference name
+
         text (:class:`~pytdbot.types.RichText`):
-            The text
-
-        anchor_name (:class:`str`):
-            The name of a richTextAnchor object, which is the first element of the target richTexts object
-
-        url (:class:`str`):
-            An HTTP URL, opening the reference
+            Text of the reference
 
     """
 
     def __init__(
         self,
         *,
+        name: str | None = "",
         text: RichTextPlain
         | RichTextBold
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
         | None = None,
-        anchor_name: str | None = "",
-        url: str | None = "",
     ) -> None:
+        self.name = name
+        r"""Reference name"""
         self.text = text
-        r"""The text"""
-        self.anchor_name = anchor_name
-        r"""The name of a richTextAnchor object, which is the first element of the target richTexts object"""
-        self.url = url
-        r"""An HTTP URL, opening the reference"""
+        r"""Text of the reference"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37619,19 +39143,100 @@ class RichTextReference(TlObject, RichText):
         return "RichText"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "text": self.text,
-            "anchor_name": self.anchor_name,
-            "url": self.url,
-        }
+        return {"@type": self.getType(), "name": self.name, "text": self.text}
 
     @classmethod
     def from_dict(cls, data: dict) -> RichTextReference | None:
         if data:
             data_class = cls()
+            data_class.name = data.get("name", "")
             data_class.text = data.get("text", None)
-            data_class.anchor_name = data.get("anchor_name", "")
+
+        return data_class
+
+
+class RichTextReferenceLink(TlObject, RichText):
+    r"""A link to a reference on the same page
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            The link text
+
+        reference_name (:class:`str`):
+            The reference name
+
+        url (:class:`str`):
+            An HTTP URL that opens the reference
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextBankCardNumber
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        reference_name: str | None = "",
+        url: str | None = "",
+    ) -> None:
+        self.text = text
+        r"""The link text"""
+        self.reference_name = reference_name
+        r"""The reference name"""
+        self.url = url
+        r"""An HTTP URL that opens the reference"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["richTextReferenceLink"]:
+        return "richTextReferenceLink"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "text": self.text,
+            "reference_name": self.reference_name,
+            "url": self.url,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextReferenceLink | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.reference_name = data.get("reference_name", "")
             data_class.url = data.get("url", "")
 
         return data_class
@@ -37684,7 +39289,7 @@ class RichTextAnchorLink(TlObject, RichText):
             The anchor name\. If the name is empty, the link must bring back to top
 
         url (:class:`str`):
-            An HTTP URL, opening the anchor
+            An HTTP URL that opens the anchor
 
     """
 
@@ -37696,15 +39301,26 @@ class RichTextAnchorLink(TlObject, RichText):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37717,7 +39333,7 @@ class RichTextAnchorLink(TlObject, RichText):
         self.anchor_name = anchor_name
         r"""The anchor name\. If the name is empty, the link must bring back to top"""
         self.url = url
-        r"""An HTTP URL, opening the anchor"""
+        r"""An HTTP URL that opens the anchor"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37793,7 +39409,7 @@ class PageBlockCaption(TlObject):
             Content of the caption
 
         credit (:class:`~pytdbot.types.RichText`):
-            Block credit \(like HTML tag <cite\>\)
+            Block credit \(like HTML tag <cite\>\); may be null if none
 
     """
 
@@ -37805,15 +39421,26 @@ class PageBlockCaption(TlObject):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37823,15 +39450,26 @@ class PageBlockCaption(TlObject):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -37840,7 +39478,7 @@ class PageBlockCaption(TlObject):
         self.text = text
         r"""Content of the caption"""
         self.credit = credit
-        r"""Block credit \(like HTML tag <cite\>\)"""
+        r"""Block credit \(like HTML tag <cite\>\); may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37873,18 +39511,45 @@ class PageBlockListItem(TlObject):
         label (:class:`str`):
             Item label
 
-        page_blocks (list[:class:`~pytdbot.types.PageBlock`]):
+        blocks (list[:class:`~pytdbot.types.PageBlock`]):
             Item blocks
+
+        has_checkbox (:class:`bool`):
+            True, if the item has a checkbox
+
+        is_checked (:class:`bool`):
+            True, if the item is checked
+
+        value (:class:`int`):
+            Value of the item; 0 for unordered lists
+
+        type (:class:`str`):
+            Type of the item numbering type; must be one of \"a\" for a lowercase letters, \"A\" for an uppercase letters, \"i\" for lowercase Roman numerals, \"I\" for uppercase Roman numerals, \"1\" for decimal numbers, or empty for unordered lists
 
     """
 
     def __init__(
-        self, *, label: str | None = "", page_blocks: list[PageBlock] | None = None
+        self,
+        *,
+        label: str | None = "",
+        blocks: list[PageBlock] | None = None,
+        has_checkbox: bool | None = False,
+        is_checked: bool | None = False,
+        value: int | None = 0,
+        type: str | None = "",
     ) -> None:
         self.label = label
         r"""Item label"""
-        self.page_blocks = page_blocks or []
+        self.blocks = blocks or []
         r"""Item blocks"""
+        self.has_checkbox = has_checkbox
+        r"""True, if the item has a checkbox"""
+        self.is_checked = is_checked
+        r"""True, if the item is checked"""
+        self.value = value
+        r"""Value of the item; 0 for unordered lists"""
+        self.type = type
+        r"""Type of the item numbering type; must be one of \"a\" for a lowercase letters, \"A\" for an uppercase letters, \"i\" for lowercase Roman numerals, \"I\" for uppercase Roman numerals, \"1\" for decimal numbers, or empty for unordered lists"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37901,7 +39566,11 @@ class PageBlockListItem(TlObject):
         return {
             "@type": self.getType(),
             "label": self.label,
-            "page_blocks": self.page_blocks,
+            "blocks": self.blocks,
+            "has_checkbox": self.has_checkbox,
+            "is_checked": self.is_checked,
+            "value": self.value,
+            "type": self.type,
         }
 
     @classmethod
@@ -37909,7 +39578,11 @@ class PageBlockListItem(TlObject):
         if data:
             data_class = cls()
             data_class.label = data.get("label", "")
-            data_class.page_blocks = data.get("page_blocks", None)
+            data_class.blocks = data.get("blocks", None)
+            data_class.has_checkbox = data.get("has_checkbox", False)
+            data_class.is_checked = data.get("is_checked", False)
+            data_class.value = int(data.get("value", 0))
+            data_class.type = data.get("type", "")
 
         return data_class
 
@@ -38114,15 +39787,26 @@ class PageBlockTableCell(TlObject):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -38272,7 +39956,7 @@ class PageBlockRelatedArticle(TlObject):
 
 
 class PageBlockTitle(TlObject, PageBlock):
-    r"""The title of a page
+    r"""The title of a page; instant view only
 
     Parameters:
         title (:class:`~pytdbot.types.RichText`):
@@ -38288,15 +39972,26 @@ class PageBlockTitle(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -38329,7 +40024,7 @@ class PageBlockTitle(TlObject, PageBlock):
 
 
 class PageBlockSubtitle(TlObject, PageBlock):
-    r"""The subtitle of a page
+    r"""The subtitle of a page; instant view only
 
     Parameters:
         subtitle (:class:`~pytdbot.types.RichText`):
@@ -38345,15 +40040,26 @@ class PageBlockSubtitle(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -38386,7 +40092,7 @@ class PageBlockSubtitle(TlObject, PageBlock):
 
 
 class PageBlockAuthorDate(TlObject, PageBlock):
-    r"""The author and publishing date of a page
+    r"""The author and publishing date of a page; instant view only
 
     Parameters:
         author (:class:`~pytdbot.types.RichText`):
@@ -38405,15 +40111,26 @@ class PageBlockAuthorDate(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -38454,7 +40171,7 @@ class PageBlockAuthorDate(TlObject, PageBlock):
 
 
 class PageBlockHeader(TlObject, PageBlock):
-    r"""A header
+    r"""A header; instant view only
 
     Parameters:
         header (:class:`~pytdbot.types.RichText`):
@@ -38470,15 +40187,26 @@ class PageBlockHeader(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -38511,7 +40239,7 @@ class PageBlockHeader(TlObject, PageBlock):
 
 
 class PageBlockSubheader(TlObject, PageBlock):
-    r"""A subheader
+    r"""A subheader; instant view only
 
     Parameters:
         subheader (:class:`~pytdbot.types.RichText`):
@@ -38527,15 +40255,26 @@ class PageBlockSubheader(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -38567,8 +40306,83 @@ class PageBlockSubheader(TlObject, PageBlock):
         return data_class
 
 
+class PageBlockSectionHeading(TlObject, PageBlock):
+    r"""A section heading
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text of the section heading
+
+        size (:class:`int`):
+            Relative size of the text font; 1\-6, 1 is the largest, 6 is the smallest
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextBankCardNumber
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        size: int | None = 0,
+    ) -> None:
+        self.text = text
+        r"""Text of the section heading"""
+        self.size = size
+        r"""Relative size of the text font; 1\-6, 1 is the largest, 6 is the smallest"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pageBlockSectionHeading"]:
+        return "pageBlockSectionHeading"
+
+    @classmethod
+    def getClass(self) -> Literal["PageBlock"]:
+        return "PageBlock"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text, "size": self.size}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PageBlockSectionHeading | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.size = int(data.get("size", 0))
+
+        return data_class
+
+
 class PageBlockKicker(TlObject, PageBlock):
-    r"""A kicker
+    r"""A kicker; instant view only
 
     Parameters:
         kicker (:class:`~pytdbot.types.RichText`):
@@ -38584,15 +40398,26 @@ class PageBlockKicker(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -38641,15 +40466,26 @@ class PageBlockParagraph(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -38701,15 +40537,26 @@ class PageBlockPreformatted(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -38762,15 +40609,26 @@ class PageBlockFooter(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -38802,6 +40660,74 @@ class PageBlockFooter(TlObject, PageBlock):
         return data_class
 
 
+class PageBlockThinking(TlObject, PageBlock):
+    r"""A \"Thinking\.\.\.\" placeholder; for pending rich messages only
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text of the placeholder
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextBankCardNumber
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+    ) -> None:
+        self.text = text
+        r"""Text of the placeholder"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pageBlockThinking"]:
+        return "pageBlockThinking"
+
+    @classmethod
+    def getClass(self) -> Literal["PageBlock"]:
+        return "PageBlock"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PageBlockThinking | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+
+        return data_class
+
+
 class PageBlockDivider(TlObject, PageBlock):
     r"""An empty block separating a page"""
 
@@ -38826,6 +40752,42 @@ class PageBlockDivider(TlObject, PageBlock):
     def from_dict(cls, data: dict) -> PageBlockDivider | None:
         if data:
             data_class = cls()
+
+        return data_class
+
+
+class PageBlockMathematicalExpression(TlObject, PageBlock):
+    r"""A mathematical expression
+
+    Parameters:
+        expression (:class:`str`):
+            The expression in LaTeX format
+
+    """
+
+    def __init__(self, *, expression: str | None = "") -> None:
+        self.expression = expression
+        r"""The expression in LaTeX format"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pageBlockMathematicalExpression"]:
+        return "pageBlockMathematicalExpression"
+
+    @classmethod
+    def getClass(self) -> Literal["PageBlock"]:
+        return "PageBlock"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "expression": self.expression}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PageBlockMathematicalExpression | None:
+        if data:
+            data_class = cls()
+            data_class.expression = data.get("expression", "")
 
         return data_class
 
@@ -38906,58 +40868,52 @@ class PageBlockBlockQuote(TlObject, PageBlock):
     r"""A block quote
 
     Parameters:
-        text (:class:`~pytdbot.types.RichText`):
-            Quote text
+        blocks (list[:class:`~pytdbot.types.PageBlock`]):
+            Quote blocks
 
         credit (:class:`~pytdbot.types.RichText`):
-            Quote credit
+            Quote credit; may be null if none
 
     """
 
     def __init__(
         self,
         *,
-        text: RichTextPlain
-        | RichTextBold
-        | RichTextItalic
-        | RichTextUnderline
-        | RichTextStrikethrough
-        | RichTextFixed
-        | RichTextUrl
-        | RichTextEmailAddress
-        | RichTextSubscript
-        | RichTextSuperscript
-        | RichTextMarked
-        | RichTextPhoneNumber
-        | RichTextIcon
-        | RichTextReference
-        | RichTextAnchor
-        | RichTextAnchorLink
-        | RichTexts
-        | None = None,
+        blocks: list[PageBlock] | None = None,
         credit: RichTextPlain
         | RichTextBold
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
         | None = None,
     ) -> None:
-        self.text = text
-        r"""Quote text"""
+        self.blocks = blocks or []
+        r"""Quote blocks"""
         self.credit = credit
-        r"""Quote credit"""
+        r"""Quote credit; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -38971,13 +40927,13 @@ class PageBlockBlockQuote(TlObject, PageBlock):
         return "PageBlock"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "text": self.text, "credit": self.credit}
+        return {"@type": self.getType(), "blocks": self.blocks, "credit": self.credit}
 
     @classmethod
     def from_dict(cls, data: dict) -> PageBlockBlockQuote | None:
         if data:
             data_class = cls()
-            data_class.text = data.get("text", None)
+            data_class.blocks = data.get("blocks", None)
             data_class.credit = data.get("credit", None)
 
         return data_class
@@ -38991,7 +40947,7 @@ class PageBlockPullQuote(TlObject, PageBlock):
             Quote text
 
         credit (:class:`~pytdbot.types.RichText`):
-            Quote credit
+            Quote credit; may be null if none
 
     """
 
@@ -39003,15 +40959,26 @@ class PageBlockPullQuote(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -39021,15 +40988,26 @@ class PageBlockPullQuote(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -39038,7 +41016,7 @@ class PageBlockPullQuote(TlObject, PageBlock):
         self.text = text
         r"""Quote text"""
         self.credit = credit
-        r"""Quote credit"""
+        r"""Quote credit; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -39072,10 +41050,13 @@ class PageBlockAnimation(TlObject, PageBlock):
             Animation file; may be null
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
-            Animation caption
+            Animation caption; may be null if none
 
         need_autoplay (:class:`bool`):
             True, if the animation must be played automatically
+
+        has_spoiler (:class:`bool`):
+            True, if the animation preview must be covered by a spoiler animation
 
     """
 
@@ -39085,13 +41066,16 @@ class PageBlockAnimation(TlObject, PageBlock):
         animation: Animation | None = None,
         caption: PageBlockCaption | None = None,
         need_autoplay: bool | None = False,
+        has_spoiler: bool | None = False,
     ) -> None:
         self.animation = animation
         r"""Animation file; may be null"""
         self.caption = caption
-        r"""Animation caption"""
+        r"""Animation caption; may be null if none"""
         self.need_autoplay = need_autoplay
         r"""True, if the animation must be played automatically"""
+        self.has_spoiler = has_spoiler
+        r"""True, if the animation preview must be covered by a spoiler animation"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -39110,6 +41094,7 @@ class PageBlockAnimation(TlObject, PageBlock):
             "animation": self.animation,
             "caption": self.caption,
             "need_autoplay": self.need_autoplay,
+            "has_spoiler": self.has_spoiler,
         }
 
     @classmethod
@@ -39119,6 +41104,7 @@ class PageBlockAnimation(TlObject, PageBlock):
             data_class.animation = data.get("animation", None)
             data_class.caption = data.get("caption", None)
             data_class.need_autoplay = data.get("need_autoplay", False)
+            data_class.has_spoiler = data.get("has_spoiler", False)
 
         return data_class
 
@@ -39131,7 +41117,7 @@ class PageBlockAudio(TlObject, PageBlock):
             Audio file; may be null
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
-            Audio file caption
+            Audio file caption; may be null if none
 
     """
 
@@ -39141,7 +41127,7 @@ class PageBlockAudio(TlObject, PageBlock):
         self.audio = audio
         r"""Audio file; may be null"""
         self.caption = caption
-        r"""Audio file caption"""
+        r"""Audio file caption; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -39175,10 +41161,13 @@ class PageBlockPhoto(TlObject, PageBlock):
             Photo file; may be null
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
-            Photo caption
+            Photo caption; may be null if none
 
         url (:class:`str`):
-            URL that needs to be opened when the photo is clicked
+            URL that needs to be opened when the photo is clicked; instant view only
+
+        has_spoiler (:class:`bool`):
+            True, if the photo preview must be covered by a spoiler animation
 
     """
 
@@ -39188,13 +41177,16 @@ class PageBlockPhoto(TlObject, PageBlock):
         photo: Photo | None = None,
         caption: PageBlockCaption | None = None,
         url: str | None = "",
+        has_spoiler: bool | None = False,
     ) -> None:
         self.photo = photo
         r"""Photo file; may be null"""
         self.caption = caption
-        r"""Photo caption"""
+        r"""Photo caption; may be null if none"""
         self.url = url
-        r"""URL that needs to be opened when the photo is clicked"""
+        r"""URL that needs to be opened when the photo is clicked; instant view only"""
+        self.has_spoiler = has_spoiler
+        r"""True, if the photo preview must be covered by a spoiler animation"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -39213,6 +41205,7 @@ class PageBlockPhoto(TlObject, PageBlock):
             "photo": self.photo,
             "caption": self.caption,
             "url": self.url,
+            "has_spoiler": self.has_spoiler,
         }
 
     @classmethod
@@ -39222,6 +41215,7 @@ class PageBlockPhoto(TlObject, PageBlock):
             data_class.photo = data.get("photo", None)
             data_class.caption = data.get("caption", None)
             data_class.url = data.get("url", "")
+            data_class.has_spoiler = data.get("has_spoiler", False)
 
         return data_class
 
@@ -39234,13 +41228,16 @@ class PageBlockVideo(TlObject, PageBlock):
             Video file; may be null
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
-            Video caption
+            Video caption; may be null if none
 
         need_autoplay (:class:`bool`):
             True, if the video must be played automatically
 
         is_looped (:class:`bool`):
             True, if the video must be looped
+
+        has_spoiler (:class:`bool`):
+            True, if the video preview must be covered by a spoiler animation
 
     """
 
@@ -39251,15 +41248,18 @@ class PageBlockVideo(TlObject, PageBlock):
         caption: PageBlockCaption | None = None,
         need_autoplay: bool | None = False,
         is_looped: bool | None = False,
+        has_spoiler: bool | None = False,
     ) -> None:
         self.video = video
         r"""Video file; may be null"""
         self.caption = caption
-        r"""Video caption"""
+        r"""Video caption; may be null if none"""
         self.need_autoplay = need_autoplay
         r"""True, if the video must be played automatically"""
         self.is_looped = is_looped
         r"""True, if the video must be looped"""
+        self.has_spoiler = has_spoiler
+        r"""True, if the video preview must be covered by a spoiler animation"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -39279,6 +41279,7 @@ class PageBlockVideo(TlObject, PageBlock):
             "caption": self.caption,
             "need_autoplay": self.need_autoplay,
             "is_looped": self.is_looped,
+            "has_spoiler": self.has_spoiler,
         }
 
     @classmethod
@@ -39289,6 +41290,7 @@ class PageBlockVideo(TlObject, PageBlock):
             data_class.caption = data.get("caption", None)
             data_class.need_autoplay = data.get("need_autoplay", False)
             data_class.is_looped = data.get("is_looped", False)
+            data_class.has_spoiler = data.get("has_spoiler", False)
 
         return data_class
 
@@ -39301,7 +41303,7 @@ class PageBlockVoiceNote(TlObject, PageBlock):
             Voice note; may be null
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
-            Voice note caption
+            Voice note caption; may be null if none
 
     """
 
@@ -39314,7 +41316,7 @@ class PageBlockVoiceNote(TlObject, PageBlock):
         self.voice_note = voice_note
         r"""Voice note; may be null"""
         self.caption = caption
-        r"""Voice note caption"""
+        r"""Voice note caption; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -39345,7 +41347,7 @@ class PageBlockVoiceNote(TlObject, PageBlock):
 
 
 class PageBlockCover(TlObject, PageBlock):
-    r"""A page cover
+    r"""A page cover; instant view only
 
     Parameters:
         cover (:class:`~pytdbot.types.PageBlock`):
@@ -39361,11 +41363,14 @@ class PageBlockCover(TlObject, PageBlock):
         | PageBlockAuthorDate
         | PageBlockHeader
         | PageBlockSubheader
+        | PageBlockSectionHeading
         | PageBlockKicker
         | PageBlockParagraph
         | PageBlockPreformatted
         | PageBlockFooter
+        | PageBlockThinking
         | PageBlockDivider
+        | PageBlockMathematicalExpression
         | PageBlockAnchor
         | PageBlockList
         | PageBlockBlockQuote
@@ -39414,7 +41419,7 @@ class PageBlockCover(TlObject, PageBlock):
 
 
 class PageBlockEmbedded(TlObject, PageBlock):
-    r"""An embedded web page
+    r"""An embedded web page; instant view only
 
     Parameters:
         url (:class:`str`):
@@ -39433,7 +41438,7 @@ class PageBlockEmbedded(TlObject, PageBlock):
             Block height; 0 if unknown
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
-            Block caption
+            Block caption; may be null if none
 
         is_full_width (:class:`bool`):
             True, if the block must be full width
@@ -39466,7 +41471,7 @@ class PageBlockEmbedded(TlObject, PageBlock):
         self.height = height
         r"""Block height; 0 if unknown"""
         self.caption = caption
-        r"""Block caption"""
+        r"""Block caption; may be null if none"""
         self.is_full_width = is_full_width
         r"""True, if the block must be full width"""
         self.allow_scrolling = allow_scrolling
@@ -39513,7 +41518,7 @@ class PageBlockEmbedded(TlObject, PageBlock):
 
 
 class PageBlockEmbeddedPost(TlObject, PageBlock):
-    r"""An embedded post
+    r"""An embedded post; instant view only
 
     Parameters:
         url (:class:`str`):
@@ -39528,11 +41533,11 @@ class PageBlockEmbeddedPost(TlObject, PageBlock):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the post was created; 0 if unknown
 
-        page_blocks (list[:class:`~pytdbot.types.PageBlock`]):
+        blocks (list[:class:`~pytdbot.types.PageBlock`]):
             Post content
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
-            Post caption
+            Post caption; may be null if none
 
     """
 
@@ -39543,7 +41548,7 @@ class PageBlockEmbeddedPost(TlObject, PageBlock):
         author: str | None = "",
         author_photo: Photo | None = None,
         date: int | None = 0,
-        page_blocks: list[PageBlock] | None = None,
+        blocks: list[PageBlock] | None = None,
         caption: PageBlockCaption | None = None,
     ) -> None:
         self.url = url
@@ -39554,10 +41559,10 @@ class PageBlockEmbeddedPost(TlObject, PageBlock):
         r"""Post author photo; may be null"""
         self.date = date
         r"""Point in time \(Unix timestamp\) when the post was created; 0 if unknown"""
-        self.page_blocks = page_blocks or []
+        self.blocks = blocks or []
         r"""Post content"""
         self.caption = caption
-        r"""Post caption"""
+        r"""Post caption; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -39577,7 +41582,7 @@ class PageBlockEmbeddedPost(TlObject, PageBlock):
             "author": self.author,
             "author_photo": self.author_photo,
             "date": self.date,
-            "page_blocks": self.page_blocks,
+            "blocks": self.blocks,
             "caption": self.caption,
         }
 
@@ -39589,7 +41594,7 @@ class PageBlockEmbeddedPost(TlObject, PageBlock):
             data_class.author = data.get("author", "")
             data_class.author_photo = data.get("author_photo", None)
             data_class.date = int(data.get("date", 0))
-            data_class.page_blocks = data.get("page_blocks", None)
+            data_class.blocks = data.get("blocks", None)
             data_class.caption = data.get("caption", None)
 
         return data_class
@@ -39599,24 +41604,24 @@ class PageBlockCollage(TlObject, PageBlock):
     r"""A collage
 
     Parameters:
-        page_blocks (list[:class:`~pytdbot.types.PageBlock`]):
+        blocks (list[:class:`~pytdbot.types.PageBlock`]):
             Collage item contents
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
-            Block caption
+            Block caption; may be null if none
 
     """
 
     def __init__(
         self,
         *,
-        page_blocks: list[PageBlock] | None = None,
+        blocks: list[PageBlock] | None = None,
         caption: PageBlockCaption | None = None,
     ) -> None:
-        self.page_blocks = page_blocks or []
+        self.blocks = blocks or []
         r"""Collage item contents"""
         self.caption = caption
-        r"""Block caption"""
+        r"""Block caption; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -39630,17 +41635,13 @@ class PageBlockCollage(TlObject, PageBlock):
         return "PageBlock"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "page_blocks": self.page_blocks,
-            "caption": self.caption,
-        }
+        return {"@type": self.getType(), "blocks": self.blocks, "caption": self.caption}
 
     @classmethod
     def from_dict(cls, data: dict) -> PageBlockCollage | None:
         if data:
             data_class = cls()
-            data_class.page_blocks = data.get("page_blocks", None)
+            data_class.blocks = data.get("blocks", None)
             data_class.caption = data.get("caption", None)
 
         return data_class
@@ -39650,24 +41651,24 @@ class PageBlockSlideshow(TlObject, PageBlock):
     r"""A slideshow
 
     Parameters:
-        page_blocks (list[:class:`~pytdbot.types.PageBlock`]):
+        blocks (list[:class:`~pytdbot.types.PageBlock`]):
             Slideshow item contents
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
-            Block caption
+            Block caption; may be null if none
 
     """
 
     def __init__(
         self,
         *,
-        page_blocks: list[PageBlock] | None = None,
+        blocks: list[PageBlock] | None = None,
         caption: PageBlockCaption | None = None,
     ) -> None:
-        self.page_blocks = page_blocks or []
+        self.blocks = blocks or []
         r"""Slideshow item contents"""
         self.caption = caption
-        r"""Block caption"""
+        r"""Block caption; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -39681,24 +41682,20 @@ class PageBlockSlideshow(TlObject, PageBlock):
         return "PageBlock"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "page_blocks": self.page_blocks,
-            "caption": self.caption,
-        }
+        return {"@type": self.getType(), "blocks": self.blocks, "caption": self.caption}
 
     @classmethod
     def from_dict(cls, data: dict) -> PageBlockSlideshow | None:
         if data:
             data_class = cls()
-            data_class.page_blocks = data.get("page_blocks", None)
+            data_class.blocks = data.get("blocks", None)
             data_class.caption = data.get("caption", None)
 
         return data_class
 
 
 class PageBlockChatLink(TlObject, PageBlock):
-    r"""A link to a chat
+    r"""A link to a chat; instant view only
 
     Parameters:
         title (:class:`str`):
@@ -39769,7 +41766,7 @@ class PageBlockTable(TlObject, PageBlock):
 
     Parameters:
         caption (:class:`~pytdbot.types.RichText`):
-            Table caption
+            Table caption; may be null if none
 
         cells (list[list[:class:`~pytdbot.types.PageBlockTableCell`]]):
             Table cells
@@ -39790,15 +41787,26 @@ class PageBlockTable(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -39808,7 +41816,7 @@ class PageBlockTable(TlObject, PageBlock):
         is_striped: bool | None = False,
     ) -> None:
         self.caption = caption
-        r"""Table caption"""
+        r"""Table caption; may be null if none"""
         self.cells = cells or []
         r"""Table cells"""
         self.is_bordered = is_bordered
@@ -39855,7 +41863,7 @@ class PageBlockDetails(TlObject, PageBlock):
         header (:class:`~pytdbot.types.RichText`):
             Always visible heading for the block
 
-        page_blocks (list[:class:`~pytdbot.types.PageBlock`]):
+        blocks (list[:class:`~pytdbot.types.PageBlock`]):
             Block contents
 
         is_open (:class:`bool`):
@@ -39871,25 +41879,36 @@ class PageBlockDetails(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
         | None = None,
-        page_blocks: list[PageBlock] | None = None,
+        blocks: list[PageBlock] | None = None,
         is_open: bool | None = False,
     ) -> None:
         self.header = header
         r"""Always visible heading for the block"""
-        self.page_blocks = page_blocks or []
+        self.blocks = blocks or []
         r"""Block contents"""
         self.is_open = is_open
         r"""True, if the block is open by default"""
@@ -39909,7 +41928,7 @@ class PageBlockDetails(TlObject, PageBlock):
         return {
             "@type": self.getType(),
             "header": self.header,
-            "page_blocks": self.page_blocks,
+            "blocks": self.blocks,
             "is_open": self.is_open,
         }
 
@@ -39918,14 +41937,14 @@ class PageBlockDetails(TlObject, PageBlock):
         if data:
             data_class = cls()
             data_class.header = data.get("header", None)
-            data_class.page_blocks = data.get("page_blocks", None)
+            data_class.blocks = data.get("blocks", None)
             data_class.is_open = data.get("is_open", False)
 
         return data_class
 
 
 class PageBlockRelatedArticles(TlObject, PageBlock):
-    r"""Related articles
+    r"""Related articles; instant view only
 
     Parameters:
         header (:class:`~pytdbot.types.RichText`):
@@ -39944,15 +41963,26 @@ class PageBlockRelatedArticles(TlObject, PageBlock):
         | RichTextItalic
         | RichTextUnderline
         | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBotCommand
         | RichTextFixed
+        | RichTextMentionName
         | RichTextUrl
         | RichTextEmailAddress
+        | RichTextBankCardNumber
         | RichTextSubscript
         | RichTextSuperscript
         | RichTextMarked
         | RichTextPhoneNumber
+        | RichTextCustomEmoji
         | RichTextIcon
+        | RichTextMathematicalExpression
         | RichTextReference
+        | RichTextReferenceLink
         | RichTextAnchor
         | RichTextAnchorLink
         | RichTexts
@@ -40009,7 +42039,7 @@ class PageBlockMap(TlObject, PageBlock):
             Map height
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
-            Block caption
+            Block caption; may be null if none
 
     """
 
@@ -40031,7 +42061,7 @@ class PageBlockMap(TlObject, PageBlock):
         self.height = height
         r"""Map height"""
         self.caption = caption
-        r"""Block caption"""
+        r"""Block caption; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -40071,7 +42101,7 @@ class WebPageInstantView(TlObject):
     r"""Describes an instant view page for a web page
 
     Parameters:
-        page_blocks (list[:class:`~pytdbot.types.PageBlock`]):
+        blocks (list[:class:`~pytdbot.types.PageBlock`]):
             Content of the instant view page
 
         view_count (:class:`int`):
@@ -40094,7 +42124,7 @@ class WebPageInstantView(TlObject):
     def __init__(
         self,
         *,
-        page_blocks: list[PageBlock] | None = None,
+        blocks: list[PageBlock] | None = None,
         view_count: int | None = 0,
         version: int | None = 0,
         is_rtl: bool | None = False,
@@ -40158,7 +42188,7 @@ class WebPageInstantView(TlObject):
         | InternalLinkTypeWebApp
         | None = None,
     ) -> None:
-        self.page_blocks = page_blocks or []
+        self.blocks = blocks or []
         r"""Content of the instant view page"""
         self.view_count = view_count
         r"""Number of the instant view views; 0 if unknown"""
@@ -40185,7 +42215,7 @@ class WebPageInstantView(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "page_blocks": self.page_blocks,
+            "blocks": self.blocks,
             "view_count": self.view_count,
             "version": self.version,
             "is_rtl": self.is_rtl,
@@ -40197,7 +42227,7 @@ class WebPageInstantView(TlObject):
     def from_dict(cls, data: dict) -> WebPageInstantView | None:
         if data:
             data_class = cls()
-            data_class.page_blocks = data.get("page_blocks", None)
+            data_class.blocks = data.get("blocks", None)
             data_class.view_count = int(data.get("view_count", 0))
             data_class.version = int(data.get("version", 0))
             data_class.is_rtl = data.get("is_rtl", False)
@@ -40399,7 +42429,7 @@ class LinkPreviewTypeApp(TlObject, LinkPreviewType):
 
 
 class LinkPreviewTypeArticle(TlObject, LinkPreviewType):
-    r"""The link is a link to a web site
+    r"""The link is a link to a website
 
     Parameters:
         photo (:class:`~pytdbot.types.Photo`):
@@ -42050,7 +44080,7 @@ class LinkPreview(TlObject):
             URL to display
 
         site_name (:class:`str`):
-            Short name of the site \(e\.g\., Google Docs, App Store\)
+            Short name of the website \(e\.g\., Google Docs, App Store\)
 
         title (:class:`str`):
             Title of the content
@@ -42146,7 +44176,7 @@ class LinkPreview(TlObject):
         self.display_url = display_url
         r"""URL to display"""
         self.site_name = site_name
-        r"""Short name of the site \(e\.g\., Google Docs, App Store\)"""
+        r"""Short name of the website \(e\.g\., Google Docs, App Store\)"""
         self.title = title
         r"""Title of the content"""
         self.description = description
@@ -47537,6 +49567,389 @@ class InputPassportElementError(TlObject):
         return data_class
 
 
+class PollMediaAnimation(TlObject, PollMedia):
+    r"""An animation
+
+    Parameters:
+        animation (:class:`~pytdbot.types.Animation`):
+            The animation
+
+    """
+
+    def __init__(self, *, animation: Animation | None = None) -> None:
+        self.animation = animation
+        r"""The animation"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollMediaAnimation"]:
+        return "pollMediaAnimation"
+
+    @classmethod
+    def getClass(self) -> Literal["PollMedia"]:
+        return "PollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "animation": self.animation}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollMediaAnimation | None:
+        if data:
+            data_class = cls()
+            data_class.animation = data.get("animation", None)
+
+        return data_class
+
+
+class PollMediaAudio(TlObject, PollMedia):
+    r"""An audio
+
+    Parameters:
+        audio (:class:`~pytdbot.types.Audio`):
+            The audio
+
+    """
+
+    def __init__(self, *, audio: Audio | None = None) -> None:
+        self.audio = audio
+        r"""The audio"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollMediaAudio"]:
+        return "pollMediaAudio"
+
+    @classmethod
+    def getClass(self) -> Literal["PollMedia"]:
+        return "PollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "audio": self.audio}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollMediaAudio | None:
+        if data:
+            data_class = cls()
+            data_class.audio = data.get("audio", None)
+
+        return data_class
+
+
+class PollMediaDocument(TlObject, PollMedia):
+    r"""A document \(general file\)
+
+    Parameters:
+        document (:class:`~pytdbot.types.Document`):
+            The document
+
+    """
+
+    def __init__(self, *, document: Document | None = None) -> None:
+        self.document = document
+        r"""The document"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollMediaDocument"]:
+        return "pollMediaDocument"
+
+    @classmethod
+    def getClass(self) -> Literal["PollMedia"]:
+        return "PollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "document": self.document}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollMediaDocument | None:
+        if data:
+            data_class = cls()
+            data_class.document = data.get("document", None)
+
+        return data_class
+
+
+class PollMediaLink(TlObject, PollMedia):
+    r"""A link
+
+    Parameters:
+        url (:class:`str`):
+            URL of the link
+
+        link_preview (:class:`~pytdbot.types.LinkPreview`):
+            Preview of the link; may be null if unknown
+
+    """
+
+    def __init__(
+        self, *, url: str | None = "", link_preview: LinkPreview | None = None
+    ) -> None:
+        self.url = url
+        r"""URL of the link"""
+        self.link_preview = link_preview
+        r"""Preview of the link; may be null if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollMediaLink"]:
+        return "pollMediaLink"
+
+    @classmethod
+    def getClass(self) -> Literal["PollMedia"]:
+        return "PollMedia"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "url": self.url,
+            "link_preview": self.link_preview,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollMediaLink | None:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.link_preview = data.get("link_preview", None)
+
+        return data_class
+
+
+class PollMediaLocation(TlObject, PollMedia):
+    r"""A location
+
+    Parameters:
+        location (:class:`~pytdbot.types.Location`):
+            The location
+
+    """
+
+    def __init__(self, *, location: Location | None = None) -> None:
+        self.location = location
+        r"""The location"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollMediaLocation"]:
+        return "pollMediaLocation"
+
+    @classmethod
+    def getClass(self) -> Literal["PollMedia"]:
+        return "PollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "location": self.location}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollMediaLocation | None:
+        if data:
+            data_class = cls()
+            data_class.location = data.get("location", None)
+
+        return data_class
+
+
+class PollMediaPhoto(TlObject, PollMedia):
+    r"""A photo
+
+    Parameters:
+        photo (:class:`~pytdbot.types.Photo`):
+            The photo
+
+        video (:class:`~pytdbot.types.Video`):
+            The video representing the live photo; may be null if the photo is static
+
+    """
+
+    def __init__(
+        self, *, photo: Photo | None = None, video: Video | None = None
+    ) -> None:
+        self.photo = photo
+        r"""The photo"""
+        self.video = video
+        r"""The video representing the live photo; may be null if the photo is static"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollMediaPhoto"]:
+        return "pollMediaPhoto"
+
+    @classmethod
+    def getClass(self) -> Literal["PollMedia"]:
+        return "PollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "photo": self.photo, "video": self.video}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollMediaPhoto | None:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+            data_class.video = data.get("video", None)
+
+        return data_class
+
+
+class PollMediaSticker(TlObject, PollMedia):
+    r"""A sticker
+
+    Parameters:
+        sticker (:class:`~pytdbot.types.Sticker`):
+            The sticker
+
+    """
+
+    def __init__(self, *, sticker: Sticker | None = None) -> None:
+        self.sticker = sticker
+        r"""The sticker"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollMediaSticker"]:
+        return "pollMediaSticker"
+
+    @classmethod
+    def getClass(self) -> Literal["PollMedia"]:
+        return "PollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "sticker": self.sticker}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollMediaSticker | None:
+        if data:
+            data_class = cls()
+            data_class.sticker = data.get("sticker", None)
+
+        return data_class
+
+
+class PollMediaVenue(TlObject, PollMedia):
+    r"""A venue
+
+    Parameters:
+        venue (:class:`~pytdbot.types.Venue`):
+            The venue
+
+    """
+
+    def __init__(self, *, venue: Venue | None = None) -> None:
+        self.venue = venue
+        r"""The venue"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollMediaVenue"]:
+        return "pollMediaVenue"
+
+    @classmethod
+    def getClass(self) -> Literal["PollMedia"]:
+        return "PollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "venue": self.venue}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollMediaVenue | None:
+        if data:
+            data_class = cls()
+            data_class.venue = data.get("venue", None)
+
+        return data_class
+
+
+class PollMediaVideo(TlObject, PollMedia):
+    r"""A video
+
+    Parameters:
+        video (:class:`~pytdbot.types.Video`):
+            The video description
+
+        alternative_videos (list[:class:`~pytdbot.types.AlternativeVideo`]):
+            Alternative qualities of the video
+
+        storyboards (list[:class:`~pytdbot.types.VideoStoryboard`]):
+            Available storyboards for the video
+
+        cover (:class:`~pytdbot.types.Photo`):
+            Cover of the video; may be null if none
+
+        start_timestamp (:class:`int`):
+            Timestamp from which the video playing must start, in seconds
+
+    """
+
+    def __init__(
+        self,
+        *,
+        video: Video | None = None,
+        alternative_videos: list[AlternativeVideo] | None = None,
+        storyboards: list[VideoStoryboard] | None = None,
+        cover: Photo | None = None,
+        start_timestamp: int | None = 0,
+    ) -> None:
+        self.video = video
+        r"""The video description"""
+        self.alternative_videos = alternative_videos or []
+        r"""Alternative qualities of the video"""
+        self.storyboards = storyboards or []
+        r"""Available storyboards for the video"""
+        self.cover = cover
+        r"""Cover of the video; may be null if none"""
+        self.start_timestamp = start_timestamp
+        r"""Timestamp from which the video playing must start, in seconds"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["pollMediaVideo"]:
+        return "pollMediaVideo"
+
+    @classmethod
+    def getClass(self) -> Literal["PollMedia"]:
+        return "PollMedia"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "video": self.video,
+            "alternative_videos": self.alternative_videos,
+            "storyboards": self.storyboards,
+            "cover": self.cover,
+            "start_timestamp": self.start_timestamp,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PollMediaVideo | None:
+        if data:
+            data_class = cls()
+            data_class.video = data.get("video", None)
+            data_class.alternative_videos = data.get("alternative_videos", None)
+            data_class.storyboards = data.get("storyboards", None)
+            data_class.cover = data.get("cover", None)
+            data_class.start_timestamp = int(data.get("start_timestamp", 0))
+
+        return data_class
+
+
 class MessageText(TlObject, MessageContent):
     r"""A text message
 
@@ -47592,6 +50005,42 @@ class MessageText(TlObject, MessageContent):
             data_class.text = data.get("text", None)
             data_class.link_preview = data.get("link_preview", None)
             data_class.link_preview_options = data.get("link_preview_options", None)
+
+        return data_class
+
+
+class MessageRichMessage(TlObject, MessageContent):
+    r"""A rich message; the message can have multiple media of the same type, all of which must be shown in the corresponding profile tab
+
+    Parameters:
+        message (:class:`~pytdbot.types.RichMessage`):
+            The rich message
+
+    """
+
+    def __init__(self, *, message: RichMessage | None = None) -> None:
+        self.message = message
+        r"""The rich message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["messageRichMessage"]:
+        return "messageRichMessage"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "message": self.message}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> MessageRichMessage | None:
+        if data:
+            data_class = cls()
+            data_class.message = data.get("message", None)
 
         return data_class
 
@@ -48306,46 +50755,66 @@ class MessageExpiredVoiceNote(TlObject, MessageContent):
         return data_class
 
 
+class MessageLiveLocation(TlObject, MessageContent):
+    r"""A message with a live location
+
+    Parameters:
+        location (:class:`~pytdbot.types.LiveLocation`):
+            The current location
+
+        expires_in (:class:`int`):
+            Left time for which the location can be updated, in seconds\. If 0, then the location can't be updated anymore\. The update updateMessageContent is not sent when this field changes
+
+    """
+
+    def __init__(
+        self, *, location: LiveLocation | None = None, expires_in: int | None = 0
+    ) -> None:
+        self.location = location
+        r"""The current location"""
+        self.expires_in = expires_in
+        r"""Left time for which the location can be updated, in seconds\. If 0, then the location can't be updated anymore\. The update updateMessageContent is not sent when this field changes"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["messageLiveLocation"]:
+        return "messageLiveLocation"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "location": self.location,
+            "expires_in": self.expires_in,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> MessageLiveLocation | None:
+        if data:
+            data_class = cls()
+            data_class.location = data.get("location", None)
+            data_class.expires_in = int(data.get("expires_in", 0))
+
+        return data_class
+
+
 class MessageLocation(TlObject, MessageContent):
     r"""A message with a location
 
     Parameters:
         location (:class:`~pytdbot.types.Location`):
-            The location description
-
-        live_period (:class:`int`):
-            Time relative to the message send date, for which the location can be updated, in seconds; if 0x7FFFFFFF, then location can be updated forever
-
-        expires_in (:class:`int`):
-            Left time for which the location can be updated, in seconds\. If 0, then the location can't be updated anymore\. The update updateMessageContent is not sent when this field changes
-
-        heading (:class:`int`):
-            For live locations, a direction in which the location moves, in degrees; 1\-360\. If 0 the direction is unknown
-
-        proximity_alert_radius (:class:`int`):
-            For live locations, a maximum distance to another chat member for proximity alerts, in meters \(0\-100000\)\. 0 if the notification is disabled\. Available only to the message sender
+            The location
 
     """
 
-    def __init__(
-        self,
-        *,
-        location: Location | None = None,
-        live_period: int | None = 0,
-        expires_in: int | None = 0,
-        heading: int | None = 0,
-        proximity_alert_radius: int | None = 0,
-    ) -> None:
+    def __init__(self, *, location: Location | None = None) -> None:
         self.location = location
-        r"""The location description"""
-        self.live_period = live_period
-        r"""Time relative to the message send date, for which the location can be updated, in seconds; if 0x7FFFFFFF, then location can be updated forever"""
-        self.expires_in = expires_in
-        r"""Left time for which the location can be updated, in seconds\. If 0, then the location can't be updated anymore\. The update updateMessageContent is not sent when this field changes"""
-        self.heading = heading
-        r"""For live locations, a direction in which the location moves, in degrees; 1\-360\. If 0 the direction is unknown"""
-        self.proximity_alert_radius = proximity_alert_radius
-        r"""For live locations, a maximum distance to another chat member for proximity alerts, in meters \(0\-100000\)\. 0 if the notification is disabled\. Available only to the message sender"""
+        r"""The location"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -48359,26 +50828,13 @@ class MessageLocation(TlObject, MessageContent):
         return "MessageContent"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "location": self.location,
-            "live_period": self.live_period,
-            "expires_in": self.expires_in,
-            "heading": self.heading,
-            "proximity_alert_radius": self.proximity_alert_radius,
-        }
+        return {"@type": self.getType(), "location": self.location}
 
     @classmethod
     def from_dict(cls, data: dict) -> MessageLocation | None:
         if data:
             data_class = cls()
             data_class.location = data.get("location", None)
-            data_class.live_period = int(data.get("live_period", 0))
-            data_class.expires_in = int(data.get("expires_in", 0))
-            data_class.heading = int(data.get("heading", 0))
-            data_class.proximity_alert_radius = int(
-                data.get("proximity_alert_radius", 0)
-            )
 
         return data_class
 
@@ -48626,8 +51082,8 @@ class MessagePoll(TlObject, MessageContent):
         description (:class:`~pytdbot.types.FormattedText`):
             Description of the poll
 
-        media (:class:`~pytdbot.types.MessageContent`):
-            Media attached to the poll; may be null if none\. If present, currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption
+        media (:class:`~pytdbot.types.PollMedia`):
+            Media attached to the poll; may be null if none\. If present, currently, can be only of the types pollMediaAnimation, pollMediaAudio, pollMediaDocument, pollMediaLocation, pollMediaPhoto, pollMediaVenue, or pollMediaVideo
 
         can_add_option (:class:`bool`):
             True, if an option can be added to the poll using addPollOption
@@ -48639,106 +51095,15 @@ class MessagePoll(TlObject, MessageContent):
         *,
         poll: Poll | None = None,
         description: FormattedText | None = None,
-        media: MessageText
-        | MessageAnimation
-        | MessageAudio
-        | MessageDocument
-        | MessagePaidMedia
-        | MessagePhoto
-        | MessageSticker
-        | MessageVideo
-        | MessageVideoNote
-        | MessageVoiceNote
-        | MessageExpiredPhoto
-        | MessageExpiredVideo
-        | MessageExpiredVideoNote
-        | MessageExpiredVoiceNote
-        | MessageLocation
-        | MessageVenue
-        | MessageContact
-        | MessageAnimatedEmoji
-        | MessageDice
-        | MessageGame
-        | MessagePoll
-        | MessageStakeDice
-        | MessageStory
-        | MessageChecklist
-        | MessageInvoice
-        | MessageCall
-        | MessageGroupCall
-        | MessageVideoChatScheduled
-        | MessageVideoChatStarted
-        | MessageVideoChatEnded
-        | MessageInviteVideoChatParticipants
-        | MessagePollOptionAdded
-        | MessagePollOptionDeleted
-        | MessageBasicGroupChatCreate
-        | MessageSupergroupChatCreate
-        | MessageChatChangeTitle
-        | MessageChatChangePhoto
-        | MessageChatDeletePhoto
-        | MessageChatOwnerLeft
-        | MessageChatOwnerChanged
-        | MessageChatHasProtectedContentToggled
-        | MessageChatHasProtectedContentDisableRequested
-        | MessageChatAddMembers
-        | MessageChatJoinByLink
-        | MessageChatJoinByRequest
-        | MessageChatDeleteMember
-        | MessageChatUpgradeTo
-        | MessageChatUpgradeFrom
-        | MessagePinMessage
-        | MessageScreenshotTaken
-        | MessageChatSetBackground
-        | MessageChatSetTheme
-        | MessageChatSetMessageAutoDeleteTime
-        | MessageChatBoost
-        | MessageForumTopicCreated
-        | MessageForumTopicEdited
-        | MessageForumTopicIsClosedToggled
-        | MessageForumTopicIsHiddenToggled
-        | MessageSuggestProfilePhoto
-        | MessageSuggestBirthdate
-        | MessageCustomServiceAction
-        | MessageGameScore
-        | MessageManagedBotCreated
-        | MessagePaymentSuccessful
-        | MessagePaymentSuccessfulBot
-        | MessagePaymentRefunded
-        | MessageGiftedPremium
-        | MessagePremiumGiftCode
-        | MessageGiveawayCreated
-        | MessageGiveaway
-        | MessageGiveawayCompleted
-        | MessageGiveawayWinners
-        | MessageGiftedStars
-        | MessageGiftedTon
-        | MessageGiveawayPrizeStars
-        | MessageGift
-        | MessageUpgradedGift
-        | MessageRefundedUpgradedGift
-        | MessageUpgradedGiftPurchaseOffer
-        | MessageUpgradedGiftPurchaseOfferRejected
-        | MessagePaidMessagesRefunded
-        | MessagePaidMessagePriceChanged
-        | MessageDirectMessagePriceChanged
-        | MessageChecklistTasksDone
-        | MessageChecklistTasksAdded
-        | MessageSuggestedPostApprovalFailed
-        | MessageSuggestedPostApproved
-        | MessageSuggestedPostDeclined
-        | MessageSuggestedPostPaid
-        | MessageSuggestedPostRefunded
-        | MessageContactRegistered
-        | MessageUsersShared
-        | MessageChatShared
-        | MessageBotWriteAccessAllowed
-        | MessageWebAppDataSent
-        | MessageWebAppDataReceived
-        | MessagePassportDataSent
-        | MessagePassportDataReceived
-        | MessageProximityAlertTriggered
-        | MessageUnsupported
+        media: PollMediaAnimation
+        | PollMediaAudio
+        | PollMediaDocument
+        | PollMediaLink
+        | PollMediaLocation
+        | PollMediaPhoto
+        | PollMediaSticker
+        | PollMediaVenue
+        | PollMediaVideo
         | None = None,
         can_add_option: bool | None = False,
     ) -> None:
@@ -48747,7 +51112,7 @@ class MessagePoll(TlObject, MessageContent):
         self.description = description
         r"""Description of the poll"""
         self.media = media
-        r"""Media attached to the poll; may be null if none\. If present, currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption"""
+        r"""Media attached to the poll; may be null if none\. If present, currently, can be only of the types pollMediaAnimation, pollMediaAudio, pollMediaDocument, pollMediaLocation, pollMediaPhoto, pollMediaVenue, or pollMediaVideo"""
         self.can_add_option = can_add_option
         r"""True, if an option can be added to the poll using addPollOption"""
 
@@ -54387,6 +56752,443 @@ class InputThumbnail(TlObject):
         return data_class
 
 
+class InputAnimation(TlObject):
+    r"""An animation to be sent
+
+    Parameters:
+        animation (:class:`~pytdbot.types.InputFile`):
+            Animation file to be sent
+
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
+            Animation thumbnail; pass null to skip thumbnail uploading
+
+        added_sticker_file_ids (list[:class:`int`]):
+            File identifiers of the stickers added to the animation, if applicable
+
+        duration (:class:`int`):
+            Duration of the animation, in seconds; may be replaced by the server
+
+        width (:class:`int`):
+            Width of the animation; may be replaced by the server
+
+        height (:class:`int`):
+            Height of the animation; may be replaced by the server
+
+    """
+
+    def __init__(
+        self,
+        *,
+        animation: InputFileId
+        | InputFileRemote
+        | InputFileLocal
+        | InputFileGenerated
+        | None = None,
+        thumbnail: InputThumbnail | None = None,
+        added_sticker_file_ids: list[int] | None = None,
+        duration: int | None = 0,
+        width: int | None = 0,
+        height: int | None = 0,
+    ) -> None:
+        self.animation = animation
+        r"""Animation file to be sent"""
+        self.thumbnail = thumbnail
+        r"""Animation thumbnail; pass null to skip thumbnail uploading"""
+        self.added_sticker_file_ids = added_sticker_file_ids or []
+        r"""File identifiers of the stickers added to the animation, if applicable"""
+        self.duration = duration
+        r"""Duration of the animation, in seconds; may be replaced by the server"""
+        self.width = width
+        r"""Width of the animation; may be replaced by the server"""
+        self.height = height
+        r"""Height of the animation; may be replaced by the server"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputAnimation"]:
+        return "inputAnimation"
+
+    @classmethod
+    def getClass(self) -> Literal["InputAnimation"]:
+        return "InputAnimation"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "animation": self.animation,
+            "thumbnail": self.thumbnail,
+            "added_sticker_file_ids": self.added_sticker_file_ids,
+            "duration": self.duration,
+            "width": self.width,
+            "height": self.height,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputAnimation | None:
+        if data:
+            data_class = cls()
+            data_class.animation = data.get("animation", None)
+            data_class.thumbnail = data.get("thumbnail", None)
+            data_class.added_sticker_file_ids = data.get("added_sticker_file_ids", None)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+
+        return data_class
+
+
+class InputAudio(TlObject):
+    r"""An audio to be sent
+
+    Parameters:
+        audio (:class:`~pytdbot.types.InputFile`):
+            Audio file to be sent
+
+        album_cover_thumbnail (:class:`~pytdbot.types.InputThumbnail`):
+            Thumbnail of the cover for the album; pass null to skip thumbnail uploading
+
+        duration (:class:`int`):
+            Duration of the audio, in seconds; may be replaced by the server
+
+        title (:class:`str`):
+            Title of the audio; 0\-64 characters; may be replaced by the server
+
+        performer (:class:`str`):
+            Performer of the audio; 0\-64 characters, may be replaced by the server
+
+    """
+
+    def __init__(
+        self,
+        *,
+        audio: InputFileId
+        | InputFileRemote
+        | InputFileLocal
+        | InputFileGenerated
+        | None = None,
+        album_cover_thumbnail: InputThumbnail | None = None,
+        duration: int | None = 0,
+        title: str | None = "",
+        performer: str | None = "",
+    ) -> None:
+        self.audio = audio
+        r"""Audio file to be sent"""
+        self.album_cover_thumbnail = album_cover_thumbnail
+        r"""Thumbnail of the cover for the album; pass null to skip thumbnail uploading"""
+        self.duration = duration
+        r"""Duration of the audio, in seconds; may be replaced by the server"""
+        self.title = title
+        r"""Title of the audio; 0\-64 characters; may be replaced by the server"""
+        self.performer = performer
+        r"""Performer of the audio; 0\-64 characters, may be replaced by the server"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputAudio"]:
+        return "inputAudio"
+
+    @classmethod
+    def getClass(self) -> Literal["InputAudio"]:
+        return "InputAudio"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "audio": self.audio,
+            "album_cover_thumbnail": self.album_cover_thumbnail,
+            "duration": self.duration,
+            "title": self.title,
+            "performer": self.performer,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputAudio | None:
+        if data:
+            data_class = cls()
+            data_class.audio = data.get("audio", None)
+            data_class.album_cover_thumbnail = data.get("album_cover_thumbnail", None)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.title = data.get("title", "")
+            data_class.performer = data.get("performer", "")
+
+        return data_class
+
+
+class InputDocument(TlObject):
+    r"""A document \(general file\) to be sent
+
+    Parameters:
+        document (:class:`~pytdbot.types.InputFile`):
+            File to be sent
+
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
+            Document thumbnail; pass null to skip thumbnail uploading
+
+        disable_content_type_detection (:class:`bool`):
+            Pass true to disable automatic file type detection and send the document as a file\. Always true for files sent to secret chats
+
+    """
+
+    def __init__(
+        self,
+        *,
+        document: InputFileId
+        | InputFileRemote
+        | InputFileLocal
+        | InputFileGenerated
+        | None = None,
+        thumbnail: InputThumbnail | None = None,
+        disable_content_type_detection: bool | None = False,
+    ) -> None:
+        self.document = document
+        r"""File to be sent"""
+        self.thumbnail = thumbnail
+        r"""Document thumbnail; pass null to skip thumbnail uploading"""
+        self.disable_content_type_detection = disable_content_type_detection
+        r"""Pass true to disable automatic file type detection and send the document as a file\. Always true for files sent to secret chats"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputDocument"]:
+        return "inputDocument"
+
+    @classmethod
+    def getClass(self) -> Literal["InputDocument"]:
+        return "InputDocument"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "document": self.document,
+            "thumbnail": self.thumbnail,
+            "disable_content_type_detection": self.disable_content_type_detection,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputDocument | None:
+        if data:
+            data_class = cls()
+            data_class.document = data.get("document", None)
+            data_class.thumbnail = data.get("thumbnail", None)
+            data_class.disable_content_type_detection = data.get(
+                "disable_content_type_detection", False
+            )
+
+        return data_class
+
+
+class InputPhoto(TlObject):
+    r"""A photo to be sent
+
+    Parameters:
+        photo (:class:`~pytdbot.types.InputFile`):
+            Photo to be sent\. The photo must be at most 10 MB in size\. The photo's width and height must not exceed 10000 in total\. Width and height ratio must be at most 20
+
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
+            Photo thumbnail; pass null to skip thumbnail uploading\. The thumbnail is sent to the other party only in secret chats
+
+        video (:class:`~pytdbot.types.InputFile`):
+            Video of the live photo; not supported in secret chats; pass null if the photo isn't a live photo
+
+        added_sticker_file_ids (list[:class:`int`]):
+            File identifiers of the stickers added to the photo, if applicable
+
+        width (:class:`int`):
+            Photo width; may be replaced by the server
+
+        height (:class:`int`):
+            Photo height; may be replaced by the server
+
+    """
+
+    def __init__(
+        self,
+        *,
+        photo: InputFileId
+        | InputFileRemote
+        | InputFileLocal
+        | InputFileGenerated
+        | None = None,
+        thumbnail: InputThumbnail | None = None,
+        video: InputFileId
+        | InputFileRemote
+        | InputFileLocal
+        | InputFileGenerated
+        | None = None,
+        added_sticker_file_ids: list[int] | None = None,
+        width: int | None = 0,
+        height: int | None = 0,
+    ) -> None:
+        self.photo = photo
+        r"""Photo to be sent\. The photo must be at most 10 MB in size\. The photo's width and height must not exceed 10000 in total\. Width and height ratio must be at most 20"""
+        self.thumbnail = thumbnail
+        r"""Photo thumbnail; pass null to skip thumbnail uploading\. The thumbnail is sent to the other party only in secret chats"""
+        self.video = video
+        r"""Video of the live photo; not supported in secret chats; pass null if the photo isn't a live photo"""
+        self.added_sticker_file_ids = added_sticker_file_ids or []
+        r"""File identifiers of the stickers added to the photo, if applicable"""
+        self.width = width
+        r"""Photo width; may be replaced by the server"""
+        self.height = height
+        r"""Photo height; may be replaced by the server"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputPhoto"]:
+        return "inputPhoto"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPhoto"]:
+        return "InputPhoto"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "photo": self.photo,
+            "thumbnail": self.thumbnail,
+            "video": self.video,
+            "added_sticker_file_ids": self.added_sticker_file_ids,
+            "width": self.width,
+            "height": self.height,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPhoto | None:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+            data_class.thumbnail = data.get("thumbnail", None)
+            data_class.video = data.get("video", None)
+            data_class.added_sticker_file_ids = data.get("added_sticker_file_ids", None)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+
+        return data_class
+
+
+class InputVideo(TlObject):
+    r"""A video to be sent
+
+    Parameters:
+        video (:class:`~pytdbot.types.InputFile`):
+            Video file to be sent\. The video is expected to be re\-encoded to MPEG4 format with H\.264 codec by the sender
+
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
+            Video thumbnail; pass null to skip thumbnail uploading
+
+        cover (:class:`~pytdbot.types.InputFile`):
+            Cover of the video; pass null to skip cover uploading; not supported in secret chats and for self\-destructing messages
+
+        start_timestamp (:class:`int`):
+            Timestamp from which the video playing must start, in seconds
+
+        added_sticker_file_ids (list[:class:`int`]):
+            File identifiers of the stickers added to the video, if applicable
+
+        duration (:class:`int`):
+            Duration of the video, in seconds
+
+        width (:class:`int`):
+            Video width
+
+        height (:class:`int`):
+            Video height
+
+        supports_streaming (:class:`bool`):
+            True, if the video is expected to be streamed
+
+    """
+
+    def __init__(
+        self,
+        *,
+        video: InputFileId
+        | InputFileRemote
+        | InputFileLocal
+        | InputFileGenerated
+        | None = None,
+        thumbnail: InputThumbnail | None = None,
+        cover: InputFileId
+        | InputFileRemote
+        | InputFileLocal
+        | InputFileGenerated
+        | None = None,
+        start_timestamp: int | None = 0,
+        added_sticker_file_ids: list[int] | None = None,
+        duration: int | None = 0,
+        width: int | None = 0,
+        height: int | None = 0,
+        supports_streaming: bool | None = False,
+    ) -> None:
+        self.video = video
+        r"""Video file to be sent\. The video is expected to be re\-encoded to MPEG4 format with H\.264 codec by the sender"""
+        self.thumbnail = thumbnail
+        r"""Video thumbnail; pass null to skip thumbnail uploading"""
+        self.cover = cover
+        r"""Cover of the video; pass null to skip cover uploading; not supported in secret chats and for self\-destructing messages"""
+        self.start_timestamp = start_timestamp
+        r"""Timestamp from which the video playing must start, in seconds"""
+        self.added_sticker_file_ids = added_sticker_file_ids or []
+        r"""File identifiers of the stickers added to the video, if applicable"""
+        self.duration = duration
+        r"""Duration of the video, in seconds"""
+        self.width = width
+        r"""Video width"""
+        self.height = height
+        r"""Video height"""
+        self.supports_streaming = supports_streaming
+        r"""True, if the video is expected to be streamed"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputVideo"]:
+        return "inputVideo"
+
+    @classmethod
+    def getClass(self) -> Literal["InputVideo"]:
+        return "InputVideo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "video": self.video,
+            "thumbnail": self.thumbnail,
+            "cover": self.cover,
+            "start_timestamp": self.start_timestamp,
+            "added_sticker_file_ids": self.added_sticker_file_ids,
+            "duration": self.duration,
+            "width": self.width,
+            "height": self.height,
+            "supports_streaming": self.supports_streaming,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputVideo | None:
+        if data:
+            data_class = cls()
+            data_class.video = data.get("video", None)
+            data_class.thumbnail = data.get("thumbnail", None)
+            data_class.cover = data.get("cover", None)
+            data_class.start_timestamp = int(data.get("start_timestamp", 0))
+            data_class.added_sticker_file_ids = data.get("added_sticker_file_ids", None)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+            data_class.supports_streaming = data.get("supports_streaming", False)
+
+        return data_class
+
+
 class InputPaidMediaTypePhoto(TlObject, InputPaidMediaType):
     r"""The media is a photo\. The photo must be at most 10 MB in size\. The photo's width and height must not exceed 10000 in total\. Width and height ratio must be at most 20
 
@@ -54968,6 +57770,365 @@ class MessageCopyOptions(TlObject):
         return data_class
 
 
+class InputPollMediaAnimation(TlObject, InputPollMedia):
+    r"""An animation
+
+    Parameters:
+        animation (:class:`~pytdbot.types.InputAnimation`):
+            The animation to be sent
+
+    """
+
+    def __init__(self, *, animation: InputAnimation | None = None) -> None:
+        self.animation = animation
+        r"""The animation to be sent"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputPollMediaAnimation"]:
+        return "inputPollMediaAnimation"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPollMedia"]:
+        return "InputPollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "animation": self.animation}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPollMediaAnimation | None:
+        if data:
+            data_class = cls()
+            data_class.animation = data.get("animation", None)
+
+        return data_class
+
+
+class InputPollMediaAudio(TlObject, InputPollMedia):
+    r"""An audio
+
+    Parameters:
+        audio (:class:`~pytdbot.types.InputAudio`):
+            The audio to be sent
+
+    """
+
+    def __init__(self, *, audio: InputAudio | None = None) -> None:
+        self.audio = audio
+        r"""The audio to be sent"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputPollMediaAudio"]:
+        return "inputPollMediaAudio"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPollMedia"]:
+        return "InputPollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "audio": self.audio}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPollMediaAudio | None:
+        if data:
+            data_class = cls()
+            data_class.audio = data.get("audio", None)
+
+        return data_class
+
+
+class InputPollMediaDocument(TlObject, InputPollMedia):
+    r"""A document \(general file\)
+
+    Parameters:
+        document (:class:`~pytdbot.types.InputDocument`):
+            The document to be sent
+
+    """
+
+    def __init__(self, *, document: InputDocument | None = None) -> None:
+        self.document = document
+        r"""The document to be sent"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputPollMediaDocument"]:
+        return "inputPollMediaDocument"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPollMedia"]:
+        return "InputPollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "document": self.document}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPollMediaDocument | None:
+        if data:
+            data_class = cls()
+            data_class.document = data.get("document", None)
+
+        return data_class
+
+
+class InputPollMediaLink(TlObject, InputPollMedia):
+    r"""A link
+
+    Parameters:
+        url (:class:`str`):
+            URL of the link
+
+    """
+
+    def __init__(self, *, url: str | None = "") -> None:
+        self.url = url
+        r"""URL of the link"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputPollMediaLink"]:
+        return "inputPollMediaLink"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPollMedia"]:
+        return "InputPollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "url": self.url}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPollMediaLink | None:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+
+        return data_class
+
+
+class InputPollMediaLocation(TlObject, InputPollMedia):
+    r"""A location
+
+    Parameters:
+        location (:class:`~pytdbot.types.Location`):
+            Location to be sent
+
+    """
+
+    def __init__(self, *, location: Location | None = None) -> None:
+        self.location = location
+        r"""Location to be sent"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputPollMediaLocation"]:
+        return "inputPollMediaLocation"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPollMedia"]:
+        return "InputPollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "location": self.location}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPollMediaLocation | None:
+        if data:
+            data_class = cls()
+            data_class.location = data.get("location", None)
+
+        return data_class
+
+
+class InputPollMediaPhoto(TlObject, InputPollMedia):
+    r"""A photo
+
+    Parameters:
+        photo (:class:`~pytdbot.types.InputPhoto`):
+            Photo to be sent
+
+    """
+
+    def __init__(self, *, photo: InputPhoto | None = None) -> None:
+        self.photo = photo
+        r"""Photo to be sent"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputPollMediaPhoto"]:
+        return "inputPollMediaPhoto"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPollMedia"]:
+        return "InputPollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "photo": self.photo}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPollMediaPhoto | None:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+
+        return data_class
+
+
+class InputPollMediaSticker(TlObject, InputPollMedia):
+    r"""A sticker
+
+    Parameters:
+        sticker (:class:`~pytdbot.types.InputFile`):
+            Sticker to be sent
+
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
+            Sticker thumbnail; pass null to skip thumbnail uploading
+
+        width (:class:`int`):
+            Sticker width
+
+        height (:class:`int`):
+            Sticker height
+
+    """
+
+    def __init__(
+        self,
+        *,
+        sticker: InputFileId
+        | InputFileRemote
+        | InputFileLocal
+        | InputFileGenerated
+        | None = None,
+        thumbnail: InputThumbnail | None = None,
+        width: int | None = 0,
+        height: int | None = 0,
+    ) -> None:
+        self.sticker = sticker
+        r"""Sticker to be sent"""
+        self.thumbnail = thumbnail
+        r"""Sticker thumbnail; pass null to skip thumbnail uploading"""
+        self.width = width
+        r"""Sticker width"""
+        self.height = height
+        r"""Sticker height"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputPollMediaSticker"]:
+        return "inputPollMediaSticker"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPollMedia"]:
+        return "InputPollMedia"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "sticker": self.sticker,
+            "thumbnail": self.thumbnail,
+            "width": self.width,
+            "height": self.height,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPollMediaSticker | None:
+        if data:
+            data_class = cls()
+            data_class.sticker = data.get("sticker", None)
+            data_class.thumbnail = data.get("thumbnail", None)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+
+        return data_class
+
+
+class InputPollMediaVenue(TlObject, InputPollMedia):
+    r"""A venue
+
+    Parameters:
+        venue (:class:`~pytdbot.types.Venue`):
+            Venue to send
+
+    """
+
+    def __init__(self, *, venue: Venue | None = None) -> None:
+        self.venue = venue
+        r"""Venue to send"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputPollMediaVenue"]:
+        return "inputPollMediaVenue"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPollMedia"]:
+        return "InputPollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "venue": self.venue}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPollMediaVenue | None:
+        if data:
+            data_class = cls()
+            data_class.venue = data.get("venue", None)
+
+        return data_class
+
+
+class InputPollMediaVideo(TlObject, InputPollMedia):
+    r"""A video
+
+    Parameters:
+        video (:class:`~pytdbot.types.InputVideo`):
+            The video to be sent
+
+    """
+
+    def __init__(self, *, video: InputVideo | None = None) -> None:
+        self.video = video
+        r"""The video to be sent"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputPollMediaVideo"]:
+        return "inputPollMediaVideo"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPollMedia"]:
+        return "InputPollMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "video": self.video}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPollMediaVideo | None:
+        if data:
+            data_class = cls()
+            data_class.video = data.get("video", None)
+
+        return data_class
+
+
 class InputMessageText(TlObject, InputMessageContent):
     r"""A text message
 
@@ -54979,7 +58140,7 @@ class InputMessageText(TlObject, InputMessageContent):
             Options to be used for generation of a link preview; may be null if none; pass null to use default link preview options
 
         clear_draft (:class:`bool`):
-            True, if the chat message draft must be deleted
+            Pass true to delete message draft in the chat
 
     """
 
@@ -54995,7 +58156,7 @@ class InputMessageText(TlObject, InputMessageContent):
         self.link_preview_options = link_preview_options
         r"""Options to be used for generation of a link preview; may be null if none; pass null to use default link preview options"""
         self.clear_draft = clear_draft
-        r"""True, if the chat message draft must be deleted"""
+        r"""Pass true to delete message draft in the chat"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -55027,27 +58188,63 @@ class InputMessageText(TlObject, InputMessageContent):
         return data_class
 
 
+class InputMessageRichMessage(TlObject, InputMessageContent):
+    r"""A rich message
+
+    Parameters:
+        message (:class:`~pytdbot.types.InputRichMessage`):
+            The rich message to send
+
+        clear_draft (:class:`bool`):
+            Pass true to delete message draft in the chat
+
+    """
+
+    def __init__(
+        self,
+        *,
+        message: InputRichMessage | None = None,
+        clear_draft: bool | None = False,
+    ) -> None:
+        self.message = message
+        r"""The rich message to send"""
+        self.clear_draft = clear_draft
+        r"""Pass true to delete message draft in the chat"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputMessageRichMessage"]:
+        return "inputMessageRichMessage"
+
+    @classmethod
+    def getClass(self) -> Literal["InputMessageContent"]:
+        return "InputMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "message": self.message,
+            "clear_draft": self.clear_draft,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputMessageRichMessage | None:
+        if data:
+            data_class = cls()
+            data_class.message = data.get("message", None)
+            data_class.clear_draft = data.get("clear_draft", False)
+
+        return data_class
+
+
 class InputMessageAnimation(TlObject, InputMessageContent):
     r"""An animation message \(GIF\-style\)\.
 
     Parameters:
-        animation (:class:`~pytdbot.types.InputFile`):
-            Animation file to be sent
-
-        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
-            Animation thumbnail; pass null to skip thumbnail uploading
-
-        added_sticker_file_ids (list[:class:`int`]):
-            File identifiers of the stickers added to the animation, if applicable
-
-        duration (:class:`int`):
-            Duration of the animation, in seconds
-
-        width (:class:`int`):
-            Width of the animation; may be replaced by the server
-
-        height (:class:`int`):
-            Height of the animation; may be replaced by the server
+        animation (:class:`~pytdbot.types.InputAnimation`):
+            The animation to be sent
 
         caption (:class:`~pytdbot.types.FormattedText`):
             Animation caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
@@ -55063,32 +58260,13 @@ class InputMessageAnimation(TlObject, InputMessageContent):
     def __init__(
         self,
         *,
-        animation: InputFileId
-        | InputFileRemote
-        | InputFileLocal
-        | InputFileGenerated
-        | None = None,
-        thumbnail: InputThumbnail | None = None,
-        added_sticker_file_ids: list[int] | None = None,
-        duration: int | None = 0,
-        width: int | None = 0,
-        height: int | None = 0,
+        animation: InputAnimation | None = None,
         caption: FormattedText | None = None,
         show_caption_above_media: bool | None = False,
         has_spoiler: bool | None = False,
     ) -> None:
         self.animation = animation
-        r"""Animation file to be sent"""
-        self.thumbnail = thumbnail
-        r"""Animation thumbnail; pass null to skip thumbnail uploading"""
-        self.added_sticker_file_ids = added_sticker_file_ids or []
-        r"""File identifiers of the stickers added to the animation, if applicable"""
-        self.duration = duration
-        r"""Duration of the animation, in seconds"""
-        self.width = width
-        r"""Width of the animation; may be replaced by the server"""
-        self.height = height
-        r"""Height of the animation; may be replaced by the server"""
+        r"""The animation to be sent"""
         self.caption = caption
         r"""Animation caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
         self.show_caption_above_media = show_caption_above_media
@@ -55111,11 +58289,6 @@ class InputMessageAnimation(TlObject, InputMessageContent):
         return {
             "@type": self.getType(),
             "animation": self.animation,
-            "thumbnail": self.thumbnail,
-            "added_sticker_file_ids": self.added_sticker_file_ids,
-            "duration": self.duration,
-            "width": self.width,
-            "height": self.height,
             "caption": self.caption,
             "show_caption_above_media": self.show_caption_above_media,
             "has_spoiler": self.has_spoiler,
@@ -55126,11 +58299,6 @@ class InputMessageAnimation(TlObject, InputMessageContent):
         if data:
             data_class = cls()
             data_class.animation = data.get("animation", None)
-            data_class.thumbnail = data.get("thumbnail", None)
-            data_class.added_sticker_file_ids = data.get("added_sticker_file_ids", None)
-            data_class.duration = int(data.get("duration", 0))
-            data_class.width = int(data.get("width", 0))
-            data_class.height = int(data.get("height", 0))
             data_class.caption = data.get("caption", None)
             data_class.show_caption_above_media = data.get(
                 "show_caption_above_media", False
@@ -55144,20 +58312,8 @@ class InputMessageAudio(TlObject, InputMessageContent):
     r"""An audio message
 
     Parameters:
-        audio (:class:`~pytdbot.types.InputFile`):
-            Audio file to be sent
-
-        album_cover_thumbnail (:class:`~pytdbot.types.InputThumbnail`):
-            Thumbnail of the cover for the album; pass null to skip thumbnail uploading
-
-        duration (:class:`int`):
-            Duration of the audio, in seconds; may be replaced by the server
-
-        title (:class:`str`):
-            Title of the audio; 0\-64 characters; may be replaced by the server
-
-        performer (:class:`str`):
-            Performer of the audio; 0\-64 characters, may be replaced by the server
+        audio (:class:`~pytdbot.types.InputAudio`):
+            Audio to be sent
 
         caption (:class:`~pytdbot.types.FormattedText`):
             Audio caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
@@ -55165,29 +58321,10 @@ class InputMessageAudio(TlObject, InputMessageContent):
     """
 
     def __init__(
-        self,
-        *,
-        audio: InputFileId
-        | InputFileRemote
-        | InputFileLocal
-        | InputFileGenerated
-        | None = None,
-        album_cover_thumbnail: InputThumbnail | None = None,
-        duration: int | None = 0,
-        title: str | None = "",
-        performer: str | None = "",
-        caption: FormattedText | None = None,
+        self, *, audio: InputAudio | None = None, caption: FormattedText | None = None
     ) -> None:
         self.audio = audio
-        r"""Audio file to be sent"""
-        self.album_cover_thumbnail = album_cover_thumbnail
-        r"""Thumbnail of the cover for the album; pass null to skip thumbnail uploading"""
-        self.duration = duration
-        r"""Duration of the audio, in seconds; may be replaced by the server"""
-        self.title = title
-        r"""Title of the audio; 0\-64 characters; may be replaced by the server"""
-        self.performer = performer
-        r"""Performer of the audio; 0\-64 characters, may be replaced by the server"""
+        r"""Audio to be sent"""
         self.caption = caption
         r"""Audio caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
 
@@ -55203,25 +58340,13 @@ class InputMessageAudio(TlObject, InputMessageContent):
         return "InputMessageContent"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "audio": self.audio,
-            "album_cover_thumbnail": self.album_cover_thumbnail,
-            "duration": self.duration,
-            "title": self.title,
-            "performer": self.performer,
-            "caption": self.caption,
-        }
+        return {"@type": self.getType(), "audio": self.audio, "caption": self.caption}
 
     @classmethod
     def from_dict(cls, data: dict) -> InputMessageAudio | None:
         if data:
             data_class = cls()
             data_class.audio = data.get("audio", None)
-            data_class.album_cover_thumbnail = data.get("album_cover_thumbnail", None)
-            data_class.duration = int(data.get("duration", 0))
-            data_class.title = data.get("title", "")
-            data_class.performer = data.get("performer", "")
             data_class.caption = data.get("caption", None)
 
         return data_class
@@ -55231,14 +58356,8 @@ class InputMessageDocument(TlObject, InputMessageContent):
     r"""A document message \(general file\)
 
     Parameters:
-        document (:class:`~pytdbot.types.InputFile`):
+        document (:class:`~pytdbot.types.InputDocument`):
             Document to be sent
-
-        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
-            Document thumbnail; pass null to skip thumbnail uploading
-
-        disable_content_type_detection (:class:`bool`):
-            Pass true to disable automatic file type detection and send the document as a file\. Always true for files sent to secret chats
 
         caption (:class:`~pytdbot.types.FormattedText`):
             Document caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
@@ -55248,21 +58367,11 @@ class InputMessageDocument(TlObject, InputMessageContent):
     def __init__(
         self,
         *,
-        document: InputFileId
-        | InputFileRemote
-        | InputFileLocal
-        | InputFileGenerated
-        | None = None,
-        thumbnail: InputThumbnail | None = None,
-        disable_content_type_detection: bool | None = False,
+        document: InputDocument | None = None,
         caption: FormattedText | None = None,
     ) -> None:
         self.document = document
         r"""Document to be sent"""
-        self.thumbnail = thumbnail
-        r"""Document thumbnail; pass null to skip thumbnail uploading"""
-        self.disable_content_type_detection = disable_content_type_detection
-        r"""Pass true to disable automatic file type detection and send the document as a file\. Always true for files sent to secret chats"""
         self.caption = caption
         r"""Document caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
 
@@ -55281,8 +58390,6 @@ class InputMessageDocument(TlObject, InputMessageContent):
         return {
             "@type": self.getType(),
             "document": self.document,
-            "thumbnail": self.thumbnail,
-            "disable_content_type_detection": self.disable_content_type_detection,
             "caption": self.caption,
         }
 
@@ -55291,10 +58398,6 @@ class InputMessageDocument(TlObject, InputMessageContent):
         if data:
             data_class = cls()
             data_class.document = data.get("document", None)
-            data_class.thumbnail = data.get("thumbnail", None)
-            data_class.disable_content_type_detection = data.get(
-                "disable_content_type_detection", False
-            )
             data_class.caption = data.get("caption", None)
 
         return data_class
@@ -55381,23 +58484,8 @@ class InputMessagePhoto(TlObject, InputMessageContent):
     r"""A photo message
 
     Parameters:
-        photo (:class:`~pytdbot.types.InputFile`):
-            Photo to send\. The photo must be at most 10 MB in size\. The photo's width and height must not exceed 10000 in total\. Width and height ratio must be at most 20
-
-        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
-            Photo thumbnail to be sent; pass null to skip thumbnail uploading\. The thumbnail is sent to the other party only in secret chats
-
-        video (:class:`~pytdbot.types.InputFile`):
-            Video of the live photo; not supported in secret chats; pass null if the photo isn't a live photo
-
-        added_sticker_file_ids (list[:class:`int`]):
-            File identifiers of the stickers added to the photo, if applicable
-
-        width (:class:`int`):
-            Photo width
-
-        height (:class:`int`):
-            Photo height
+        photo (:class:`~pytdbot.types.InputPhoto`):
+            Photo to be sent
 
         caption (:class:`~pytdbot.types.FormattedText`):
             Photo caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
@@ -55416,20 +58504,7 @@ class InputMessagePhoto(TlObject, InputMessageContent):
     def __init__(
         self,
         *,
-        photo: InputFileId
-        | InputFileRemote
-        | InputFileLocal
-        | InputFileGenerated
-        | None = None,
-        thumbnail: InputThumbnail | None = None,
-        video: InputFileId
-        | InputFileRemote
-        | InputFileLocal
-        | InputFileGenerated
-        | None = None,
-        added_sticker_file_ids: list[int] | None = None,
-        width: int | None = 0,
-        height: int | None = 0,
+        photo: InputPhoto | None = None,
         caption: FormattedText | None = None,
         show_caption_above_media: bool | None = False,
         self_destruct_type: MessageSelfDestructTypeTimer
@@ -55438,17 +58513,7 @@ class InputMessagePhoto(TlObject, InputMessageContent):
         has_spoiler: bool | None = False,
     ) -> None:
         self.photo = photo
-        r"""Photo to send\. The photo must be at most 10 MB in size\. The photo's width and height must not exceed 10000 in total\. Width and height ratio must be at most 20"""
-        self.thumbnail = thumbnail
-        r"""Photo thumbnail to be sent; pass null to skip thumbnail uploading\. The thumbnail is sent to the other party only in secret chats"""
-        self.video = video
-        r"""Video of the live photo; not supported in secret chats; pass null if the photo isn't a live photo"""
-        self.added_sticker_file_ids = added_sticker_file_ids or []
-        r"""File identifiers of the stickers added to the photo, if applicable"""
-        self.width = width
-        r"""Photo width"""
-        self.height = height
-        r"""Photo height"""
+        r"""Photo to be sent"""
         self.caption = caption
         r"""Photo caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
         self.show_caption_above_media = show_caption_above_media
@@ -55473,11 +58538,6 @@ class InputMessagePhoto(TlObject, InputMessageContent):
         return {
             "@type": self.getType(),
             "photo": self.photo,
-            "thumbnail": self.thumbnail,
-            "video": self.video,
-            "added_sticker_file_ids": self.added_sticker_file_ids,
-            "width": self.width,
-            "height": self.height,
             "caption": self.caption,
             "show_caption_above_media": self.show_caption_above_media,
             "self_destruct_type": self.self_destruct_type,
@@ -55489,11 +58549,6 @@ class InputMessagePhoto(TlObject, InputMessageContent):
         if data:
             data_class = cls()
             data_class.photo = data.get("photo", None)
-            data_class.thumbnail = data.get("thumbnail", None)
-            data_class.video = data.get("video", None)
-            data_class.added_sticker_file_ids = data.get("added_sticker_file_ids", None)
-            data_class.width = int(data.get("width", 0))
-            data_class.height = int(data.get("height", 0))
             data_class.caption = data.get("caption", None)
             data_class.show_caption_above_media = data.get(
                 "show_caption_above_media", False
@@ -55587,32 +58642,8 @@ class InputMessageVideo(TlObject, InputMessageContent):
     r"""A video message
 
     Parameters:
-        video (:class:`~pytdbot.types.InputFile`):
-            Video to be sent\. The video is expected to be re\-encoded to MPEG4 format with H\.264 codec by the sender
-
-        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
-            Video thumbnail; pass null to skip thumbnail uploading
-
-        cover (:class:`~pytdbot.types.InputFile`):
-            Cover of the video; pass null to skip cover uploading; not supported in secret chats and for self\-destructing messages
-
-        start_timestamp (:class:`int`):
-            Timestamp from which the video playing must start, in seconds
-
-        added_sticker_file_ids (list[:class:`int`]):
-            File identifiers of the stickers added to the video, if applicable
-
-        duration (:class:`int`):
-            Duration of the video, in seconds
-
-        width (:class:`int`):
-            Video width
-
-        height (:class:`int`):
-            Video height
-
-        supports_streaming (:class:`bool`):
-            True, if the video is expected to be streamed
+        video (:class:`~pytdbot.types.InputVideo`):
+            Video to be sent
 
         caption (:class:`~pytdbot.types.FormattedText`):
             Video caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
@@ -55631,23 +58662,7 @@ class InputMessageVideo(TlObject, InputMessageContent):
     def __init__(
         self,
         *,
-        video: InputFileId
-        | InputFileRemote
-        | InputFileLocal
-        | InputFileGenerated
-        | None = None,
-        thumbnail: InputThumbnail | None = None,
-        cover: InputFileId
-        | InputFileRemote
-        | InputFileLocal
-        | InputFileGenerated
-        | None = None,
-        start_timestamp: int | None = 0,
-        added_sticker_file_ids: list[int] | None = None,
-        duration: int | None = 0,
-        width: int | None = 0,
-        height: int | None = 0,
-        supports_streaming: bool | None = False,
+        video: InputVideo | None = None,
         caption: FormattedText | None = None,
         show_caption_above_media: bool | None = False,
         self_destruct_type: MessageSelfDestructTypeTimer
@@ -55656,23 +58671,7 @@ class InputMessageVideo(TlObject, InputMessageContent):
         has_spoiler: bool | None = False,
     ) -> None:
         self.video = video
-        r"""Video to be sent\. The video is expected to be re\-encoded to MPEG4 format with H\.264 codec by the sender"""
-        self.thumbnail = thumbnail
-        r"""Video thumbnail; pass null to skip thumbnail uploading"""
-        self.cover = cover
-        r"""Cover of the video; pass null to skip cover uploading; not supported in secret chats and for self\-destructing messages"""
-        self.start_timestamp = start_timestamp
-        r"""Timestamp from which the video playing must start, in seconds"""
-        self.added_sticker_file_ids = added_sticker_file_ids or []
-        r"""File identifiers of the stickers added to the video, if applicable"""
-        self.duration = duration
-        r"""Duration of the video, in seconds"""
-        self.width = width
-        r"""Video width"""
-        self.height = height
-        r"""Video height"""
-        self.supports_streaming = supports_streaming
-        r"""True, if the video is expected to be streamed"""
+        r"""Video to be sent"""
         self.caption = caption
         r"""Video caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
         self.show_caption_above_media = show_caption_above_media
@@ -55697,14 +58696,6 @@ class InputMessageVideo(TlObject, InputMessageContent):
         return {
             "@type": self.getType(),
             "video": self.video,
-            "thumbnail": self.thumbnail,
-            "cover": self.cover,
-            "start_timestamp": self.start_timestamp,
-            "added_sticker_file_ids": self.added_sticker_file_ids,
-            "duration": self.duration,
-            "width": self.width,
-            "height": self.height,
-            "supports_streaming": self.supports_streaming,
             "caption": self.caption,
             "show_caption_above_media": self.show_caption_above_media,
             "self_destruct_type": self.self_destruct_type,
@@ -55716,14 +58707,6 @@ class InputMessageVideo(TlObject, InputMessageContent):
         if data:
             data_class = cls()
             data_class.video = data.get("video", None)
-            data_class.thumbnail = data.get("thumbnail", None)
-            data_class.cover = data.get("cover", None)
-            data_class.start_timestamp = int(data.get("start_timestamp", 0))
-            data_class.added_sticker_file_ids = data.get("added_sticker_file_ids", None)
-            data_class.duration = int(data.get("duration", 0))
-            data_class.width = int(data.get("width", 0))
-            data_class.height = int(data.get("height", 0))
-            data_class.supports_streaming = data.get("supports_streaming", False)
             data_class.caption = data.get("caption", None)
             data_class.show_caption_above_media = data.get(
                 "show_caption_above_media", False
@@ -55829,7 +58812,7 @@ class InputMessageVoiceNote(TlObject, InputMessageContent):
             Waveform representation of the voice note in 5\-bit format
 
         caption (:class:`~pytdbot.types.FormattedText`):
-            Voice note caption; may be null if empty; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
+            Voice note caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
         self_destruct_type (:class:`~pytdbot.types.MessageSelfDestructType`):
             Voice note self\-destruct type; may be null if none; pass null if none; private chats only
@@ -55858,7 +58841,7 @@ class InputMessageVoiceNote(TlObject, InputMessageContent):
         self.waveform = waveform
         r"""Waveform representation of the voice note in 5\-bit format"""
         self.caption = caption
-        r"""Voice note caption; may be null if empty; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
+        r"""Voice note caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
         self.self_destruct_type = self_destruct_type
         r"""Voice note self\-destruct type; may be null if none; pass null if none; private chats only"""
 
@@ -55896,6 +58879,42 @@ class InputMessageVoiceNote(TlObject, InputMessageContent):
         return data_class
 
 
+class InputMessageLiveLocation(TlObject, InputMessageContent):
+    r"""A message with a live location
+
+    Parameters:
+        location (:class:`~pytdbot.types.LiveLocation`):
+            Initial state of the live location to be sent\. Live period must be equal to 0x7FFFFFFF for permanent live locations, or between 60 and 86400
+
+    """
+
+    def __init__(self, *, location: LiveLocation | None = None) -> None:
+        self.location = location
+        r"""Initial state of the live location to be sent\. Live period must be equal to 0x7FFFFFFF for permanent live locations, or between 60 and 86400"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputMessageLiveLocation"]:
+        return "inputMessageLiveLocation"
+
+    @classmethod
+    def getClass(self) -> Literal["InputMessageContent"]:
+        return "InputMessageContent"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "location": self.location}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputMessageLiveLocation | None:
+        if data:
+            data_class = cls()
+            data_class.location = data.get("location", None)
+
+        return data_class
+
+
 class InputMessageLocation(TlObject, InputMessageContent):
     r"""A message with a location
 
@@ -55903,33 +58922,11 @@ class InputMessageLocation(TlObject, InputMessageContent):
         location (:class:`~pytdbot.types.Location`):
             Location to be sent
 
-        live_period (:class:`int`):
-            Period for which the location can be updated, in seconds; must be between 60 and 86400 for a temporary live location, 0x7FFFFFFF for permanent live location, and 0 otherwise
-
-        heading (:class:`int`):
-            For live locations, a direction in which the location moves, in degrees; 1\-360\. Pass 0 if unknown
-
-        proximity_alert_radius (:class:`int`):
-            For live locations, a maximum distance to another chat member for proximity alerts, in meters \(0\-100000\)\. Pass 0 if the notification is disabled\. Can't be enabled in channels and Saved Messages
-
     """
 
-    def __init__(
-        self,
-        *,
-        location: Location | None = None,
-        live_period: int | None = 0,
-        heading: int | None = 0,
-        proximity_alert_radius: int | None = 0,
-    ) -> None:
+    def __init__(self, *, location: Location | None = None) -> None:
         self.location = location
         r"""Location to be sent"""
-        self.live_period = live_period
-        r"""Period for which the location can be updated, in seconds; must be between 60 and 86400 for a temporary live location, 0x7FFFFFFF for permanent live location, and 0 otherwise"""
-        self.heading = heading
-        r"""For live locations, a direction in which the location moves, in degrees; 1\-360\. Pass 0 if unknown"""
-        self.proximity_alert_radius = proximity_alert_radius
-        r"""For live locations, a maximum distance to another chat member for proximity alerts, in meters \(0\-100000\)\. Pass 0 if the notification is disabled\. Can't be enabled in channels and Saved Messages"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -55943,24 +58940,13 @@ class InputMessageLocation(TlObject, InputMessageContent):
         return "InputMessageContent"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "location": self.location,
-            "live_period": self.live_period,
-            "heading": self.heading,
-            "proximity_alert_radius": self.proximity_alert_radius,
-        }
+        return {"@type": self.getType(), "location": self.location}
 
     @classmethod
     def from_dict(cls, data: dict) -> InputMessageLocation | None:
         if data:
             data_class = cls()
             data_class.location = data.get("location", None)
-            data_class.live_period = int(data.get("live_period", 0))
-            data_class.heading = int(data.get("heading", 0))
-            data_class.proximity_alert_radius = int(
-                data.get("proximity_alert_radius", 0)
-            )
 
         return data_class
 
@@ -56045,7 +59031,7 @@ class InputMessageDice(TlObject, InputMessageContent):
             Emoji on which the dice throw animation is based
 
         clear_draft (:class:`bool`):
-            True, if the chat message draft must be deleted
+            Pass true to delete message draft in the chat
 
     """
 
@@ -56055,7 +59041,7 @@ class InputMessageDice(TlObject, InputMessageContent):
         self.emoji = emoji
         r"""Emoji on which the dice throw animation is based"""
         self.clear_draft = clear_draft
-        r"""True, if the chat message draft must be deleted"""
+        r"""Pass true to delete message draft in the chat"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -56285,8 +59271,8 @@ class InputMessagePoll(TlObject, InputMessageContent):
         description (:class:`~pytdbot.types.FormattedText`):
             Poll description; pass null to use an empty description; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
-        media (:class:`~pytdbot.types.InputMessageContent`):
-            Media attached to the poll; pass null if none\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, non\-live inputMessageLocation, inputMessagePhoto, inputMessageVenue, or inputMessageVideo without caption
+        media (:class:`~pytdbot.types.InputPollMedia`):
+            Media attached to the poll; pass null if none\. Must be one of the following types: inputPollMediaAnimation, inputPollMediaAudio, inputPollMediaDocument, inputPollMediaLocation, inputPollMediaPhoto, inputPollMediaVenue, or inputPollMediaVideo without caption
 
         is_anonymous (:class:`bool`):
             True, if the poll voters are anonymous\. Non\-anonymous polls can't be sent or forwarded to channels
@@ -56329,27 +59315,15 @@ class InputMessagePoll(TlObject, InputMessageContent):
         question: FormattedText | None = None,
         options: list[InputPollOption] | None = None,
         description: FormattedText | None = None,
-        media: InputMessageText
-        | InputMessageAnimation
-        | InputMessageAudio
-        | InputMessageDocument
-        | InputMessagePaidMedia
-        | InputMessagePhoto
-        | InputMessageSticker
-        | InputMessageVideo
-        | InputMessageVideoNote
-        | InputMessageVoiceNote
-        | InputMessageLocation
-        | InputMessageVenue
-        | InputMessageContact
-        | InputMessageDice
-        | InputMessageGame
-        | InputMessageInvoice
-        | InputMessagePoll
-        | InputMessageStakeDice
-        | InputMessageStory
-        | InputMessageChecklist
-        | InputMessageForwarded
+        media: InputPollMediaAnimation
+        | InputPollMediaAudio
+        | InputPollMediaDocument
+        | InputPollMediaLink
+        | InputPollMediaLocation
+        | InputPollMediaPhoto
+        | InputPollMediaSticker
+        | InputPollMediaVenue
+        | InputPollMediaVideo
         | None = None,
         is_anonymous: bool | None = False,
         allows_multiple_answers: bool | None = False,
@@ -56370,7 +59344,7 @@ class InputMessagePoll(TlObject, InputMessageContent):
         self.description = description
         r"""Poll description; pass null to use an empty description; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
         self.media = media
-        r"""Media attached to the poll; pass null if none\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, non\-live inputMessageLocation, inputMessagePhoto, inputMessageVenue, or inputMessageVideo without caption"""
+        r"""Media attached to the poll; pass null if none\. Must be one of the following types: inputPollMediaAnimation, inputPollMediaAudio, inputPollMediaDocument, inputPollMediaLocation, inputPollMediaPhoto, inputPollMediaVenue, or inputPollMediaVideo without caption"""
         self.is_anonymous = is_anonymous
         r"""True, if the poll voters are anonymous\. Non\-anonymous polls can't be sent or forwarded to channels"""
         self.allows_multiple_answers = allows_multiple_answers
@@ -56463,7 +59437,7 @@ class InputMessageStakeDice(TlObject, InputMessageContent):
             The Toncoin amount that will be staked; in the smallest units of the currency\. Must be in the range getOption\(\"stake\_dice\_stake\_amount\_min\"\)\-getOption\(\"stake\_dice\_stake\_amount\_max\"\)
 
         clear_draft (:class:`bool`):
-            True, if the chat message draft must be deleted
+            Pass true to delete message draft in the chat
 
     """
 
@@ -56479,7 +59453,7 @@ class InputMessageStakeDice(TlObject, InputMessageContent):
         self.stake_toncoin_amount = stake_toncoin_amount
         r"""The Toncoin amount that will be staked; in the smallest units of the currency\. Must be in the range getOption\(\"stake\_dice\_stake\_amount\_min\"\)\-getOption\(\"stake\_dice\_stake\_amount\_max\"\)"""
         self.clear_draft = clear_draft
-        r"""True, if the chat message draft must be deleted"""
+        r"""Pass true to delete message draft in the chat"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -57742,6 +60716,62 @@ class SearchMessagesChatTypeFilterChannel(TlObject, SearchMessagesChatTypeFilter
 
     @classmethod
     def from_dict(cls, data: dict) -> SearchMessagesChatTypeFilterChannel | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class SearchChatTypeFilterBot(TlObject, SearchChatTypeFilter):
+    r"""Returns only private chats with bots"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["searchChatTypeFilterBot"]:
+        return "searchChatTypeFilterBot"
+
+    @classmethod
+    def getClass(self) -> Literal["SearchChatTypeFilter"]:
+        return "SearchChatTypeFilter"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> SearchChatTypeFilterBot | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class SearchChatTypeFilterChannel(TlObject, SearchChatTypeFilter):
+    r"""Returns only channel chats"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["searchChatTypeFilterChannel"]:
+        return "searchChatTypeFilterChannel"
+
+    @classmethod
+    def getClass(self) -> Literal["SearchChatTypeFilter"]:
+        return "SearchChatTypeFilter"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> SearchChatTypeFilterChannel | None:
         if data:
             data_class = cls()
 
@@ -62065,6 +65095,7 @@ class QuickReplyMessage(TlObject):
         via_bot_user_id: int | None = 0,
         media_album_id: int | None = 0,
         content: MessageText
+        | MessageRichMessage
         | MessageAnimation
         | MessageAudio
         | MessageDocument
@@ -62078,6 +65109,7 @@ class QuickReplyMessage(TlObject):
         | MessageExpiredVideo
         | MessageExpiredVideoNote
         | MessageExpiredVoiceNote
+        | MessageLiveLocation
         | MessageLocation
         | MessageVenue
         | MessageContact
@@ -68203,7 +71235,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
 
@@ -68225,6 +71257,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
         | ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: InputMessageText
+        | InputMessageRichMessage
         | InputMessageAnimation
         | InputMessageAudio
         | InputMessageDocument
@@ -68234,6 +71267,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
         | InputMessageVideo
         | InputMessageVideoNote
         | InputMessageVoiceNote
+        | InputMessageLiveLocation
         | InputMessageLocation
         | InputMessageVenue
         | InputMessageContact
@@ -68268,7 +71302,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -68345,7 +71379,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
 
@@ -68365,6 +71399,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
         | ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: InputMessageText
+        | InputMessageRichMessage
         | InputMessageAnimation
         | InputMessageAudio
         | InputMessageDocument
@@ -68374,6 +71409,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
         | InputMessageVideo
         | InputMessageVideoNote
         | InputMessageVoiceNote
+        | InputMessageLiveLocation
         | InputMessageLocation
         | InputMessageVenue
         | InputMessageContact
@@ -68404,7 +71440,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -68471,7 +71507,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageAudio, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
 
@@ -68489,6 +71525,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
         | ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: InputMessageText
+        | InputMessageRichMessage
         | InputMessageAnimation
         | InputMessageAudio
         | InputMessageDocument
@@ -68498,6 +71535,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
         | InputMessageVideo
         | InputMessageVideoNote
         | InputMessageVoiceNote
+        | InputMessageLiveLocation
         | InputMessageLocation
         | InputMessageVenue
         | InputMessageContact
@@ -68524,7 +71562,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageAudio, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -68587,7 +71625,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
 
@@ -68605,6 +71643,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
         | ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: InputMessageText
+        | InputMessageRichMessage
         | InputMessageAnimation
         | InputMessageAudio
         | InputMessageDocument
@@ -68614,6 +71653,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
         | InputMessageVideo
         | InputMessageVideoNote
         | InputMessageVoiceNote
+        | InputMessageLiveLocation
         | InputMessageLocation
         | InputMessageVenue
         | InputMessageContact
@@ -68640,7 +71680,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -68712,7 +71752,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageDocument, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
 
@@ -68733,6 +71773,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
         | ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: InputMessageText
+        | InputMessageRichMessage
         | InputMessageAnimation
         | InputMessageAudio
         | InputMessageDocument
@@ -68742,6 +71783,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
         | InputMessageVideo
         | InputMessageVideoNote
         | InputMessageVoiceNote
+        | InputMessageLiveLocation
         | InputMessageLocation
         | InputMessageVenue
         | InputMessageContact
@@ -68774,7 +71816,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageDocument, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -68912,7 +71954,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
 
@@ -68932,6 +71974,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
         | ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: InputMessageText
+        | InputMessageRichMessage
         | InputMessageAnimation
         | InputMessageAudio
         | InputMessageDocument
@@ -68941,6 +71984,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
         | InputMessageVideo
         | InputMessageVideoNote
         | InputMessageVoiceNote
+        | InputMessageLiveLocation
         | InputMessageLocation
         | InputMessageVenue
         | InputMessageContact
@@ -68971,7 +72015,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -69044,7 +72088,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessagePhoto, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
 
@@ -69064,6 +72108,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
         | ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: InputMessageText
+        | InputMessageRichMessage
         | InputMessageAnimation
         | InputMessageAudio
         | InputMessageDocument
@@ -69073,6 +72118,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
         | InputMessageVideo
         | InputMessageVideoNote
         | InputMessageVoiceNote
+        | InputMessageLiveLocation
         | InputMessageLocation
         | InputMessageVenue
         | InputMessageContact
@@ -69103,7 +72149,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessagePhoto, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -69170,7 +72216,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageSticker, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
 
@@ -69188,6 +72234,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
         | ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: InputMessageText
+        | InputMessageRichMessage
         | InputMessageAnimation
         | InputMessageAudio
         | InputMessageDocument
@@ -69197,6 +72244,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
         | InputMessageVideo
         | InputMessageVideoNote
         | InputMessageVoiceNote
+        | InputMessageLiveLocation
         | InputMessageLocation
         | InputMessageVenue
         | InputMessageContact
@@ -69223,7 +72271,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageSticker, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -69286,7 +72334,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
 
@@ -69304,6 +72352,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
         | ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: InputMessageText
+        | InputMessageRichMessage
         | InputMessageAnimation
         | InputMessageAudio
         | InputMessageDocument
@@ -69313,6 +72362,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
         | InputMessageVideo
         | InputMessageVideoNote
         | InputMessageVoiceNote
+        | InputMessageLiveLocation
         | InputMessageLocation
         | InputMessageVenue
         | InputMessageContact
@@ -69339,7 +72389,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -69414,7 +72464,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageVideo, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
 
@@ -69436,6 +72486,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
         | ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: InputMessageText
+        | InputMessageRichMessage
         | InputMessageAnimation
         | InputMessageAudio
         | InputMessageDocument
@@ -69445,6 +72496,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
         | InputMessageVideo
         | InputMessageVideoNote
         | InputMessageVoiceNote
+        | InputMessageLiveLocation
         | InputMessageLocation
         | InputMessageVenue
         | InputMessageContact
@@ -69479,7 +72531,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageVideo, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -69547,7 +72599,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageVoiceNote, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
 
@@ -69564,6 +72616,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
         | ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: InputMessageText
+        | InputMessageRichMessage
         | InputMessageAnimation
         | InputMessageAudio
         | InputMessageDocument
@@ -69573,6 +72626,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
         | InputMessageVideo
         | InputMessageVideoNote
         | InputMessageVoiceNote
+        | InputMessageLiveLocation
         | InputMessageLocation
         | InputMessageVenue
         | InputMessageContact
@@ -69597,7 +72651,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageVoiceNote, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -74463,6 +77517,34 @@ class PremiumLimitTypePinnedSavedMessagesTopicCount(TlObject, PremiumLimitType):
         return data_class
 
 
+class PremiumLimitTypeMessageTextLength(TlObject, PremiumLimitType):
+    r"""The maximum length of text of sent messages"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["premiumLimitTypeMessageTextLength"]:
+        return "premiumLimitTypeMessageTextLength"
+
+    @classmethod
+    def getClass(self) -> Literal["PremiumLimitType"]:
+        return "PremiumLimitType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PremiumLimitTypeMessageTextLength | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class PremiumLimitTypeCaptionLength(TlObject, PremiumLimitType):
     r"""The maximum length of sent media caption"""
 
@@ -76120,6 +79202,7 @@ class PremiumLimit(TlObject):
         | PremiumLimitTypeChatFolderChosenChatCount
         | PremiumLimitTypePinnedArchivedChatCount
         | PremiumLimitTypePinnedSavedMessagesTopicCount
+        | PremiumLimitTypeMessageTextLength
         | PremiumLimitTypeCaptionLength
         | PremiumLimitTypeBioLength
         | PremiumLimitTypeChatFolderInviteLinkCount
@@ -76346,6 +79429,7 @@ class PremiumSourceLimitExceeded(TlObject, PremiumSource):
         | PremiumLimitTypeChatFolderChosenChatCount
         | PremiumLimitTypePinnedArchivedChatCount
         | PremiumLimitTypePinnedSavedMessagesTopicCount
+        | PremiumLimitTypeMessageTextLength
         | PremiumLimitTypeCaptionLength
         | PremiumLimitTypeBioLength
         | PremiumLimitTypeChatFolderInviteLinkCount
@@ -84467,7 +87551,79 @@ class MessageAutoDeleteTime(TlObject):
         return data_class
 
 
-class SessionTypeAndroid(TlObject, SessionType):
+class SessionTypeDevice(TlObject, SessionType):
+    r"""A regular session from a device
+
+    Parameters:
+        session_id (:class:`int`):
+            Unique identifier of the session\. Use terminateSession to terminate it or confirmSession to confirm it if it isn't confirmed yet
+
+    """
+
+    def __init__(self, *, session_id: int | None = 0) -> None:
+        self.session_id = session_id
+        r"""Unique identifier of the session\. Use terminateSession to terminate it or confirmSession to confirm it if it isn't confirmed yet"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["sessionTypeDevice"]:
+        return "sessionTypeDevice"
+
+    @classmethod
+    def getClass(self) -> Literal["SessionType"]:
+        return "SessionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "session_id": self.session_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> SessionTypeDevice | None:
+        if data:
+            data_class = cls()
+            data_class.session_id = int(data.get("session_id", 0))
+
+        return data_class
+
+
+class SessionTypeConnectedBot(TlObject, SessionType):
+    r"""A business bot connected to the current user's account
+
+    Parameters:
+        bot_user_id (:class:`int`):
+            User identifier of the bot\. Use deleteBusinessConnectedBot to remove it or confirmBusinessConnectedBot to confirm it if it isn't confirmed yet
+
+    """
+
+    def __init__(self, *, bot_user_id: int | None = 0) -> None:
+        self.bot_user_id = bot_user_id
+        r"""User identifier of the bot\. Use deleteBusinessConnectedBot to remove it or confirmBusinessConnectedBot to confirm it if it isn't confirmed yet"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["sessionTypeConnectedBot"]:
+        return "sessionTypeConnectedBot"
+
+    @classmethod
+    def getClass(self) -> Literal["SessionType"]:
+        return "SessionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "bot_user_id": self.bot_user_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> SessionTypeConnectedBot | None:
+        if data:
+            data_class = cls()
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
+
+        return data_class
+
+
+class SessionDeviceTypeAndroid(TlObject, SessionDeviceType):
     r"""The session is running on an Android device"""
 
     def __init__(self) -> None:
@@ -84477,25 +87633,25 @@ class SessionTypeAndroid(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeAndroid"]:
-        return "sessionTypeAndroid"
+    def getType(self) -> Literal["sessionDeviceTypeAndroid"]:
+        return "sessionDeviceTypeAndroid"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeAndroid | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeAndroid | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeApple(TlObject, SessionType):
+class SessionDeviceTypeApple(TlObject, SessionDeviceType):
     r"""The session is running on a generic Apple device"""
 
     def __init__(self) -> None:
@@ -84505,25 +87661,25 @@ class SessionTypeApple(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeApple"]:
-        return "sessionTypeApple"
+    def getType(self) -> Literal["sessionDeviceTypeApple"]:
+        return "sessionDeviceTypeApple"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeApple | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeApple | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeBrave(TlObject, SessionType):
+class SessionDeviceTypeBrave(TlObject, SessionDeviceType):
     r"""The session is running on the Brave browser"""
 
     def __init__(self) -> None:
@@ -84533,25 +87689,25 @@ class SessionTypeBrave(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeBrave"]:
-        return "sessionTypeBrave"
+    def getType(self) -> Literal["sessionDeviceTypeBrave"]:
+        return "sessionDeviceTypeBrave"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeBrave | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeBrave | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeChrome(TlObject, SessionType):
+class SessionDeviceTypeChrome(TlObject, SessionDeviceType):
     r"""The session is running on the Chrome browser"""
 
     def __init__(self) -> None:
@@ -84561,25 +87717,25 @@ class SessionTypeChrome(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeChrome"]:
-        return "sessionTypeChrome"
+    def getType(self) -> Literal["sessionDeviceTypeChrome"]:
+        return "sessionDeviceTypeChrome"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeChrome | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeChrome | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeEdge(TlObject, SessionType):
+class SessionDeviceTypeEdge(TlObject, SessionDeviceType):
     r"""The session is running on the Edge browser"""
 
     def __init__(self) -> None:
@@ -84589,25 +87745,25 @@ class SessionTypeEdge(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeEdge"]:
-        return "sessionTypeEdge"
+    def getType(self) -> Literal["sessionDeviceTypeEdge"]:
+        return "sessionDeviceTypeEdge"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeEdge | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeEdge | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeFirefox(TlObject, SessionType):
+class SessionDeviceTypeFirefox(TlObject, SessionDeviceType):
     r"""The session is running on the Firefox browser"""
 
     def __init__(self) -> None:
@@ -84617,25 +87773,25 @@ class SessionTypeFirefox(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeFirefox"]:
-        return "sessionTypeFirefox"
+    def getType(self) -> Literal["sessionDeviceTypeFirefox"]:
+        return "sessionDeviceTypeFirefox"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeFirefox | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeFirefox | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeIpad(TlObject, SessionType):
+class SessionDeviceTypeIpad(TlObject, SessionDeviceType):
     r"""The session is running on an iPad device"""
 
     def __init__(self) -> None:
@@ -84645,25 +87801,25 @@ class SessionTypeIpad(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeIpad"]:
-        return "sessionTypeIpad"
+    def getType(self) -> Literal["sessionDeviceTypeIpad"]:
+        return "sessionDeviceTypeIpad"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeIpad | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeIpad | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeIphone(TlObject, SessionType):
+class SessionDeviceTypeIphone(TlObject, SessionDeviceType):
     r"""The session is running on an iPhone device"""
 
     def __init__(self) -> None:
@@ -84673,25 +87829,25 @@ class SessionTypeIphone(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeIphone"]:
-        return "sessionTypeIphone"
+    def getType(self) -> Literal["sessionDeviceTypeIphone"]:
+        return "sessionDeviceTypeIphone"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeIphone | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeIphone | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeLinux(TlObject, SessionType):
+class SessionDeviceTypeLinux(TlObject, SessionDeviceType):
     r"""The session is running on a Linux device"""
 
     def __init__(self) -> None:
@@ -84701,25 +87857,25 @@ class SessionTypeLinux(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeLinux"]:
-        return "sessionTypeLinux"
+    def getType(self) -> Literal["sessionDeviceTypeLinux"]:
+        return "sessionDeviceTypeLinux"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeLinux | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeLinux | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeMac(TlObject, SessionType):
+class SessionDeviceTypeMac(TlObject, SessionDeviceType):
     r"""The session is running on a Mac device"""
 
     def __init__(self) -> None:
@@ -84729,25 +87885,25 @@ class SessionTypeMac(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeMac"]:
-        return "sessionTypeMac"
+    def getType(self) -> Literal["sessionDeviceTypeMac"]:
+        return "sessionDeviceTypeMac"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeMac | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeMac | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeOpera(TlObject, SessionType):
+class SessionDeviceTypeOpera(TlObject, SessionDeviceType):
     r"""The session is running on the Opera browser"""
 
     def __init__(self) -> None:
@@ -84757,25 +87913,25 @@ class SessionTypeOpera(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeOpera"]:
-        return "sessionTypeOpera"
+    def getType(self) -> Literal["sessionDeviceTypeOpera"]:
+        return "sessionDeviceTypeOpera"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeOpera | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeOpera | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeSafari(TlObject, SessionType):
+class SessionDeviceTypeSafari(TlObject, SessionDeviceType):
     r"""The session is running on the Safari browser"""
 
     def __init__(self) -> None:
@@ -84785,25 +87941,25 @@ class SessionTypeSafari(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeSafari"]:
-        return "sessionTypeSafari"
+    def getType(self) -> Literal["sessionDeviceTypeSafari"]:
+        return "sessionDeviceTypeSafari"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeSafari | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeSafari | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeUbuntu(TlObject, SessionType):
+class SessionDeviceTypeUbuntu(TlObject, SessionDeviceType):
     r"""The session is running on an Ubuntu device"""
 
     def __init__(self) -> None:
@@ -84813,25 +87969,25 @@ class SessionTypeUbuntu(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeUbuntu"]:
-        return "sessionTypeUbuntu"
+    def getType(self) -> Literal["sessionDeviceTypeUbuntu"]:
+        return "sessionDeviceTypeUbuntu"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeUbuntu | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeUbuntu | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeUnknown(TlObject, SessionType):
+class SessionDeviceTypeUnknown(TlObject, SessionDeviceType):
     r"""The session is running on an unknown type of device"""
 
     def __init__(self) -> None:
@@ -84841,25 +87997,25 @@ class SessionTypeUnknown(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeUnknown"]:
-        return "sessionTypeUnknown"
+    def getType(self) -> Literal["sessionDeviceTypeUnknown"]:
+        return "sessionDeviceTypeUnknown"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeUnknown | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeUnknown | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeVivaldi(TlObject, SessionType):
+class SessionDeviceTypeVivaldi(TlObject, SessionDeviceType):
     r"""The session is running on the Vivaldi browser"""
 
     def __init__(self) -> None:
@@ -84869,25 +88025,25 @@ class SessionTypeVivaldi(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeVivaldi"]:
-        return "sessionTypeVivaldi"
+    def getType(self) -> Literal["sessionDeviceTypeVivaldi"]:
+        return "sessionDeviceTypeVivaldi"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeVivaldi | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeVivaldi | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeWindows(TlObject, SessionType):
+class SessionDeviceTypeWindows(TlObject, SessionDeviceType):
     r"""The session is running on a Windows device"""
 
     def __init__(self) -> None:
@@ -84897,25 +88053,25 @@ class SessionTypeWindows(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeWindows"]:
-        return "sessionTypeWindows"
+    def getType(self) -> Literal["sessionDeviceTypeWindows"]:
+        return "sessionDeviceTypeWindows"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeWindows | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeWindows | None:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class SessionTypeXbox(TlObject, SessionType):
+class SessionDeviceTypeXbox(TlObject, SessionDeviceType):
     r"""The session is running on an Xbox console"""
 
     def __init__(self) -> None:
@@ -84925,18 +88081,18 @@ class SessionTypeXbox(TlObject, SessionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["sessionTypeXbox"]:
-        return "sessionTypeXbox"
+    def getType(self) -> Literal["sessionDeviceTypeXbox"]:
+        return "sessionDeviceTypeXbox"
 
     @classmethod
-    def getClass(self) -> Literal["SessionType"]:
-        return "SessionType"
+    def getClass(self) -> Literal["SessionDeviceType"]:
+        return "SessionDeviceType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> SessionTypeXbox | None:
+    def from_dict(cls, data: dict) -> SessionDeviceTypeXbox | None:
         if data:
             data_class = cls()
 
@@ -84965,8 +88121,8 @@ class Session(TlObject):
         can_accept_calls (:class:`bool`):
             True, if incoming calls can be accepted by the session
 
-        type (:class:`~pytdbot.types.SessionType`):
-            Session type based on the system and application version, which can be used to display a corresponding icon
+        device_type (:class:`~pytdbot.types.SessionDeviceType`):
+            Session device type based on the system and application version, which can be used to display a corresponding icon
 
         api_id (:class:`int`):
             Telegram API identifier, as provided by the application
@@ -85012,23 +88168,23 @@ class Session(TlObject):
         is_unconfirmed: bool | None = False,
         can_accept_secret_chats: bool | None = False,
         can_accept_calls: bool | None = False,
-        type: SessionTypeAndroid
-        | SessionTypeApple
-        | SessionTypeBrave
-        | SessionTypeChrome
-        | SessionTypeEdge
-        | SessionTypeFirefox
-        | SessionTypeIpad
-        | SessionTypeIphone
-        | SessionTypeLinux
-        | SessionTypeMac
-        | SessionTypeOpera
-        | SessionTypeSafari
-        | SessionTypeUbuntu
-        | SessionTypeUnknown
-        | SessionTypeVivaldi
-        | SessionTypeWindows
-        | SessionTypeXbox
+        device_type: SessionDeviceTypeAndroid
+        | SessionDeviceTypeApple
+        | SessionDeviceTypeBrave
+        | SessionDeviceTypeChrome
+        | SessionDeviceTypeEdge
+        | SessionDeviceTypeFirefox
+        | SessionDeviceTypeIpad
+        | SessionDeviceTypeIphone
+        | SessionDeviceTypeLinux
+        | SessionDeviceTypeMac
+        | SessionDeviceTypeOpera
+        | SessionDeviceTypeSafari
+        | SessionDeviceTypeUbuntu
+        | SessionDeviceTypeUnknown
+        | SessionDeviceTypeVivaldi
+        | SessionDeviceTypeWindows
+        | SessionDeviceTypeXbox
         | None = None,
         api_id: int | None = 0,
         application_name: str | None = "",
@@ -85054,8 +88210,8 @@ class Session(TlObject):
         r"""True, if incoming secret chats can be accepted by the session"""
         self.can_accept_calls = can_accept_calls
         r"""True, if incoming calls can be accepted by the session"""
-        self.type = type
-        r"""Session type based on the system and application version, which can be used to display a corresponding icon"""
+        self.device_type = device_type
+        r"""Session device type based on the system and application version, which can be used to display a corresponding icon"""
         self.api_id = api_id
         r"""Telegram API identifier, as provided by the application"""
         self.application_name = application_name
@@ -85099,7 +88255,7 @@ class Session(TlObject):
             "is_unconfirmed": self.is_unconfirmed,
             "can_accept_secret_chats": self.can_accept_secret_chats,
             "can_accept_calls": self.can_accept_calls,
-            "type": self.type,
+            "device_type": self.device_type,
             "api_id": self.api_id,
             "application_name": self.application_name,
             "application_version": self.application_version,
@@ -85125,7 +88281,7 @@ class Session(TlObject):
                 "can_accept_secret_chats", False
             )
             data_class.can_accept_calls = data.get("can_accept_calls", False)
-            data_class.type = data.get("type", None)
+            data_class.device_type = data.get("device_type", None)
             data_class.api_id = int(data.get("api_id", 0))
             data_class.application_name = data.get("application_name", "")
             data_class.application_version = data.get("application_version", "")
@@ -85200,11 +88356,11 @@ class UnconfirmedSession(TlObject):
     r"""Contains information about an unconfirmed session
 
     Parameters:
-        id (:class:`int`):
-            Session identifier
+        type (:class:`~pytdbot.types.SessionType`):
+            Session type
 
-        log_in_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the user has logged in
+        date (:class:`int`):
+            Point in time \(Unix timestamp\) when the user has logged in or the business bot was connected
 
         device_model (:class:`str`):
             Model of the device that was used for the session creation, as provided by the application
@@ -85217,15 +88373,15 @@ class UnconfirmedSession(TlObject):
     def __init__(
         self,
         *,
-        id: int | None = 0,
-        log_in_date: int | None = 0,
+        type: SessionTypeDevice | SessionTypeConnectedBot | None = None,
+        date: int | None = 0,
         device_model: str | None = "",
         location: str | None = "",
     ) -> None:
-        self.id = id
-        r"""Session identifier"""
-        self.log_in_date = log_in_date
-        r"""Point in time \(Unix timestamp\) when the user has logged in"""
+        self.type = type
+        r"""Session type"""
+        self.date = date
+        r"""Point in time \(Unix timestamp\) when the user has logged in or the business bot was connected"""
         self.device_model = device_model
         r"""Model of the device that was used for the session creation, as provided by the application"""
         self.location = location
@@ -85245,8 +88401,8 @@ class UnconfirmedSession(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "id": self.id,
-            "log_in_date": self.log_in_date,
+            "type": self.type,
+            "date": self.date,
             "device_model": self.device_model,
             "location": self.location,
         }
@@ -85255,8 +88411,8 @@ class UnconfirmedSession(TlObject):
     def from_dict(cls, data: dict) -> UnconfirmedSession | None:
         if data:
             data_class = cls()
-            data_class.id = int(data.get("id", 0))
-            data_class.log_in_date = int(data.get("log_in_date", 0))
+            data_class.type = data.get("type", None)
+            data_class.date = int(data.get("date", 0))
             data_class.device_model = data.get("device_model", "")
             data_class.location = data.get("location", "")
 
@@ -91218,6 +94374,198 @@ class AutosaveSettings(TlObject):
         return data_class
 
 
+class WebDomainException(TlObject):
+    r"""Describes an exception for built\-in browser usage
+
+    Parameters:
+        url (:class:`str`):
+            URL for which the exception is done
+
+        domain (:class:`str`):
+            Domain of the URL\. All URLs on the domain and subdomains of the domain are subject to the exception
+
+        title (:class:`str`):
+            Title of the website
+
+        favicon_custom_emoji_id (:class:`int`):
+            Identifier of the custom emoji with favicon of the website; may be 0 if unknown, in which case the first letter of the domain must be used
+
+    """
+
+    def __init__(
+        self,
+        *,
+        url: str | None = "",
+        domain: str | None = "",
+        title: str | None = "",
+        favicon_custom_emoji_id: int | None = 0,
+    ) -> None:
+        self.url = url
+        r"""URL for which the exception is done"""
+        self.domain = domain
+        r"""Domain of the URL\. All URLs on the domain and subdomains of the domain are subject to the exception"""
+        self.title = title
+        r"""Title of the website"""
+        self.favicon_custom_emoji_id = favicon_custom_emoji_id
+        r"""Identifier of the custom emoji with favicon of the website; may be 0 if unknown, in which case the first letter of the domain must be used"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["webDomainException"]:
+        return "webDomainException"
+
+    @classmethod
+    def getClass(self) -> Literal["WebDomainException"]:
+        return "WebDomainException"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "url": self.url,
+            "domain": self.domain,
+            "title": self.title,
+            "favicon_custom_emoji_id": self.favicon_custom_emoji_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebDomainException | None:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.domain = data.get("domain", "")
+            data_class.title = data.get("title", "")
+            data_class.favicon_custom_emoji_id = int(
+                data.get("favicon_custom_emoji_id", 0)
+            )
+
+        return data_class
+
+
+class WebBrowserSettings(TlObject):
+    r"""Describes web browser settings
+
+    Parameters:
+        open_external_browser (:class:`bool`):
+            True, if links are opened in an external browser by default
+
+        external_exceptions (list[:class:`~pytdbot.types.WebDomainException`]):
+            The list of websites which must always be opened in an external browser
+
+        in_app_exceptions (list[:class:`~pytdbot.types.WebDomainException`]):
+            The list of websites which must always be opened in the in\-app browser
+
+        display_close_button (:class:`bool`):
+            True, if a close button must be shown in the in\-app browser; for Android app only
+
+    """
+
+    def __init__(
+        self,
+        *,
+        open_external_browser: bool | None = False,
+        external_exceptions: list[WebDomainException] | None = None,
+        in_app_exceptions: list[WebDomainException] | None = None,
+        display_close_button: bool | None = False,
+    ) -> None:
+        self.open_external_browser = open_external_browser
+        r"""True, if links are opened in an external browser by default"""
+        self.external_exceptions = external_exceptions or []
+        r"""The list of websites which must always be opened in an external browser"""
+        self.in_app_exceptions = in_app_exceptions or []
+        r"""The list of websites which must always be opened in the in\-app browser"""
+        self.display_close_button = display_close_button
+        r"""True, if a close button must be shown in the in\-app browser; for Android app only"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["webBrowserSettings"]:
+        return "webBrowserSettings"
+
+    @classmethod
+    def getClass(self) -> Literal["WebBrowserSettings"]:
+        return "WebBrowserSettings"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "open_external_browser": self.open_external_browser,
+            "external_exceptions": self.external_exceptions,
+            "in_app_exceptions": self.in_app_exceptions,
+            "display_close_button": self.display_close_button,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebBrowserSettings | None:
+        if data:
+            data_class = cls()
+            data_class.open_external_browser = data.get("open_external_browser", False)
+            data_class.external_exceptions = data.get("external_exceptions", None)
+            data_class.in_app_exceptions = data.get("in_app_exceptions", None)
+            data_class.display_close_button = data.get("display_close_button", False)
+
+        return data_class
+
+
+class WebBrowserTypeExternal(TlObject, WebBrowserType):
+    r"""An external web browser"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["webBrowserTypeExternal"]:
+        return "webBrowserTypeExternal"
+
+    @classmethod
+    def getClass(self) -> Literal["WebBrowserType"]:
+        return "WebBrowserType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebBrowserTypeExternal | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class WebBrowserTypeInApp(TlObject, WebBrowserType):
+    r"""The in\-app browser"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["webBrowserTypeInApp"]:
+        return "webBrowserTypeInApp"
+
+    @classmethod
+    def getClass(self) -> Literal["WebBrowserType"]:
+        return "WebBrowserType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebBrowserTypeInApp | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class ConnectionStateWaitingForNetwork(TlObject, ConnectionState):
     r"""Waiting for the network to become available\. Use setNetworkType to change the available network type"""
 
@@ -96434,6 +99782,7 @@ class UpdateMessageContent(TlObject, Update):
         chat_id: int | None = 0,
         message_id: int | None = 0,
         new_content: MessageText
+        | MessageRichMessage
         | MessageAnimation
         | MessageAudio
         | MessageDocument
@@ -96447,6 +99796,7 @@ class UpdateMessageContent(TlObject, Update):
         | MessageExpiredVideo
         | MessageExpiredVideoNote
         | MessageExpiredVoiceNote
+        | MessageLiveLocation
         | MessageLocation
         | MessageVenue
         | MessageContact
@@ -100042,8 +103392,8 @@ class UpdateChatAction(TlObject, Update):
         return data_class
 
 
-class UpdatePendingTextMessage(TlObject, Update):
-    r"""A new pending text message was received in a chat with a bot\. The message must be shown in the chat for at most getOption\(\"pending\_text\_message\_period\"\) seconds, replace any other pending message with the same draft\_id, and be deleted whenever any incoming message from the bot in the message thread is received
+class UpdatePendingMessage(TlObject, Update):
+    r"""A new pending text or rich message was received in a chat with a bot\. The message must be shown in the chat for at most getOption\(\"pending\_text\_message\_period\"\) seconds, replace any other pending message with the same draft\_id, and be deleted whenever any incoming message from the bot in the message thread is received
 
     Parameters:
         chat_id (:class:`int`):
@@ -100055,8 +103405,8 @@ class UpdatePendingTextMessage(TlObject, Update):
         draft_id (:class:`int`):
             Unique identifier of the message draft within the message thread
 
-        text (:class:`~pytdbot.types.FormattedText`):
-            Text of the pending message
+        content (:class:`~pytdbot.types.MessageContent`):
+            Content of the message; always of the type messageText or messageRichMessage
 
     """
 
@@ -100066,7 +103416,109 @@ class UpdatePendingTextMessage(TlObject, Update):
         chat_id: int | None = 0,
         forum_topic_id: int | None = 0,
         draft_id: int | None = 0,
-        text: FormattedText | None = None,
+        content: MessageText
+        | MessageRichMessage
+        | MessageAnimation
+        | MessageAudio
+        | MessageDocument
+        | MessagePaidMedia
+        | MessagePhoto
+        | MessageSticker
+        | MessageVideo
+        | MessageVideoNote
+        | MessageVoiceNote
+        | MessageExpiredPhoto
+        | MessageExpiredVideo
+        | MessageExpiredVideoNote
+        | MessageExpiredVoiceNote
+        | MessageLiveLocation
+        | MessageLocation
+        | MessageVenue
+        | MessageContact
+        | MessageAnimatedEmoji
+        | MessageDice
+        | MessageGame
+        | MessagePoll
+        | MessageStakeDice
+        | MessageStory
+        | MessageChecklist
+        | MessageInvoice
+        | MessageCall
+        | MessageGroupCall
+        | MessageVideoChatScheduled
+        | MessageVideoChatStarted
+        | MessageVideoChatEnded
+        | MessageInviteVideoChatParticipants
+        | MessagePollOptionAdded
+        | MessagePollOptionDeleted
+        | MessageBasicGroupChatCreate
+        | MessageSupergroupChatCreate
+        | MessageChatChangeTitle
+        | MessageChatChangePhoto
+        | MessageChatDeletePhoto
+        | MessageChatOwnerLeft
+        | MessageChatOwnerChanged
+        | MessageChatHasProtectedContentToggled
+        | MessageChatHasProtectedContentDisableRequested
+        | MessageChatAddMembers
+        | MessageChatJoinByLink
+        | MessageChatJoinByRequest
+        | MessageChatDeleteMember
+        | MessageChatUpgradeTo
+        | MessageChatUpgradeFrom
+        | MessagePinMessage
+        | MessageScreenshotTaken
+        | MessageChatSetBackground
+        | MessageChatSetTheme
+        | MessageChatSetMessageAutoDeleteTime
+        | MessageChatBoost
+        | MessageForumTopicCreated
+        | MessageForumTopicEdited
+        | MessageForumTopicIsClosedToggled
+        | MessageForumTopicIsHiddenToggled
+        | MessageSuggestProfilePhoto
+        | MessageSuggestBirthdate
+        | MessageCustomServiceAction
+        | MessageGameScore
+        | MessageManagedBotCreated
+        | MessagePaymentSuccessful
+        | MessagePaymentSuccessfulBot
+        | MessagePaymentRefunded
+        | MessageGiftedPremium
+        | MessagePremiumGiftCode
+        | MessageGiveawayCreated
+        | MessageGiveaway
+        | MessageGiveawayCompleted
+        | MessageGiveawayWinners
+        | MessageGiftedStars
+        | MessageGiftedTon
+        | MessageGiveawayPrizeStars
+        | MessageGift
+        | MessageUpgradedGift
+        | MessageRefundedUpgradedGift
+        | MessageUpgradedGiftPurchaseOffer
+        | MessageUpgradedGiftPurchaseOfferRejected
+        | MessagePaidMessagesRefunded
+        | MessagePaidMessagePriceChanged
+        | MessageDirectMessagePriceChanged
+        | MessageChecklistTasksDone
+        | MessageChecklistTasksAdded
+        | MessageSuggestedPostApprovalFailed
+        | MessageSuggestedPostApproved
+        | MessageSuggestedPostDeclined
+        | MessageSuggestedPostPaid
+        | MessageSuggestedPostRefunded
+        | MessageContactRegistered
+        | MessageUsersShared
+        | MessageChatShared
+        | MessageBotWriteAccessAllowed
+        | MessageWebAppDataSent
+        | MessageWebAppDataReceived
+        | MessagePassportDataSent
+        | MessagePassportDataReceived
+        | MessageProximityAlertTriggered
+        | MessageUnsupported
+        | None = None,
     ) -> None:
         self.chat_id = chat_id
         r"""Chat identifier"""
@@ -100074,15 +103526,15 @@ class UpdatePendingTextMessage(TlObject, Update):
         r"""The forum topic identifier in which the message will be sent; 0 if none"""
         self.draft_id = draft_id
         r"""Unique identifier of the message draft within the message thread"""
-        self.text = text
-        r"""Text of the pending message"""
+        self.content = content
+        r"""Content of the message; always of the type messageText or messageRichMessage"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["updatePendingTextMessage"]:
-        return "updatePendingTextMessage"
+    def getType(self) -> Literal["updatePendingMessage"]:
+        return "updatePendingMessage"
 
     @classmethod
     def getClass(self) -> Literal["Update"]:
@@ -100094,17 +103546,17 @@ class UpdatePendingTextMessage(TlObject, Update):
             "chat_id": self.chat_id,
             "forum_topic_id": self.forum_topic_id,
             "draft_id": self.draft_id,
-            "text": self.text,
+            "content": self.content,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> UpdatePendingTextMessage | None:
+    def from_dict(cls, data: dict) -> UpdatePendingMessage | None:
         if data:
             data_class = cls()
             data_class.chat_id = int(data.get("chat_id", 0))
             data_class.forum_topic_id = int(data.get("forum_topic_id", 0))
             data_class.draft_id = int(data.get("draft_id", 0))
-            data_class.text = data.get("text", None)
+            data_class.content = data.get("content", None)
 
         return data_class
 
@@ -100473,6 +103925,7 @@ class UpdateServiceNotification(TlObject, Update):
         *,
         type: str | None = "",
         content: MessageText
+        | MessageRichMessage
         | MessageAnimation
         | MessageAudio
         | MessageDocument
@@ -100486,6 +103939,7 @@ class UpdateServiceNotification(TlObject, Update):
         | MessageExpiredVideo
         | MessageExpiredVideoNote
         | MessageExpiredVoiceNote
+        | MessageLiveLocation
         | MessageLocation
         | MessageVenue
         | MessageContact
@@ -101958,6 +105412,68 @@ class UpdateUnreadChatCount(TlObject, Update):
         return data_class
 
 
+class UpdateChatJoinResult(TlObject, Update):
+    r"""A join request from the user was completed
+
+    Parameters:
+        query_id (:class:`int`):
+            Identifier of the join request query as received in chatJoinResultGuardBotApprovalRequired\. If the corresponding Web App is stiil open, then it must be closed
+
+        chat_id (:class:`int`):
+            Identifier of the joined chat, or 0 if the request wasn't approved
+
+        result (:class:`~pytdbot.types.ChatJoinRequestResult`):
+            Result of the join
+
+    """
+
+    def __init__(
+        self,
+        *,
+        query_id: int | None = 0,
+        chat_id: int | None = 0,
+        result: ChatJoinRequestResultApproved
+        | ChatJoinRequestResultDeclined
+        | ChatJoinRequestResultQueued
+        | None = None,
+    ) -> None:
+        self.query_id = query_id
+        r"""Identifier of the join request query as received in chatJoinResultGuardBotApprovalRequired\. If the corresponding Web App is stiil open, then it must be closed"""
+        self.chat_id = chat_id
+        r"""Identifier of the joined chat, or 0 if the request wasn't approved"""
+        self.result = result
+        r"""Result of the join"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["updateChatJoinResult"]:
+        return "updateChatJoinResult"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "query_id": self.query_id,
+            "chat_id": self.chat_id,
+            "result": self.result,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateChatJoinResult | None:
+        if data:
+            data_class = cls()
+            data_class.query_id = int(data.get("query_id", 0))
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.result = data.get("result", None)
+
+        return data_class
+
+
 class UpdateStory(TlObject, Update):
     r"""A story was changed
 
@@ -102874,6 +106390,42 @@ class UpdateProfileAccentColors(TlObject, Update):
         return data_class
 
 
+class UpdateWebBrowserSettings(TlObject, Update):
+    r"""Web browser settings have been updated
+
+    Parameters:
+        settings (:class:`~pytdbot.types.WebBrowserSettings`):
+            New settings
+
+    """
+
+    def __init__(self, *, settings: WebBrowserSettings | None = None) -> None:
+        self.settings = settings
+        r"""New settings"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["updateWebBrowserSettings"]:
+        return "updateWebBrowserSettings"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "settings": self.settings}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateWebBrowserSettings | None:
+        if data:
+            data_class = cls()
+            data_class.settings = data.get("settings", None)
+
+        return data_class
+
+
 class UpdateLanguagePackStrings(TlObject, Update):
     r"""Some language pack strings have been updated
 
@@ -103139,11 +106691,21 @@ class UpdateUnconfirmedSession(TlObject, Update):
         session (:class:`~pytdbot.types.UnconfirmedSession`):
             The unconfirmed session; may be null if none
 
+        unconfirmed_session_count (:class:`int`):
+            The total number of unconfirmed sessions
+
     """
 
-    def __init__(self, *, session: UnconfirmedSession | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        session: UnconfirmedSession | None = None,
+        unconfirmed_session_count: int | None = 0,
+    ) -> None:
         self.session = session
         r"""The unconfirmed session; may be null if none"""
+        self.unconfirmed_session_count = unconfirmed_session_count
+        r"""The total number of unconfirmed sessions"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -103157,13 +106719,20 @@ class UpdateUnconfirmedSession(TlObject, Update):
         return "Update"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "session": self.session}
+        return {
+            "@type": self.getType(),
+            "session": self.session,
+            "unconfirmed_session_count": self.unconfirmed_session_count,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> UpdateUnconfirmedSession | None:
         if data:
             data_class = cls()
             data_class.session = data.get("session", None)
+            data_class.unconfirmed_session_count = int(
+                data.get("unconfirmed_session_count", 0)
+            )
 
         return data_class
 
@@ -105386,6 +108955,9 @@ class UpdateNewChatJoinRequest(TlObject, Update):
         invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             The invite link, which was used to send join request; may be null
 
+        query_id (:class:`int`):
+            Identifier of the join request query, which can be used in answerChatJoinRequestQuery; 0 if none
+
     """
 
     def __init__(
@@ -105395,6 +108967,7 @@ class UpdateNewChatJoinRequest(TlObject, Update):
         request: ChatJoinRequest | None = None,
         user_chat_id: int | None = 0,
         invite_link: ChatInviteLink | None = None,
+        query_id: int | None = 0,
     ) -> None:
         self.chat_id = chat_id
         r"""Chat identifier"""
@@ -105404,6 +108977,8 @@ class UpdateNewChatJoinRequest(TlObject, Update):
         r"""Chat identifier of the private chat with the user"""
         self.invite_link = invite_link
         r"""The invite link, which was used to send join request; may be null"""
+        self.query_id = query_id
+        r"""Identifier of the join request query, which can be used in answerChatJoinRequestQuery; 0 if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -105423,6 +108998,7 @@ class UpdateNewChatJoinRequest(TlObject, Update):
             "request": self.request,
             "user_chat_id": self.user_chat_id,
             "invite_link": self.invite_link,
+            "query_id": self.query_id,
         }
 
     @classmethod
@@ -105433,6 +109009,7 @@ class UpdateNewChatJoinRequest(TlObject, Update):
             data_class.request = data.get("request", None)
             data_class.user_chat_id = int(data.get("user_chat_id", 0))
             data_class.invite_link = data.get("invite_link", None)
+            data_class.query_id = int(data.get("query_id", 0))
 
         return data_class
 

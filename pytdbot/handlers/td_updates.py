@@ -4203,13 +4203,13 @@ class Updates:
 
         return decorator
 
-    def on_updatePendingTextMessage(
+    def on_updatePendingMessage(
         self: pytdbot.Client | None = None,
         filters: pytdbot.filters.Filter | None = None,
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""A new pending text message was received in a chat with a bot\. The message must be shown in the chat for at most getOption\(\"pending\_text\_message\_period\"\) seconds, replace any other pending message with the same draft\_id, and be deleted whenever any incoming message from the bot in the message thread is received
+        r"""A new pending text or rich message was received in a chat with a bot\. The message must be shown in the chat for at most getOption\(\"pending\_text\_message\_period\"\) seconds, replace any other pending message with the same draft\_id, and be deleted whenever any incoming message from the bot in the message thread is received
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4231,7 +4231,7 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        update_type="updatePendingTextMessage",
+                        update_type="updatePendingMessage",
                         func=func,
                         filters=filters,
                         position=position,
@@ -4243,7 +4243,7 @@ class Updates:
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
                     func=func,
-                    update_type="updatePendingTextMessage",
+                    update_type="updatePendingMessage",
                     filter=self,
                     position=position,
                     inner_object=False,
@@ -4252,7 +4252,7 @@ class Updates:
             else:
                 func._handler = Handler(
                     func=func,
-                    update_type="updatePendingTextMessage",
+                    update_type="updatePendingMessage",
                     filter=filters,
                     position=position,
                     inner_object=False,
@@ -6327,6 +6327,65 @@ class Updates:
 
         return decorator
 
+    def on_updateChatJoinResult(
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
+    ) -> Callable:
+        r"""A join request from the user was completed
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateChatJoinResult",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatJoinResult",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatJoinResult",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
     def on_updateStory(
         self: pytdbot.Client | None = None,
         filters: pytdbot.filters.Filter | None = None,
@@ -7498,6 +7557,65 @@ class Updates:
                 func._handler = Handler(
                     func=func,
                     update_type="updateProfileAccentColors",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
+    def on_updateWebBrowserSettings(
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
+    ) -> Callable:
+        r"""Web browser settings have been updated
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateWebBrowserSettings",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateWebBrowserSettings",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateWebBrowserSettings",
                     filter=filters,
                     position=position,
                     inner_object=False,

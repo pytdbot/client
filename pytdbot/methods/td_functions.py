@@ -360,6 +360,26 @@ class TDLibFunctions:
             }
         )
 
+    async def checkAuthenticationWebToken(
+        self, *, token: str | None = "", dc_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Checks a web token to log in to the corresponding account; for official Telegram apps only\. Works only when the current authorization state is authorizationStateWaitPhoneNumber or authorizationStateWaitOtherDeviceConfirmation
+
+        Parameters:
+            token (:class:`str`):
+                The token to check
+
+            dc_id (:class:`int`):
+                Identifier of the datacenter of the user
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "checkAuthenticationWebToken", "token": token, "dc_id": dc_id}
+        )
+
     async def registerUser(
         self,
         *,
@@ -1248,6 +1268,30 @@ class TDLibFunctions:
             {"@type": "getMessages", "chat_id": chat_id, "message_ids": message_ids}
         )
 
+    async def getFullRichMessage(
+        self, *, chat_id: int | None = 0, message_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.RichMessage:
+        r"""Returns the full version of a rich message
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat the messages belong to
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+        Returns:
+            :class:`~pytdbot.types.RichMessage`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getFullRichMessage",
+                "chat_id": chat_id,
+                "message_id": message_id,
+            }
+        )
+
     async def getMessageProperties(
         self, *, chat_id: int | None = 0, message_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.MessageProperties:
@@ -1523,7 +1567,12 @@ class TDLibFunctions:
         return await self.invoke({"@type": "searchPublicChat", "username": username})
 
     async def searchPublicChats(
-        self, *, query: str | None = ""
+        self,
+        *,
+        query: str | None = "",
+        type_filter: pytdbot.types.SearchChatTypeFilterBot
+        | pytdbot.types.SearchChatTypeFilterChannel
+        | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Chats:
         r"""Searches public chats by looking for specified query in their username and title\. Currently, only private chats, supergroups and channels can be public\. Returns a meaningful number of results\. Excludes private chats with contacts and chats from the chat list from the results
 
@@ -1531,14 +1580,25 @@ class TDLibFunctions:
             query (:class:`str`):
                 Query to search for
 
+            type_filter (:class:`~pytdbot.types.SearchChatTypeFilter`):
+                Additional filter for type of the chats to be returned; pass null to search for chats of all types
+
         Returns:
             :class:`~pytdbot.types.Chats`
         """
 
-        return await self.invoke({"@type": "searchPublicChats", "query": query})
+        return await self.invoke(
+            {"@type": "searchPublicChats", "query": query, "type_filter": type_filter}
+        )
 
     async def searchChats(
-        self, *, query: str | None = "", limit: int | None = 0
+        self,
+        *,
+        query: str | None = "",
+        type_filter: pytdbot.types.SearchChatTypeFilterBot
+        | pytdbot.types.SearchChatTypeFilterChannel
+        | None = None,
+        limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Chats:
         r"""Searches for the specified query in the title and username of already known chats\. This is an offline method\. Returns chats in the order seen in the main chat list
 
@@ -1546,6 +1606,9 @@ class TDLibFunctions:
             query (:class:`str`):
                 Query to search for\. If the query is empty, returns up to 50 recently found chats
 
+            type_filter (:class:`~pytdbot.types.SearchChatTypeFilter`):
+                Additional filter for type of the chats to be returned; pass null to search for chats of all types
+
             limit (:class:`int`):
                 The maximum number of chats to be returned
 
@@ -1554,11 +1617,22 @@ class TDLibFunctions:
         """
 
         return await self.invoke(
-            {"@type": "searchChats", "query": query, "limit": limit}
+            {
+                "@type": "searchChats",
+                "query": query,
+                "type_filter": type_filter,
+                "limit": limit,
+            }
         )
 
     async def searchChatsOnServer(
-        self, *, query: str | None = "", limit: int | None = 0
+        self,
+        *,
+        query: str | None = "",
+        type_filter: pytdbot.types.SearchChatTypeFilterBot
+        | pytdbot.types.SearchChatTypeFilterChannel
+        | None = None,
+        limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Chats:
         r"""Searches for the specified query in the title and username of already known chats via request to the server\. Returns chats in the order seen in the main chat list
 
@@ -1566,6 +1640,9 @@ class TDLibFunctions:
             query (:class:`str`):
                 Query to search for
 
+            type_filter (:class:`~pytdbot.types.SearchChatTypeFilter`):
+                Additional filter for type of the chats to be returned; pass null to search for chats of all types
+
             limit (:class:`int`):
                 The maximum number of chats to be returned
 
@@ -1574,7 +1651,12 @@ class TDLibFunctions:
         """
 
         return await self.invoke(
-            {"@type": "searchChatsOnServer", "query": query, "limit": limit}
+            {
+                "@type": "searchChatsOnServer",
+                "query": query,
+                "type_filter": type_filter,
+                "limit": limit,
+            }
         )
 
     async def getRecommendedChats(self) -> pytdbot.types.Error | pytdbot.types.Chats:
@@ -1783,13 +1865,22 @@ class TDLibFunctions:
         )
 
     async def searchRecentlyFoundChats(
-        self, *, query: str | None = "", limit: int | None = 0
+        self,
+        *,
+        query: str | None = "",
+        type_filter: pytdbot.types.SearchChatTypeFilterBot
+        | pytdbot.types.SearchChatTypeFilterChannel
+        | None = None,
+        limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Chats:
         r"""Searches for the specified query in the title and username of up to 50 recently found chats\. This is an offline method
 
         Parameters:
             query (:class:`str`):
                 Query to search for
+
+            type_filter (:class:`~pytdbot.types.SearchChatTypeFilter`):
+                Additional filter for type of the chats to be returned; pass null to search for chats of all types
 
             limit (:class:`int`):
                 The maximum number of chats to be returned
@@ -1799,7 +1890,12 @@ class TDLibFunctions:
         """
 
         return await self.invoke(
-            {"@type": "searchRecentlyFoundChats", "query": query, "limit": limit}
+            {
+                "@type": "searchRecentlyFoundChats",
+                "query": query,
+                "type_filter": type_filter,
+                "limit": limit,
+            }
         )
 
     async def addRecentlyFoundChat(
@@ -3205,7 +3301,7 @@ class TDLibFunctions:
     async def searchChatRecentLocationMessages(
         self, *, chat_id: int | None = 0, limit: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.Messages:
-        r"""Returns information about the recent locations of chat members that were sent to the chat\. Returns up to 1 location message per user
+        r"""Returns information about the recent live locations of chat members that were sent to the chat\. Returns at most one live location message per user
 
         Parameters:
             chat_id (:class:`int`):
@@ -3274,7 +3370,7 @@ class TDLibFunctions:
         limit: int | None = 0,
         saved_messages_topic_id: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.MessagePositions:
-        r"""Returns sparse positions of messages of the specified type in the chat to be used for shared media scroll implementation\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. Cannot be used in secret chats or with searchMessagesFilterFailedToSend filter without an enabled message database
+        r"""Returns sparse positions of messages of the specified type in the chat to be used for Shared Media scroll implementation\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. Cannot be used in secret chats or with searchMessagesFilterFailedToSend filter without an enabled message database
 
         Parameters:
             chat_id (:class:`int`):
@@ -4346,6 +4442,7 @@ class TDLibFunctions:
         | pytdbot.types.ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -4355,6 +4452,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -4683,6 +4781,7 @@ class TDLibFunctions:
         | None = None,
         disable_notification: bool | None = False,
         input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -4692,6 +4791,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -4847,6 +4947,7 @@ class TDLibFunctions:
         | pytdbot.types.ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -4856,6 +4957,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -4882,7 +4984,7 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none; for bots only
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                New text content of the message\. Must be of type inputMessageText
+                New text content of the message\. Must be of type inputMessageText or inputMessageRichMessage
 
         Returns:
             :class:`~pytdbot.types.Message`
@@ -4908,10 +5010,7 @@ class TDLibFunctions:
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupInlineKeyboard
         | None = None,
-        location: pytdbot.types.Location | None = None,
-        live_period: int | None = 0,
-        heading: int | None = 0,
-        proximity_alert_radius: int | None = 0,
+        location: pytdbot.types.LiveLocation | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Edits the message content of a live location\. Messages can be edited for a limited period of time specified in the live location\. Returns the edited message after the edit is completed on the server side
 
@@ -4925,17 +5024,8 @@ class TDLibFunctions:
             reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
                 The new message reply markup; pass null if none; for bots only
 
-            location (:class:`~pytdbot.types.Location`):
-                New location content of the message; pass null to stop sharing the live location
-
-            live_period (:class:`int`):
-                New time relative to the message send date, for which the location can be updated, in seconds\. If 0x7FFFFFFF specified, then the location can be updated forever\. Otherwise, must not exceed the current live\_period by more than a day, and the live location expiration date must remain in the next 90 days\. Pass 0 to keep the current live\_period
-
-            heading (:class:`int`):
-                The new direction in which the location moves, in degrees; 1\-360\. Pass 0 if unknown
-
-            proximity_alert_radius (:class:`int`):
-                The new maximum distance for proximity alerts, in meters \(0\-100000\)\. Pass 0 if the notification is disabled
+            location (:class:`~pytdbot.types.LiveLocation`):
+                New live location of the message; pass null to stop sharing the live location\. If the new live\_period isn't set to 0x7FFFFFFF, then it must not exceed the current live\_period by more than a day, and the live location expiration date must remain in the next 90 days
 
         Returns:
             :class:`~pytdbot.types.Message`
@@ -4948,9 +5038,6 @@ class TDLibFunctions:
                 "message_id": message_id,
                 "reply_markup": reply_markup,
                 "location": location,
-                "live_period": live_period,
-                "heading": heading,
-                "proximity_alert_radius": proximity_alert_radius,
             }
         )
 
@@ -5006,6 +5093,7 @@ class TDLibFunctions:
         | pytdbot.types.ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -5015,6 +5103,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -5149,6 +5238,7 @@ class TDLibFunctions:
         | pytdbot.types.ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -5158,6 +5248,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -5181,7 +5272,7 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                New text content of the message\. Must be of type inputMessageText
+                New text content of the message\. Must be of type inputMessageText or inputMessageRichMessage
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5205,10 +5296,7 @@ class TDLibFunctions:
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupInlineKeyboard
         | None = None,
-        location: pytdbot.types.Location | None = None,
-        live_period: int | None = 0,
-        heading: int | None = 0,
-        proximity_alert_radius: int | None = 0,
+        location: pytdbot.types.LiveLocation | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Edits the content of a live location in an inline message sent via a bot; for bots only
 
@@ -5219,17 +5307,8 @@ class TDLibFunctions:
             reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
                 The new message reply markup; pass null if none
 
-            location (:class:`~pytdbot.types.Location`):
-                New location content of the message; pass null to stop sharing the live location
-
-            live_period (:class:`int`):
-                New time relative to the message send date, for which the location can be updated, in seconds\. If 0x7FFFFFFF specified, then the location can be updated forever\. Otherwise, must not exceed the current live\_period by more than a day, and the live location expiration date must remain in the next 90 days\. Pass 0 to keep the current live\_period
-
-            heading (:class:`int`):
-                The new direction in which the location moves, in degrees; 1\-360\. Pass 0 if unknown
-
-            proximity_alert_radius (:class:`int`):
-                The new maximum distance for proximity alerts, in meters \(0\-100000\)\. Pass 0 if the notification is disabled
+            location (:class:`~pytdbot.types.LiveLocation`):
+                New live location of the message; pass null to stop sharing the live location\. If the new live\_period isn't set to 0x7FFFFFFF, then it must not exceed the current live\_period by more than a day, and the live location expiration date must remain in the next 90 days
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5241,9 +5320,6 @@ class TDLibFunctions:
                 "inline_message_id": inline_message_id,
                 "reply_markup": reply_markup,
                 "location": location,
-                "live_period": live_period,
-                "heading": heading,
-                "proximity_alert_radius": proximity_alert_radius,
             }
         )
 
@@ -5257,6 +5333,7 @@ class TDLibFunctions:
         | pytdbot.types.ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -5266,6 +5343,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -5461,6 +5539,7 @@ class TDLibFunctions:
         | pytdbot.types.ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -5470,6 +5549,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -5595,6 +5675,7 @@ class TDLibFunctions:
         | pytdbot.types.ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -5604,6 +5685,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -5633,7 +5715,7 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                New text content of the message\. Must be of type inputMessageText
+                New text content of the message\. Must be of type inputMessageText or inputMessageRichMessage
 
         Returns:
             :class:`~pytdbot.types.BusinessMessage`
@@ -5661,10 +5743,7 @@ class TDLibFunctions:
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupInlineKeyboard
         | None = None,
-        location: pytdbot.types.Location | None = None,
-        live_period: int | None = 0,
-        heading: int | None = 0,
-        proximity_alert_radius: int | None = 0,
+        location: pytdbot.types.LiveLocation | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.BusinessMessage:
         r"""Edits the content of a live location in a message sent on behalf of a business account; for bots only
 
@@ -5681,17 +5760,8 @@ class TDLibFunctions:
             reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
                 The new message reply markup; pass null if none
 
-            location (:class:`~pytdbot.types.Location`):
-                New location content of the message; pass null to stop sharing the live location
-
-            live_period (:class:`int`):
-                New time relative to the message send date, for which the location can be updated, in seconds\. If 0x7FFFFFFF specified, then the location can be updated forever\. Otherwise, must not exceed the current live\_period by more than a day, and the live location expiration date must remain in the next 90 days\. Pass 0 to keep the current live\_period
-
-            heading (:class:`int`):
-                The new direction in which the location moves, in degrees; 1\-360\. Pass 0 if unknown
-
-            proximity_alert_radius (:class:`int`):
-                The new maximum distance for proximity alerts, in meters \(0\-100000\)\. Pass 0 if the notification is disabled
+            location (:class:`~pytdbot.types.LiveLocation`):
+                New live location of the message; pass null to stop sharing the live location\. If the new live\_period isn't set to 0x7FFFFFFF, then it must not exceed the current live\_period by more than a day, and the live location expiration date must remain in the next 90 days
 
         Returns:
             :class:`~pytdbot.types.BusinessMessage`
@@ -5705,9 +5775,6 @@ class TDLibFunctions:
                 "message_id": message_id,
                 "reply_markup": reply_markup,
                 "location": location,
-                "live_period": live_period,
-                "heading": heading,
-                "proximity_alert_radius": proximity_alert_radius,
             }
         )
 
@@ -5769,6 +5836,7 @@ class TDLibFunctions:
         | pytdbot.types.ReplyMarkupInlineKeyboard
         | None = None,
         input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -5778,6 +5846,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -6450,6 +6519,7 @@ class TDLibFunctions:
         shortcut_name: str | None = "",
         reply_to_message_id: int | None = 0,
         input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -6459,6 +6529,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -6482,7 +6553,7 @@ class TDLibFunctions:
                 Identifier of a quick reply message in the same shortcut to be replied; pass 0 if none
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                The content of the message to be added; inputMessagePaidMedia, inputMessageForwarded and inputMessageLocation with live\_period aren't supported
+                The content of the message to be added; inputMessagePaidMedia, inputMessageForwarded and inputMessageLiveLocation
 
         Returns:
             :class:`~pytdbot.types.QuickReplyMessage`
@@ -6601,6 +6672,7 @@ class TDLibFunctions:
         shortcut_id: int | None = 0,
         message_id: int | None = 0,
         input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -6610,6 +6682,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -6633,7 +6706,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageChecklist, inputMessageDocument, inputMessagePhoto, inputMessageText, or inputMessageVideo
+                New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageChecklist, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageText, or inputMessageVideo
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -8792,7 +8865,7 @@ class TDLibFunctions:
         start_parameter: str | None = "",
         allow_write_access: bool | None = False,
         parameters: pytdbot.types.WebAppOpenParameters | None = None,
-    ) -> pytdbot.types.Error | pytdbot.types.HttpUrl:
+    ) -> pytdbot.types.Error | pytdbot.types.WebAppUrl:
         r"""Returns an HTTPS URL of a Web App to open after a link of the type internalLinkTypeWebApp is clicked
 
         Parameters:
@@ -8815,7 +8888,7 @@ class TDLibFunctions:
                 Parameters to use to open the Web App
 
         Returns:
-            :class:`~pytdbot.types.HttpUrl`
+            :class:`~pytdbot.types.WebAppUrl`
         """
 
         return await self.invoke(
@@ -8873,7 +8946,7 @@ class TDLibFunctions:
         bot_user_id: int | None = 0,
         url: str | None = "",
         parameters: pytdbot.types.WebAppOpenParameters | None = None,
-    ) -> pytdbot.types.Error | pytdbot.types.HttpUrl:
+    ) -> pytdbot.types.Error | pytdbot.types.WebAppUrl:
         r"""Returns an HTTPS URL of a Web App to open from the side menu, a keyboardButtonTypeWebApp button, or an inlineQueryResultsButtonTypeWebApp button
 
         Parameters:
@@ -8887,7 +8960,7 @@ class TDLibFunctions:
                 Parameters to use to open the Web App
 
         Returns:
-            :class:`~pytdbot.types.HttpUrl`
+            :class:`~pytdbot.types.WebAppUrl`
         """
 
         return await self.invoke(
@@ -9069,6 +9142,41 @@ class TDLibFunctions:
                 "@type": "checkWebAppFileDownload",
                 "bot_user_id": bot_user_id,
                 "file_name": file_name,
+                "url": url,
+            }
+        )
+
+    async def answerChatJoinRequestQuery(
+        self,
+        *,
+        query_id: int | None = 0,
+        result: pytdbot.types.ChatJoinRequestResultApproved
+        | pytdbot.types.ChatJoinRequestResultDeclined
+        | pytdbot.types.ChatJoinRequestResultQueued
+        | None = None,
+        url: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Sets the result of a chat join query; for bots only
+
+        Parameters:
+            query_id (:class:`int`):
+                Identifier of the query
+
+            result (:class:`~pytdbot.types.ChatJoinRequestResult`):
+                The result
+
+            url (:class:`str`):
+                URL of the Web App to open
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "answerChatJoinRequestQuery",
+                "query_id": query_id,
+                "result": result,
                 "url": url,
             }
         )
@@ -9468,6 +9576,43 @@ class TDLibFunctions:
             }
         )
 
+    async def sendRichMessageDraft(
+        self,
+        *,
+        chat_id: int | None = 0,
+        forum_topic_id: int | None = 0,
+        draft_id: int | None = 0,
+        message: pytdbot.types.InputRichMessage | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Sends a draft for a being generated rich message; for bots only
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            forum_topic_id (:class:`int`):
+                The forum topic identifier in which the message will be sent; pass 0 if none
+
+            draft_id (:class:`int`):
+                Unique identifier of the draft
+
+            message (:class:`~pytdbot.types.InputRichMessage`):
+                Draft of the message
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "sendRichMessageDraft",
+                "chat_id": chat_id,
+                "forum_topic_id": forum_topic_id,
+                "draft_id": draft_id,
+                "message": message,
+            }
+        )
+
     async def openChat(
         self, *, chat_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -9763,7 +9908,7 @@ class TDLibFunctions:
     async def getExternalLinkInfo(
         self, *, link: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.LoginUrlInfo:
-        r"""Returns information about an action to be done when the current user clicks an external link\. Don't use this method for links from secret chats if link preview is disabled in secret chats
+        r"""Returns information about an action to be done when the current user clicks an external link\. Don't use this method for links from secret chats if link preview is disabled in secret chats, and use directly getLinkWebBrowserType
 
         Parameters:
             link (:class:`str`):
@@ -9798,6 +9943,21 @@ class TDLibFunctions:
                 "allow_write_access": allow_write_access,
             }
         )
+
+    async def getLinkWebBrowserType(
+        self, *, link: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.WebBrowserType:
+        r"""Returns a type of the web browser which must be used to open the link
+
+        Parameters:
+            link (:class:`str`):
+                The HTTP link
+
+        Returns:
+            :class:`~pytdbot.types.WebBrowserType`
+        """
+
+        return await self.invoke({"@type": "getLinkWebBrowserType", "link": link})
 
     async def getOauthLinkInfo(
         self, *, url: str | None = "", in_app_origin: str | None = ""
@@ -11396,15 +11556,15 @@ class TDLibFunctions:
 
     async def joinChat(
         self, *, chat_id: int | None = 0
-    ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Adds the current user as a new member to a chat\. Private and secret chats can't be joined using this method\. May return an error with a message \"INVITE\_REQUEST\_SENT\" if only a join request was created
+    ) -> pytdbot.types.Error | pytdbot.types.ChatJoinResult:
+        r"""Adds the current user as a new member to a chat\. Private and secret chats can't be joined using this method
 
         Parameters:
             chat_id (:class:`int`):
                 Chat identifier
 
         Returns:
-            :class:`~pytdbot.types.Ok`
+            :class:`~pytdbot.types.ChatJoinResult`
         """
 
         return await self.invoke({"@type": "joinChat", "chat_id": chat_id})
@@ -14455,15 +14615,15 @@ class TDLibFunctions:
 
     async def joinChatByInviteLink(
         self, *, invite_link: str | None = ""
-    ) -> pytdbot.types.Error | pytdbot.types.Chat:
-        r"""Uses an invite link to add the current user to the chat if possible\. May return an error with a message \"INVITE\_REQUEST\_SENT\" if only a join request was created
+    ) -> pytdbot.types.Error | pytdbot.types.ChatJoinResult:
+        r"""Uses an invite link to add the current user to the chat if possible
 
         Parameters:
             invite_link (:class:`str`):
                 Invite link to use
 
         Returns:
-            :class:`~pytdbot.types.Chat`
+            :class:`~pytdbot.types.ChatJoinResult`
         """
 
         return await self.invoke(
@@ -18401,11 +18561,11 @@ class TDLibFunctions:
 
     async def getBusinessConnectedBot(
         self,
-    ) -> pytdbot.types.Error | pytdbot.types.BusinessConnectedBot:
-        r"""Returns the business bot that is connected to the current user account\. Returns a 404 error if there is no connected bot
+    ) -> pytdbot.types.Error | pytdbot.types.BusinessConnectedBotInfo:
+        r"""Returns information about the business bot that is connected to the current user account\. Returns a 404 error if there is no connected bot
 
         Returns:
-            :class:`~pytdbot.types.BusinessConnectedBot`
+            :class:`~pytdbot.types.BusinessConnectedBotInfo`
         """
 
         return await self.invoke(
@@ -18428,6 +18588,23 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "setBusinessConnectedBot", "bot": bot})
+
+    async def confirmBusinessConnectedBot(
+        self, *, bot_user_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Confirms an unconfirmed business connection of the current user from another device
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                User identifier of the bot
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "confirmBusinessConnectedBot", "bot_user_id": bot_user_id}
+        )
 
     async def deleteBusinessConnectedBot(
         self, *, bot_user_id: int | None = 0
@@ -19464,7 +19641,7 @@ class TDLibFunctions:
         )
 
     async def getActiveSessions(self) -> pytdbot.types.Error | pytdbot.types.Sessions:
-        r"""Returns all active sessions of the current user
+        r"""Returns all active sessions of the current user\. Additionally, getBusinessConnectedBot must be used to show the bot on top of active sessions
 
         Returns:
             :class:`~pytdbot.types.Sessions`
@@ -19494,7 +19671,7 @@ class TDLibFunctions:
         )
 
     async def terminateAllOtherSessions(self) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Terminates all other sessions of the current user
+        r"""Terminates all other sessions of the current user\. Additionally, the user must be suggested to delete the connected business bot using deleteBusinessConnectedBot if there is any
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -19904,7 +20081,12 @@ class TDLibFunctions:
         )
 
     async def toggleSupergroupJoinByRequest(
-        self, *, supergroup_id: int | None = 0, join_by_request: bool | None = False
+        self,
+        *,
+        supergroup_id: int | None = 0,
+        join_by_request: bool | None = False,
+        guard_bot_user_id: int | None = 0,
+        apply_to_invite_links: bool | None = False,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Toggles whether all users directly joining the supergroup need to be approved by supergroup administrators; requires can\_restrict\_members administrator right
 
@@ -19915,6 +20097,12 @@ class TDLibFunctions:
             join_by_request (:class:`bool`):
                 New value of join\_by\_request
 
+            guard_bot_user_id (:class:`int`):
+                Identifier of the bot which will be the guard bot in the group; pass 0 if none; ignored if join\_by\_request \=\= false\. The bot must have administrator privileges and can\_invite\_users right in the supergroup chat, and must have userTypeBot\.is\_guard \=\= true
+
+            apply_to_invite_links (:class:`bool`):
+                Pass true to apply the change to the existing invite links, including primary links
+
         Returns:
             :class:`~pytdbot.types.Ok`
         """
@@ -19924,6 +20112,8 @@ class TDLibFunctions:
                 "@type": "toggleSupergroupJoinByRequest",
                 "supergroup_id": supergroup_id,
                 "join_by_request": join_by_request,
+                "guard_bot_user_id": guard_bot_user_id,
+                "apply_to_invite_links": apply_to_invite_links,
             }
         )
 
@@ -21627,6 +21817,7 @@ class TDLibFunctions:
         *,
         business_connection_id: str | None = "",
         invoice: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
         | pytdbot.types.InputMessageAnimation
         | pytdbot.types.InputMessageAudio
         | pytdbot.types.InputMessageDocument
@@ -21636,6 +21827,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageVideo
         | pytdbot.types.InputMessageVideoNote
         | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
         | pytdbot.types.InputMessageLocation
         | pytdbot.types.InputMessageVenue
         | pytdbot.types.InputMessageContact
@@ -23244,6 +23436,89 @@ class TDLibFunctions:
             }
         )
 
+    async def changeWebBrowserSettings(
+        self,
+        *,
+        open_external_browser: bool | None = False,
+        display_close_button: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Changes web browser settings
+
+        Parameters:
+            open_external_browser (:class:`bool`):
+                Pass true if links must be opened in an external browser by default
+
+            display_close_button (:class:`bool`):
+                Pass true if a close button must be shown in the in\-app browser; for Android app only
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "changeWebBrowserSettings",
+                "open_external_browser": open_external_browser,
+                "display_close_button": display_close_button,
+            }
+        )
+
+    async def addWebBrowserSettingsException(
+        self, *, open_external_browser: bool | None = False, url: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Adds a special handling for the opening of the specified URL
+
+        Parameters:
+            open_external_browser (:class:`bool`):
+                Pass true if the specified website must be opened in an external browser; pass false to open it in the in\-app browser\. There can be at most 100 exceptions in each list of the exceptions
+
+            url (:class:`str`):
+                URL of the website
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addWebBrowserSettingsException",
+                "open_external_browser": open_external_browser,
+                "url": url,
+            }
+        )
+
+    async def removeWebBrowserSettingsException(
+        self, *, url: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Removes a special handling for the opening of the specified URL
+
+        Parameters:
+            url (:class:`str`):
+                URL of the website
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "removeWebBrowserSettingsException", "url": url}
+        )
+
+    async def removeAllWebBrowserSettingsExceptions(
+        self,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Removes special handling for the opening of all links
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "removeAllWebBrowserSettingsExceptions",
+            }
+        )
+
     async def getBankCardInfo(
         self, *, bank_card_number: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.BankCardInfo:
@@ -24106,6 +24381,7 @@ class TDLibFunctions:
         | pytdbot.types.PremiumLimitTypeChatFolderChosenChatCount
         | pytdbot.types.PremiumLimitTypePinnedArchivedChatCount
         | pytdbot.types.PremiumLimitTypePinnedSavedMessagesTopicCount
+        | pytdbot.types.PremiumLimitTypeMessageTextLength
         | pytdbot.types.PremiumLimitTypeCaptionLength
         | pytdbot.types.PremiumLimitTypeBioLength
         | pytdbot.types.PremiumLimitTypeChatFolderInviteLinkCount
@@ -25040,6 +25316,21 @@ class TDLibFunctions:
                 "@type": "getCountries",
             }
         )
+
+    async def getCountry(
+        self, *, country_code: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.CountryInfo:
+        r"""Returns information about an existing country\. Can be called before authorization
+
+        Parameters:
+            country_code (:class:`str`):
+                A two\-letter ISO 3166\-1 alpha\-2 country code
+
+        Returns:
+            :class:`~pytdbot.types.CountryInfo`
+        """
+
+        return await self.invoke({"@type": "getCountry", "country_code": country_code})
 
     async def getCountryCode(self) -> pytdbot.types.Error | pytdbot.types.Text:
         r"""Uses the current IP address to find the current country\. Returns two\-letter ISO 3166\-1 alpha\-2 country code\. Can be called before authorization
