@@ -569,6 +569,44 @@ class MessageBoundMethods:
             reply_markup=reply_markup,
         )
 
+    async def reply_rich_message(
+        self,
+        *,
+        markdown: str = None,
+        html: str = None,
+        is_rtl: bool = False,
+        detect_automatic_blocks: bool = False,
+        clear_draft: bool = False,
+        disable_notification: bool = False,
+        protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
+        no_reply: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the message with rich message. Shortcut for :meth:`~pytdbot.Client.sendRichMessage`."""
+
+        return await self._client.sendRichMessage(
+            chat_id=self.chat_id,
+            markdown=markdown,
+            html=html,
+            is_rtl=is_rtl,
+            detect_automatic_blocks=detect_automatic_blocks,
+            clear_draft=clear_draft,
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
+            topic_id=topic_id,
+            quote=quote,
+            reply_to_message_id=self.id if not no_reply else None,
+            reply_markup=reply_markup,
+        )
+
     async def reply_animation(
         self,
         animation: pytdbot.types.InputFile | str,
