@@ -17,12 +17,14 @@ from ..types import (
     InputMessagePhoto,
     InputMessageReplyTo,
     InputMessageReplyToMessage,
+    InputMessageRichMessage,
     InputMessageSticker,
     InputMessageText,
     InputMessageVideo,
     InputMessageVideoNote,
     InputMessageVoiceNote,
     InputPhoto,
+    InputRichMessage,
     InputTextQuote,
     InputThumbnail,
     InputVideo,
@@ -40,6 +42,8 @@ from ..types import (
     ReplyMarkupInlineKeyboard,
     ReplyMarkupRemoveKeyboard,
     ReplyMarkupShowKeyboard,
+    RichMessageSourceHtml,
+    RichMessageSourceMarkdown,
     TextEntity,
     TextParseModeHTML,
     TextParseModeMarkdown,
@@ -301,6 +305,109 @@ class Methods(TDLibFunctions):
                     force_small_media=force_small_media,
                     force_large_media=force_large_media,
                     show_above_text=show_above_text,
+                ),
+                clear_draft=clear_draft,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
+            topic_id=topic_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            reply_markup=reply_markup,
+        )
+
+    async def sendRichMessage(
+        self,
+        chat_id: int,
+        *,
+        markdown: str = None,
+        html: str = None,
+        is_rtl: bool = False,
+        detect_automatic_blocks: bool = False,
+        clear_draft: bool = False,
+        disable_notification: bool = False,
+        protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
+        topic_id: MessageTopic = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
+        reply_to_message_id: int = 0,
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
+        r"""Send rich message to chat; either markdown or html must be provided
+
+        Parameters:
+            chat_id (``int``):
+                Target chat
+
+            markdown (``str``, *optional*):
+                Markdown-formatted text of the message
+
+            html (``str``, *optional*):
+                HTML-formatted text of the message
+
+            is_rtl (``bool``, *optional*):
+                Pass true if the message must be shown from right to left. Default is ``False``
+
+            detect_automatic_blocks (``bool``, *optional*):
+                Pass true to enable detection of URLs, email addresses and other automatic blocks. Default is ``False``
+
+            disable_notification (``bool``, *optional*):
+                If True, disable notification for the message. Default is ``None``
+
+            clear_draft (``bool``, *optional*):
+                True, if a chat message draft must be deleted. Default is ``False``
+
+            protect_content (``bool``, *optional*):
+                If True, the content of the message must be protected from forwarding and saving
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
+
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
+
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
+
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
+
+            reply_to_message_id (``int``, *optional*):
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
+                The message reply markup
+
+        Returns:
+            :class:`~pytdbot.types.Message`
+        """
+
+        if not markdown and not html:
+            raise ValueError("Either markdown or html must be provided")
+
+        if markdown and html:
+            raise ValueError("Only one of markdown or html can be provided")
+
+        if markdown:
+            source = RichMessageSourceMarkdown(text=markdown)
+        else:
+            source = RichMessageSourceHtml(text=html)
+
+        return await self.sendMessageWithContent(
+            chat_id=chat_id,
+            content=InputMessageRichMessage(
+                message=InputRichMessage(
+                    source=source,
+                    is_rtl=is_rtl,
+                    detect_automatic_blocks=detect_automatic_blocks,
                 ),
                 clear_draft=clear_draft,
             ),
