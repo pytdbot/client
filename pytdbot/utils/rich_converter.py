@@ -257,7 +257,7 @@ def _rt_math(rt, _):
 
 
 def _rt_mention_name(rt, f):
-    return mention(rt.user_id, _rt(rt.text, f), html=True, escape=False)
+    return mention(_rt(rt.text, f), rt.user_id, html=True, escape=False)
 
 
 def _rt_texts(rt, f):

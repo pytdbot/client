@@ -111,7 +111,7 @@ class CallbackQueryBoundMethods:
                 return parse
             caption = parse
         else:
-            caption = pytdbot.types.FormattedText(caption)
+            caption = pytdbot.types.FormattedText(text=caption)
 
         return await self._client.editMessageCaption(
             chat_id=self.chat_id,
