@@ -1523,7 +1523,7 @@ class Methods(TDLibFunctions):
                 return parse
             caption = parse
         else:
-            caption = FormattedText(id=new_caption)
+            caption = FormattedText(text=new_caption)
 
         return await self.sendMessageWithContent(
             chat_id=chat_id,
