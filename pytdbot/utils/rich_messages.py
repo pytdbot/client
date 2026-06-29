@@ -42,6 +42,21 @@ def tag(tag_name, *children, **attrs):
     return f"<{tag_name}{attr_str}>{content}</{tag_name}>"
 
 
+def newline(count: int = 1):
+    r"""Create one or more HTML line breaks.
+
+    Parameters:
+        count (``int``):
+            Number of ``<br>`` tags to generate
+
+    Returns:
+        :py:class:`str`:
+            A string containing ``<br>`` HTML line break tags
+    """
+
+    return "<br>" * count
+
+
 def marked(text):
     r"""Wrap text in marked (highlighted) format
 
