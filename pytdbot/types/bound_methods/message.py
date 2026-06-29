@@ -84,6 +84,68 @@ class MessageBoundMethods:
         ):
             return self.content.caption.entities
 
+    def _get_rich_media(self, block):
+        if isinstance(block, pytdbot.types.PageBlockPhoto):
+            return block.photo
+
+        if isinstance(block, pytdbot.types.PageBlockVideo):
+            return block.video
+
+        if isinstance(block, pytdbot.types.PageBlockAudio):
+            return block.audio
+
+        if isinstance(block, pytdbot.types.PageBlockVoiceNote):
+            return block.voice_note
+
+        if isinstance(block, pytdbot.types.PageBlockAnimation):
+            return block.animation
+
+        if isinstance(
+            block,
+            (pytdbot.types.PageBlockCollage, pytdbot.types.PageBlockSlideshow),
+        ):
+            media = []
+            for child in block.blocks:
+                if m := self._get_rich_media(child):
+                    if isinstance(m, list):
+                        media.extend(m)
+                    else:
+                        media.append(m)
+            return media
+
+        return None
+
+    @property
+    @lru_cache(1)
+    def rich_media(
+        self,
+    ) -> (
+        list[
+            pytdbot.types.Photo
+            | pytdbot.types.Video
+            | pytdbot.types.Audio
+            | pytdbot.types.VoiceNote
+            | pytdbot.types.Animation
+        ]
+        | None
+    ):
+        """Returns all media attachments available in the Rich message"""
+
+        if not isinstance(self.content, pytdbot.types.MessageRichMessage):
+            return None
+
+        media = []
+
+        for block in self.content.message.blocks:
+            item = self._get_rich_media(block)
+
+            if isinstance(item, list):
+                media.extend(item)
+            elif item is not None:
+                media.append(item)
+
+        return media or None
+
     @property
     @lru_cache(1)
     def remote_file_id(self) -> str | None:
@@ -589,7 +651,7 @@ class MessageBoundMethods:
         | pytdbot.types.ReplyMarkupRemoveKeyboard
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
-        r"""Reply to the message with rich message. Shortcut for :meth:`~pytdbot.Client.sendRichMessage`."""
+        r"""Reply to the message with Rich message. Shortcut for :meth:`~pytdbot.Client.sendRichMessage`."""
 
         return await self._client.sendRichMessage(
             chat_id=self.chat_id,
