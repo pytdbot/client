@@ -277,6 +277,9 @@ types_template = """class {class_name}({inherited_class}):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    def __repr__(self):
+        return self.__str__()
+
     @classmethod
     def getType(self) -> Literal["{type_name}"]:
         return "{type_name}"
