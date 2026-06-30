@@ -164,6 +164,20 @@ def in_doc_link(anchor, text):
     return tag("a", text, href=f"#{anchor}")
 
 
+def thinking(thought: str):
+    r"""Create a Telegram thinking
+
+    Parameters:
+        thought (``str``):
+            The text to include in the thinking block.
+
+    Returns:
+        :py:class:`str`
+    """
+
+    return tag("tg-thinking", thought)
+
+
 def tg_reference(name, text):
     r"""Define referenced text that can be linked to with :py:func:`in_doc_link`
 

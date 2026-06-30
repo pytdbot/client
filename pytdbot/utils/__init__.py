@@ -45,6 +45,7 @@ __all__ = [
     "table_header_cell",
     "table_row",
     "tag",
+    "thinking",
     "tg_collage",
     "tg_map",
     "tg_math",
@@ -123,6 +124,7 @@ from .rich_messages import (
     tg_reference,
     tg_slideshow,
     tg_time,
+    thinking,
     unordered_list,
     video,
 )
