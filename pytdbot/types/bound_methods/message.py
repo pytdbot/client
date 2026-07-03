@@ -1056,6 +1056,11 @@ class MessageBoundMethods:
         topic_id: pytdbot.types.MessageTopic | None = None,
         quote: pytdbot.types.InputTextQuote | None = None,
         reply_to_message_id: int = 0,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Copy message to chat. Shortcut for :meth:`~pytdbot.Client.sendCopy`."""
 
@@ -1074,6 +1079,7 @@ class MessageBoundMethods:
             topic_id=topic_id,
             quote=quote,
             reply_to_message_id=reply_to_message_id,
+            reply_markup=reply_markup,
         )
 
     async def forward(

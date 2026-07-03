@@ -1460,6 +1460,12 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
     ) -> Error | Message:
         r"""Copy message to chat
 
@@ -1509,6 +1515,9 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
+                The message reply markup
+
 
         Returns:
             :class:`~pytdbot.types.Message`
@@ -1542,6 +1551,7 @@ class Methods(TDLibFunctions):
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
+            reply_markup=reply_markup,
         )
 
     async def forwardMessage(
