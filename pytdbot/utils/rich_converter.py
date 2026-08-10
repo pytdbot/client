@@ -1,8 +1,4 @@
 from ..types import (
-    DateTimeFormattingTypeAbsolute,
-    DateTimeFormattingTypeRelative,
-    DateTimePartPrecisionLong,
-    DateTimePartPrecisionShort,
     InputAnimation,
     InputAudio,
     InputFileId,
@@ -110,6 +106,7 @@ from .rich_messages import (
 )
 from .strings import create_extra_id
 from .text_format import (
+    _datetime_format,
     bold,
     code,
     custom_emoji,
@@ -132,44 +129,6 @@ V_ALIGN = {
     PageBlockVerticalAlignmentMiddle.getType(): "middle",
     PageBlockVerticalAlignmentBottom.getType(): "bottom",
 }
-
-DATE_FORMAT = {
-    DateTimePartPrecisionShort.getType(): "d",
-    DateTimePartPrecisionLong.getType(): "D",
-}
-
-TIME_FORMAT = {
-    DateTimePartPrecisionShort.getType(): "t",
-    DateTimePartPrecisionLong.getType(): "T",
-}
-
-
-def _datetime_format(ft):
-    if ft is None:
-        return ""
-
-    if isinstance(ft, DateTimeFormattingTypeRelative):
-        return "r"
-
-    if isinstance(ft, DateTimeFormattingTypeAbsolute):
-        parts = ""
-        if ft.show_day_of_week:
-            parts = "w"
-
-        dp = ft.date_precision.getType() if ft.date_precision else ""
-        tp = ft.time_precision.getType() if ft.time_precision else ""
-
-        dd = DATE_FORMAT.get(dp)
-        tt = TIME_FORMAT.get(tp)
-
-        if dd:
-            parts += dd
-        if tt:
-            parts += tt
-
-        return parts
-
-    return ""
 
 
 def _media_id():

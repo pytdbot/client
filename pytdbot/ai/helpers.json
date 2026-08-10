@@ -538,12 +538,6 @@
         "type": "bool",
         "optional": true,
         "default": "False"
-      },
-      {
-        "name": "ephemeral",
-        "type": "bool",
-        "optional": true,
-        "default": "False"
       }
     ],
     "description": "Reply to the message with media album. Shortcut for :meth:`~pytdbot.Client.sendAlbum`.",
@@ -1086,6 +1080,12 @@
       {
         "name": "html",
         "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "media",
+        "type": "list[pytdbot.types.InputRichMessageMedia]",
         "optional": true,
         "default": "None"
       },
@@ -3104,6 +3104,12 @@
         "default": "None"
       },
       {
+        "name": "media",
+        "type": "list[InputRichMessageMedia]",
+        "optional": true,
+        "default": "None"
+      },
+      {
         "name": "is_rtl",
         "type": "bool",
         "optional": true,
@@ -3183,7 +3189,7 @@
       }
     ],
     "description": "Send rich message to chat; either markdown or html must be provided",
-    "doc": "Send rich message to chat; either markdown or html must be provided\n\nParameters:\n    chat_id (``int``):\n        Target chat\n\n    markdown (``str``, *optional*):\n        Markdown-formatted text of the message\n\n    html (``str``, *optional*):\n        HTML-formatted text of the message\n\n    is_rtl (``bool``, *optional*):\n        Pass true if the message must be shown from right to left. Default is ``False``\n\n    detect_automatic_blocks (``bool``, *optional*):\n        Pass true to enable detection of URLs, email addresses and other automatic blocks. Default is ``False``\n\n    disable_notification (``bool``, *optional*):\n        If True, disable notification for the message. Default is ``None``\n\n    clear_draft (``bool``, *optional*):\n        True, if a chat message draft must be deleted. Default is ``False``\n\n    protect_content (``bool``, *optional*):\n        If True, the content of the message must be protected from forwarding and saving\n\n    allow_paid_broadcast (``bool``, *optional*):\n        Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``\n\n    topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):\n        Topic in which the message will be sent; pass null if none\n\n    quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):\n        Chosen quote from the replied message; may be null if none\n\n    reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):\n        Information about the message or the story this message is replying to; may be null if none\n\n    reply_to_message_id (``int``, *optional*):\n        Identifier of the message to reply. Ignored if ``reply_to`` is specified\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    callback_query_id (``int``, *optional*):\n        Identifier of the callback query which triggered the message; for Ephemeral messages only\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message`",
+    "doc": "Send rich message to chat; either markdown or html must be provided\n\nParameters:\n    chat_id (``int``):\n        Target chat\n\n    markdown (``str``, *optional*):\n        Markdown-formatted text of the message\n\n    html (``str``, *optional*):\n        HTML-formatted text of the message\n\n    media (list[:class:`~pytdbot.types.InputRichMessageMedia`], *optional*):\n        Media used in the message\n\n    is_rtl (``bool``, *optional*):\n        Pass true if the message must be shown from right to left. Default is ``False``\n\n    detect_automatic_blocks (``bool``, *optional*):\n        Pass true to enable detection of URLs, email addresses and other automatic blocks. Default is ``False``\n\n    disable_notification (``bool``, *optional*):\n        If True, disable notification for the message. Default is ``None``\n\n    clear_draft (``bool``, *optional*):\n        True, if a chat message draft must be deleted. Default is ``False``\n\n    protect_content (``bool``, *optional*):\n        If True, the content of the message must be protected from forwarding and saving\n\n    allow_paid_broadcast (``bool``, *optional*):\n        Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``\n\n    topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):\n        Topic in which the message will be sent; pass null if none\n\n    quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):\n        Chosen quote from the replied message; may be null if none\n\n    reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):\n        Information about the message or the story this message is replying to; may be null if none\n\n    reply_to_message_id (``int``, *optional*):\n        Identifier of the message to reply. Ignored if ``reply_to`` is specified\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    callback_query_id (``int``, *optional*):\n        Identifier of the callback query which triggered the message; for Ephemeral messages only\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message`",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | Message"
   },
@@ -3659,7 +3665,7 @@
       }
     ],
     "description": "Send video note to chat",
-    "doc": "Send video note to chat\n\nParameters:\n    chat_id (``int``):\n        Target chat\n\n    video_note (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        Video note to send\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the video note to be set\n\n    duration (``int``, *optional*):\n        Duration of sent video note in seconds\n\n    length (``int``, *optional*):\n        Video width and height\n\n    disable_notification (``bool``, *optional*):\n        If True, disable notification for the message. Default is ``False``\n\n    protect_content (``bool``, *optional*):\n        If True, the content of the message must be protected from forwarding and saving\n\n    allow_paid_broadcast (``bool``, *optional*):\n        Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``\n\n    topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):\n        Topic in which the message will be sent; pass null if none\n\n    quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):\n        Chosen quote from the replied message; may be null if none\n\n    reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):\n        Information about the message or the story this message is replying to; may be null if none\n\n    reply_to_message_id (``int``, *optional*):\n        Identifier of the message to reply. Ignored if ``reply_to`` is specified\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    callback_query_id (``int``, *optional*):\n        Identifier of the callback query which triggered the message; for Ephemeral messages only\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\n\nReturns:\n    :class:`~pytdbot.types.Message`",
+    "doc": "Send video note to chat\n\nParameters:\n    chat_id (``int``):\n        Target chat\n\n    video_note (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        Video note to send\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the video note to be set\n\n    duration (``int``, *optional*):\n        Duration of sent video note in seconds\n\n    length (``int``, *optional*):\n        Video width and height\n\n    disable_notification (``bool``, *optional*):\n        If True, disable notification for the message. Default is ``False``\n\n    protect_content (``bool``, *optional*):\n        If True, the content of the message must be protected from forwarding and saving\n\n    allow_paid_broadcast (``bool``, *optional*):\n        Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``\n\n    topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):\n        Topic in which the message will be sent; pass null if none\n\n    quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):\n        Chosen quote from the replied message; may be null if none\n\n    reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):\n        Information about the message or the story this message is replying to; may be null if none\n\n    reply_to_message_id (``int``, *optional*):\n        Identifier of the message to reply. Ignored if ``reply_to`` is specified\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    callback_query_id (``int``, *optional*):\n        Identifier of the callback query which triggered the message; for Ephemeral messages only\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message`",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | Message"
   },
@@ -4292,6 +4298,34 @@
     "returns": "str"
   },
   {
+    "name": "get_formatted_text",
+    "kind": "util",
+    "on": "utils",
+    "async": false,
+    "args": [
+      {
+        "name": "formatted_text",
+        "type": "pytdbot.types.FormattedText"
+      },
+      {
+        "name": "html",
+        "type": "bool",
+        "optional": true,
+        "default": "True"
+      },
+      {
+        "name": "escape",
+        "type": "bool",
+        "optional": true,
+        "default": "True"
+      }
+    ],
+    "description": "Convert a :class:`~pytdbot.types.FormattedText` object to its text representation string",
+    "doc": "Convert a :class:`~pytdbot.types.FormattedText` object to its text representation string\n\nParameters:\n    formatted_text (:class:`~pytdbot.types.FormattedText`):\n        The formatted text to convert\n\n    html (``bool``, *optional*):\n        If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``\n\n    escape (``bool``, *optional*):\n        Whether to escape special characters in plain text segments. Default is ``True``\n\nReturns:\n    :py:class:`str`: The formatted text representation",
+    "source": "pytdbot/utils/text_format.py",
+    "returns": "str"
+  },
+  {
     "name": "get_message_sender_id",
     "kind": "util",
     "on": "utils",
@@ -4782,15 +4816,10 @@
       {
         "name": "message",
         "type": "RichMessage"
-      },
-      {
-        "name": "file_url_func",
-        "optional": true,
-        "default": "None"
       }
     ],
     "description": "Convert a TDLib rich message object to HTML",
-    "doc": "Convert a TDLib rich message object to HTML\n\nParameters:\n    message (:class:`pytdbot.types.RichMessage`):\n        The rich message object containing rich blocks\n\n    file_url_func (``callable``, *optional*):\n        A function that receives the full media object (:class:`pytdbot.types.Photo`, :class:`pytdbot.types.Video`, :class:`pytdbot.types.Audio`,\n        :class:`pytdbot.types.VoiceNote`, or :class:`pytdbot.types.Animation`) and returns an HTTP/HTTPS URL string.\n        If ``None``, file IDs are used as ``src`` values. (file_id media send is not supported by Telegram)\n\nReturns:\n    :py:class:`str`: The rendered HTML string",
+    "doc": "Convert a TDLib rich message object to HTML\n\nMedia uses ``tg://photo|video|audio|animation?id=<id>`` sources. Matching\n:class:`~pytdbot.types.InputRichMessageMedia` entries are returned for\n:meth:`~pytdbot.Client.sendRichMessage`\n\nParameters:\n    message (:class:`pytdbot.types.RichMessage`):\n        The rich message object containing rich blocks\n\nReturns:\n    (:py:class:`str`, list[:class:`~pytdbot.types.InputRichMessageMedia`]):\n        HTML string and media list\n\n        .. code-block:: python\n\n            html, media = rich_message_to_html(message)\n            await client.sendRichMessage(chat_id, html=html, media=media)",
     "source": "pytdbot/utils/rich_converter.py",
     "returns": null
   },
