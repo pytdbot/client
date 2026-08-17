@@ -613,6 +613,7 @@ class MessageBoundMethods:
         quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
         ephemeral: bool = False,
+        receiver_user_id: int = 0,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupForceReply
@@ -620,6 +621,18 @@ class MessageBoundMethods:
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with text. Shortcut for :meth:`~pytdbot.Client.sendTextMessage`."""
+
+        reply_to = None
+        if not no_reply:
+            if self.ephemeral_message_id:
+                reply_to = pytdbot.types.InputMessageReplyToEphemeralMessage(
+                    ephemeral_message_id=self.ephemeral_message_id
+                )
+                ephemeral = True
+            else:
+                reply_to = pytdbot.types.InputMessageReplyToMessage(
+                    message_id=self.id, quote=quote
+                )
 
         return await self._client.sendTextMessage(
             chat_id=self.chat_id,
@@ -636,9 +649,10 @@ class MessageBoundMethods:
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             topic_id=topic_id,
-            quote=quote,
-            reply_to_message_id=self.id if not no_reply else None,
-            receiver_user_id=self.from_id if ephemeral else 0,
+            reply_to=reply_to,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (self.from_id if ephemeral else 0),
             reply_markup=reply_markup,
         )
 
@@ -658,6 +672,7 @@ class MessageBoundMethods:
         quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
         ephemeral: bool = False,
+        receiver_user_id: int = 0,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupForceReply
@@ -665,6 +680,18 @@ class MessageBoundMethods:
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with Rich message. Shortcut for :meth:`~pytdbot.Client.sendRichMessage`."""
+
+        reply_to = None
+        if not no_reply:
+            if self.ephemeral_message_id:
+                reply_to = pytdbot.types.InputMessageReplyToEphemeralMessage(
+                    ephemeral_message_id=self.ephemeral_message_id
+                )
+                ephemeral = True
+            else:
+                reply_to = pytdbot.types.InputMessageReplyToMessage(
+                    message_id=self.id, quote=quote
+                )
 
         return await self._client.sendRichMessage(
             chat_id=self.chat_id,
@@ -678,9 +705,10 @@ class MessageBoundMethods:
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             topic_id=topic_id,
-            quote=quote,
-            reply_to_message_id=self.id if not no_reply else None,
-            receiver_user_id=self.from_id if ephemeral else 0,
+            reply_to=reply_to,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (self.from_id if ephemeral else 0),
             reply_markup=reply_markup,
         )
 
@@ -703,6 +731,7 @@ class MessageBoundMethods:
         quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
         ephemeral: bool = False,
+        receiver_user_id: int = 0,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupForceReply
@@ -710,6 +739,18 @@ class MessageBoundMethods:
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with animation. Shortcut for :meth:`~pytdbot.Client.sendAnimation`."""
+
+        reply_to = None
+        if not no_reply:
+            if self.ephemeral_message_id:
+                reply_to = pytdbot.types.InputMessageReplyToEphemeralMessage(
+                    ephemeral_message_id=self.ephemeral_message_id
+                )
+                ephemeral = True
+            else:
+                reply_to = pytdbot.types.InputMessageReplyToMessage(
+                    message_id=self.id, quote=quote
+                )
 
         return await self._client.sendAnimation(
             chat_id=self.chat_id,
@@ -725,11 +766,12 @@ class MessageBoundMethods:
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            reply_to_message_id=self.id if not no_reply else None,
-            receiver_user_id=self.from_id if ephemeral else 0,
+            reply_to=reply_to,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (self.from_id if ephemeral else 0),
             has_spoiler=has_spoiler,
             topic_id=topic_id,
-            quote=quote,
             reply_markup=reply_markup,
         )
 
@@ -750,6 +792,7 @@ class MessageBoundMethods:
         quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
         ephemeral: bool = False,
+        receiver_user_id: int = 0,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupForceReply
@@ -757,6 +800,18 @@ class MessageBoundMethods:
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with audio. Shortcut for :meth:`~pytdbot.Client.sendAudio`."""
+
+        reply_to = None
+        if not no_reply:
+            if self.ephemeral_message_id:
+                reply_to = pytdbot.types.InputMessageReplyToEphemeralMessage(
+                    ephemeral_message_id=self.ephemeral_message_id
+                )
+                ephemeral = True
+            else:
+                reply_to = pytdbot.types.InputMessageReplyToMessage(
+                    message_id=self.id, quote=quote
+                )
 
         return await self._client.sendAudio(
             chat_id=self.chat_id,
@@ -772,9 +827,10 @@ class MessageBoundMethods:
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             topic_id=topic_id,
-            quote=quote,
-            reply_to_message_id=self.id if not no_reply else None,
-            receiver_user_id=self.from_id if ephemeral else 0,
+            reply_to=reply_to,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (self.from_id if ephemeral else 0),
             reply_markup=reply_markup,
         )
 
@@ -793,6 +849,7 @@ class MessageBoundMethods:
         quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
         ephemeral: bool = False,
+        receiver_user_id: int = 0,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupForceReply
@@ -800,6 +857,18 @@ class MessageBoundMethods:
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a document. Shortcut for :meth:`~pytdbot.Client.sendDocument`."""
+
+        reply_to = None
+        if not no_reply:
+            if self.ephemeral_message_id:
+                reply_to = pytdbot.types.InputMessageReplyToEphemeralMessage(
+                    ephemeral_message_id=self.ephemeral_message_id
+                )
+                ephemeral = True
+            else:
+                reply_to = pytdbot.types.InputMessageReplyToMessage(
+                    message_id=self.id, quote=quote
+                )
 
         return await self._client.sendDocument(
             chat_id=self.chat_id,
@@ -813,9 +882,10 @@ class MessageBoundMethods:
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             topic_id=topic_id,
-            quote=quote,
-            reply_to_message_id=self.id if not no_reply else None,
-            receiver_user_id=self.from_id if ephemeral else 0,
+            reply_to=reply_to,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (self.from_id if ephemeral else 0),
             reply_markup=reply_markup,
         )
 
@@ -873,6 +943,7 @@ class MessageBoundMethods:
         quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
         ephemeral: bool = False,
+        receiver_user_id: int = 0,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupForceReply
@@ -880,6 +951,18 @@ class MessageBoundMethods:
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a photo. Shortcut for :meth:`~pytdbot.Client.sendPhoto`."""
+
+        reply_to = None
+        if not no_reply:
+            if self.ephemeral_message_id:
+                reply_to = pytdbot.types.InputMessageReplyToEphemeralMessage(
+                    ephemeral_message_id=self.ephemeral_message_id
+                )
+                ephemeral = True
+            else:
+                reply_to = pytdbot.types.InputMessageReplyToMessage(
+                    message_id=self.id, quote=quote
+                )
 
         return await self._client.sendPhoto(
             chat_id=self.chat_id,
@@ -897,9 +980,10 @@ class MessageBoundMethods:
             allow_paid_broadcast=allow_paid_broadcast,
             has_spoiler=has_spoiler,
             topic_id=topic_id,
-            quote=quote,
-            reply_to_message_id=self.id if not no_reply else None,
-            receiver_user_id=self.from_id if ephemeral else 0,
+            reply_to=reply_to,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (self.from_id if ephemeral else 0),
             reply_markup=reply_markup,
         )
 
@@ -924,6 +1008,7 @@ class MessageBoundMethods:
         quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
         ephemeral: bool = False,
+        receiver_user_id: int = 0,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupForceReply
@@ -931,6 +1016,18 @@ class MessageBoundMethods:
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a video. Shortcut for :meth:`~pytdbot.Client.sendVideo`."""
+
+        reply_to = None
+        if not no_reply:
+            if self.ephemeral_message_id:
+                reply_to = pytdbot.types.InputMessageReplyToEphemeralMessage(
+                    ephemeral_message_id=self.ephemeral_message_id
+                )
+                ephemeral = True
+            else:
+                reply_to = pytdbot.types.InputMessageReplyToMessage(
+                    message_id=self.id, quote=quote
+                )
 
         return await self._client.sendVideo(
             chat_id=self.chat_id,
@@ -950,9 +1047,10 @@ class MessageBoundMethods:
             allow_paid_broadcast=allow_paid_broadcast,
             has_spoiler=has_spoiler,
             topic_id=topic_id,
-            quote=quote,
-            reply_to_message_id=self.id if not no_reply else None,
-            receiver_user_id=self.from_id if ephemeral else 0,
+            reply_to=reply_to,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (self.from_id if ephemeral else 0),
             reply_markup=reply_markup,
         )
 
@@ -969,6 +1067,7 @@ class MessageBoundMethods:
         quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
         ephemeral: bool = False,
+        receiver_user_id: int = 0,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupForceReply
@@ -976,6 +1075,18 @@ class MessageBoundMethods:
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a video note. Shortcut for :meth:`~pytdbot.Client.sendVideoNote`."""
+
+        reply_to = None
+        if not no_reply:
+            if self.ephemeral_message_id:
+                reply_to = pytdbot.types.InputMessageReplyToEphemeralMessage(
+                    ephemeral_message_id=self.ephemeral_message_id
+                )
+                ephemeral = True
+            else:
+                reply_to = pytdbot.types.InputMessageReplyToMessage(
+                    message_id=self.id, quote=quote
+                )
 
         return await self._client.sendVideoNote(
             chat_id=self.chat_id,
@@ -987,9 +1098,10 @@ class MessageBoundMethods:
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             topic_id=topic_id,
-            quote=quote,
-            reply_to_message_id=self.id if not no_reply else None,
-            receiver_user_id=self.from_id if ephemeral else 0,
+            reply_to=reply_to,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (self.from_id if ephemeral else 0),
             reply_markup=reply_markup,
         )
 
@@ -1008,6 +1120,7 @@ class MessageBoundMethods:
         quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
         ephemeral: bool = False,
+        receiver_user_id: int = 0,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupForceReply
@@ -1015,6 +1128,18 @@ class MessageBoundMethods:
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a voice note. Shortcut for :meth:`~pytdbot.Client.sendVoice`."""
+
+        reply_to = None
+        if not no_reply:
+            if self.ephemeral_message_id:
+                reply_to = pytdbot.types.InputMessageReplyToEphemeralMessage(
+                    ephemeral_message_id=self.ephemeral_message_id
+                )
+                ephemeral = True
+            else:
+                reply_to = pytdbot.types.InputMessageReplyToMessage(
+                    message_id=self.id, quote=quote
+                )
 
         return await self._client.sendVoice(
             chat_id=self.chat_id,
@@ -1028,9 +1153,10 @@ class MessageBoundMethods:
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             topic_id=topic_id,
-            quote=quote,
-            reply_to_message_id=self.id if not no_reply else None,
-            receiver_user_id=self.from_id if ephemeral else 0,
+            reply_to=reply_to,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (self.from_id if ephemeral else 0),
             reply_markup=reply_markup,
         )
 
@@ -1048,6 +1174,7 @@ class MessageBoundMethods:
         quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
         ephemeral: bool = False,
+        receiver_user_id: int = 0,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
         | pytdbot.types.ReplyMarkupForceReply
@@ -1055,6 +1182,18 @@ class MessageBoundMethods:
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a sticker. Shortcut for :meth:`~pytdbot.Client.sendSticker`."""
+
+        reply_to = None
+        if not no_reply:
+            if self.ephemeral_message_id:
+                reply_to = pytdbot.types.InputMessageReplyToEphemeralMessage(
+                    ephemeral_message_id=self.ephemeral_message_id
+                )
+                ephemeral = True
+            else:
+                reply_to = pytdbot.types.InputMessageReplyToMessage(
+                    message_id=self.id, quote=quote
+                )
 
         return await self._client.sendSticker(
             chat_id=self.chat_id,
@@ -1067,9 +1206,10 @@ class MessageBoundMethods:
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             topic_id=topic_id,
-            quote=quote,
-            reply_to_message_id=self.id if not no_reply else None,
-            receiver_user_id=self.from_id if ephemeral else 0,
+            reply_to=reply_to,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (self.from_id if ephemeral else 0),
             reply_markup=reply_markup,
         )
 
