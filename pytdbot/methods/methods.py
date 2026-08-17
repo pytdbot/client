@@ -1866,7 +1866,7 @@ class Methods(TDLibFunctions):
         ):
             await self.getMessage(chat_id=chat_id, message_id=reply_to.message_id)
 
-        if not receiver_user_id or callback_query_id:
+        if not receiver_user_id and not callback_query_id:
             res = await self.sendMessage(
                 chat_id=chat_id,
                 topic_id=topic_id,
