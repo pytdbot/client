@@ -26,7 +26,7 @@ jobs:
 
       - name: Type check with ty
         run: |
-          python -m pip install --upgrade pip ty deepdiff
+          python -m pip install --upgrade pip ty
           ty check
 
       - name: Build pytdbot

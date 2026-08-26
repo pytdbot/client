@@ -28,6 +28,7 @@ UTILS_SKIP = {
     "dict_to_obj",
     "obj_to_dict",
     "obj_to_json",
+    "deepdiff",
     "json_dumps",
     "json_loads",
     "create_extra_id",

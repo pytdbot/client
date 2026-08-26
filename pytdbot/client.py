@@ -18,8 +18,6 @@ try:
 except ImportError:
     nats = None
 
-from deepdiff import DeepDiff
-
 import pytdbot
 
 from . import types
@@ -31,6 +29,7 @@ from .methods import Methods
 from .types import LogStream, Plugins
 from .utils import (
     create_extra_id,
+    deepdiff,
     dict_to_obj,
     get_bot_id_from_token,
     json_dumps,
@@ -1209,7 +1208,8 @@ class Client(Decorators, Methods):
             )
 
             try:
-                deepdiff(self, obj_to_dict(self.me), obj_to_dict(update.user))
+                for change in deepdiff(self.me, update.user):
+                    self.logger.info(change)
             except Exception:
                 self.logger.exception("deepdiff failed")
             self.me = update.user
@@ -1264,21 +1264,3 @@ class Client(Decorators, Methods):
         print(
             f"Pytdbot is free software and comes with ABSOLUTELY NO WARRANTY. Licensed under the terms of {pytdbot.__license__}.\n\n"
         )
-
-
-def deepdiff(self, d1, d2):
-    d1 = obj_to_dict(d1)
-    if not isinstance(d1, dict) or not isinstance(d2, dict):
-        return d1 == d2
-
-    deep = DeepDiff(d1, d2, ignore_order=True, view="tree")
-
-    for parent, diffs in deep.items():
-        for diff in diffs:
-            difflist = diff.path(output_format="list")
-            key = ".".join(map(str, difflist))
-
-            if parent in ("dictionary_item_added", "values_changed"):
-                self.logger.info(f"{key} changed to {diff.t2}")
-            elif parent == "dictionary_item_removed":
-                self.logger.info(f"{key} removed")
