@@ -1120,6 +1120,13 @@ class Client(Decorators, Methods):
     async def __handle_update_message_failed(
         self, update: types.UpdateMessageSendFailed
     ):
+        await self.deleteMessages(
+            chat_id=update.message.chat_id,
+            message_ids=[
+                update.message.id,
+            ],
+        )
+
         m_id = f"{update.message.chat_id}:{update.old_message_id}"
 
         if result := self._results.pop(m_id, None):
