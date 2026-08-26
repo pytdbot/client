@@ -2555,6 +2555,75 @@ class TDLibFunctions:
             }
         )
 
+    async def loadCommunityFullInfo(
+        self, *, community_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Returns full information about a community\. The data will be sent through update\.
+
+        Parameters:
+            community_id (:class:`int`):
+                Community identifier
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "loadCommunityFullInfo", "community_id": community_id}
+        )
+
+    async def createCommunity(
+        self,
+        *,
+        name: str | None = "",
+        chat_id: int | None = 0,
+        is_chat_hidden: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.CommunityId:
+        r"""Creates a new community for the given chat\. Returns identifier of the created community
+
+        Parameters:
+            name (:class:`str`):
+                Name of the new community
+
+            chat_id (:class:`int`):
+                Identifier of the chat in the community; only chats with owned bots and owned basic group, supergroup and channel chats are allowed; basic group chats will be automatically upgraded to supergroup chats
+
+            is_chat_hidden (:class:`bool`):
+                Pass true if the chat will be visible only to administrators of the community
+
+        Returns:
+            :class:`~pytdbot.types.CommunityId`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "createCommunity",
+                "name": name,
+                "chat_id": chat_id,
+                "is_chat_hidden": is_chat_hidden,
+            }
+        )
+
+    async def setCommunityName(
+        self, *, community_id: int | None = 0, name: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Changes name of the given community; requires can\_change\_info administrator right in the community
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            name (:class:`str`):
+                New name of the community
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "setCommunityName", "community_id": community_id, "name": name}
+        )
+
     async def getGroupsInCommon(
         self,
         *,
@@ -2833,6 +2902,7 @@ class TDLibFunctions:
         chat_type_filter: pytdbot.types.SearchMessagesChatTypeFilterPrivate
         | pytdbot.types.SearchMessagesChatTypeFilterGroup
         | pytdbot.types.SearchMessagesChatTypeFilterChannel
+        | pytdbot.types.SearchMessagesChatTypeFilterCommunity
         | None = None,
         min_date: int | None = 0,
         max_date: int | None = 0,
@@ -4940,11 +5010,13 @@ class TDLibFunctions:
         | None = None,
         receiver_user_id: int | None = 0,
         callback_query_id: int | None = 0,
+        replace_callback_query_message: bool | None = False,
         reply_to: pytdbot.types.InputMessageReplyToMessage
         | pytdbot.types.InputMessageReplyToExternalMessage
         | pytdbot.types.InputMessageReplyToStory
         | pytdbot.types.InputMessageReplyToEphemeralMessage
         | None = None,
+        protect_content: bool | None = False,
         sending_id: int | None = 0,
         only_preview: bool | None = False,
         reply_markup: pytdbot.types.ReplyMarkupRemoveKeyboard
@@ -4992,8 +5064,14 @@ class TDLibFunctions:
             callback_query_id (:class:`int`):
                 Identifier of the callback query which triggered the message; for bots only
 
+            replace_callback_query_message (:class:`bool`):
+                Pass true if the ephemeral message must replace the message from which the callback query originated; for bots only
+
             reply_to (:class:`~pytdbot.types.InputMessageReplyTo`):
                 Information about the message to be replied; pass null if none\. The message can be an incoming ephemeral message
+
+            protect_content (:class:`bool`):
+                Pass true if the content of the message must be protected from forwarding and saving; for bots only
 
             sending_id (:class:`int`):
                 Non\-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates
@@ -5005,7 +5083,7 @@ class TDLibFunctions:
                 Markup for replying to the message; pass null if none; for bots only
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote, inputMessageLocation, inputMessageVenue, inputMessageContact
+                The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote, inputMessageLocation, inputMessageVenue, inputMessageContact
 
         Returns:
             :class:`~pytdbot.types.Message`
@@ -5018,7 +5096,9 @@ class TDLibFunctions:
                 "topic_id": topic_id,
                 "receiver_user_id": receiver_user_id,
                 "callback_query_id": callback_query_id,
+                "replace_callback_query_message": replace_callback_query_message,
                 "reply_to": reply_to,
+                "protect_content": protect_content,
                 "sending_id": sending_id,
                 "only_preview": only_preview,
                 "reply_markup": reply_markup,
@@ -5146,7 +5226,7 @@ class TDLibFunctions:
                 Identifier of the user who received the message
 
             ephemeral_message_id (:class:`int`):
-                Identifiers of the message to be deleted
+                Identifier of the message to be deleted
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5781,7 +5861,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Edits the text, caption or reply markup of an ephemeral message sent by the bot; for bots only
+        r"""Edits the text, media, or reply markup of an ephemeral message sent by the bot; for bots only
 
         Parameters:
             chat_id (:class:`int`):
@@ -5797,7 +5877,7 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                New content of the message; pass null to edit only reply markup\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote
+                New content of the message; pass null to edit only reply markup\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5809,6 +5889,121 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "receiver_user_id": receiver_user_id,
                 "ephemeral_message_id": ephemeral_message_id,
+                "reply_markup": reply_markup,
+                "input_message_content": input_message_content,
+            }
+        )
+
+    async def editEphemeralMessageCaption(
+        self,
+        *,
+        chat_id: int | None = 0,
+        receiver_user_id: int | None = 0,
+        ephemeral_message_id: int | None = 0,
+        reply_markup: pytdbot.types.ReplyMarkupRemoveKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupInlineKeyboard
+        | None = None,
+        caption: pytdbot.types.FormattedText | None = None,
+        show_caption_above_media: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Edits the caption and reply markup of an ephemeral message sent by the bot; for bots only
+
+        Parameters:
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            receiver_user_id (:class:`int`):
+                Identifier of the user who received the message
+
+            ephemeral_message_id (:class:`int`):
+                Identifier of the ephemeral message
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
+                The new message reply markup; pass null if none
+
+            caption (:class:`~pytdbot.types.FormattedText`):
+                New message content caption; pass null to remove caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
+
+            show_caption_above_media (:class:`bool`):
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. May be true only for animation, photo, and video messages
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editEphemeralMessageCaption",
+                "chat_id": chat_id,
+                "receiver_user_id": receiver_user_id,
+                "ephemeral_message_id": ephemeral_message_id,
+                "reply_markup": reply_markup,
+                "caption": caption,
+                "show_caption_above_media": show_caption_above_media,
+            }
+        )
+
+    async def editCallbackQueryMessage(
+        self,
+        *,
+        callback_query_id: int | None = 0,
+        protect_content: bool | None = False,
+        reply_markup: pytdbot.types.ReplyMarkupRemoveKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupInlineKeyboard
+        | None = None,
+        input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
+        | pytdbot.types.InputMessageAnimation
+        | pytdbot.types.InputMessageAudio
+        | pytdbot.types.InputMessageDocument
+        | pytdbot.types.InputMessagePaidMedia
+        | pytdbot.types.InputMessagePhoto
+        | pytdbot.types.InputMessageSticker
+        | pytdbot.types.InputMessageVideo
+        | pytdbot.types.InputMessageVideoNote
+        | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
+        | pytdbot.types.InputMessageLocation
+        | pytdbot.types.InputMessageVenue
+        | pytdbot.types.InputMessageContact
+        | pytdbot.types.InputMessageDice
+        | pytdbot.types.InputMessageGame
+        | pytdbot.types.InputMessageInvoice
+        | pytdbot.types.InputMessagePoll
+        | pytdbot.types.InputMessageStakeDice
+        | pytdbot.types.InputMessageStory
+        | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageForwarded
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Edits the message from which a callback query has originated with an ephemeral message; for bots only
+
+        Parameters:
+            callback_query_id (:class:`int`):
+                Identifier of the callback query
+
+            protect_content (:class:`bool`):
+                Pass true if the content of the message must be protected from forwarding and saving
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
+                The new message reply markup; pass null if none
+
+            input_message_content (:class:`~pytdbot.types.InputMessageContent`):
+                New content of the message\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editCallbackQueryMessage",
+                "callback_query_id": callback_query_id,
+                "protect_content": protect_content,
                 "reply_markup": reply_markup,
                 "input_message_content": input_message_content,
             }
@@ -5846,6 +6041,30 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "message_id": message_id,
                 "scheduling_state": scheduling_state,
+            }
+        )
+
+    async def deleteMessageEphemeralContent(
+        self, *, chat_id: int | None = 0, message_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Removes message ephemeral content and reverts message state to the original
+
+        Parameters:
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteMessageEphemeralContent",
+                "chat_id": chat_id,
+                "message_id": message_id,
             }
         )
 
@@ -7007,14 +7226,14 @@ class TDLibFunctions:
     async def readdQuickReplyShortcutMessages(
         self, *, shortcut_name: str | None = "", message_ids: list[int] | None = None
     ) -> pytdbot.types.Error | pytdbot.types.QuickReplyMessages:
-        r"""Readds quick reply messages which failed to add\. Can be called only for messages for which messageSendingStateFailed\.can\_retry is true and after specified in messageSendingStateFailed\.retry\_after time passed\. If a message is readded, the corresponding failed to send message is deleted\. Returns the sent messages in the same order as the message identifiers passed in message\_ids\. If a message can't be readded, null will be returned instead of the message
+        r"""Re\-adds quick reply messages which failed to add\. Can be called only for messages for which messageSendingStateFailed\.can\_retry is true and after specified in messageSendingStateFailed\.retry\_after time passed\. If a message is re\-added, the corresponding failed to send message is deleted\. Returns the sent messages in the same order as the message identifiers passed in message\_ids\. If a message can't be re\-added, null will be returned instead of the message
 
         Parameters:
             shortcut_name (:class:`str`):
                 Name of the target shortcut
 
             message_ids (list[:class:`int`]):
-                Identifiers of the quick reply messages to readd\. Message identifiers must be in a strictly increasing order
+                Identifiers of the quick reply messages to re\-add\. Message identifiers must be in a strictly increasing order
 
         Returns:
             :class:`~pytdbot.types.QuickReplyMessages`
@@ -7081,6 +7300,169 @@ class TDLibFunctions:
                 "message_id": message_id,
                 "input_message_content": input_message_content,
             }
+        )
+
+    async def loadChatWelcomeMessages(
+        self, *, chat_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Loads welcome messages of a chat; requires can\_send\_welcome\_messages administrator right in the chat\. The loaded messages will be sent through updateChatWelcomeMessages
+
+        Parameters:
+            chat_id (:class:`int`):
+                The identifier of the chat
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "loadChatWelcomeMessages", "chat_id": chat_id}
+        )
+
+    async def addChatWelcomeMessage(
+        self,
+        *,
+        chat_id: int | None = 0,
+        input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
+        | pytdbot.types.InputMessageAnimation
+        | pytdbot.types.InputMessageAudio
+        | pytdbot.types.InputMessageDocument
+        | pytdbot.types.InputMessagePaidMedia
+        | pytdbot.types.InputMessagePhoto
+        | pytdbot.types.InputMessageSticker
+        | pytdbot.types.InputMessageVideo
+        | pytdbot.types.InputMessageVideoNote
+        | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
+        | pytdbot.types.InputMessageLocation
+        | pytdbot.types.InputMessageVenue
+        | pytdbot.types.InputMessageContact
+        | pytdbot.types.InputMessageDice
+        | pytdbot.types.InputMessageGame
+        | pytdbot.types.InputMessageInvoice
+        | pytdbot.types.InputMessagePoll
+        | pytdbot.types.InputMessageStakeDice
+        | pytdbot.types.InputMessageStory
+        | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageForwarded
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Adds a message to the list of welcome messages of a chat; requires can\_send\_welcome\_messages administrator right in the chat\. There can be up to getOption\(\"welcome\_message\_count\_max\"\) welcome messages in a chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                The identifier of the chat
+
+            input_message_content (:class:`~pytdbot.types.InputMessageContent`):
+                The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote, inputMessageLocation, inputMessageVenue, inputMessageContact
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addChatWelcomeMessage",
+                "chat_id": chat_id,
+                "input_message_content": input_message_content,
+            }
+        )
+
+    async def editChatWelcomeMessage(
+        self,
+        *,
+        chat_id: int | None = 0,
+        welcome_message_id: int | None = 0,
+        input_message_content: pytdbot.types.InputMessageText
+        | pytdbot.types.InputMessageRichMessage
+        | pytdbot.types.InputMessageAnimation
+        | pytdbot.types.InputMessageAudio
+        | pytdbot.types.InputMessageDocument
+        | pytdbot.types.InputMessagePaidMedia
+        | pytdbot.types.InputMessagePhoto
+        | pytdbot.types.InputMessageSticker
+        | pytdbot.types.InputMessageVideo
+        | pytdbot.types.InputMessageVideoNote
+        | pytdbot.types.InputMessageVoiceNote
+        | pytdbot.types.InputMessageLiveLocation
+        | pytdbot.types.InputMessageLocation
+        | pytdbot.types.InputMessageVenue
+        | pytdbot.types.InputMessageContact
+        | pytdbot.types.InputMessageDice
+        | pytdbot.types.InputMessageGame
+        | pytdbot.types.InputMessageInvoice
+        | pytdbot.types.InputMessagePoll
+        | pytdbot.types.InputMessageStakeDice
+        | pytdbot.types.InputMessageStory
+        | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageForwarded
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Edits a welcome message of a chat; requires can\_send\_welcome\_messages administrator right in the chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                The identifier of the chat
+
+            welcome_message_id (:class:`int`):
+                The identifier of the welcome message
+
+            input_message_content (:class:`~pytdbot.types.InputMessageContent`):
+                New content of the message\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editChatWelcomeMessage",
+                "chat_id": chat_id,
+                "welcome_message_id": welcome_message_id,
+                "input_message_content": input_message_content,
+            }
+        )
+
+    async def deleteChatWelcomeMessage(
+        self, *, chat_id: int | None = 0, welcome_message_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Deletes a welcome message of a chat; requires can\_send\_welcome\_messages administrator right in the chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                The identifier of the chat
+
+            welcome_message_id (:class:`int`):
+                The identifier of the welcome message
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteChatWelcomeMessage",
+                "chat_id": chat_id,
+                "welcome_message_id": welcome_message_id,
+            }
+        )
+
+    async def deleteAllChatWelcomeMessages(
+        self, *, chat_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Deletes all welcome messages of a chat; requires can\_send\_welcome\_messages administrator right in the chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                The identifier of the chat
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "deleteAllChatWelcomeMessages", "chat_id": chat_id}
         )
 
     async def getForumTopicDefaultIcons(
@@ -9935,6 +10317,8 @@ class TDLibFunctions:
         chat_id: int | None = 0,
         forum_topic_id: int | None = 0,
         draft_id: int | None = 0,
+        can_stop: bool | None = False,
+        keep_on_stop: bool | None = False,
         text: pytdbot.types.FormattedText | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Sends a draft for a being generated text message; for bots only
@@ -9949,6 +10333,12 @@ class TDLibFunctions:
             draft_id (:class:`int`):
                 Unique identifier of the draft
 
+            can_stop (:class:`bool`):
+                Pass true to show the user a button to stop further drafts
+
+            keep_on_stop (:class:`bool`):
+                Pass true to keep the current draft when the user stops further generation
+
             text (:class:`~pytdbot.types.FormattedText`):
                 Draft text of the message; pass null to show a \"Thinking\.\.\.\" placeholder
 
@@ -9962,6 +10352,8 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "forum_topic_id": forum_topic_id,
                 "draft_id": draft_id,
+                "can_stop": can_stop,
+                "keep_on_stop": keep_on_stop,
                 "text": text,
             }
         )
@@ -9972,6 +10364,8 @@ class TDLibFunctions:
         chat_id: int | None = 0,
         forum_topic_id: int | None = 0,
         draft_id: int | None = 0,
+        can_stop: bool | None = False,
+        keep_on_stop: bool | None = False,
         message: pytdbot.types.InputRichMessage | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Sends a draft for a being generated rich message; for bots only
@@ -9986,6 +10380,12 @@ class TDLibFunctions:
             draft_id (:class:`int`):
                 Unique identifier of the draft
 
+            can_stop (:class:`bool`):
+                Pass true to show the user a button to stop further drafts
+
+            keep_on_stop (:class:`bool`):
+                Pass true to keep the current draft when the user stops further generation
+
             message (:class:`~pytdbot.types.InputRichMessage`):
                 Draft of the message; file upload isn't supported
 
@@ -9999,7 +10399,45 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "forum_topic_id": forum_topic_id,
                 "draft_id": draft_id,
+                "can_stop": can_stop,
+                "keep_on_stop": keep_on_stop,
                 "message": message,
+            }
+        )
+
+    async def stopPendingMessage(
+        self,
+        *,
+        chat_id: int | None = 0,
+        topic_id: pytdbot.types.MessageTopicThread
+        | pytdbot.types.MessageTopicForum
+        | pytdbot.types.MessageTopicDirectMessages
+        | pytdbot.types.MessageTopicSavedMessages
+        | None = None,
+        draft_id: int | None = 0,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Stops a pending message generation by a bot
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat with the bot
+
+            topic_id (:class:`~pytdbot.types.MessageTopic`):
+                Identifier of the topic in which the action is performed; pass null if none
+
+            draft_id (:class:`int`):
+                Unique identifier of the message draft within the message thread
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "stopPendingMessage",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
+                "draft_id": draft_id,
             }
         )
 
@@ -11495,7 +11933,7 @@ class TDLibFunctions:
                 Topic in which the draft will be changed; pass null to change the draft for the chat itself
 
             draft_message (:class:`~pytdbot.types.DraftMessage`):
-                New draft message; pass null to remove the draft\. All files in draft message content must be of the type inputFileLocal\. Media thumbnails and captions are ignored
+                New draft message; pass null to remove the draft
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -12009,7 +12447,7 @@ class TDLibFunctions:
     async def addChatMembers(
         self, *, chat_id: int | None = 0, user_ids: list[int] | None = None
     ) -> pytdbot.types.Error | pytdbot.types.FailedToAddMembers:
-        r"""Adds multiple new members to a chat; requires can\_invite\_users member right\. Currently, this method is only available for supergroups and channels\. This method can't be used to join a chat\. Members can't be added to a channel if it has more than 200 members\. Returns information about members that weren't added
+        r"""Adds multiple new members to a chat; requires can\_invite\_users member right\. Currently, this method is available only in supergroups and channels\. This method can't be used to join a chat\. Members can't be added to a channel if it has more than 200 members\. Returns information about members that weren't added
 
         Parameters:
             chat_id (:class:`int`):
@@ -12076,7 +12514,7 @@ class TDLibFunctions:
                 Chat identifier
 
             user_id (:class:`int`):
-                Identifier of the user, which tag is changed\. Chats can't have member tags
+                Identifier of the user whose tag is changed\. Chats can't have member tags
 
             tag (:class:`str`):
                 The new tag of the member in the chat; 0\-16 characters without emoji
@@ -14715,7 +15153,7 @@ class TDLibFunctions:
         member_limit: int | None = 0,
         creates_join_request: bool | None = False,
     ) -> pytdbot.types.Error | pytdbot.types.ChatInviteLink:
-        r"""Edits a non\-primary invite link for a chat\. Available for basic groups, supergroups, and channels\. If the link creates a subscription, then expiration\_date, member\_limit and creates\_join\_request must not be used\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
+        r"""Edits a non\-primary invite link for a chat\. Available in basic groups, supergroups, and channels\. If the link creates a subscription, then expiration\_date, member\_limit and creates\_join\_request must not be used\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
 
         Parameters:
             chat_id (:class:`int`):
@@ -14917,7 +15355,7 @@ class TDLibFunctions:
     async def revokeChatInviteLink(
         self, *, chat_id: int | None = 0, invite_link: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.ChatInviteLinks:
-        r"""Revokes invite link for a chat\. Available for basic groups, supergroups, and channels\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links\. If a primary link is revoked, then additionally to the revoked link returns new primary link
+        r"""Revokes invite link for a chat\. Available in basic groups, supergroups, and channels\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links\. If a primary link is revoked, then additionally to the revoked link returns new primary link
 
         Parameters:
             chat_id (:class:`int`):
@@ -20785,7 +21223,7 @@ class TDLibFunctions:
         filters: pytdbot.types.ChatEventLogFilters | None = None,
         user_ids: list[int] | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.ChatEvents:
-        r"""Returns a list of service actions taken by chat members and administrators in the last 48 hours\. Available only for supergroups and channels\. Requires administrator rights\. Returns results in reverse chronological order \(i\.e\., in order of decreasing event\_id\)
+        r"""Returns a list of service actions taken by chat members and administrators in the last 48 hours\. Available only in supergroups and channels\. Requires administrator rights\. Returns results in reverse chronological order \(i\.e\., in order of decreasing event\_id\)
 
         Parameters:
             chat_id (:class:`int`):
@@ -21542,6 +21980,8 @@ class TDLibFunctions:
         price: pytdbot.types.GiftResalePriceStar
         | pytdbot.types.GiftResalePriceGram
         | None = None,
+        text: pytdbot.types.FormattedText | None = None,
+        is_private: bool | None = False,
     ) -> pytdbot.types.Error | pytdbot.types.GiftResaleResult:
         r"""Sends an upgraded gift that is available for resale to another user or channel chat; gifts already owned by the current user must be transferred using transferGift and can't be passed to the method
 
@@ -21555,6 +21995,12 @@ class TDLibFunctions:
             price (:class:`~pytdbot.types.GiftResalePrice`):
                 The price that the user agreed to pay for the gift
 
+            text (:class:`~pytdbot.types.FormattedText`):
+                Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed\. Must be empty if the receiver enabled paid messages and the price of the gift is less than the price of a paid message to the user
+
+            is_private (:class:`bool`):
+                Pass true to show gift text and sender only to the gift receiver; otherwise, everyone will be able to see them
+
         Returns:
             :class:`~pytdbot.types.GiftResaleResult`
         """
@@ -21565,6 +22011,8 @@ class TDLibFunctions:
                 "gift_name": gift_name,
                 "owner_id": owner_id,
                 "price": price,
+                "text": text,
+                "is_private": is_private,
             }
         )
 
@@ -21860,7 +22308,7 @@ class TDLibFunctions:
                 Identifier of the unique gift
 
             price (:class:`~pytdbot.types.GiftResalePrice`):
-                The new price for the unique gift; pass null to disallow gift resale\. The current user will receive getOption\(\"gift\_resale\_star\_earnings\_per\_mille\"\) Telegram Stars for each 1000 Telegram Stars paid for the gift if the gift price is in Telegram Stars or getOption\(\"gift\_resale\_ton\_earnings\_per\_mille\"\) TON Grams for each 1000 Grams paid for the gift if the gift price is in Grams
+                The new price for the unique gift; pass null to disallow gift resale\. The current user will receive getOption\(\"gift\_resale\_star\_earnings\_per\_mille\"\) Telegram Stars for each 1000 Telegram Stars paid for the gift if the gift price is in Telegram Stars or getOption\(\"gift\_resale\_gram\_earnings\_per\_mille\"\) TON Grams for each 1000 Grams paid for the gift if the gift price is in Grams
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -24980,7 +25428,7 @@ class TDLibFunctions:
 
         Parameters:
             user_id (:class:`int`):
-                Identifier of the user which will receive Telegram Premium
+                Identifier of the user who will receive Telegram Premium
 
             star_count (:class:`int`):
                 The number of Telegram Stars to pay for subscription

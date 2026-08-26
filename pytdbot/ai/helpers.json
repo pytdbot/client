@@ -652,6 +652,12 @@
         "default": "False"
       },
       {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
         "name": "reply_markup",
         "type": "pytdbot.types.ReplyMarkupInlineKeyboard | pytdbot.types.ReplyMarkupShowKeyboard | pytdbot.types.ReplyMarkupForceReply | pytdbot.types.ReplyMarkupRemoveKeyboard | None",
         "optional": true,
@@ -758,6 +764,12 @@
         "default": "False"
       },
       {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
         "name": "reply_markup",
         "type": "pytdbot.types.ReplyMarkupInlineKeyboard | pytdbot.types.ReplyMarkupShowKeyboard | pytdbot.types.ReplyMarkupForceReply | pytdbot.types.ReplyMarkupRemoveKeyboard | None",
         "optional": true,
@@ -850,6 +862,12 @@
         "type": "bool",
         "optional": true,
         "default": "False"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "reply_markup",
@@ -1054,6 +1072,12 @@
         "default": "False"
       },
       {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
         "name": "reply_markup",
         "type": "pytdbot.types.ReplyMarkupInlineKeyboard | pytdbot.types.ReplyMarkupShowKeyboard | pytdbot.types.ReplyMarkupForceReply | pytdbot.types.ReplyMarkupRemoveKeyboard | None",
         "optional": true,
@@ -1150,6 +1174,12 @@
         "default": "False"
       },
       {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
         "name": "reply_markup",
         "type": "pytdbot.types.ReplyMarkupInlineKeyboard | pytdbot.types.ReplyMarkupShowKeyboard | pytdbot.types.ReplyMarkupForceReply | pytdbot.types.ReplyMarkupRemoveKeyboard | None",
         "optional": true,
@@ -1236,6 +1266,12 @@
         "type": "bool",
         "optional": true,
         "default": "False"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "reply_markup",
@@ -1348,6 +1384,12 @@
         "type": "bool",
         "optional": true,
         "default": "False"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "reply_markup",
@@ -1480,6 +1522,12 @@
         "default": "False"
       },
       {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
         "name": "reply_markup",
         "type": "pytdbot.types.ReplyMarkupInlineKeyboard | pytdbot.types.ReplyMarkupShowKeyboard | pytdbot.types.ReplyMarkupForceReply | pytdbot.types.ReplyMarkupRemoveKeyboard | None",
         "optional": true,
@@ -1560,6 +1608,12 @@
         "type": "bool",
         "optional": true,
         "default": "False"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "reply_markup",
@@ -1654,6 +1708,12 @@
         "type": "bool",
         "optional": true,
         "default": "False"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "reply_markup",
@@ -1880,74 +1940,6 @@
     "doc": "Get callback query message",
     "source": "pytdbot/types/bound_methods/callback_query.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Message | None"
-  },
-  {
-    "name": "edit_message_text",
-    "kind": "bound_method",
-    "on": "UpdateNewChosenInlineResult",
-    "async": true,
-    "args": [
-      {
-        "name": "text",
-        "type": "str"
-      },
-      {
-        "name": "parse_mode",
-        "type": "Literal['HTML', 'Markdownv2'] | None",
-        "optional": true,
-        "default": "'html'"
-      },
-      {
-        "name": "reply_markup",
-        "type": "pytdbot.types.ReplyMarkupInlineKeyboard | pytdbot.types.ReplyMarkupShowKeyboard | pytdbot.types.ReplyMarkupForceReply | pytdbot.types.ReplyMarkupRemoveKeyboard | None",
-        "optional": true,
-        "default": "None"
-      }
-    ],
-    "description": "Edit message text. Shortcut for :meth:`~pytdbot.Client.editInlineMessageText`",
-    "doc": "Edit message text. Shortcut for :meth:`~pytdbot.Client.editInlineMessageText`",
-    "source": "pytdbot/types/bound_methods/inline_query.py",
-    "returns": null
-  },
-  {
-    "name": "answer",
-    "kind": "bound_method",
-    "on": "UpdateNewInlineQuery",
-    "async": true,
-    "args": [
-      {
-        "name": "results",
-        "type": "list[pytdbot.types.InputInlineQueryResult]"
-      },
-      {
-        "name": "is_personal",
-        "type": "bool | None",
-        "optional": true,
-        "default": "None"
-      },
-      {
-        "name": "cache_time",
-        "type": "int | None",
-        "optional": true,
-        "default": "None"
-      },
-      {
-        "name": "next_offset",
-        "type": "str | None",
-        "optional": true,
-        "default": "None"
-      },
-      {
-        "name": "button",
-        "type": "list[pytdbot.types.InlineQueryResultsButton] | None",
-        "optional": true,
-        "default": "None"
-      }
-    ],
-    "description": "Answer to inline query. Shortcut for :meth:`~pytdbot.Client.answerInlineQuery`",
-    "doc": "Answer to inline query. Shortcut for :meth:`~pytdbot.Client.answerInlineQuery`",
-    "source": "pytdbot/types/bound_methods/inline_query.py",
-    "returns": "pytdbot.types.Error | pytdbot.types.Ok"
   },
   {
     "name": "sendAction",

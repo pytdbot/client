@@ -3091,7 +3091,7 @@ class Passkey(TlObject):
             Point in time \(Unix timestamp\) when the passkey was used last time; 0 if never
 
         software_icon_custom_emoji_id (:class:`int`):
-            Identifier of the custom emoji that is used as the icon of the software, which created the passkey; 0 if unknown
+            Identifier of the custom emoji that is used as the icon of the software that created the passkey; 0 if unknown
 
     """
 
@@ -3113,7 +3113,7 @@ class Passkey(TlObject):
         self.last_usage_date = last_usage_date
         r"""Point in time \(Unix timestamp\) when the passkey was used last time; 0 if never"""
         self.software_icon_custom_emoji_id = software_icon_custom_emoji_id
-        r"""Identifier of the custom emoji that is used as the icon of the software, which created the passkey; 0 if unknown"""
+        r"""Identifier of the custom emoji that is used as the icon of the software that created the passkey; 0 if unknown"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -5661,7 +5661,7 @@ class InputPollOption(TlObject):
             Option text; 1\-100 characters\. Only custom emoji entities are allowed to be added and only by Premium users
 
         media (:class:`~pytdbot.types.InputPollMedia`):
-            Option media; pass null if none; ignored in addPollOption\. Must be one of the following types: inputPollMediaAnimation, inputPollMediaLink, inputPollMediaLocation, inputPollMediaPhoto, inputPollMediaSticker, inputPollMediaVenue, or inputPollMediaVideo without caption
+            Option media; pass null if none\. Must be one of the following types: inputPollMediaAnimation, inputPollMediaLink, inputPollMediaLocation, inputPollMediaPhoto, inputPollMediaSticker, inputPollMediaVenue, or inputPollMediaVideo without caption
 
     """
 
@@ -5683,7 +5683,7 @@ class InputPollOption(TlObject):
         self.text = text
         r"""Option text; 1\-100 characters\. Only custom emoji entities are allowed to be added and only by Premium users"""
         self.media = media
-        r"""Option media; pass null if none; ignored in addPollOption\. Must be one of the following types: inputPollMediaAnimation, inputPollMediaLink, inputPollMediaLocation, inputPollMediaPhoto, inputPollMediaSticker, inputPollMediaVenue, or inputPollMediaVideo without caption"""
+        r"""Option media; pass null if none\. Must be one of the following types: inputPollMediaAnimation, inputPollMediaLink, inputPollMediaLocation, inputPollMediaPhoto, inputPollMediaSticker, inputPollMediaVenue, or inputPollMediaVideo without caption"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -11652,6 +11652,9 @@ class ChatAdministratorRights(TlObject):
         can_manage_tags (:class:`bool`):
             True, if the administrator can change tags of other users; applicable to basic groups and supergroups only
 
+        can_send_welcome_messages (:class:`bool`):
+            True, if the administrator can manage and send welcome messages
+
         is_anonymous (:class:`bool`):
             True, if the administrator isn't shown in the chat member list and sends messages anonymously; applicable to supergroups only
 
@@ -11676,6 +11679,7 @@ class ChatAdministratorRights(TlObject):
         can_delete_stories: bool | None = False,
         can_manage_direct_messages: bool | None = False,
         can_manage_tags: bool | None = False,
+        can_send_welcome_messages: bool | None = False,
         is_anonymous: bool | None = False,
     ) -> None:
         self.can_manage_chat = can_manage_chat
@@ -11710,6 +11714,8 @@ class ChatAdministratorRights(TlObject):
         r"""True, if the administrator can answer to channel direct messages; applicable to channels only"""
         self.can_manage_tags = can_manage_tags
         r"""True, if the administrator can change tags of other users; applicable to basic groups and supergroups only"""
+        self.can_send_welcome_messages = can_send_welcome_messages
+        r"""True, if the administrator can manage and send welcome messages"""
         self.is_anonymous = is_anonymous
         r"""True, if the administrator isn't shown in the chat member list and sends messages anonymously; applicable to supergroups only"""
 
@@ -11746,6 +11752,7 @@ class ChatAdministratorRights(TlObject):
             "can_delete_stories": self.can_delete_stories,
             "can_manage_direct_messages": self.can_manage_direct_messages,
             "can_manage_tags": self.can_manage_tags,
+            "can_send_welcome_messages": self.can_send_welcome_messages,
             "is_anonymous": self.is_anonymous,
         }
 
@@ -11773,6 +11780,9 @@ class ChatAdministratorRights(TlObject):
                 "can_manage_direct_messages", False
             )
             data_class.can_manage_tags = data.get("can_manage_tags", False)
+            data_class.can_send_welcome_messages = data.get(
+                "can_send_welcome_messages", False
+            )
             data_class.is_anonymous = data.get("is_anonymous", False)
 
         return data_class
@@ -14314,7 +14324,7 @@ class PremiumGiveawayPaymentOption(TlObject):
             The amount to pay, in the smallest units of the currency
 
         winner_count (:class:`int`):
-            Number of users which will be able to activate the gift codes
+            Number of users who will be able to activate the gift codes
 
         month_count (:class:`int`):
             Number of months the Telegram Premium subscription will be active
@@ -14342,7 +14352,7 @@ class PremiumGiveawayPaymentOption(TlObject):
         self.amount = amount
         r"""The amount to pay, in the smallest units of the currency"""
         self.winner_count = winner_count
-        r"""Number of users which will be able to activate the gift codes"""
+        r"""Number of users who will be able to activate the gift codes"""
         self.month_count = month_count
         r"""Number of months the Telegram Premium subscription will be active"""
         self.store_product_id = store_product_id
@@ -22425,7 +22435,7 @@ class GiveawayParticipantStatusAdministrator(TlObject, GiveawayParticipantStatus
 
 
 class GiveawayParticipantStatusDisallowedCountry(TlObject, GiveawayParticipantStatus):
-    r"""The user can't participate in the giveaway, because they phone number is from a disallowed country
+    r"""The user can't participate in the giveaway, because their phone number is from a disallowed country
 
     Parameters:
         user_country_code (:class:`str`):
@@ -23016,6 +23026,45 @@ class ProfileAccentColor(TlObject):
         return data_class
 
 
+class CommunityId(TlObject):
+    r"""Contains identifier of a community
+
+    Parameters:
+        id (:class:`int`):
+            Community identifier
+
+    """
+
+    def __init__(self, *, id: int | None = 0) -> None:
+        self.id = id
+        r"""Community identifier"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["communityId"]:
+        return "communityId"
+
+    @classmethod
+    def getClass(self) -> Literal["CommunityId"]:
+        return "CommunityId"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "id": self.id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> CommunityId | None:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+
+        return data_class
+
+
 class CommunityPermissions(TlObject):
     r"""Describes actions that a user is allowed to take in a community
 
@@ -23406,6 +23455,148 @@ class Community(TlObject):
             data_class.date = int(data.get("date", 0))
             data_class.status = data.get("status", None)
             data_class.permissions = data.get("permissions", None)
+
+        return data_class
+
+
+class CommunityChat(TlObject):
+    r"""Describes a chat in a community
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat in the community
+
+        can_view_history (:class:`bool`):
+            True, if message history of the chat can be viewed
+
+        is_hidden (:class:`bool`):
+            True, if the chat is hidden in the list of community chats; for community administrators only
+
+    """
+
+    def __init__(
+        self,
+        *,
+        chat_id: int | None = 0,
+        can_view_history: bool | None = False,
+        is_hidden: bool | None = False,
+    ) -> None:
+        self.chat_id = chat_id
+        r"""Identifier of the chat in the community"""
+        self.can_view_history = can_view_history
+        r"""True, if message history of the chat can be viewed"""
+        self.is_hidden = is_hidden
+        r"""True, if the chat is hidden in the list of community chats; for community administrators only"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["communityChat"]:
+        return "communityChat"
+
+    @classmethod
+    def getClass(self) -> Literal["CommunityChat"]:
+        return "CommunityChat"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "can_view_history": self.can_view_history,
+            "is_hidden": self.is_hidden,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> CommunityChat | None:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.can_view_history = data.get("can_view_history", False)
+            data_class.is_hidden = data.get("is_hidden", False)
+
+        return data_class
+
+
+class CommunityFullInfo(TlObject):
+    r"""Contains full information about a community
+
+    Parameters:
+        photo (:class:`~pytdbot.types.ChatPhoto`):
+            Photo of the community
+
+        chats (list[:class:`~pytdbot.types.CommunityChat`]):
+            Chats belonging to the community
+
+        administrator_count (:class:`int`):
+            Number of privileged users in the community; 0 if the current user isn't an administrator of the community
+
+        banned_count (:class:`int`):
+            Number of users banned from the community; 0 if the current user isn't an administrator of the community
+
+        add_chat_request_count (:class:`int`):
+            Number of pending requests for addition of chats to the community; 0 if the current user isn't an administrator of the community
+
+    """
+
+    def __init__(
+        self,
+        *,
+        photo: ChatPhoto | None = None,
+        chats: list[CommunityChat] | None = None,
+        administrator_count: int | None = 0,
+        banned_count: int | None = 0,
+        add_chat_request_count: int | None = 0,
+    ) -> None:
+        self.photo = photo
+        r"""Photo of the community"""
+        self.chats = chats or []
+        r"""Chats belonging to the community"""
+        self.administrator_count = administrator_count
+        r"""Number of privileged users in the community; 0 if the current user isn't an administrator of the community"""
+        self.banned_count = banned_count
+        r"""Number of users banned from the community; 0 if the current user isn't an administrator of the community"""
+        self.add_chat_request_count = add_chat_request_count
+        r"""Number of pending requests for addition of chats to the community; 0 if the current user isn't an administrator of the community"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["communityFullInfo"]:
+        return "communityFullInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["CommunityFullInfo"]:
+        return "CommunityFullInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "photo": self.photo,
+            "chats": self.chats,
+            "administrator_count": self.administrator_count,
+            "banned_count": self.banned_count,
+            "add_chat_request_count": self.add_chat_request_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> CommunityFullInfo | None:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+            data_class.chats = data.get("chats", None)
+            data_class.administrator_count = int(data.get("administrator_count", 0))
+            data_class.banned_count = int(data.get("banned_count", 0))
+            data_class.add_chat_request_count = int(
+                data.get("add_chat_request_count", 0)
+            )
 
         return data_class
 
@@ -25654,7 +25845,7 @@ class ChatMembersFilterMembers(TlObject, ChatMembersFilter):
 
 
 class ChatMembersFilterMention(TlObject, ChatMembersFilter):
-    r"""Returns users which can be mentioned in the chat
+    r"""Returns users who can be mentioned in the chat
 
     Parameters:
         topic_id (:class:`~pytdbot.types.MessageTopic`):
@@ -25825,7 +26016,7 @@ class SupergroupMembersFilterRecent(TlObject, SupergroupMembersFilter):
 
 
 class SupergroupMembersFilterContacts(TlObject, SupergroupMembersFilter):
-    r"""Returns contacts of the user, which are members of the supergroup or channel
+    r"""Returns contacts of the current user who are members of the supergroup or channel
 
     Parameters:
         query (:class:`str`):
@@ -26012,7 +26203,7 @@ class SupergroupMembersFilterBanned(TlObject, SupergroupMembersFilter):
 
 
 class SupergroupMembersFilterMention(TlObject, SupergroupMembersFilter):
-    r"""Returns users which can be mentioned in the supergroup
+    r"""Returns users who can be mentioned in the supergroup
 
     Parameters:
         query (:class:`str`):
@@ -28982,7 +29173,7 @@ class MessageOriginUser(TlObject, MessageOrigin):
 
 
 class MessageOriginHiddenUser(TlObject, MessageOrigin):
-    r"""The message was originally sent by a user, which is hidden by their privacy settings
+    r"""The message was originally sent by a user who is hidden by their privacy settings
 
     Parameters:
         sender_name (:class:`str`):
@@ -30732,6 +30923,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         | MessageChatAddMembers
         | MessageChatJoinByLink
         | MessageChatJoinByRequest
+        | MessageChatJoinFromCommunity
         | MessageChatDeleteMember
         | MessageChatAddedToCommunity
         | MessageChatRemovedFromCommunity
@@ -30762,7 +30954,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         | MessageGiveawayCompleted
         | MessageGiveawayWinners
         | MessageGiftedStars
-        | MessageGiftedTon
+        | MessageGiftedGrams
         | MessageGiveawayPrizeStars
         | MessageGift
         | MessageUpgradedGift
@@ -31194,6 +31386,185 @@ class FactCheck(TlObject):
         return data_class
 
 
+class EphemeralMessageContent(TlObject):
+    r"""Describes an ephemeral content of a regular message, which must be shown instead of the regular content
+
+    Parameters:
+        can_be_saved (:class:`bool`):
+            True, if content of the message can be saved locally
+
+        has_timestamped_media (:class:`bool`):
+            True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message
+
+        content (:class:`~pytdbot.types.MessageContent`):
+            Content of the message
+
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
+            Reply markup for the message; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        can_be_saved: bool | None = False,
+        has_timestamped_media: bool | None = False,
+        content: MessageText
+        | MessageRichMessage
+        | MessageAnimation
+        | MessageAudio
+        | MessageDocument
+        | MessagePaidMedia
+        | MessagePhoto
+        | MessageSticker
+        | MessageVideo
+        | MessageVideoNote
+        | MessageVoiceNote
+        | MessageExpiredPhoto
+        | MessageExpiredVideo
+        | MessageExpiredVideoNote
+        | MessageExpiredVoiceNote
+        | MessageLiveLocation
+        | MessageLocation
+        | MessageVenue
+        | MessageContact
+        | MessageAnimatedEmoji
+        | MessageDice
+        | MessageGame
+        | MessagePoll
+        | MessageStakeDice
+        | MessageStory
+        | MessageChecklist
+        | MessageInvoice
+        | MessageCall
+        | MessageGroupCall
+        | MessageVideoChatScheduled
+        | MessageVideoChatStarted
+        | MessageVideoChatEnded
+        | MessageInviteVideoChatParticipants
+        | MessagePollOptionAdded
+        | MessagePollOptionDeleted
+        | MessageBasicGroupChatCreate
+        | MessageSupergroupChatCreate
+        | MessageChatChangeTitle
+        | MessageChatChangePhoto
+        | MessageChatDeletePhoto
+        | MessageChatOwnerLeft
+        | MessageChatOwnerChanged
+        | MessageChatHasProtectedContentToggled
+        | MessageChatHasProtectedContentDisableRequested
+        | MessageChatAddMembers
+        | MessageChatJoinByLink
+        | MessageChatJoinByRequest
+        | MessageChatJoinFromCommunity
+        | MessageChatDeleteMember
+        | MessageChatAddedToCommunity
+        | MessageChatRemovedFromCommunity
+        | MessageChatUpgradeTo
+        | MessageChatUpgradeFrom
+        | MessagePinMessage
+        | MessageScreenshotTaken
+        | MessageChatSetBackground
+        | MessageChatSetTheme
+        | MessageChatSetMessageAutoDeleteTime
+        | MessageChatBoost
+        | MessageForumTopicCreated
+        | MessageForumTopicEdited
+        | MessageForumTopicIsClosedToggled
+        | MessageForumTopicIsHiddenToggled
+        | MessageSuggestProfilePhoto
+        | MessageSuggestBirthdate
+        | MessageCustomServiceAction
+        | MessageGameScore
+        | MessageManagedBotCreated
+        | MessagePaymentSuccessful
+        | MessagePaymentSuccessfulBot
+        | MessagePaymentRefunded
+        | MessageGiftedPremium
+        | MessagePremiumGiftCode
+        | MessageGiveawayCreated
+        | MessageGiveaway
+        | MessageGiveawayCompleted
+        | MessageGiveawayWinners
+        | MessageGiftedStars
+        | MessageGiftedGrams
+        | MessageGiveawayPrizeStars
+        | MessageGift
+        | MessageUpgradedGift
+        | MessageRefundedUpgradedGift
+        | MessageUpgradedGiftPurchaseOffer
+        | MessageUpgradedGiftPurchaseOfferRejected
+        | MessagePaidMessagesRefunded
+        | MessagePaidMessagePriceChanged
+        | MessageDirectMessagePriceChanged
+        | MessageChecklistTasksDone
+        | MessageChecklistTasksAdded
+        | MessageSuggestedPostApprovalFailed
+        | MessageSuggestedPostApproved
+        | MessageSuggestedPostDeclined
+        | MessageSuggestedPostPaid
+        | MessageSuggestedPostRefunded
+        | MessageContactRegistered
+        | MessageUsersShared
+        | MessageChatShared
+        | MessageBotWriteAccessAllowed
+        | MessageWebAppDataSent
+        | MessageWebAppDataReceived
+        | MessagePassportDataSent
+        | MessagePassportDataReceived
+        | MessageProximityAlertTriggered
+        | MessageUnsupported
+        | None = None,
+        reply_markup: ReplyMarkupRemoveKeyboard
+        | ReplyMarkupForceReply
+        | ReplyMarkupShowKeyboard
+        | ReplyMarkupInlineKeyboard
+        | None = None,
+    ) -> None:
+        self.can_be_saved = can_be_saved
+        r"""True, if content of the message can be saved locally"""
+        self.has_timestamped_media = has_timestamped_media
+        r"""True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message"""
+        self.content = content
+        r"""Content of the message"""
+        self.reply_markup = reply_markup
+        r"""Reply markup for the message; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["ephemeralMessageContent"]:
+        return "ephemeralMessageContent"
+
+    @classmethod
+    def getClass(self) -> Literal["EphemeralMessageContent"]:
+        return "EphemeralMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "can_be_saved": self.can_be_saved,
+            "has_timestamped_media": self.has_timestamped_media,
+            "content": self.content,
+            "reply_markup": self.reply_markup,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> EphemeralMessageContent | None:
+        if data:
+            data_class = cls()
+            data_class.can_be_saved = data.get("can_be_saved", False)
+            data_class.has_timestamped_media = data.get("has_timestamped_media", False)
+            data_class.content = data.get("content", None)
+            data_class.reply_markup = data.get("reply_markup", None)
+
+        return data_class
+
+
 class Message(TlObject, MessageBoundMethods):
     r"""Describes a message
 
@@ -31321,11 +31692,17 @@ class Message(TlObject, MessageBoundMethods):
         content (:class:`~pytdbot.types.MessageContent`):
             Content of the message
 
+        ephemeral_content (:class:`~pytdbot.types.EphemeralMessageContent`):
+            Content of the message, which is visible only to the current user and must be shown instead of the regular content; may be null if none
+
         reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             Reply markup for the message; may be null if none
 
         ephemeral_message_id (:class:`int`):
             Unique identifier of the ephemeral message if the message is ephemeral; for bots only
+
+        chat_instance (:class:`int`):
+            Identifier that uniquely corresponds to the chat to which the message was sent; for bots only
 
     """
 
@@ -31430,6 +31807,7 @@ class Message(TlObject, MessageBoundMethods):
         | MessageChatAddMembers
         | MessageChatJoinByLink
         | MessageChatJoinByRequest
+        | MessageChatJoinFromCommunity
         | MessageChatDeleteMember
         | MessageChatAddedToCommunity
         | MessageChatRemovedFromCommunity
@@ -31460,7 +31838,7 @@ class Message(TlObject, MessageBoundMethods):
         | MessageGiveawayCompleted
         | MessageGiveawayWinners
         | MessageGiftedStars
-        | MessageGiftedTon
+        | MessageGiftedGrams
         | MessageGiveawayPrizeStars
         | MessageGift
         | MessageUpgradedGift
@@ -31488,12 +31866,14 @@ class Message(TlObject, MessageBoundMethods):
         | MessageProximityAlertTriggered
         | MessageUnsupported
         | None = None,
+        ephemeral_content: EphemeralMessageContent | None = None,
         reply_markup: ReplyMarkupRemoveKeyboard
         | ReplyMarkupForceReply
         | ReplyMarkupShowKeyboard
         | ReplyMarkupInlineKeyboard
         | None = None,
         ephemeral_message_id: int | None = 0,
+        chat_instance: int | None = 0,
     ) -> None:
         self.id = id
         r"""Message identifier; unique for the chat to which the message belongs"""
@@ -31577,10 +31957,14 @@ class Message(TlObject, MessageBoundMethods):
         r"""IETF language tag of the message language on which it can be summarized; empty if summary isn't available for the message"""
         self.content = content
         r"""Content of the message"""
+        self.ephemeral_content = ephemeral_content
+        r"""Content of the message, which is visible only to the current user and must be shown instead of the regular content; may be null if none"""
         self.reply_markup = reply_markup
         r"""Reply markup for the message; may be null if none"""
         self.ephemeral_message_id = ephemeral_message_id
         r"""Unique identifier of the ephemeral message if the message is ephemeral; for bots only"""
+        self.chat_instance = chat_instance
+        r"""Identifier that uniquely corresponds to the chat to which the message was sent; for bots only"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -31640,8 +32024,10 @@ class Message(TlObject, MessageBoundMethods):
             "restriction_info": self.restriction_info,
             "summary_language_code": self.summary_language_code,
             "content": self.content,
+            "ephemeral_content": self.ephemeral_content,
             "reply_markup": self.reply_markup,
             "ephemeral_message_id": self.ephemeral_message_id,
+            "chat_instance": self.chat_instance,
         }
 
     @classmethod
@@ -31701,8 +32087,10 @@ class Message(TlObject, MessageBoundMethods):
             data_class.restriction_info = data.get("restriction_info", None)
             data_class.summary_language_code = data.get("summary_language_code", "")
             data_class.content = data.get("content", None)
+            data_class.ephemeral_content = data.get("ephemeral_content", None)
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.ephemeral_message_id = int(data.get("ephemeral_message_id", 0))
+            data_class.chat_instance = int(data.get("chat_instance", 0))
 
         return data_class
 
@@ -32753,6 +33141,7 @@ class SponsoredMessage(TlObject):
         | MessageChatAddMembers
         | MessageChatJoinByLink
         | MessageChatJoinByRequest
+        | MessageChatJoinFromCommunity
         | MessageChatDeleteMember
         | MessageChatAddedToCommunity
         | MessageChatRemovedFromCommunity
@@ -32783,7 +33172,7 @@ class SponsoredMessage(TlObject):
         | MessageGiveawayCompleted
         | MessageGiveawayWinners
         | MessageGiftedStars
-        | MessageGiftedTon
+        | MessageGiftedGrams
         | MessageGiveawayPrizeStars
         | MessageGift
         | MessageUpgradedGift
@@ -34269,13 +34658,13 @@ class DraftMessageContentRichMessage(TlObject, DraftMessageContent):
 
     Parameters:
         message (:class:`~pytdbot.types.RichMessage`):
-            The rich message; the message must not have not yet uploaded media
+            The rich message
 
     """
 
     def __init__(self, *, message: RichMessage | None = None) -> None:
         self.message = message
-        r"""The rich message; the message must not have not yet uploaded media"""
+        r"""The rich message"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -34296,6 +34685,45 @@ class DraftMessageContentRichMessage(TlObject, DraftMessageContent):
 
     @classmethod
     def from_dict(cls, data: dict) -> DraftMessageContentRichMessage | None:
+        if data:
+            data_class = cls()
+            data_class.message = data.get("message", None)
+
+        return data_class
+
+
+class DraftMessageContentInputRichMessage(TlObject, DraftMessageContent):
+    r"""A rich message draft; only for setChatDraftMessage
+
+    Parameters:
+        message (:class:`~pytdbot.types.InputRichMessage`):
+            The rich message
+
+    """
+
+    def __init__(self, *, message: InputRichMessage | None = None) -> None:
+        self.message = message
+        r"""The rich message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["draftMessageContentInputRichMessage"]:
+        return "draftMessageContentInputRichMessage"
+
+    @classmethod
+    def getClass(self) -> Literal["DraftMessageContent"]:
+        return "DraftMessageContent"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "message": self.message}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> DraftMessageContentInputRichMessage | None:
         if data:
             data_class = cls()
             data_class.message = data.get("message", None)
@@ -34479,6 +34907,7 @@ class DraftMessage(TlObject):
         date: int | None = 0,
         content: DraftMessageContentText
         | DraftMessageContentRichMessage
+        | DraftMessageContentInputRichMessage
         | DraftMessageContentVideoNote
         | DraftMessageContentVoiceNote
         | None = None,
@@ -36058,6 +36487,9 @@ class Chat(TlObject):
         has_scheduled_messages (:class:`bool`):
             True, if the chat has scheduled messages
 
+        has_welcome_messages (:class:`bool`):
+            True, if the chat has welcome messages; for chat administrators with can\_change\_info administrator right only
+
         can_be_deleted_only_for_self (:class:`bool`):
             True, if the chat messages can be deleted only for the current user while other users will continue to see the messages
 
@@ -36156,6 +36588,7 @@ class Chat(TlObject):
         is_marked_as_unread: bool | None = False,
         view_as_topics: bool | None = False,
         has_scheduled_messages: bool | None = False,
+        has_welcome_messages: bool | None = False,
         can_be_deleted_only_for_self: bool | None = False,
         can_be_deleted_for_all_users: bool | None = False,
         can_be_reported: bool | None = False,
@@ -36228,6 +36661,8 @@ class Chat(TlObject):
         r"""True, if the chat is a forum supergroup that must be shown in the \"View as topics\" mode, or Saved Messages chat that must be shown in the \"View as chats\""""
         self.has_scheduled_messages = has_scheduled_messages
         r"""True, if the chat has scheduled messages"""
+        self.has_welcome_messages = has_welcome_messages
+        r"""True, if the chat has welcome messages; for chat administrators with can\_change\_info administrator right only"""
         self.can_be_deleted_only_for_self = can_be_deleted_only_for_self
         r"""True, if the chat messages can be deleted only for the current user while other users will continue to see the messages"""
         self.can_be_deleted_for_all_users = can_be_deleted_for_all_users
@@ -36312,6 +36747,7 @@ class Chat(TlObject):
             "is_marked_as_unread": self.is_marked_as_unread,
             "view_as_topics": self.view_as_topics,
             "has_scheduled_messages": self.has_scheduled_messages,
+            "has_welcome_messages": self.has_welcome_messages,
             "can_be_deleted_only_for_self": self.can_be_deleted_only_for_self,
             "can_be_deleted_for_all_users": self.can_be_deleted_for_all_users,
             "can_be_reported": self.can_be_reported,
@@ -36369,6 +36805,7 @@ class Chat(TlObject):
             data_class.has_scheduled_messages = data.get(
                 "has_scheduled_messages", False
             )
+            data_class.has_welcome_messages = data.get("has_welcome_messages", False)
             data_class.can_be_deleted_only_for_self = data.get(
                 "can_be_deleted_only_for_self", False
             )
@@ -37145,6 +37582,37 @@ class ButtonStyleSuccess(TlObject, ButtonStyle):
         return data_class
 
 
+class ButtonStyleLink(TlObject, ButtonStyle):
+    r"""The button must be shown as a link\. The style is allowed only for callback buttons in inlineButton"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["buttonStyleLink"]:
+        return "buttonStyleLink"
+
+    @classmethod
+    def getClass(self) -> Literal["ButtonStyle"]:
+        return "ButtonStyle"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ButtonStyleLink | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class KeyboardButtonTypeText(TlObject, KeyboardButtonType):
     r"""A simple button, with text that must be sent when the button is pressed"""
 
@@ -37679,6 +38147,7 @@ class KeyboardButton(TlObject):
         | ButtonStylePrimary
         | ButtonStyleDanger
         | ButtonStyleSuccess
+        | ButtonStyleLink
         | None = None,
         type: KeyboardButtonTypeText
         | KeyboardButtonTypeRequestPhoneNumber
@@ -37774,7 +38243,7 @@ class InlineKeyboardButtonTypeUrl(TlObject, InlineKeyboardButtonType):
 
 
 class InlineKeyboardButtonTypeLoginUrl(TlObject, InlineKeyboardButtonType):
-    r"""A button that opens a specified URL and automatically authorize the current user by calling getLoginUrlInfo
+    r"""A button that opens a specified URL and automatically authorize the current user by calling getLoginUrlInfo; not supported in ephemeral messages
 
     Parameters:
         url (:class:`str`):
@@ -38147,6 +38616,37 @@ class InlineKeyboardButtonTypeCopyText(TlObject, InlineKeyboardButtonType):
         return data_class
 
 
+class InlineKeyboardButtonTypeDisabled(TlObject, InlineKeyboardButtonType):
+    r"""A disabled button"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["inlineKeyboardButtonTypeDisabled"]:
+        return "inlineKeyboardButtonTypeDisabled"
+
+    @classmethod
+    def getClass(self) -> Literal["InlineKeyboardButtonType"]:
+        return "InlineKeyboardButtonType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InlineKeyboardButtonTypeDisabled | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class KeyboardButtonSourceMessage(TlObject, KeyboardButtonSource):
     r"""The button is from a bot's message
 
@@ -38274,6 +38774,7 @@ class InlineKeyboardButton(TlObject):
         | ButtonStylePrimary
         | ButtonStyleDanger
         | ButtonStyleSuccess
+        | ButtonStyleLink
         | None = None,
         type: InlineKeyboardButtonTypeUrl
         | InlineKeyboardButtonTypeLoginUrl
@@ -38285,6 +38786,7 @@ class InlineKeyboardButton(TlObject):
         | InlineKeyboardButtonTypeBuy
         | InlineKeyboardButtonTypeUser
         | InlineKeyboardButtonTypeCopyText
+        | InlineKeyboardButtonTypeDisabled
         | None = None,
     ) -> None:
         self.text = text
@@ -38443,6 +38945,9 @@ class ReplyMarkupShowKeyboard(TlObject, ReplyMarkup):
         is_personal (:class:`bool`):
             True, if the keyboard must automatically be shown to the current user\. For outgoing messages, specify true to show the keyboard only for the mentioned users and for the target user of a reply
 
+        force_reply (:class:`bool`):
+            True, if the keyboard must force reply to the message with the keyboard
+
         input_field_placeholder (:class:`str`):
             If non\-empty, the placeholder to be shown in the input field when the keyboard is active; 0\-64 characters
 
@@ -38456,6 +38961,7 @@ class ReplyMarkupShowKeyboard(TlObject, ReplyMarkup):
         resize_keyboard: bool | None = False,
         one_time: bool | None = False,
         is_personal: bool | None = False,
+        force_reply: bool | None = False,
         input_field_placeholder: str | None = "",
     ) -> None:
         self.rows = rows or []
@@ -38468,6 +38974,8 @@ class ReplyMarkupShowKeyboard(TlObject, ReplyMarkup):
         r"""True, if the application needs to hide the keyboard after use"""
         self.is_personal = is_personal
         r"""True, if the keyboard must automatically be shown to the current user\. For outgoing messages, specify true to show the keyboard only for the mentioned users and for the target user of a reply"""
+        self.force_reply = force_reply
+        r"""True, if the keyboard must force reply to the message with the keyboard"""
         self.input_field_placeholder = input_field_placeholder
         r"""If non\-empty, the placeholder to be shown in the input field when the keyboard is active; 0\-64 characters"""
 
@@ -38493,6 +39001,7 @@ class ReplyMarkupShowKeyboard(TlObject, ReplyMarkup):
             "resize_keyboard": self.resize_keyboard,
             "one_time": self.one_time,
             "is_personal": self.is_personal,
+            "force_reply": self.force_reply,
             "input_field_placeholder": self.input_field_placeholder,
         }
 
@@ -38505,6 +39014,7 @@ class ReplyMarkupShowKeyboard(TlObject, ReplyMarkup):
             data_class.resize_keyboard = data.get("resize_keyboard", False)
             data_class.one_time = data.get("one_time", False)
             data_class.is_personal = data.get("is_personal", False)
+            data_class.force_reply = data.get("force_reply", False)
             data_class.input_field_placeholder = data.get("input_field_placeholder", "")
 
         return data_class
@@ -38517,11 +39027,21 @@ class ReplyMarkupInlineKeyboard(TlObject, ReplyMarkup):
         rows (list[list[:class:`~pytdbot.types.InlineKeyboardButton`]]):
             A list of rows of inline keyboard buttons
 
+        force_reply (:class:`bool`):
+            True, if a reply to the message must be forced when the message is received
+
     """
 
-    def __init__(self, *, rows: list[list[InlineKeyboardButton]] | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        rows: list[list[InlineKeyboardButton]] | None = None,
+        force_reply: bool | None = False,
+    ) -> None:
         self.rows = rows or []
         r"""A list of rows of inline keyboard buttons"""
+        self.force_reply = force_reply
+        r"""True, if a reply to the message must be forced when the message is received"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -38538,13 +39058,18 @@ class ReplyMarkupInlineKeyboard(TlObject, ReplyMarkup):
         return "ReplyMarkup"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "rows": self.rows}
+        return {
+            "@type": self.getType(),
+            "rows": self.rows,
+            "force_reply": self.force_reply,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> ReplyMarkupInlineKeyboard | None:
         if data:
             data_class = cls()
             data_class.rows = data.get("rows", None)
+            data_class.force_reply = data.get("force_reply", False)
 
         return data_class
 
@@ -40038,6 +40563,114 @@ class ThemeSettings(TlObject):
         return data_class
 
 
+class InlineButton(TlObject):
+    r"""Represents a button inside a rich message
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text of the button; only richTexts, richTextPlain, and richTextCustomEmoji are allowed
+
+        style (:class:`~pytdbot.types.ButtonStyle`):
+            Style of the button
+
+        type (:class:`~pytdbot.types.InlineKeyboardButtonType`):
+            Type of the button; must be one of inlineKeyboardButtonTypeUrl, inlineKeyboardButtonTypeLoginUrl, inlineKeyboardButtonTypeWebApp, inlineKeyboardButtonTypeCallback, inlineKeyboardButtonTypeSwitchInline, inlineKeyboardButtonTypeUser, inlineKeyboardButtonTypeCopyText\. Additionally, inlineKeyboardButtonTypeCallbackWithPassword and inlineKeyboardButtonTypeDisabled may be received in incoming messages\. Regular users may use only inlineKeyboardButtonTypeUrl, inlineKeyboardButtonTypeUser and inlineKeyboardButtonTypeCopyText
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBankCardNumber
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextButton
+        | RichTextDiff
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        style: ButtonStyleDefault
+        | ButtonStylePrimary
+        | ButtonStyleDanger
+        | ButtonStyleSuccess
+        | ButtonStyleLink
+        | None = None,
+        type: InlineKeyboardButtonTypeUrl
+        | InlineKeyboardButtonTypeLoginUrl
+        | InlineKeyboardButtonTypeWebApp
+        | InlineKeyboardButtonTypeCallback
+        | InlineKeyboardButtonTypeCallbackWithPassword
+        | InlineKeyboardButtonTypeCallbackGame
+        | InlineKeyboardButtonTypeSwitchInline
+        | InlineKeyboardButtonTypeBuy
+        | InlineKeyboardButtonTypeUser
+        | InlineKeyboardButtonTypeCopyText
+        | InlineKeyboardButtonTypeDisabled
+        | None = None,
+    ) -> None:
+        self.text = text
+        r"""Text of the button; only richTexts, richTextPlain, and richTextCustomEmoji are allowed"""
+        self.style = style
+        r"""Style of the button"""
+        self.type = type
+        r"""Type of the button; must be one of inlineKeyboardButtonTypeUrl, inlineKeyboardButtonTypeLoginUrl, inlineKeyboardButtonTypeWebApp, inlineKeyboardButtonTypeCallback, inlineKeyboardButtonTypeSwitchInline, inlineKeyboardButtonTypeUser, inlineKeyboardButtonTypeCopyText\. Additionally, inlineKeyboardButtonTypeCallbackWithPassword and inlineKeyboardButtonTypeDisabled may be received in incoming messages\. Regular users may use only inlineKeyboardButtonTypeUrl, inlineKeyboardButtonTypeUser and inlineKeyboardButtonTypeCopyText"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["inlineButton"]:
+        return "inlineButton"
+
+    @classmethod
+    def getClass(self) -> Literal["InlineButton"]:
+        return "InlineButton"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "text": self.text,
+            "style": self.style,
+            "type": self.type,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InlineButton | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.style = data.get("style", None)
+            data_class.type = data.get("type", None)
+
+        return data_class
+
+
 class RichTextPlain(TlObject, RichText):
     r"""A plain text
 
@@ -40112,6 +40745,7 @@ class RichTextBold(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -40184,6 +40818,7 @@ class RichTextItalic(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -40256,6 +40891,7 @@ class RichTextUnderline(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -40328,6 +40964,7 @@ class RichTextStrikethrough(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -40400,6 +41037,7 @@ class RichTextSpoiler(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -40472,6 +41110,7 @@ class RichTextSubscript(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -40544,6 +41183,7 @@ class RichTextSuperscript(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -40616,6 +41256,7 @@ class RichTextMarked(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -40694,6 +41335,7 @@ class RichTextDateTime(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -40784,6 +41426,7 @@ class RichTextMention(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -40863,6 +41506,7 @@ class RichTextHashtag(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -40942,6 +41586,7 @@ class RichTextCashtag(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -41021,6 +41666,7 @@ class RichTextBankCardNumber(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -41104,6 +41750,7 @@ class RichTextBotCommand(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -41184,6 +41831,7 @@ class RichTextFixed(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -41259,6 +41907,7 @@ class RichTextMentionName(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -41341,6 +41990,7 @@ class RichTextUrl(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -41429,6 +42079,7 @@ class RichTextEmailAddress(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -41512,6 +42163,7 @@ class RichTextPhoneNumber(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -41709,6 +42361,45 @@ class RichTextMathematicalExpression(TlObject, RichText):
         return data_class
 
 
+class RichTextButton(TlObject, RichText):
+    r"""A button
+
+    Parameters:
+        button (:class:`~pytdbot.types.InlineButton`):
+            The button
+
+    """
+
+    def __init__(self, *, button: InlineButton | None = None) -> None:
+        self.button = button
+        r"""The button"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["richTextButton"]:
+        return "richTextButton"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "button": self.button}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextButton | None:
+        if data:
+            data_class = cls()
+            data_class.button = data.get("button", None)
+
+        return data_class
+
+
 class RichTextDiff(TlObject, RichText):
     r"""A rich text replacing another rich text; not supported in inputRichMessage
 
@@ -41747,6 +42438,7 @@ class RichTextDiff(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -41777,6 +42469,7 @@ class RichTextDiff(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -41856,6 +42549,7 @@ class RichTextReference(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -41937,6 +42631,7 @@ class RichTextReferenceLink(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -42067,6 +42762,7 @@ class RichTextAnchorLink(TlObject, RichText):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -42194,6 +42890,7 @@ class PageBlockCaption(TlObject):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -42224,6 +42921,7 @@ class PageBlockCaption(TlObject):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -42664,6 +43362,7 @@ class PageBlockTableCell(TlObject):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -42856,6 +43555,7 @@ class PageBlockTitle(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -42928,6 +43628,7 @@ class PageBlockSubtitle(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43003,6 +43704,7 @@ class PageBlockAuthorDate(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43083,6 +43785,7 @@ class PageBlockHeader(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43155,6 +43858,7 @@ class PageBlockSubheader(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43230,6 +43934,7 @@ class PageBlockSectionHeading(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43306,6 +44011,7 @@ class PageBlockKicker(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43378,6 +44084,7 @@ class PageBlockParagraph(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43453,6 +44160,7 @@ class PageBlockPreformatted(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43529,6 +44237,7 @@ class PageBlockFooter(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43601,6 +44310,7 @@ class PageBlockThinking(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43825,6 +44535,7 @@ class PageBlockBlockQuote(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43860,6 +44571,116 @@ class PageBlockBlockQuote(TlObject, PageBlock):
         if data:
             data_class = cls()
             data_class.blocks = data.get("blocks", None)
+            data_class.credit = data.get("credit", None)
+
+        return data_class
+
+
+class PageBlockExpandableBlockQuote(TlObject, PageBlock):
+    r"""An expandable block quote
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text of the quote
+
+        credit (:class:`~pytdbot.types.RichText`):
+            Quote credit; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBankCardNumber
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextButton
+        | RichTextDiff
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        credit: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBankCardNumber
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextButton
+        | RichTextDiff
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+    ) -> None:
+        self.text = text
+        r"""Text of the quote"""
+        self.credit = credit
+        r"""Quote credit; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["pageBlockExpandableBlockQuote"]:
+        return "pageBlockExpandableBlockQuote"
+
+    @classmethod
+    def getClass(self) -> Literal["PageBlock"]:
+        return "PageBlock"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text, "credit": self.credit}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PageBlockExpandableBlockQuote | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
             data_class.credit = data.get("credit", None)
 
         return data_class
@@ -43903,6 +44724,7 @@ class PageBlockPullQuote(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -43933,6 +44755,7 @@ class PageBlockPullQuote(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -44048,7 +44871,7 @@ class PageBlockAudio(TlObject, PageBlock):
 
     Parameters:
         audio (:class:`~pytdbot.types.Audio`):
-            Audio file; may be null
+            Audio file
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
             Audio file caption; may be null if none
@@ -44059,7 +44882,7 @@ class PageBlockAudio(TlObject, PageBlock):
         self, *, audio: Audio | None = None, caption: PageBlockCaption | None = None
     ) -> None:
         self.audio = audio
-        r"""Audio file; may be null"""
+        r"""Audio file"""
         self.caption = caption
         r"""Audio file caption; may be null if none"""
 
@@ -44085,6 +44908,60 @@ class PageBlockAudio(TlObject, PageBlock):
         if data:
             data_class = cls()
             data_class.audio = data.get("audio", None)
+            data_class.caption = data.get("caption", None)
+
+        return data_class
+
+
+class PageBlockDocument(TlObject, PageBlock):
+    r"""A general file
+
+    Parameters:
+        document (:class:`~pytdbot.types.Document`):
+            The file
+
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
+            File caption; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        document: Document | None = None,
+        caption: PageBlockCaption | None = None,
+    ) -> None:
+        self.document = document
+        r"""The file"""
+        self.caption = caption
+        r"""File caption; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["pageBlockDocument"]:
+        return "pageBlockDocument"
+
+    @classmethod
+    def getClass(self) -> Literal["PageBlock"]:
+        return "PageBlock"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "document": self.document,
+            "caption": self.caption,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PageBlockDocument | None:
+        if data:
+            data_class = cls()
+            data_class.document = data.get("document", None)
             data_class.caption = data.get("caption", None)
 
         return data_class
@@ -44243,7 +45120,7 @@ class PageBlockVoiceNote(TlObject, PageBlock):
 
     Parameters:
         voice_note (:class:`~pytdbot.types.VoiceNote`):
-            Voice note; may be null
+            Voice note
 
         caption (:class:`~pytdbot.types.PageBlockCaption`):
             Voice note caption; may be null if none
@@ -44257,7 +45134,7 @@ class PageBlockVoiceNote(TlObject, PageBlock):
         caption: PageBlockCaption | None = None,
     ) -> None:
         self.voice_note = voice_note
-        r"""Voice note; may be null"""
+        r"""Voice note"""
         self.caption = caption
         r"""Voice note caption; may be null if none"""
 
@@ -44320,9 +45197,11 @@ class PageBlockCover(TlObject, PageBlock):
         | PageBlockAnchor
         | PageBlockList
         | PageBlockBlockQuote
+        | PageBlockExpandableBlockQuote
         | PageBlockPullQuote
         | PageBlockAnimation
         | PageBlockAudio
+        | PageBlockDocument
         | PageBlockPhoto
         | PageBlockVideo
         | PageBlockVoiceNote
@@ -44336,6 +45215,8 @@ class PageBlockCover(TlObject, PageBlock):
         | PageBlockDetails
         | PageBlockRelatedArticles
         | PageBlockMap
+        | PageBlockButtonRow
+        | PageBlockUnsupported
         | None = None,
     ) -> None:
         self.cover = cover
@@ -44741,6 +45622,9 @@ class PageBlockTable(TlObject, PageBlock):
         is_striped (:class:`bool`):
             True, if the table is striped
 
+        is_compact (:class:`bool`):
+            True, if table cells must have smaller indents
+
     """
 
     def __init__(
@@ -44769,6 +45653,7 @@ class PageBlockTable(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -44779,6 +45664,7 @@ class PageBlockTable(TlObject, PageBlock):
         cells: list[list[PageBlockTableCell]] | None = None,
         is_bordered: bool | None = False,
         is_striped: bool | None = False,
+        is_compact: bool | None = False,
     ) -> None:
         self.caption = caption
         r"""Table caption; may be null if none"""
@@ -44788,6 +45674,8 @@ class PageBlockTable(TlObject, PageBlock):
         r"""True, if the table is bordered"""
         self.is_striped = is_striped
         r"""True, if the table is striped"""
+        self.is_compact = is_compact
+        r"""True, if table cells must have smaller indents"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -44810,6 +45698,7 @@ class PageBlockTable(TlObject, PageBlock):
             "cells": self.cells,
             "is_bordered": self.is_bordered,
             "is_striped": self.is_striped,
+            "is_compact": self.is_compact,
         }
 
     @classmethod
@@ -44820,6 +45709,7 @@ class PageBlockTable(TlObject, PageBlock):
             data_class.cells = data.get("cells", None)
             data_class.is_bordered = data.get("is_bordered", False)
             data_class.is_striped = data.get("is_striped", False)
+            data_class.is_compact = data.get("is_compact", False)
 
         return data_class
 
@@ -44865,6 +45755,7 @@ class PageBlockDetails(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -44953,6 +45844,7 @@ class PageBlockRelatedArticles(TlObject, PageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -45072,6 +45964,90 @@ class PageBlockMap(TlObject, PageBlock):
             data_class.width = int(data.get("width", 0))
             data_class.height = int(data.get("height", 0))
             data_class.caption = data.get("caption", None)
+
+        return data_class
+
+
+class PageBlockButtonRow(TlObject, PageBlock):
+    r"""A list of buttons shown in a row
+
+    Parameters:
+        buttons (list[:class:`~pytdbot.types.InlineButton`]):
+            The buttons
+
+        align (:class:`~pytdbot.types.PageBlockHorizontalAlignment`):
+            Horizontal alignment of the buttons; may be null if the buttons must be shown full\-width
+
+    """
+
+    def __init__(
+        self,
+        *,
+        buttons: list[InlineButton] | None = None,
+        align: PageBlockHorizontalAlignmentLeft
+        | PageBlockHorizontalAlignmentCenter
+        | PageBlockHorizontalAlignmentRight
+        | None = None,
+    ) -> None:
+        self.buttons = buttons or []
+        r"""The buttons"""
+        self.align = align
+        r"""Horizontal alignment of the buttons; may be null if the buttons must be shown full\-width"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["pageBlockButtonRow"]:
+        return "pageBlockButtonRow"
+
+    @classmethod
+    def getClass(self) -> Literal["PageBlock"]:
+        return "PageBlock"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "buttons": self.buttons, "align": self.align}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PageBlockButtonRow | None:
+        if data:
+            data_class = cls()
+            data_class.buttons = data.get("buttons", None)
+            data_class.align = data.get("align", None)
+
+        return data_class
+
+
+class PageBlockUnsupported(TlObject, PageBlock):
+    r"""Represents a block unsupported by the current application version"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["pageBlockUnsupported"]:
+        return "pageBlockUnsupported"
+
+    @classmethod
+    def getClass(self) -> Literal["PageBlock"]:
+        return "PageBlock"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PageBlockUnsupported | None:
+        if data:
+            data_class = cls()
 
         return data_class
 
@@ -55946,6 +56922,45 @@ class MessageChatJoinByRequest(TlObject, MessageContent):
         return data_class
 
 
+class MessageChatJoinFromCommunity(TlObject, MessageContent):
+    r"""A new member joined the chat from a community
+
+    Parameters:
+        community_id (:class:`int`):
+            Identifier of the community from which the user joined the chat
+
+    """
+
+    def __init__(self, *, community_id: int | None = 0) -> None:
+        self.community_id = community_id
+        r"""Identifier of the community from which the user joined the chat"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["messageChatJoinFromCommunity"]:
+        return "messageChatJoinFromCommunity"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "community_id": self.community_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> MessageChatJoinFromCommunity | None:
+        if data:
+            data_class = cls()
+            data_class.community_id = int(data.get("community_id", 0))
+
+        return data_class
+
+
 class MessageChatDeleteMember(TlObject, MessageContent):
     r"""A chat member was deleted
 
@@ -56800,11 +57815,18 @@ class MessageManagedBotCreated(TlObject, MessageContent):
         bot_user_id (:class:`int`):
             User identifier of the created bot
 
+        manager_bot_user_id (:class:`int`):
+            Identifier of the bot which will manage the new bot
+
     """
 
-    def __init__(self, *, bot_user_id: int | None = 0) -> None:
+    def __init__(
+        self, *, bot_user_id: int | None = 0, manager_bot_user_id: int | None = 0
+    ) -> None:
         self.bot_user_id = bot_user_id
         r"""User identifier of the created bot"""
+        self.manager_bot_user_id = manager_bot_user_id
+        r"""Identifier of the bot which will manage the new bot"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -56821,13 +57843,18 @@ class MessageManagedBotCreated(TlObject, MessageContent):
         return "MessageContent"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "bot_user_id": self.bot_user_id}
+        return {
+            "@type": self.getType(),
+            "bot_user_id": self.bot_user_id,
+            "manager_bot_user_id": self.manager_bot_user_id,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> MessageManagedBotCreated | None:
         if data:
             data_class = cls()
             data_class.bot_user_id = int(data.get("bot_user_id", 0))
+            data_class.manager_bot_user_id = int(data.get("manager_bot_user_id", 0))
 
         return data_class
 
@@ -57449,7 +58476,7 @@ class MessageGiveaway(TlObject, MessageContent):
             Giveaway parameters
 
         winner_count (:class:`int`):
-            Number of users which will receive Telegram Premium subscription gift codes
+            Number of users who will receive Telegram Premium subscription gift codes
 
         prize (:class:`~pytdbot.types.GiveawayPrize`):
             Prize of the giveaway
@@ -57470,7 +58497,7 @@ class MessageGiveaway(TlObject, MessageContent):
         self.parameters = parameters
         r"""Giveaway parameters"""
         self.winner_count = winner_count
-        r"""Number of users which will receive Telegram Premium subscription gift codes"""
+        r"""Number of users who will receive Telegram Premium subscription gift codes"""
         self.prize = prize
         r"""Prize of the giveaway"""
         self.sticker = sticker
@@ -57819,7 +58846,7 @@ class MessageGiftedStars(TlObject, MessageContent):
         return data_class
 
 
-class MessageGiftedTon(TlObject, MessageContent):
+class MessageGiftedGrams(TlObject, MessageContent):
     r"""TON Grams were gifted to a user
 
     Parameters:
@@ -57867,8 +58894,8 @@ class MessageGiftedTon(TlObject, MessageContent):
         return self.__str__()
 
     @classmethod
-    def getType(self) -> Literal["messageGiftedTon"]:
-        return "messageGiftedTon"
+    def getType(self) -> Literal["messageGiftedGrams"]:
+        return "messageGiftedGrams"
 
     @classmethod
     def getClass(self) -> Literal["MessageContent"]:
@@ -57885,7 +58912,7 @@ class MessageGiftedTon(TlObject, MessageContent):
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> MessageGiftedTon | None:
+    def from_dict(cls, data: dict) -> MessageGiftedGrams | None:
         if data:
             data_class = cls()
             data_class.gifter_user_id = int(data.get("gifter_user_id", 0))
@@ -58196,6 +59223,12 @@ class MessageUpgradedGift(TlObject, MessageContent):
         received_gift_id (:class:`str`):
             Unique identifier of the received gift for the current user; only for the receiver of the gift
 
+        text (:class:`~pytdbot.types.FormattedText`):
+            Message added to the gift
+
+        is_private (:class:`bool`):
+            True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them
+
         is_saved (:class:`bool`):
             True, if the gift is displayed on the user's or the channel's profile page; only for the receiver of the gift
 
@@ -58240,6 +59273,8 @@ class MessageUpgradedGift(TlObject, MessageContent):
         | UpgradedGiftOriginCraft
         | None = None,
         received_gift_id: str | None = "",
+        text: FormattedText | None = None,
+        is_private: bool | None = False,
         is_saved: bool | None = False,
         can_be_transferred: bool | None = False,
         was_transferred: bool | None = False,
@@ -58260,6 +59295,10 @@ class MessageUpgradedGift(TlObject, MessageContent):
         r"""Origin of the upgraded gift"""
         self.received_gift_id = received_gift_id
         r"""Unique identifier of the received gift for the current user; only for the receiver of the gift"""
+        self.text = text
+        r"""Message added to the gift"""
+        self.is_private = is_private
+        r"""True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them"""
         self.is_saved = is_saved
         r"""True, if the gift is displayed on the user's or the channel's profile page; only for the receiver of the gift"""
         self.can_be_transferred = can_be_transferred
@@ -58301,6 +59340,8 @@ class MessageUpgradedGift(TlObject, MessageContent):
             "receiver_id": self.receiver_id,
             "origin": self.origin,
             "received_gift_id": self.received_gift_id,
+            "text": self.text,
+            "is_private": self.is_private,
             "is_saved": self.is_saved,
             "can_be_transferred": self.can_be_transferred,
             "was_transferred": self.was_transferred,
@@ -58321,6 +59362,8 @@ class MessageUpgradedGift(TlObject, MessageContent):
             data_class.receiver_id = data.get("receiver_id", None)
             data_class.origin = data.get("origin", None)
             data_class.received_gift_id = data.get("received_gift_id", "")
+            data_class.text = data.get("text", None)
+            data_class.is_private = data.get("is_private", False)
             data_class.is_saved = data.get("is_saved", False)
             data_class.can_be_transferred = data.get("can_be_transferred", False)
             data_class.was_transferred = data.get("was_transferred", False)
@@ -59154,7 +60197,7 @@ class MessageContactRegistered(TlObject, MessageContent):
 
 
 class MessageUsersShared(TlObject, MessageContent):
-    r"""The current user shared users, which were requested by the bot
+    r"""The current user shared users who were requested by the bot
 
     Parameters:
         users (list[:class:`~pytdbot.types.SharedUser`]):
@@ -62375,6 +63418,7 @@ class InputPageBlockSectionHeading(TlObject, InputPageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -62451,6 +63495,7 @@ class InputPageBlockParagraph(TlObject, InputPageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -62526,6 +63571,7 @@ class InputPageBlockPreformatted(TlObject, InputPageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -62602,6 +63648,7 @@ class InputPageBlockFooter(TlObject, InputPageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -62674,6 +63721,7 @@ class InputPageBlockThinking(TlObject, InputPageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -62898,6 +63946,7 @@ class InputPageBlockBlockQuote(TlObject, InputPageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -62933,6 +63982,116 @@ class InputPageBlockBlockQuote(TlObject, InputPageBlock):
         if data:
             data_class = cls()
             data_class.blocks = data.get("blocks", None)
+            data_class.credit = data.get("credit", None)
+
+        return data_class
+
+
+class InputPageBlockExpandableBlockQuote(TlObject, InputPageBlock):
+    r"""An expandable block quote
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Quote text
+
+        credit (:class:`~pytdbot.types.RichText`):
+            Quote credit; pass null if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBankCardNumber
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextButton
+        | RichTextDiff
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        credit: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBankCardNumber
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextButton
+        | RichTextDiff
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+    ) -> None:
+        self.text = text
+        r"""Quote text"""
+        self.credit = credit
+        r"""Quote credit; pass null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["inputPageBlockExpandableBlockQuote"]:
+        return "inputPageBlockExpandableBlockQuote"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPageBlock"]:
+        return "InputPageBlock"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text, "credit": self.credit}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPageBlockExpandableBlockQuote | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
             data_class.credit = data.get("credit", None)
 
         return data_class
@@ -62976,6 +64135,7 @@ class InputPageBlockPullQuote(TlObject, InputPageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -63006,6 +64166,7 @@ class InputPageBlockPullQuote(TlObject, InputPageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -63153,6 +64314,60 @@ class InputPageBlockAudio(TlObject, InputPageBlock):
         if data:
             data_class = cls()
             data_class.audio = data.get("audio", None)
+            data_class.caption = data.get("caption", None)
+
+        return data_class
+
+
+class InputPageBlockDocument(TlObject, InputPageBlock):
+    r"""A general file
+
+    Parameters:
+        document (:class:`~pytdbot.types.InputDocument`):
+            The file to be sent
+
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
+            File caption; pass null if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        document: InputDocument | None = None,
+        caption: PageBlockCaption | None = None,
+    ) -> None:
+        self.document = document
+        r"""The file to be sent"""
+        self.caption = caption
+        r"""File caption; pass null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["inputPageBlockDocument"]:
+        return "inputPageBlockDocument"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPageBlock"]:
+        return "InputPageBlock"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "document": self.document,
+            "caption": self.caption,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPageBlockDocument | None:
+        if data:
+            data_class = cls()
+            data_class.document = data.get("document", None)
             data_class.caption = data.get("caption", None)
 
         return data_class
@@ -63447,10 +64662,13 @@ class InputPageBlockTable(TlObject, InputPageBlock):
             Table cells
 
         is_bordered (:class:`bool`):
-            True, if the table is bordered
+            Pass true if the table is bordered
 
         is_striped (:class:`bool`):
-            True, if the table is striped
+            Pass true if the table is striped
+
+        is_compact (:class:`bool`):
+            Pass true if table cells must have smaller indents
 
     """
 
@@ -63480,6 +64698,7 @@ class InputPageBlockTable(TlObject, InputPageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -63490,15 +64709,18 @@ class InputPageBlockTable(TlObject, InputPageBlock):
         cells: list[list[PageBlockTableCell]] | None = None,
         is_bordered: bool | None = False,
         is_striped: bool | None = False,
+        is_compact: bool | None = False,
     ) -> None:
         self.caption = caption
         r"""Table caption"""
         self.cells = cells or []
         r"""Table cells"""
         self.is_bordered = is_bordered
-        r"""True, if the table is bordered"""
+        r"""Pass true if the table is bordered"""
         self.is_striped = is_striped
-        r"""True, if the table is striped"""
+        r"""Pass true if the table is striped"""
+        self.is_compact = is_compact
+        r"""Pass true if table cells must have smaller indents"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -63521,6 +64743,7 @@ class InputPageBlockTable(TlObject, InputPageBlock):
             "cells": self.cells,
             "is_bordered": self.is_bordered,
             "is_striped": self.is_striped,
+            "is_compact": self.is_compact,
         }
 
     @classmethod
@@ -63531,6 +64754,7 @@ class InputPageBlockTable(TlObject, InputPageBlock):
             data_class.cells = data.get("cells", None)
             data_class.is_bordered = data.get("is_bordered", False)
             data_class.is_striped = data.get("is_striped", False)
+            data_class.is_compact = data.get("is_compact", False)
 
         return data_class
 
@@ -63576,6 +64800,7 @@ class InputPageBlockDetails(TlObject, InputPageBlock):
         | RichTextCustomEmoji
         | RichTextIcon
         | RichTextMathematicalExpression
+        | RichTextButton
         | RichTextDiff
         | RichTextReference
         | RichTextReferenceLink
@@ -63700,6 +64925,59 @@ class InputPageBlockMap(TlObject, InputPageBlock):
             data_class.width = int(data.get("width", 0))
             data_class.height = int(data.get("height", 0))
             data_class.caption = data.get("caption", None)
+
+        return data_class
+
+
+class InputPageBlockButtonRow(TlObject, InputPageBlock):
+    r"""A list of buttons shown in a row
+
+    Parameters:
+        buttons (list[:class:`~pytdbot.types.InlineButton`]):
+            The buttons
+
+        align (:class:`~pytdbot.types.PageBlockHorizontalAlignment`):
+            Horizontal alignment of the buttons; pass null if the buttons must be shown full\-width
+
+    """
+
+    def __init__(
+        self,
+        *,
+        buttons: list[InlineButton] | None = None,
+        align: PageBlockHorizontalAlignmentLeft
+        | PageBlockHorizontalAlignmentCenter
+        | PageBlockHorizontalAlignmentRight
+        | None = None,
+    ) -> None:
+        self.buttons = buttons or []
+        r"""The buttons"""
+        self.align = align
+        r"""Horizontal alignment of the buttons; pass null if the buttons must be shown full\-width"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["inputPageBlockButtonRow"]:
+        return "inputPageBlockButtonRow"
+
+    @classmethod
+    def getClass(self) -> Literal["InputPageBlock"]:
+        return "InputPageBlock"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "buttons": self.buttons, "align": self.align}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputPageBlockButtonRow | None:
+        if data:
+            data_class = cls()
+            data_class.buttons = data.get("buttons", None)
+            data_class.align = data.get("align", None)
 
         return data_class
 
@@ -66351,6 +67629,45 @@ class SearchMessagesChatTypeFilterChannel(TlObject, SearchMessagesChatTypeFilter
     def from_dict(cls, data: dict) -> SearchMessagesChatTypeFilterChannel | None:
         if data:
             data_class = cls()
+
+        return data_class
+
+
+class SearchMessagesChatTypeFilterCommunity(TlObject, SearchMessagesChatTypeFilter):
+    r"""Returns only messages in the specified community
+
+    Parameters:
+        community_id (:class:`int`):
+            Identifier of the community to search in
+
+    """
+
+    def __init__(self, *, community_id: int | None = 0) -> None:
+        self.community_id = community_id
+        r"""Identifier of the community to search in"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["searchMessagesChatTypeFilterCommunity"]:
+        return "searchMessagesChatTypeFilterCommunity"
+
+    @classmethod
+    def getClass(self) -> Literal["SearchMessagesChatTypeFilter"]:
+        return "SearchMessagesChatTypeFilter"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "community_id": self.community_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> SearchMessagesChatTypeFilterCommunity | None:
+        if data:
+            data_class = cls()
+            data_class.community_id = int(data.get("community_id", 0))
 
         return data_class
 
@@ -69720,7 +71037,7 @@ class StoryListMain(TlObject, StoryList):
 
 
 class StoryListArchive(TlObject, StoryList):
-    r"""The list of stories, shown in the Arvhive chat list"""
+    r"""The list of stories, shown in the Archive chat list"""
 
     def __init__(self) -> None:
         pass
@@ -71041,6 +72358,7 @@ class QuickReplyMessage(TlObject):
         | MessageChatAddMembers
         | MessageChatJoinByLink
         | MessageChatJoinByRequest
+        | MessageChatJoinFromCommunity
         | MessageChatDeleteMember
         | MessageChatAddedToCommunity
         | MessageChatRemovedFromCommunity
@@ -71071,7 +72389,7 @@ class QuickReplyMessage(TlObject):
         | MessageGiveawayCompleted
         | MessageGiveawayWinners
         | MessageGiftedStars
-        | MessageGiftedTon
+        | MessageGiftedGrams
         | MessageGiveawayPrizeStars
         | MessageGift
         | MessageUpgradedGift
@@ -71270,6 +72588,161 @@ class QuickReplyShortcut(TlObject):
             data_class.name = data.get("name", "")
             data_class.first_message = data.get("first_message", None)
             data_class.message_count = int(data.get("message_count", 0))
+
+        return data_class
+
+
+class WelcomeMessage(TlObject):
+    r"""Describes a set up welcome message
+
+    Parameters:
+        id (:class:`int`):
+            Welcome message identifier; unique for the chat to which the welcome message belongs
+
+        content (:class:`~pytdbot.types.MessageContent`):
+            Content of the welcome message
+
+    """
+
+    def __init__(
+        self,
+        *,
+        id: int | None = 0,
+        content: MessageText
+        | MessageRichMessage
+        | MessageAnimation
+        | MessageAudio
+        | MessageDocument
+        | MessagePaidMedia
+        | MessagePhoto
+        | MessageSticker
+        | MessageVideo
+        | MessageVideoNote
+        | MessageVoiceNote
+        | MessageExpiredPhoto
+        | MessageExpiredVideo
+        | MessageExpiredVideoNote
+        | MessageExpiredVoiceNote
+        | MessageLiveLocation
+        | MessageLocation
+        | MessageVenue
+        | MessageContact
+        | MessageAnimatedEmoji
+        | MessageDice
+        | MessageGame
+        | MessagePoll
+        | MessageStakeDice
+        | MessageStory
+        | MessageChecklist
+        | MessageInvoice
+        | MessageCall
+        | MessageGroupCall
+        | MessageVideoChatScheduled
+        | MessageVideoChatStarted
+        | MessageVideoChatEnded
+        | MessageInviteVideoChatParticipants
+        | MessagePollOptionAdded
+        | MessagePollOptionDeleted
+        | MessageBasicGroupChatCreate
+        | MessageSupergroupChatCreate
+        | MessageChatChangeTitle
+        | MessageChatChangePhoto
+        | MessageChatDeletePhoto
+        | MessageChatOwnerLeft
+        | MessageChatOwnerChanged
+        | MessageChatHasProtectedContentToggled
+        | MessageChatHasProtectedContentDisableRequested
+        | MessageChatAddMembers
+        | MessageChatJoinByLink
+        | MessageChatJoinByRequest
+        | MessageChatJoinFromCommunity
+        | MessageChatDeleteMember
+        | MessageChatAddedToCommunity
+        | MessageChatRemovedFromCommunity
+        | MessageChatUpgradeTo
+        | MessageChatUpgradeFrom
+        | MessagePinMessage
+        | MessageScreenshotTaken
+        | MessageChatSetBackground
+        | MessageChatSetTheme
+        | MessageChatSetMessageAutoDeleteTime
+        | MessageChatBoost
+        | MessageForumTopicCreated
+        | MessageForumTopicEdited
+        | MessageForumTopicIsClosedToggled
+        | MessageForumTopicIsHiddenToggled
+        | MessageSuggestProfilePhoto
+        | MessageSuggestBirthdate
+        | MessageCustomServiceAction
+        | MessageGameScore
+        | MessageManagedBotCreated
+        | MessagePaymentSuccessful
+        | MessagePaymentSuccessfulBot
+        | MessagePaymentRefunded
+        | MessageGiftedPremium
+        | MessagePremiumGiftCode
+        | MessageGiveawayCreated
+        | MessageGiveaway
+        | MessageGiveawayCompleted
+        | MessageGiveawayWinners
+        | MessageGiftedStars
+        | MessageGiftedGrams
+        | MessageGiveawayPrizeStars
+        | MessageGift
+        | MessageUpgradedGift
+        | MessageRefundedUpgradedGift
+        | MessageUpgradedGiftPurchaseOffer
+        | MessageUpgradedGiftPurchaseOfferRejected
+        | MessagePaidMessagesRefunded
+        | MessagePaidMessagePriceChanged
+        | MessageDirectMessagePriceChanged
+        | MessageChecklistTasksDone
+        | MessageChecklistTasksAdded
+        | MessageSuggestedPostApprovalFailed
+        | MessageSuggestedPostApproved
+        | MessageSuggestedPostDeclined
+        | MessageSuggestedPostPaid
+        | MessageSuggestedPostRefunded
+        | MessageContactRegistered
+        | MessageUsersShared
+        | MessageChatShared
+        | MessageBotWriteAccessAllowed
+        | MessageWebAppDataSent
+        | MessageWebAppDataReceived
+        | MessagePassportDataSent
+        | MessagePassportDataReceived
+        | MessageProximityAlertTriggered
+        | MessageUnsupported
+        | None = None,
+    ) -> None:
+        self.id = id
+        r"""Welcome message identifier; unique for the chat to which the welcome message belongs"""
+        self.content = content
+        r"""Content of the welcome message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["welcomeMessage"]:
+        return "welcomeMessage"
+
+    @classmethod
+    def getClass(self) -> Literal["WelcomeMessage"]:
+        return "WelcomeMessage"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "id": self.id, "content": self.content}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WelcomeMessage | None:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+            data_class.content = data.get("content", None)
 
         return data_class
 
@@ -72061,7 +73534,7 @@ class PrepaidGiveaway(TlObject):
             Unique identifier of the prepaid giveaway
 
         winner_count (:class:`int`):
-            Number of users which will receive giveaway prize
+            Number of users who will receive giveaway prize
 
         prize (:class:`~pytdbot.types.GiveawayPrize`):
             Prize of the giveaway
@@ -72086,7 +73559,7 @@ class PrepaidGiveaway(TlObject):
         self.id = id
         r"""Unique identifier of the prepaid giveaway"""
         self.winner_count = winner_count
-        r"""Number of users which will receive giveaway prize"""
+        r"""Number of users who will receive giveaway prize"""
         self.prize = prize
         r"""Prize of the giveaway"""
         self.boost_count = boost_count
@@ -86772,7 +88245,7 @@ class StorePaymentPurposePremiumGift(TlObject, StorePaymentPurpose):
             Paid amount, in the smallest units of the currency
 
         user_id (:class:`int`):
-            Identifiers of the user which will receive Telegram Premium
+            Identifier of the user who will receive Telegram Premium
 
         text (:class:`~pytdbot.types.FormattedText`):
             Text to show along with the gift codes; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed
@@ -86792,7 +88265,7 @@ class StorePaymentPurposePremiumGift(TlObject, StorePaymentPurpose):
         self.amount = amount
         r"""Paid amount, in the smallest units of the currency"""
         self.user_id = user_id
-        r"""Identifiers of the user which will receive Telegram Premium"""
+        r"""Identifier of the user who will receive Telegram Premium"""
         self.text = text
         r"""Text to show along with the gift codes; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed"""
 
@@ -86845,7 +88318,7 @@ class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
             Paid amount, in the smallest units of the currency
 
         user_ids (list[:class:`int`]):
-            Identifiers of the users which can activate the gift codes
+            Identifiers of the users who can activate the gift codes
 
         text (:class:`~pytdbot.types.FormattedText`):
             Text to show along with the gift codes; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed
@@ -86868,7 +88341,7 @@ class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
         self.amount = amount
         r"""Paid amount, in the smallest units of the currency"""
         self.user_ids = user_ids or []
-        r"""Identifiers of the users which can activate the gift codes"""
+        r"""Identifiers of the users who can activate the gift codes"""
         self.text = text
         r"""Text to show along with the gift codes; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed"""
 
@@ -87301,7 +88774,7 @@ class TelegramPaymentPurposePremiumGift(TlObject, TelegramPaymentPurpose):
             Paid amount, in the smallest units of the currency
 
         user_id (:class:`int`):
-            Identifier of the user which will receive Telegram Premium
+            Identifier of the user who will receive Telegram Premium
 
         month_count (:class:`int`):
             Number of months the Telegram Premium subscription will be active for the user
@@ -87325,7 +88798,7 @@ class TelegramPaymentPurposePremiumGift(TlObject, TelegramPaymentPurpose):
         self.amount = amount
         r"""Paid amount, in the smallest units of the currency"""
         self.user_id = user_id
-        r"""Identifier of the user which will receive Telegram Premium"""
+        r"""Identifier of the user who will receive Telegram Premium"""
         self.month_count = month_count
         r"""Number of months the Telegram Premium subscription will be active for the user"""
         self.text = text
@@ -87382,7 +88855,7 @@ class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
             Paid amount, in the smallest units of the currency
 
         user_ids (list[:class:`int`]):
-            Identifiers of the users which can activate the gift codes
+            Identifiers of the users who can activate the gift codes
 
         month_count (:class:`int`):
             Number of months the Telegram Premium subscription will be active for the users
@@ -87409,7 +88882,7 @@ class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
         self.amount = amount
         r"""Paid amount, in the smallest units of the currency"""
         self.user_ids = user_ids or []
-        r"""Identifiers of the users which can activate the gift codes"""
+        r"""Identifiers of the users who can activate the gift codes"""
         self.month_count = month_count
         r"""Number of months the Telegram Premium subscription will be active for the users"""
         self.text = text
@@ -87468,7 +88941,7 @@ class TelegramPaymentPurposePremiumGiveaway(TlObject, TelegramPaymentPurpose):
             Paid amount, in the smallest units of the currency
 
         winner_count (:class:`int`):
-            Number of users which will be able to activate the gift codes
+            Number of users who will be able to activate the gift codes
 
         month_count (:class:`int`):
             Number of months the Telegram Premium subscription will be active for the users
@@ -87491,7 +88964,7 @@ class TelegramPaymentPurposePremiumGiveaway(TlObject, TelegramPaymentPurpose):
         self.amount = amount
         r"""Paid amount, in the smallest units of the currency"""
         self.winner_count = winner_count
-        r"""Number of users which will be able to activate the gift codes"""
+        r"""Number of users who will be able to activate the gift codes"""
         self.month_count = month_count
         r"""Number of months the Telegram Premium subscription will be active for the users"""
 
@@ -91019,7 +92492,7 @@ class PushMessageContentGiveaway(TlObject, PushMessageContent):
 
     Parameters:
         winner_count (:class:`int`):
-            Number of users which will receive giveaway prizes; 0 for pinned message
+            Number of users who will receive giveaway prizes; 0 for pinned message
 
         prize (:class:`~pytdbot.types.GiveawayPrize`):
             Prize of the giveaway; may be null for pinned message
@@ -91037,7 +92510,7 @@ class PushMessageContentGiveaway(TlObject, PushMessageContent):
         is_pinned: bool | None = False,
     ) -> None:
         self.winner_count = winner_count
-        r"""Number of users which will receive giveaway prizes; 0 for pinned message"""
+        r"""Number of users who will receive giveaway prizes; 0 for pinned message"""
         self.prize = prize
         r"""Prize of the giveaway; may be null for pinned message"""
         self.is_pinned = is_pinned
@@ -108067,6 +109540,7 @@ class UpdateMessageContent(TlObject, Update):
         | MessageChatAddMembers
         | MessageChatJoinByLink
         | MessageChatJoinByRequest
+        | MessageChatJoinFromCommunity
         | MessageChatDeleteMember
         | MessageChatAddedToCommunity
         | MessageChatRemovedFromCommunity
@@ -108097,7 +109571,7 @@ class UpdateMessageContent(TlObject, Update):
         | MessageGiveawayCompleted
         | MessageGiveawayWinners
         | MessageGiftedStars
-        | MessageGiftedTon
+        | MessageGiftedGrams
         | MessageGiveawayPrizeStars
         | MessageGift
         | MessageUpgradedGift
@@ -108162,6 +109636,68 @@ class UpdateMessageContent(TlObject, Update):
             data_class.chat_id = int(data.get("chat_id", 0))
             data_class.message_id = int(data.get("message_id", 0))
             data_class.new_content = data.get("new_content", None)
+
+        return data_class
+
+
+class UpdateMessageEphemeralContent(TlObject, Update):
+    r"""The message ephemeral content has changed
+
+    Parameters:
+        chat_id (:class:`int`):
+            Chat identifier
+
+        message_id (:class:`int`):
+            Message identifier
+
+        ephemeral_content (:class:`~pytdbot.types.EphemeralMessageContent`):
+            New ephemeral content of the message; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        chat_id: int | None = 0,
+        message_id: int | None = 0,
+        ephemeral_content: EphemeralMessageContent | None = None,
+    ) -> None:
+        self.chat_id = chat_id
+        r"""Chat identifier"""
+        self.message_id = message_id
+        r"""Message identifier"""
+        self.ephemeral_content = ephemeral_content
+        r"""New ephemeral content of the message; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateMessageEphemeralContent"]:
+        return "updateMessageEphemeralContent"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "message_id": self.message_id,
+            "ephemeral_content": self.ephemeral_content,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateMessageEphemeralContent | None:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.ephemeral_content = data.get("ephemeral_content", None)
 
         return data_class
 
@@ -110678,6 +112214,57 @@ class UpdateChatHasScheduledMessages(TlObject, Update):
         return data_class
 
 
+class UpdateChatHasWelcomeMessages(TlObject, Update):
+    r"""A chat's has\_welcome\_messages field has changed
+
+    Parameters:
+        chat_id (:class:`int`):
+            Chat identifier
+
+        has_welcome_messages (:class:`bool`):
+            New value of has\_welcome\_messages
+
+    """
+
+    def __init__(
+        self, *, chat_id: int | None = 0, has_welcome_messages: bool | None = False
+    ) -> None:
+        self.chat_id = chat_id
+        r"""Chat identifier"""
+        self.has_welcome_messages = has_welcome_messages
+        r"""New value of has\_welcome\_messages"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateChatHasWelcomeMessages"]:
+        return "updateChatHasWelcomeMessages"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "has_welcome_messages": self.has_welcome_messages,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateChatHasWelcomeMessages | None:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.has_welcome_messages = data.get("has_welcome_messages", False)
+
+        return data_class
+
+
 class UpdateChatFolders(TlObject, Update):
     r"""The list of chat folders or a chat folder has changed
 
@@ -111142,6 +112729,57 @@ class UpdateQuickReplyShortcutMessages(TlObject, Update):
         if data:
             data_class = cls()
             data_class.shortcut_id = int(data.get("shortcut_id", 0))
+            data_class.messages = data.get("messages", None)
+
+        return data_class
+
+
+class UpdateChatWelcomeMessages(TlObject, Update):
+    r"""The list of welcome messages of a chat has changed
+
+    Parameters:
+        chat_id (:class:`int`):
+            The identifier of the chat
+
+        messages (list[:class:`~pytdbot.types.WelcomeMessage`]):
+            The new list of welcome messages of the chat in the order from the first to the last sent
+
+    """
+
+    def __init__(
+        self, *, chat_id: int | None = 0, messages: list[WelcomeMessage] | None = None
+    ) -> None:
+        self.chat_id = chat_id
+        r"""The identifier of the chat"""
+        self.messages = messages or []
+        r"""The new list of welcome messages of the chat in the order from the first to the last sent"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateChatWelcomeMessages"]:
+        return "updateChatWelcomeMessages"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "messages": self.messages,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateChatWelcomeMessages | None:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.messages = data.get("messages", None)
 
         return data_class
@@ -111832,7 +113470,7 @@ class UpdateChatAction(TlObject, Update):
 
 
 class UpdatePendingMessage(TlObject, Update):
-    r"""A new pending text or rich message was received in a chat with a bot\. The message must be shown in the chat for at most getOption\(\"pending\_text\_message\_period\"\) seconds, replace any other pending message with the same draft\_id, and be deleted whenever any incoming message from the bot in the message thread is received
+    r"""A new pending text or rich message was received in a chat with a bot\. The message must be shown in the chat for at most getOption\(\"pending\_text\_message\_period\"\) seconds, replace any other pending message with the same draft\_id with animation, and be deleted whenever any incoming message or a pending message with another draft\_id is received in the message thread
 
     Parameters:
         chat_id (:class:`int`):
@@ -111843,6 +113481,12 @@ class UpdatePendingMessage(TlObject, Update):
 
         draft_id (:class:`int`):
             Unique identifier of the message draft within the message thread
+
+        can_stop (:class:`bool`):
+            True, if a button that calls stopPendingMessage to stop further message generation must be shown
+
+        keep_on_stop (:class:`bool`):
+            True, if the pending message must not be automatically deleted when the user presses the Stop button
 
         content (:class:`~pytdbot.types.MessageContent`):
             Content of the message; always of the type messageText or messageRichMessage
@@ -111855,6 +113499,8 @@ class UpdatePendingMessage(TlObject, Update):
         chat_id: int | None = 0,
         forum_topic_id: int | None = 0,
         draft_id: int | None = 0,
+        can_stop: bool | None = False,
+        keep_on_stop: bool | None = False,
         content: MessageText
         | MessageRichMessage
         | MessageAnimation
@@ -111902,6 +113548,7 @@ class UpdatePendingMessage(TlObject, Update):
         | MessageChatAddMembers
         | MessageChatJoinByLink
         | MessageChatJoinByRequest
+        | MessageChatJoinFromCommunity
         | MessageChatDeleteMember
         | MessageChatAddedToCommunity
         | MessageChatRemovedFromCommunity
@@ -111932,7 +113579,7 @@ class UpdatePendingMessage(TlObject, Update):
         | MessageGiveawayCompleted
         | MessageGiveawayWinners
         | MessageGiftedStars
-        | MessageGiftedTon
+        | MessageGiftedGrams
         | MessageGiveawayPrizeStars
         | MessageGift
         | MessageUpgradedGift
@@ -111967,6 +113614,10 @@ class UpdatePendingMessage(TlObject, Update):
         r"""The forum topic identifier in which the message will be sent; 0 if none"""
         self.draft_id = draft_id
         r"""Unique identifier of the message draft within the message thread"""
+        self.can_stop = can_stop
+        r"""True, if a button that calls stopPendingMessage to stop further message generation must be shown"""
+        self.keep_on_stop = keep_on_stop
+        r"""True, if the pending message must not be automatically deleted when the user presses the Stop button"""
         self.content = content
         r"""Content of the message; always of the type messageText or messageRichMessage"""
 
@@ -111990,6 +113641,8 @@ class UpdatePendingMessage(TlObject, Update):
             "chat_id": self.chat_id,
             "forum_topic_id": self.forum_topic_id,
             "draft_id": self.draft_id,
+            "can_stop": self.can_stop,
+            "keep_on_stop": self.keep_on_stop,
             "content": self.content,
         }
 
@@ -112000,7 +113653,71 @@ class UpdatePendingMessage(TlObject, Update):
             data_class.chat_id = int(data.get("chat_id", 0))
             data_class.forum_topic_id = int(data.get("forum_topic_id", 0))
             data_class.draft_id = int(data.get("draft_id", 0))
+            data_class.can_stop = data.get("can_stop", False)
+            data_class.keep_on_stop = data.get("keep_on_stop", False)
             data_class.content = data.get("content", None)
+
+        return data_class
+
+
+class UpdateStopMessageDraft(TlObject, Update):
+    r"""A message draft generation was stopped by the user
+
+    Parameters:
+        chat_id (:class:`int`):
+            Chat identifier
+
+        forum_topic_id (:class:`int`):
+            The forum topic identifier of the message draft
+
+        draft_id (:class:`int`):
+            Identifier of the message draft within the message thread
+
+    """
+
+    def __init__(
+        self,
+        *,
+        chat_id: int | None = 0,
+        forum_topic_id: int | None = 0,
+        draft_id: int | None = 0,
+    ) -> None:
+        self.chat_id = chat_id
+        r"""Chat identifier"""
+        self.forum_topic_id = forum_topic_id
+        r"""The forum topic identifier of the message draft"""
+        self.draft_id = draft_id
+        r"""Identifier of the message draft within the message thread"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateStopMessageDraft"]:
+        return "updateStopMessageDraft"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "forum_topic_id": self.forum_topic_id,
+            "draft_id": self.draft_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateStopMessageDraft | None:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.forum_topic_id = int(data.get("forum_topic_id", 0))
+            data_class.draft_id = int(data.get("draft_id", 0))
 
         return data_class
 
@@ -112415,6 +114132,60 @@ class UpdateSupergroupFullInfo(TlObject, Update):
         return data_class
 
 
+class UpdateCommunityFullInfo(TlObject, Update):
+    r"""Some data in communityFullInfo has been changed
+
+    Parameters:
+        community_id (:class:`int`):
+            Identifier of the community
+
+        community_full_info (:class:`~pytdbot.types.CommunityFullInfo`):
+            New full information about the community
+
+    """
+
+    def __init__(
+        self,
+        *,
+        community_id: int | None = 0,
+        community_full_info: CommunityFullInfo | None = None,
+    ) -> None:
+        self.community_id = community_id
+        r"""Identifier of the community"""
+        self.community_full_info = community_full_info
+        r"""New full information about the community"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateCommunityFullInfo"]:
+        return "updateCommunityFullInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "community_id": self.community_id,
+            "community_full_info": self.community_full_info,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateCommunityFullInfo | None:
+        if data:
+            data_class = cls()
+            data_class.community_id = int(data.get("community_id", 0))
+            data_class.community_full_info = data.get("community_full_info", None)
+
+        return data_class
+
+
 class UpdateServiceNotification(TlObject, Update):
     r"""A service notification from the server was received\. Upon receiving this the application must show a popup with the content of the notification
 
@@ -112478,6 +114249,7 @@ class UpdateServiceNotification(TlObject, Update):
         | MessageChatAddMembers
         | MessageChatJoinByLink
         | MessageChatJoinByRequest
+        | MessageChatJoinFromCommunity
         | MessageChatDeleteMember
         | MessageChatAddedToCommunity
         | MessageChatRemovedFromCommunity
@@ -112508,7 +114280,7 @@ class UpdateServiceNotification(TlObject, Update):
         | MessageGiveawayCompleted
         | MessageGiveawayWinners
         | MessageGiftedStars
-        | MessageGiftedTon
+        | MessageGiftedGrams
         | MessageGiveawayPrizeStars
         | MessageGift
         | MessageUpgradedGift
@@ -112684,7 +114456,7 @@ class UpdateFileGenerationStart(TlObject, Update):
             The path to a file that must be created and where the new file must be generated by the application\. If the application has no access to the path, it can use writeGeneratedFilePart to generate the file
 
         conversion (:class:`str`):
-            If the conversion is \"\#url\#\" than original\_path contains an HTTP/HTTPS URL of a file that must be downloaded by the application\. Otherwise, this is the conversion specified by the application in inputFileGenerated
+            If the conversion is \"\#url\#\", then original\_path contains an HTTP/HTTPS URL of a file that must be downloaded by the application\. Otherwise, this is the conversion specified by the application in inputFileGenerated
 
     """
 
@@ -112703,7 +114475,7 @@ class UpdateFileGenerationStart(TlObject, Update):
         self.destination_path = destination_path
         r"""The path to a file that must be created and where the new file must be generated by the application\. If the application has no access to the path, it can use writeGeneratedFilePart to generate the file"""
         self.conversion = conversion
-        r"""If the conversion is \"\#url\#\" than original\_path contains an HTTP/HTTPS URL of a file that must be downloaded by the application\. Otherwise, this is the conversion specified by the application in inputFileGenerated"""
+        r"""If the conversion is \"\#url\#\", then original\_path contains an HTTP/HTTPS URL of a file that must be downloaded by the application\. Otherwise, this is the conversion specified by the application in inputFileGenerated"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
