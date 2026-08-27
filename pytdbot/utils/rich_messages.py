@@ -1,6 +1,20 @@
 _SELF_CLOSING = frozenset({"img", "hr", "input", "tg-map"})
 _TRUE_ONLY = frozenset(
-    {"checked", "reversed", "open", "tg-spoiler", "bordered", "striped"}
+    {
+        "checked",
+        "reversed",
+        "open",
+        "tg-spoiler",
+        "bordered",
+        "striped",
+        "compact",
+        "expandable",
+        "request-write-access",
+        "allow-user-chats",
+        "allow-bot-chats",
+        "allow-group-chats",
+        "allow-channel-chats",
+    }
 )
 _TRUE_ONLY_UNDER = {k.replace("-", "_"): k for k in _TRUE_ONLY}
 
@@ -389,7 +403,7 @@ def ordered_list(*items, start=None, type=None, reversed=False):
     return tag("ol", *(_wrap_li(i) for i in items), **attrs)
 
 
-def blockquote(*children, cite=None):
+def blockquote(*children, cite=None, expandable=False):
     r"""Create a block quotation
 
     Parameters:
@@ -399,6 +413,9 @@ def blockquote(*children, cite=None):
         cite (``str``, *optional*):
             Citation source. Default is ``None``
 
+        expandable (``bool``, *optional*):
+            Whether the quotation is collapsed by default. Default is ``False``
+
     Returns:
         :py:class:`str`: The formatted text
     """
@@ -407,7 +424,7 @@ def blockquote(*children, cite=None):
     if cite is not None:
         inner += tag("cite", cite)
 
-    return tag("blockquote", inner)
+    return tag("blockquote", inner, **({"expandable": True} if expandable else {}))
 
 
 def aside(*children, cite=None):
@@ -662,7 +679,7 @@ def table_header(*cells):
     )
 
 
-def table(*rows, bordered=False, striped=False, caption=None):
+def table(*rows, bordered=False, striped=False, compact=False, caption=None):
     r"""Create a table
 
     Parameters:
@@ -674,6 +691,9 @@ def table(*rows, bordered=False, striped=False, caption=None):
 
         striped (``bool``, *optional*):
             Whether the table has striped rows. Default is ``False``
+
+        compact (``bool``, *optional*):
+            Whether table cells have smaller indents. Default is ``False``
 
         caption (``str``, *optional*):
             Table caption. Default is ``None``
@@ -689,8 +709,142 @@ def table(*rows, bordered=False, striped=False, caption=None):
         attrs["bordered"] = ""
     if striped:
         attrs["striped"] = ""
+    if compact:
+        attrs["compact"] = ""
 
     return tag("table", inner, **attrs)
+
+
+def tg_document(src):
+    r"""Create a document block
+
+    Parameters:
+        src (``str``):
+            Document URL, or ``tg://document?id=...`` for media from
+            :class:`~pytdbot.types.InputRichMessageMedia`
+
+    Returns:
+        :py:class:`str`: The formatted text
+    """
+
+    return tag("tg-document", src=src)
+
+
+def tg_button(
+    *children,
+    type,
+    style=None,
+    url=None,
+    data=None,
+    query=None,
+    text=None,
+    forward_text=None,
+    request_write_access=False,
+    allow_user_chats=False,
+    allow_bot_chats=False,
+    allow_group_chats=False,
+    allow_channel_chats=False,
+):
+    r"""Create an inline or row button
+
+    Place the result inside a paragraph for an inline button, or pass it to
+    :py:func:`tg_button_row` for a full-width row.
+
+    Parameters:
+        \*children:
+            Button label. May include :py:func:`tg_time` and custom emoji
+
+        type (``str``):
+            Button type. One of ``"url"``, ``"callback_data"``, ``"web_app"``,
+            ``"login_url"``, ``"switch_inline_query"``,
+            ``"switch_inline_query_current_chat"``,
+            ``"switch_inline_query_chosen_chat"``, ``"copy_text"``,
+            ``"disabled"``. User buttons use ``type="url"`` with
+            ``url="tg://user?id=..."``
+
+        style (``str``, *optional*):
+            Button style: ``"primary"``, ``"danger"``, ``"success"``, or
+            ``"link"``. Default is ``None`` (Telegram default style).
+            ``"link"`` is only valid for callback buttons
+
+        url (``str``, *optional*):
+            URL for ``url``, ``web_app``, and ``login_url`` buttons.
+            Default is ``None``
+
+        data (``str`` | ``bytes``, *optional*):
+            Callback payload for ``callback_data`` buttons. ``bytes`` from
+            :py:func:`~pytdbot.utils.callback_data` are decoded as UTF-8.
+            Default is ``None``
+
+        query (``str``, *optional*):
+            Inline query for ``switch_inline_query*`` buttons. Default is ``None``
+
+        text (``str``, *optional*):
+            Clipboard payload for ``copy_text`` buttons. Default is ``None``
+
+        forward_text (``str``, *optional*):
+            Replacement label in forwarded messages for ``login_url`` buttons.
+            Default is ``None``
+
+        request_write_access (``bool``, *optional*):
+            Ask the user to allow the bot to send them messages (``login_url``).
+            Default is ``False``
+
+        allow_user_chats (``bool``, *optional*):
+            Allow private chats with users (``switch_inline_query_chosen_chat``).
+            Default is ``False``
+
+        allow_bot_chats (``bool``, *optional*):
+            Allow private chats with bots (``switch_inline_query_chosen_chat``).
+            Default is ``False``
+
+        allow_group_chats (``bool``, *optional*):
+            Allow groups (``switch_inline_query_chosen_chat``). Default is ``False``
+
+        allow_channel_chats (``bool``, *optional*):
+            Allow channels (``switch_inline_query_chosen_chat``). Default is ``False``
+
+    Returns:
+        :py:class:`str`: The formatted text
+    """
+
+    if isinstance(data, (bytes, bytearray)):
+        data = data.decode("utf-8")
+
+    return tag(
+        "tg-button",
+        *children,
+        type=type,
+        style=style,
+        url=url,
+        data=data,
+        query=query,
+        text=text,
+        **{"forward-text": forward_text},
+        request_write_access=True if request_write_access else None,
+        allow_user_chats=True if allow_user_chats else None,
+        allow_bot_chats=True if allow_bot_chats else None,
+        allow_group_chats=True if allow_group_chats else None,
+        allow_channel_chats=True if allow_channel_chats else None,
+    )
+
+
+def tg_button_row(*buttons, align=None):
+    r"""Create a row of buttons
+
+    Parameters:
+        \*buttons:
+            :py:func:`tg_button` elements
+
+        align (``str``, *optional*):
+            Horizontal alignment: ``"left"``, ``"center"``, or ``"right"``.
+            Default is ``None`` (full-width buttons)
+
+    Returns:
+        :py:class:`str`: The formatted text
+    """
+
+    return tag("tg-button-row", *buttons, align=align)
 
 
 def details(*children, summary, open=False):

@@ -4010,12 +4010,17 @@
         "default": "None"
       },
       {
+        "name": "expandable",
+        "optional": true,
+        "default": "False"
+      },
+      {
         "name": "*children",
         "optional": true
       }
     ],
     "description": "Create a block quotation",
-    "doc": "Create a block quotation\n\nParameters:\n    \\*children:\n        Child elements\n\n    cite (``str``, *optional*):\n        Citation source. Default is ``None``\n\nReturns:\n    :py:class:`str`: The formatted text",
+    "doc": "Create a block quotation\n\nParameters:\n    \\*children:\n        Child elements\n\n    cite (``str``, *optional*):\n        Citation source. Default is ``None``\n\n    expandable (``bool``, *optional*):\n        Whether the quotation is collapsed by default. Default is ``False``\n\nReturns:\n    :py:class:`str`: The formatted text",
     "source": "pytdbot/utils/rich_messages.py",
     "returns": null
   },
@@ -4811,7 +4816,7 @@
       }
     ],
     "description": "Convert a TDLib rich message object to HTML",
-    "doc": "Convert a TDLib rich message object to HTML\n\nMedia uses ``tg://photo|video|audio|animation?id=<id>`` sources. Matching\n:class:`~pytdbot.types.InputRichMessageMedia` entries are returned for\n:meth:`~pytdbot.Client.sendRichMessage`\n\nParameters:\n    message (:class:`pytdbot.types.RichMessage`):\n        The rich message object containing rich blocks\n\nReturns:\n    (:py:class:`str`, list[:class:`~pytdbot.types.InputRichMessageMedia`]):\n        HTML string and media list\n\n        .. code-block:: python\n\n            html, media = rich_message_to_html(message)\n            await client.sendRichMessage(chat_id, html=html, media=media)",
+    "doc": "Convert a TDLib rich message object to HTML\n\nMedia uses ``tg://photo|video|audio|animation|document?id=<id>`` sources. Matching\n:class:`~pytdbot.types.InputRichMessageMedia` entries are returned for\n:meth:`~pytdbot.Client.sendRichMessage`\n\nParameters:\n    message (:class:`pytdbot.types.RichMessage`):\n        The rich message object containing rich blocks\n\nReturns:\n    (:py:class:`str`, list[:class:`~pytdbot.types.InputRichMessageMedia`]):\n        HTML string and media list\n\n        .. code-block:: python\n\n            html, media = rich_message_to_html(message)\n            await client.sendRichMessage(chat_id, html=html, media=media)",
     "source": "pytdbot/utils/rich_converter.py",
     "returns": null
   },
@@ -4934,6 +4939,11 @@
         "default": "False"
       },
       {
+        "name": "compact",
+        "optional": true,
+        "default": "False"
+      },
+      {
         "name": "caption",
         "optional": true,
         "default": "None"
@@ -4944,7 +4954,7 @@
       }
     ],
     "description": "Create a table",
-    "doc": "Create a table\n\nParameters:\n    \\*rows:\n        Table rows\n\n    bordered (``bool``, *optional*):\n        Whether the table has borders. Default is ``False``\n\n    striped (``bool``, *optional*):\n        Whether the table has striped rows. Default is ``False``\n\n    caption (``str``, *optional*):\n        Table caption. Default is ``None``\n\nReturns:\n    :py:class:`str`: The formatted text",
+    "doc": "Create a table\n\nParameters:\n    \\*rows:\n        Table rows\n\n    bordered (``bool``, *optional*):\n        Whether the table has borders. Default is ``False``\n\n    striped (``bool``, *optional*):\n        Whether the table has striped rows. Default is ``False``\n\n    compact (``bool``, *optional*):\n        Whether table cells have smaller indents. Default is ``False``\n\n    caption (``str``, *optional*):\n        Table caption. Default is ``None``\n\nReturns:\n    :py:class:`str`: The formatted text",
     "source": "pytdbot/utils/rich_messages.py",
     "returns": null
   },
@@ -5076,6 +5086,101 @@
     "returns": null
   },
   {
+    "name": "tg_button",
+    "kind": "util",
+    "on": "utils",
+    "async": false,
+    "args": [
+      {
+        "name": "type"
+      },
+      {
+        "name": "style",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "url",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "data",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "query",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "text",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "forward_text",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "request_write_access",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "allow_user_chats",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "allow_bot_chats",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "allow_group_chats",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "allow_channel_chats",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "*children",
+        "optional": true
+      }
+    ],
+    "description": "Create an inline or row button",
+    "doc": "Create an inline or row button\n\nPlace the result inside a paragraph for an inline button, or pass it to\n:py:func:`tg_button_row` for a full-width row.\n\nParameters:\n    \\*children:\n        Button label. May include :py:func:`tg_time` and custom emoji\n\n    type (``str``):\n        Button type. One of ``\"url\"``, ``\"callback_data\"``, ``\"web_app\"``,\n        ``\"login_url\"``, ``\"switch_inline_query\"``,\n        ``\"switch_inline_query_current_chat\"``,\n        ``\"switch_inline_query_chosen_chat\"``, ``\"copy_text\"``,\n        ``\"disabled\"``. User buttons use ``type=\"url\"`` with\n        ``url=\"tg://user?id=...\"``\n\n    style (``str``, *optional*):\n        Button style: ``\"primary\"``, ``\"danger\"``, ``\"success\"``, or\n        ``\"link\"``. Default is ``None`` (Telegram default style).\n        ``\"link\"`` is only valid for callback buttons\n\n    url (``str``, *optional*):\n        URL for ``url``, ``web_app``, and ``login_url`` buttons.\n        Default is ``None``\n\n    data (``str`` | ``bytes``, *optional*):\n        Callback payload for ``callback_data`` buttons. ``bytes`` from\n        :py:func:`~pytdbot.utils.callback_data` are decoded as UTF-8.\n        Default is ``None``\n\n    query (``str``, *optional*):\n        Inline query for ``switch_inline_query*`` buttons. Default is ``None``\n\n    text (``str``, *optional*):\n        Clipboard payload for ``copy_text`` buttons. Default is ``None``\n\n    forward_text (``str``, *optional*):\n        Replacement label in forwarded messages for ``login_url`` buttons.\n        Default is ``None``\n\n    request_write_access (``bool``, *optional*):\n        Ask the user to allow the bot to send them messages (``login_url``).\n        Default is ``False``\n\n    allow_user_chats (``bool``, *optional*):\n        Allow private chats with users (``switch_inline_query_chosen_chat``).\n        Default is ``False``\n\n    allow_bot_chats (``bool``, *optional*):\n        Allow private chats with bots (``switch_inline_query_chosen_chat``).\n        Default is ``False``\n\n    allow_group_chats (``bool``, *optional*):\n        Allow groups (``switch_inline_query_chosen_chat``). Default is ``False``\n\n    allow_channel_chats (``bool``, *optional*):\n        Allow channels (``switch_inline_query_chosen_chat``). Default is ``False``\n\nReturns:\n    :py:class:`str`: The formatted text",
+    "source": "pytdbot/utils/rich_messages.py",
+    "returns": null
+  },
+  {
+    "name": "tg_button_row",
+    "kind": "util",
+    "on": "utils",
+    "async": false,
+    "args": [
+      {
+        "name": "align",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "*buttons",
+        "optional": true
+      }
+    ],
+    "description": "Create a row of buttons",
+    "doc": "Create a row of buttons\n\nParameters:\n    \\*buttons:\n        :py:func:`tg_button` elements\n\n    align (``str``, *optional*):\n        Horizontal alignment: ``\"left\"``, ``\"center\"``, or ``\"right\"``.\n        Default is ``None`` (full-width buttons)\n\nReturns:\n    :py:class:`str`: The formatted text",
+    "source": "pytdbot/utils/rich_messages.py",
+    "returns": null
+  },
+  {
     "name": "tg_collage",
     "kind": "util",
     "on": "utils",
@@ -5093,6 +5198,21 @@
     ],
     "description": "Create a media collage",
     "doc": "Create a media collage\n\nParameters:\n    \\*children:\n        Media elements (e.g. :py:func:`image`, :py:func:`video`)\n\n    caption (``str``, *optional*):\n        Collage caption. Default is ``None``\n\nReturns:\n    :py:class:`str`: The formatted text",
+    "source": "pytdbot/utils/rich_messages.py",
+    "returns": null
+  },
+  {
+    "name": "tg_document",
+    "kind": "util",
+    "on": "utils",
+    "async": false,
+    "args": [
+      {
+        "name": "src"
+      }
+    ],
+    "description": "Create a document block",
+    "doc": "Create a document block\n\nParameters:\n    src (``str``):\n        Document URL, or ``tg://document?id=...`` for media from\n        :class:`~pytdbot.types.InputRichMessageMedia`\n\nReturns:\n    :py:class:`str`: The formatted text",
     "source": "pytdbot/utils/rich_messages.py",
     "returns": null
   },

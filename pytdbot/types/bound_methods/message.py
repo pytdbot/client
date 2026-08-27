@@ -100,6 +100,9 @@ class MessageBoundMethods:
         if isinstance(block, pytdbot.types.PageBlockAnimation):
             return block.animation
 
+        if isinstance(block, pytdbot.types.PageBlockDocument):
+            return block.document
+
         if isinstance(
             block,
             (pytdbot.types.PageBlockCollage, pytdbot.types.PageBlockSlideshow),

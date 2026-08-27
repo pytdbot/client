@@ -1,10 +1,25 @@
 from ..types import (
+    ButtonStyleDanger,
+    ButtonStyleLink,
+    ButtonStylePrimary,
+    ButtonStyleSuccess,
+    InlineKeyboardButtonTypeCallback,
+    InlineKeyboardButtonTypeCallbackWithPassword,
+    InlineKeyboardButtonTypeCopyText,
+    InlineKeyboardButtonTypeDisabled,
+    InlineKeyboardButtonTypeLoginUrl,
+    InlineKeyboardButtonTypeSwitchInline,
+    InlineKeyboardButtonTypeUrl,
+    InlineKeyboardButtonTypeUser,
+    InlineKeyboardButtonTypeWebApp,
     InputAnimation,
     InputAudio,
+    InputDocument,
     InputFileId,
     InputFileRemote,
     InputMessageAnimation,
     InputMessageAudio,
+    InputMessageDocument,
     InputMessagePhoto,
     InputMessageVideo,
     InputMessageVoiceNote,
@@ -16,10 +31,13 @@ from ..types import (
     PageBlockAnimation,
     PageBlockAudio,
     PageBlockBlockQuote,
+    PageBlockButtonRow,
     PageBlockCaption,
     PageBlockCollage,
     PageBlockDetails,
     PageBlockDivider,
+    PageBlockDocument,
+    PageBlockExpandableBlockQuote,
     PageBlockFooter,
     PageBlockHorizontalAlignmentCenter,
     PageBlockHorizontalAlignmentLeft,
@@ -45,6 +63,7 @@ from ..types import (
     RichTextBankCardNumber,
     RichTextBold,
     RichTextBotCommand,
+    RichTextButton,
     RichTextCashtag,
     RichTextCustomEmoji,
     RichTextDateTime,
@@ -67,6 +86,8 @@ from ..types import (
     RichTextSuperscript,
     RichTextUnderline,
     RichTextUrl,
+    TargetChatChosen,
+    TargetChatCurrent,
 )
 from .rich_messages import (
     anchor,
@@ -94,7 +115,10 @@ from .rich_messages import (
     table_header_cell,
     table_row,
     tag,
+    tg_button,
+    tg_button_row,
     tg_collage,
+    tg_document,
     tg_map,
     tg_math,
     tg_math_block,
@@ -220,6 +244,12 @@ def _input_message(media_obj, has_spoiler=False):
             has_spoiler=has_spoiler,
         )
 
+    if t == "document":
+        inp = _input_file(media_obj.document)
+        if not inp:
+            return None
+        return InputMessageDocument(document=InputDocument(document=inp))
+
     return None
 
 
@@ -321,6 +351,10 @@ def _rt_texts(rt, ctx):
     return "".join(_rt(x, ctx) for x in (rt.texts or []))
 
 
+def _rt_button(rt, ctx):
+    return _inline_button_html(rt.button, ctx)
+
+
 _RT_HANDLERS = {
     RichTextPlain.getType(): _rt_plain,
     RichTextBold.getType(): _rt_child_escaped(bold),
@@ -349,6 +383,7 @@ _RT_HANDLERS = {
     RichTextBotCommand.getType(): _rt_passthrough,
     RichTextBankCardNumber.getType(): _rt_passthrough,
     RichTexts.getType(): _rt_texts,
+    RichTextButton.getType(): _rt_button,
 }
 
 
@@ -467,10 +502,25 @@ def _bk_blockquote(b, ctx):
     return blockquote(inner, cite=_rt(credit, ctx) if credit else None)
 
 
+def _bk_expandable_blockquote(b, ctx):
+    credit = b.credit
+
+    return blockquote(
+        _rt(b.text, ctx),
+        cite=_rt(credit, ctx) if credit else None,
+        expandable=True,
+    )
+
+
 def _bk_pullquote(b, ctx):
     credit = b.credit
 
     return aside(_rt(b.text, ctx), cite=_rt(credit, ctx) if credit else None)
+
+
+def _bk_document(b, ctx):
+    src = ctx.add("document", b.document)
+    return _media_fig(tg_document(src), b.caption, ctx)
 
 
 def _bk_photo(b, ctx):
@@ -526,6 +576,7 @@ def _bk_table(b, ctx):
         *rows,
         bordered=b.is_bordered,
         striped=b.is_striped,
+        compact=b.is_compact,
         caption=_caption_html(b.caption, ctx) or None,
     )
 
@@ -538,6 +589,123 @@ def _bk_math(b, _):
     return tg_math_block(b.expression or "")
 
 
+_BUTTON_STYLE = {
+    ButtonStylePrimary.getType(): "primary",
+    ButtonStyleDanger.getType(): "danger",
+    ButtonStyleSuccess.getType(): "success",
+    ButtonStyleLink.getType(): "link",
+}
+
+
+def _callback_data_str(data):
+    if data is None:
+        return None
+    if isinstance(data, str):
+        return data
+    if isinstance(data, (bytes, bytearray)):
+        try:
+            return data.decode("utf-8")
+        except UnicodeDecodeError:
+            return data.decode("latin-1")
+    return str(data)
+
+
+def _bt_url(t):
+    return "url", {"url": t.url or ""}
+
+
+def _bt_user(t):
+    return "url", {"url": f"tg://user?id={t.user_id or 0}"}
+
+
+def _bt_callback(t):
+    return "callback_data", {"data": _callback_data_str(t.data)}
+
+
+def _bt_web_app(t):
+    return "web_app", {"url": t.url or ""}
+
+
+def _bt_login(t):
+    extra = {"url": t.url or ""}
+    if t.forward_text:
+        extra["forward_text"] = t.forward_text
+    return "login_url", extra
+
+
+def _bt_switch(t):
+    extra = {"query": t.query or ""}
+    target = t.target_chat
+    if target is None:
+        return "switch_inline_query", extra
+
+    tt = target.getType()
+    if tt == TargetChatCurrent.getType():
+        return "switch_inline_query_current_chat", extra
+    if tt == TargetChatChosen.getType():
+        types = target.types
+        if types:
+            extra["allow_user_chats"] = types.allow_user_chats
+            extra["allow_bot_chats"] = types.allow_bot_chats
+            extra["allow_group_chats"] = types.allow_group_chats
+            extra["allow_channel_chats"] = types.allow_channel_chats
+        return "switch_inline_query_chosen_chat", extra
+
+    return "switch_inline_query", extra
+
+
+def _bt_copy(t):
+    return "copy_text", {"text": t.text or ""}
+
+
+def _bt_disabled(_):
+    return "disabled", {}
+
+
+_BUTTON_TYPE_HANDLERS = {
+    InlineKeyboardButtonTypeUrl.getType(): _bt_url,
+    InlineKeyboardButtonTypeUser.getType(): _bt_user,
+    InlineKeyboardButtonTypeCallback.getType(): _bt_callback,
+    InlineKeyboardButtonTypeCallbackWithPassword.getType(): _bt_callback,
+    InlineKeyboardButtonTypeWebApp.getType(): _bt_web_app,
+    InlineKeyboardButtonTypeLoginUrl.getType(): _bt_login,
+    InlineKeyboardButtonTypeSwitchInline.getType(): _bt_switch,
+    InlineKeyboardButtonTypeCopyText.getType(): _bt_copy,
+    InlineKeyboardButtonTypeDisabled.getType(): _bt_disabled,
+}
+
+
+def _inline_button_html(btn, ctx):
+    if not btn:
+        return ""
+
+    kwargs = {}
+    if btn.style:
+        style = _BUTTON_STYLE.get(btn.style.getType())
+        if style:
+            kwargs["style"] = style
+
+    if not btn.type:
+        return ""
+
+    h = _BUTTON_TYPE_HANDLERS.get(btn.type.getType())
+    if not h:
+        return ""
+
+    html_type, extra = h(btn.type)
+    kwargs.update(extra)
+
+    return tg_button(_rt(btn.text, ctx), type=html_type, **kwargs)
+
+
+def _bk_button_row(b, ctx):
+    align = H_ALIGN.get(b.align.getType()) if b.align else None
+    return tg_button_row(
+        *(_inline_button_html(btn, ctx) for btn in (b.buttons or [])),
+        align=align,
+    )
+
+
 _BLOCK_HANDLERS = {
     PageBlockParagraph.getType(): _bk_paragraph,
     PageBlockSectionHeading.getType(): _bk_heading,
@@ -547,7 +715,9 @@ _BLOCK_HANDLERS = {
     PageBlockDivider.getType(): _bk_divider,
     PageBlockList.getType(): _bk_list,
     PageBlockBlockQuote.getType(): _bk_blockquote,
+    PageBlockExpandableBlockQuote.getType(): _bk_expandable_blockquote,
     PageBlockPullQuote.getType(): _bk_pullquote,
+    PageBlockDocument.getType(): _bk_document,
     PageBlockPhoto.getType(): _bk_photo,
     PageBlockVideo.getType(): _bk_video,
     PageBlockAudio.getType(): _bk_audio,
@@ -559,13 +729,14 @@ _BLOCK_HANDLERS = {
     PageBlockTable.getType(): _bk_table,
     PageBlockDetails.getType(): _bk_details,
     PageBlockMathematicalExpression.getType(): _bk_math,
+    PageBlockButtonRow.getType(): _bk_button_row,
 }
 
 
 def rich_message_to_html(message: RichMessage):
     r"""Convert a TDLib rich message object to HTML
 
-    Media uses ``tg://photo|video|audio|animation?id=<id>`` sources. Matching
+    Media uses ``tg://photo|video|audio|animation|document?id=<id>`` sources. Matching
     :class:`~pytdbot.types.InputRichMessageMedia` entries are returned for
     :meth:`~pytdbot.Client.sendRichMessage`
 
