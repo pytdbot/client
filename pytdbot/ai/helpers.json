@@ -229,6 +229,60 @@
     "returns": "pytdbot.types.Error | pytdbot.types.LocalFile"
   },
   {
+    "name": "edit_rich_message",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": true,
+    "args": [
+      {
+        "name": "html",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "markdown",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "media",
+        "type": "list[pytdbot.types.InputRichMessageMedia]",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "is_rtl",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "detect_automatic_blocks",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkup | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit rich message. Shortcut for :meth:`~pytdbot.Client.editRichMessage`.",
+    "doc": "Edit rich message. Shortcut for :meth:`~pytdbot.Client.editRichMessage`.",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message"
+  },
+  {
     "name": "edit_text",
     "kind": "bound_method",
     "on": "Message",
@@ -2056,6 +2110,76 @@
     "doc": "Create an invoice link for Telegram Stars\n\nParameters:\n    title (``str``):\n        Product title; 1-32 characters\n\n    amount (``int``):\n        Amount of Telegram Stars to be paid\n\n    payload (``bytes``):\n        The invoice payload\n\n    description (``str``, *optional*):\n        Product description; 0-255 characters\n\n    subscription_period (``int``, *optional*):\n        The number of seconds between consecutive Telegram Star debiting for subscription invoices; 0 if the invoice doesn't create subscription\n\n    start_parameter (``str``, *optional*):\n        Unique invoice bot deep link parameter for the generation of this invoice. If empty, it would be possible to pay directly from forwards of the invoice message\n\n    photo_url (``str``, *optional*):\n        Product photo URL; optional\n\n    photo_size (``int``, *optional*):\n        Product photo size\n\n    photo_width (``int``, *optional*):\n        Product photo width\n\n    photo_height (``int``, *optional*):\n        Product photo height\n\n    recurring_payment_terms_of_service_url (``str``, *optional*):\n        An HTTP URL with terms of service for recurring payments. If non-empty, the invoice payment will result in recurring payments and the user must accept the terms of service before allowed to pay\n\n    terms_of_service_url (``str``, *optional*):\n        An HTTP URL with terms of service for non-recurring payments. If non-empty, then the user must accept the terms of service before allowed to pay\n\nReturns:\n    :class:`~pytdbot.types.HttpUrl`",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | HttpUrl"
+  },
+  {
+    "name": "editRichMessage",
+    "kind": "client_method",
+    "on": "Client",
+    "async": true,
+    "args": [
+      {
+        "name": "chat_id",
+        "type": "int"
+      },
+      {
+        "name": "message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "ephemeral_message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "html",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "markdown",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "media",
+        "type": "list[InputRichMessageMedia]",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "is_rtl",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "detect_automatic_blocks",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "reply_markup",
+        "type": "ReplyMarkup",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit rich message",
+    "doc": "Edit rich message\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the message to be deleted; for Ephemeral messages only\n\n    html (``str``, *optional*):\n        New HTML content of the message\n\n    markdown (``str``, *optional*):\n        New Markdown content of the message\n\n    media (list[:class:`~pytdbot.types.InputRichMessageMedia`], *optional*):\n        Media used in the message\n\n    is_rtl (``bool``, *optional*):\n        Pass true if the message must be shown from right to left. Default is ``False``\n\n    detect_automatic_blocks (``bool``, *optional*):\n        Pass true to enable detection of URLs, email addresses and other automatic blocks. Default is ``False``\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message`",
+    "source": "pytdbot/methods/methods.py",
+    "returns": "Error | Message"
   },
   {
     "name": "editTextMessage",
