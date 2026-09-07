@@ -1299,3 +1299,29 @@ class MessageBoundMethods:
             show_above_text=show_above_text,
             reply_markup=reply_markup,
         )
+
+    async def edit_rich_message(
+        self,
+        *,
+        html: str = None,
+        markdown: str = None,
+        media: list[pytdbot.types.InputRichMessageMedia] = None,
+        is_rtl: bool = False,
+        detect_automatic_blocks: bool = False,
+        receiver_user_id: int = 0,
+        reply_markup: pytdbot.types.ReplyMarkup | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Edit rich message. Shortcut for :meth:`~pytdbot.Client.editRichMessage`."""
+
+        return await self._client.editRichMessage(
+            chat_id=self.chat_id,
+            message_id=self.id,
+            ephemeral_message_id=self.ephemeral_message_id,
+            html=html,
+            markdown=markdown,
+            media=media,
+            is_rtl=is_rtl,
+            detect_automatic_blocks=detect_automatic_blocks,
+            receiver_user_id=receiver_user_id,
+            reply_markup=reply_markup,
+        )
