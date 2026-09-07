@@ -1836,6 +1836,108 @@ class Methods(TDLibFunctions):
             ),
         )
 
+    async def editRichMessage(
+        self,
+        *,
+        chat_id: int,
+        message_id: int = 0,
+        ephemeral_message_id: int = 0,
+        html: str = None,
+        markdown: str = None,
+        media: list[InputRichMessageMedia] = None,
+        is_rtl: bool = False,
+        detect_automatic_blocks: bool = False,
+        receiver_user_id: int = 0,
+        reply_markup: ReplyMarkup = None,
+    ) -> Error | Message:
+        r"""Edit rich message
+
+        Parameters:
+            chat_id (``int``):
+                Chat identifier
+
+            message_id (``int``):
+                Message identifier in the chat
+
+            ephemeral_message_id (``int``, *optional*):
+                Identifier of the message to be deleted; for Ephemeral messages only
+
+            html (``str``, *optional*):
+                New HTML content of the message
+
+            markdown (``str``, *optional*):
+                New Markdown content of the message
+
+            media (list[:class:`~pytdbot.types.InputRichMessageMedia`], *optional*):
+                Media used in the message
+
+            is_rtl (``bool``, *optional*):
+                Pass true if the message must be shown from right to left. Default is ``False``
+
+            detect_automatic_blocks (``bool``, *optional*):
+                Pass true to enable detection of URLs, email addresses and other automatic blocks. Default is ``False``
+
+            receiver_user_id (``int``, *optional*):
+                Identifier of the user who will receive the message; for Ephemeral messages only
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
+                The message reply markup
+
+        Returns:
+            :class:`~pytdbot.types.Message`
+        """
+
+        if not message_id and not ephemeral_message_id:
+            raise ValueError(
+                "Either message_id or ephemeral_message_id must be provided"
+            )
+
+        if not markdown and not html:
+            raise ValueError("Either markdown or html must be provided")
+
+        if markdown and html:
+            raise ValueError("Only one of markdown or html can be provided")
+
+        if not self.use_message_database:
+            load_message = await self.getMessage(chat_id=chat_id, message_id=message_id)
+            if isinstance(load_message, Error):
+                return load_message
+
+        if markdown:
+            source = RichMessageSourceMarkdown(text=markdown, media=media)
+        else:
+            source = RichMessageSourceHtml(text=html, media=media)
+
+        if ephemeral_message_id:
+            return await self.editEphemeralMessage(
+                chat_id=chat_id,
+                receiver_user_id=receiver_user_id,
+                ephemeral_message_id=ephemeral_message_id,
+                reply_markup=reply_markup,
+                input_message_content=InputMessageRichMessage(
+                    message=InputRichMessage(
+                        source=source,
+                        is_rtl=is_rtl,
+                        detect_automatic_blocks=detect_automatic_blocks,
+                    ),
+                ),
+            )
+
+        return await self.editMessageText(
+            chat_id=chat_id,
+            message_id=message_id,
+            reply_markup=reply_markup
+            if isinstance(reply_markup, ReplyMarkup)
+            else None,
+            input_message_content=InputMessageRichMessage(
+                message=InputRichMessage(
+                    source=source,
+                    is_rtl=is_rtl,
+                    detect_automatic_blocks=detect_automatic_blocks,
+                ),
+            ),
+        )
+
     async def sendMessageWithContent(
         self,
         chat_id: int,
