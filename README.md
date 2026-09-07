@@ -110,7 +110,10 @@ Pytdbot includes a skill and a local docs CLI so coding agents can use the libra
 1. Install [Pytdbot](#installation)
 2. Point your agent at the skill file:
     - In this repo: [`pytdbot/ai/SKILL.md`](pytdbot/ai/SKILL.md)
-    - or using `curl -O "https://raw.githubusercontent.com/pytdbot/client/refs/heads/main/pytdbot/ai/SKILL.md"`
+    - or using:
+    ```bash
+    curl -O "https://raw.githubusercontent.com/pytdbot/client/refs/heads/main/pytdbot/ai/SKILL.md"
+    ```
 3. Register it the way your tool expects (project skill, agent rule, or “read this file first”)
 
 The skill explains how Pytdbot is meant to be used; the CLI returns live signatures from your installed version.
