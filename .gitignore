@@ -16,4 +16,5 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 *.log
-docs/
+site/
+docs/reference/

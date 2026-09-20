@@ -1,0 +1,111 @@
+site_name: Pytdbot
+site_url: https://pytdbot.pages.dev
+site_description: Async TDLib wrapper for Telegram bots and userbots
+site_author: AYMEN
+repo_url: https://github.com/pytdbot/client
+repo_name: pytdbot/client
+edit_uri: ""
+copyright: Copyright &copy; 2022–2026 Pytdbot
+
+theme:
+  name: material
+  font: false
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.instant
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Light mode
+
+extra_css:
+  - stylesheets/extra.css
+
+watch:
+  - generate_docs.py
+  - pytdbot/ai/helpers.json
+
+plugins:
+  - search
+  - autorefs
+  - gen-files:
+      scripts:
+        - generate_docs.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+
+validation:
+  nav:
+    omitted_files: info
+    not_found: warn
+  links:
+    not_found: warn
+    anchors: warn
+    absolute_links: relative_to_docs
+    unrecognized_links: warn
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - Installation: getting-started/installation.md
+      - Quick start: getting-started/quickstart.md
+      - Userbot: getting-started/userbot.md
+  - Guides:
+      - Client: guides/client.md
+      - Handlers: guides/handlers.md
+      - Filters: guides/filters.md
+      - Sending messages: guides/sending.md
+      - Keyboards: guides/keyboards.md
+      - Bound methods: guides/bound-methods.md
+      - Rich messages: guides/rich-messages.md
+      - Plugins: guides/plugins.md
+      - Utilities: guides/utils.md
+      - Errors: guides/errors.md
+      - TDLib Server: guides/tdlib-server.md
+      - AI agents: guides/ai-agents.md
+  - API reference: reference/
+  - Examples: examples.md
+
+not_in_nav: |
+  /reference/helpers/*
+  !/reference/helpers/index.md
+  /reference/functions/*
+  !/reference/functions/index.md
+  /reference/types/*
+  !/reference/types/index.md
+  /reference/updates/*
+  !/reference/updates/index.md
+  /reference/classes/*
+  !/reference/classes/index.md

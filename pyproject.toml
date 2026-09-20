@@ -40,16 +40,24 @@ classifiers = [
 [project.urls]
 Source = "https://github.com/pytdbot/client"
 Tracker = "https://github.com/pytdbot/client/issues"
+Documentation = "https://pytdbot.pages.dev"
 
 [project.optional-dependencies]
 tdjson = ["tdjson"]
 nats = ["nats-py"]
+docs = [
+    "properdocs>=1.6.7",
+    "mkdocs-material",
+    "mkdocs-autorefs",
+    "mkdocs-gen-files",
+    "mkdocs-literate-nav",
+]
 
 [project.scripts]
 pytdbot-docs = "pytdbot.docs:main"
 
 [tool.setuptools.packages.find]
-exclude = ["examples"]
+exclude = ["examples", "docs"]
 
 [tool.setuptools.package-data]
 pytdbot = [

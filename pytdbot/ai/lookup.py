@@ -254,12 +254,12 @@ class ApiLookup:
             funcs = entity.get("functions") or []
             if types_list:
                 lines.append("")
-                lines.append("## Concrete types")
+                lines.append("## Subclasses")
                 for t in types_list:
                     lines.append(f"- `{t}`")
             if funcs:
                 lines.append("")
-                lines.append("## Related functions")
+                lines.append("## Functions")
                 for f in funcs:
                     lines.append(f"- `{f}`")
 
