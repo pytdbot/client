@@ -1,0 +1,35 @@
+name: Tests
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[tdjson,test]"
+
+      - name: Test
+        env:
+          PYTDBOT_TEST_BOT_TOKEN: ${{ secrets.PYTDBOT_TEST_BOT_TOKEN }}
+          PYTDBOT_API_ID: ${{ secrets.PYTDBOT_API_ID }}
+          PYTDBOT_API_HASH: ${{ secrets.PYTDBOT_API_HASH }}
+          PYTDBOT_TEST_CHAT_ID: ${{ secrets.PYTDBOT_TEST_CHAT_ID }}
+        run: python -m pytest

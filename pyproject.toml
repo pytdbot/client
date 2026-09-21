@@ -52,19 +52,21 @@ docs = [
     "mkdocs-gen-files",
     "mkdocs-literate-nav",
 ]
+test = ["pytest", "pytest-asyncio>=0.24"]
 
 [project.scripts]
 pytdbot-docs = "pytdbot.docs:main"
 
 [tool.setuptools.packages.find]
-exclude = ["examples", "docs"]
+exclude = ["examples", "docs", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 
 [tool.setuptools.package-data]
-pytdbot = [
-    "td_api.*",
-    "ai/SKILL.md",
-    "ai/helpers.json",
-]
+pytdbot = ["td_api.*", "ai/SKILL.md", "ai/helpers.json"]
 
 [tool.setuptools.dynamic]
 version = { attr = "pytdbot.__version__" }
