@@ -35,6 +35,9 @@ theme:
         icon: material/brightness-4
         name: Light mode
 
+extra:
+  generator: false
+
 extra_css:
   - stylesheets/extra.css
 

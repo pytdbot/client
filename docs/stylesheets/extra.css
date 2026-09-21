@@ -22,6 +22,11 @@
   --md-code-bg-color: rgba(0, 0, 0, 0.04);
   --pt-header-bg: rgba(245, 245, 247, 0.72);
   --pt-sidebar-bg: rgba(245, 245, 247, 0.92);
+  --md-footer-bg-color: var(--md-default-bg-color);
+  --md-footer-bg-color--dark: var(--md-default-bg-color);
+  --md-footer-fg-color: var(--md-default-fg-color);
+  --md-footer-fg-color--light: var(--md-default-fg-color--light);
+  --md-footer-fg-color--lighter: var(--md-default-fg-color--light);
 }
 
 [data-md-color-scheme="slate"] {
@@ -36,6 +41,11 @@
   --md-code-bg-color: rgba(255, 255, 255, 0.06);
   --pt-header-bg: rgba(11, 11, 13, 0.72);
   --pt-sidebar-bg: rgba(17, 17, 19, 0.92);
+  --md-footer-bg-color: var(--md-default-bg-color);
+  --md-footer-bg-color--dark: var(--md-default-bg-color);
+  --md-footer-fg-color: var(--md-default-fg-color);
+  --md-footer-fg-color--light: var(--md-default-fg-color--light);
+  --md-footer-fg-color--lighter: var(--md-default-fg-color--light);
 }
 
 .md-header {
@@ -126,6 +136,14 @@
 .md-content__inner {
   padding-top: 1.75rem;
   padding-bottom: 4rem;
+}
+
+.md-footer {
+  border-top: 1px solid rgba(128, 128, 128, 0.14);
+}
+
+.md-footer-meta {
+  background: transparent;
 }
 
 .md-typeset {
