@@ -5,19 +5,24 @@ import json
 
 from properdocs.plugins import event_priority
 
+SHARE_TITLE = "Pytdbot — TDLib for Python"
+SHARE_DESC = (
+    "Python bots and userbots on TDLib — async, typed, "
+    "and a bit nicer than calling Telegram by hand."
+)
+
 
 def _title(page, config) -> str:
-    name = config.site_name
     if page.is_homepage:
-        return name
+        return SHARE_TITLE
     page_title = (page.meta or {}).get("title") or page.title
     if page_title:
-        return f"{page_title} - {name}"
-    return name
+        return f"{page_title} - {config.site_name}"
+    return SHARE_TITLE
 
 
 def _desc(page, config) -> str:
-    return (page.meta or {}).get("description") or config.site_description or ""
+    return (page.meta or {}).get("description") or SHARE_DESC
 
 
 @event_priority(50)
