@@ -40,7 +40,11 @@ extra_css:
 
 watch:
   - generate_docs.py
+  - docs_social_hook.py
   - pytdbot/ai/helpers.json
+
+hooks:
+  - docs_social_hook.py
 
 plugins:
   - search
