@@ -1,3 +1,6 @@
+[src]
+exclude = ["tests", "generate_docs.py", "docs_social_hook.py"]
+
 [analysis]
 allowed-unresolved-imports = ["tdjson", "orjson", "ujson", "nats", "qrcode"]
 
