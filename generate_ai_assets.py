@@ -43,7 +43,6 @@ BOUND_ON = {
     "CallbackQueryBoundMethods": "UpdateNewCallbackQuery",
     "MessageSenderBoundMethods": "MessageSender",
     "ChatActions": "ChatActions",
-    "InlineQueryBoundMethods": "UpdateNewInlineQuery",
     "ChosenInlineResultBoundMethods": "UpdateNewChosenInlineResult",
 }
 
