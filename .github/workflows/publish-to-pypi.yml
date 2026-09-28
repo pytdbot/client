@@ -38,3 +38,86 @@ jobs:
 
       - name: Upload to pypi
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          python - << 'PY'
+          import os
+          import re
+          import subprocess
+          from pathlib import Path
+
+          text = Path("pytdbot/types/__init__.py").read_text()
+          tdlib = re.search(r'TDLIB_VERSION\s*=\s*"([^"]+)"', text).group(1)
+          repo = os.environ["REPO"]
+
+          # The tag sits on its own line at the end of the message: "#fix".
+          SECTIONS = {
+              "feat": "Features",
+              "feature": "Features",
+              "fix": "Bug fix",
+              "bug": "Bug fix",
+              "bugfix": "Bug fix",
+              "perf": "Performance",
+              "docs": "Documentation",
+              "doc": "Documentation",
+              "test": "Tests",
+              "tests": "Tests",
+              "refactor": "Refactor",
+              "build": "Build",
+              "ci": "Build",
+          }
+          ORDER = ["Features", "Bug fix", "Performance", "Refactor", "Documentation", "Tests", "Build"]
+          TAG = re.compile(r"^#([A-Za-z][\w-]*)$", re.MULTILINE)
+          prev = subprocess.run(
+              ["git", "describe", "--tags", "--abbrev=0", "HEAD^"],
+              capture_output=True,
+              text=True,
+          )
+          revision = f"{prev.stdout.strip()}..HEAD" if prev.returncode == 0 else "HEAD"
+          raw = subprocess.check_output(
+              ["git", "log", "--reverse", revision, "--pretty=format:%H%x1f%h%x1f%s%x1f%b%x1e"],
+              text=True,
+          )
+
+          grouped = {}
+          for record in raw.split("\x1e"):
+              record = record.strip("\n")
+              if not record.strip():
+                  continue
+              full, short, subject, body = (record.split("\x1f") + ["", "", ""])[:4]
+              subject = subject.strip()
+              tags = TAG.findall(body)
+              if not tags:
+                  continue
+              tag = tags[-1].lower()
+              section = SECTIONS.get(tag, tag[:1].upper() + tag[1:])
+              link = f"https://github.com/{repo}/commit/{full}"
+              grouped.setdefault(section, []).append(f"- {subject} ([{short}]({link}))")
+
+          ordered = [name for name in ORDER if name in grouped]
+          ordered += sorted(name for name in grouped if name not in ORDER)
+
+          body = f"This release uses TDLib [v{tdlib}](https://github.com/tdlib/td).\n"
+          for name in ordered:
+              body += f"\n## {name}\n\n" + "\n".join(grouped[name]) + "\n"
+          Path("release-notes.md").write_text(body)
+          PY
+          gh release create "${{ github.ref_name }}" \
+            --draft \
+            --title "${{ github.ref_name }}" \
+            --notes-file release-notes.md
