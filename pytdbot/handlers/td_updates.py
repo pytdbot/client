@@ -7153,6 +7153,65 @@ class Updates:
 
         return decorator
 
+    def on_updateAllowedBotUsernamePremiumSuffixes(
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
+    ) -> Callable:
+        r"""Lists of suffixes allowed in secondary bot usernames, which can be added additionally to the main username if the bot's owner has a Telegram Premium subscription
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateAllowedBotUsernamePremiumSuffixes",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateAllowedBotUsernamePremiumSuffixes",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateAllowedBotUsernamePremiumSuffixes",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
     def on_updateTrustedMiniAppBots(
         self: pytdbot.Client | None = None,
         filters: pytdbot.filters.Filter | None = None,
@@ -8914,6 +8973,242 @@ class Updates:
                 func._handler = Handler(
                     func=func,
                     update_type="updateOwnedGramCount",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
+    def on_updateTonWalletState(
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
+    ) -> Callable:
+        r"""The state of the TON wallet of the current user has changed
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateTonWalletState",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTonWalletState",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTonWalletState",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
+    def on_updateTonWalletGaslessTransfersInfo(
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
+    ) -> Callable:
+        r"""The information about gasless transfers has changed
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateTonWalletGaslessTransfersInfo",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTonWalletGaslessTransfersInfo",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTonWalletGaslessTransfersInfo",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
+    def on_updateTonWalletTonConnectSession(
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
+    ) -> Callable:
+        r"""A session of a TON Connect has changed
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateTonWalletTonConnectSession",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTonWalletTonConnectSession",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTonWalletTonConnectSession",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
+    def on_updateTonWalletTonConnectSessionDisconnectRequired(
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
+    ) -> Callable:
+        r"""TON Connect sessions must be disconnected in a regular way
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateTonWalletTonConnectSessionDisconnectRequired",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTonWalletTonConnectSessionDisconnectRequired",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTonWalletTonConnectSessionDisconnectRequired",
                     filter=filters,
                     position=position,
                     inner_object=False,

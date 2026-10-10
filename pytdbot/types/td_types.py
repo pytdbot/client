@@ -301,6 +301,54 @@ class TonTransactionType:
     pass
 
 
+class TonCenterApiRequestType:
+    r"""Describes state of active stories posted by a chat"""
+
+    pass
+
+
+class TonWalletTransferReceiver:
+    r"""Represents expected receiver of a TON wallet transfer"""
+
+    pass
+
+
+class TonWalletTransactionState:
+    r"""Describes state of a transaction with a TON wallet"""
+
+    pass
+
+
+class TonWalletTransactionType:
+    r"""Describes type of transaction with a TON wallet"""
+
+    pass
+
+
+class TonConnectRequestState:
+    r"""Describes state of a request received from a dApp through TON Connect"""
+
+    pass
+
+
+class TonConnectManifest:
+    r"""Describes manifest of the dApp that is being connected using TON Connect"""
+
+    pass
+
+
+class TonConnectSessionState:
+    r"""Describes state of a TON Connect session"""
+
+    pass
+
+
+class TonConnectConnectItem:
+    r"""Represents a data item to share with a dApp"""
+
+    pass
+
+
 class ActiveStoryState:
     r"""Describes state of active stories posted by a chat"""
 
@@ -2211,6 +2259,7 @@ class TextEntity(TlObject):
         | TextEntityTypeEmailAddress
         | TextEntityTypePhoneNumber
         | TextEntityTypeBankCardNumber
+        | TextEntityTypeTonAddress
         | TextEntityTypeBold
         | TextEntityTypeItalic
         | TextEntityTypeUnderline
@@ -7255,6 +7304,9 @@ class AnimatedEmoji(TlObject):
         sound (:class:`~pytdbot.types.File`):
             File containing the sound to be played when the sticker is clicked; may be null\. The sound is encoded with the Opus codec, and stored inside an OGG container
 
+        is_regular_emoji (:class:`bool`):
+            True, if the emoji is a regular emoji
+
     """
 
     def __init__(
@@ -7265,6 +7317,7 @@ class AnimatedEmoji(TlObject):
         sticker_height: int | None = 0,
         fitzpatrick_type: int | None = 0,
         sound: File | None = None,
+        is_regular_emoji: bool | None = False,
     ) -> None:
         self.sticker = sticker
         r"""Sticker for the emoji; may be null if yet unknown for a custom emoji\. If the sticker is a custom emoji, then it can have arbitrary format"""
@@ -7276,6 +7329,8 @@ class AnimatedEmoji(TlObject):
         r"""Emoji modifier fitzpatrick type; 0\-6; 0 if none"""
         self.sound = sound
         r"""File containing the sound to be played when the sticker is clicked; may be null\. The sound is encoded with the Opus codec, and stored inside an OGG container"""
+        self.is_regular_emoji = is_regular_emoji
+        r"""True, if the emoji is a regular emoji"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -7299,6 +7354,7 @@ class AnimatedEmoji(TlObject):
             "sticker_height": self.sticker_height,
             "fitzpatrick_type": self.fitzpatrick_type,
             "sound": self.sound,
+            "is_regular_emoji": self.is_regular_emoji,
         }
 
     @classmethod
@@ -7310,6 +7366,7 @@ class AnimatedEmoji(TlObject):
             data_class.sticker_height = int(data.get("sticker_height", 0))
             data_class.fitzpatrick_type = int(data.get("fitzpatrick_type", 0))
             data_class.sound = data.get("sound", None)
+            data_class.is_regular_emoji = data.get("is_regular_emoji", False)
 
         return data_class
 
@@ -9377,7 +9434,7 @@ class BotVerification(TlObject):
             Identifier of the custom emoji that is used as the verification sign
 
         custom_description (:class:`~pytdbot.types.FormattedText`):
-            Custom description of verification reason set by the bot\. Can contain only Mention, Hashtag, Cashtag, PhoneNumber, BankCardNumber, Url, and EmailAddress entities
+            Custom description of verification reason set by the bot\. Can contain only Mention, Hashtag, Cashtag, PhoneNumber, BankCardNumber, TonAddress, Url, and EmailAddress entities
 
     """
 
@@ -9393,7 +9450,7 @@ class BotVerification(TlObject):
         self.icon_custom_emoji_id = icon_custom_emoji_id
         r"""Identifier of the custom emoji that is used as the verification sign"""
         self.custom_description = custom_description
-        r"""Custom description of verification reason set by the bot\. Can contain only Mention, Hashtag, Cashtag, PhoneNumber, BankCardNumber, Url, and EmailAddress entities"""
+        r"""Custom description of verification reason set by the bot\. Can contain only Mention, Hashtag, Cashtag, PhoneNumber, BankCardNumber, TonAddress, Url, and EmailAddress entities"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -14048,6 +14105,8 @@ class PremiumPaymentOption(TlObject):
         | InternalLinkTypeStoryAlbum
         | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
+        | InternalLinkTypeTonConnect
+        | InternalLinkTypeTonWalletTransfer
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
         | InternalLinkTypeUserPhoneNumber
@@ -22193,6 +22252,2906 @@ class TonTransactions(TlObject):
         return data_class
 
 
+class TonCenterApiRequestTypeGet(TlObject, TonCenterApiRequestType):
+    r"""A GET request
+
+    Parameters:
+        query (:class:`str`):
+            URL\-encoded query of the request
+
+    """
+
+    def __init__(self, *, query: str | None = "") -> None:
+        self.query = query
+        r"""URL\-encoded query of the request"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonCenterApiRequestTypeGet"]:
+        return "tonCenterApiRequestTypeGet"
+
+    @classmethod
+    def getClass(self) -> Literal["TonCenterApiRequestType"]:
+        return "TonCenterApiRequestType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "query": self.query}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonCenterApiRequestTypeGet | None:
+        if data:
+            data_class = cls()
+            data_class.query = data.get("query", "")
+
+        return data_class
+
+
+class TonCenterApiRequestTypePost(TlObject, TonCenterApiRequestType):
+    r"""A POST request
+
+    Parameters:
+        payload (:class:`str`):
+            Payload of the request
+
+    """
+
+    def __init__(self, *, payload: str | None = "") -> None:
+        self.payload = payload
+        r"""Payload of the request"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonCenterApiRequestTypePost"]:
+        return "tonCenterApiRequestTypePost"
+
+    @classmethod
+    def getClass(self) -> Literal["TonCenterApiRequestType"]:
+        return "TonCenterApiRequestType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "payload": self.payload}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonCenterApiRequestTypePost | None:
+        if data:
+            data_class = cls()
+            data_class.payload = data.get("payload", "")
+
+        return data_class
+
+
+class TonWalletTransferReceiverUser(TlObject, TonWalletTransferReceiver):
+    r"""The receiver is specified by its username
+
+    Parameters:
+        username (:class:`str`):
+            Username of the user\. Use searchPublicChat to find the user, check that it is a regular user, and then use createUserTonWallet to get information about the user's TON wallet
+
+    """
+
+    def __init__(self, *, username: str | None = "") -> None:
+        self.username = username
+        r"""Username of the user\. Use searchPublicChat to find the user, check that it is a regular user, and then use createUserTonWallet to get information about the user's TON wallet"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransferReceiverUser"]:
+        return "tonWalletTransferReceiverUser"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransferReceiver"]:
+        return "TonWalletTransferReceiver"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "username": self.username}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletTransferReceiverUser | None:
+        if data:
+            data_class = cls()
+            data_class.username = data.get("username", "")
+
+        return data_class
+
+
+class TonWalletTransferReceiverAddress(TlObject, TonWalletTransferReceiver):
+    r"""The receiver is specified by its address
+
+    Parameters:
+        address (:class:`str`):
+            Address of the receiver\. Use getAddressTonWallet to get information about the user's TON wallet
+
+    """
+
+    def __init__(self, *, address: str | None = "") -> None:
+        self.address = address
+        r"""Address of the receiver\. Use getAddressTonWallet to get information about the user's TON wallet"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransferReceiverAddress"]:
+        return "tonWalletTransferReceiverAddress"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransferReceiver"]:
+        return "TonWalletTransferReceiver"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "address": self.address}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletTransferReceiverAddress | None:
+        if data:
+            data_class = cls()
+            data_class.address = data.get("address", "")
+
+        return data_class
+
+
+class TonCenterStreamingApiUrl(TlObject):
+    r"""Contains an HTTP URL for TON Center Streaming API
+
+    Parameters:
+        url (:class:`str`):
+            The URL
+
+        expires_in (:class:`int`):
+            Time after which the URL expires
+
+    """
+
+    def __init__(self, *, url: str | None = "", expires_in: int | None = 0) -> None:
+        self.url = url
+        r"""The URL"""
+        self.expires_in = expires_in
+        r"""Time after which the URL expires"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonCenterStreamingApiUrl"]:
+        return "tonCenterStreamingApiUrl"
+
+    @classmethod
+    def getClass(self) -> Literal["TonCenterStreamingApiUrl"]:
+        return "TonCenterStreamingApiUrl"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "url": self.url, "expires_in": self.expires_in}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonCenterStreamingApiUrl | None:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.expires_in = int(data.get("expires_in", 0))
+
+        return data_class
+
+
+class WalletBotBalance(TlObject):
+    r"""Describes balance of the current user in the bot https://t\.me/walt
+
+    Parameters:
+        has_balance (:class:`bool`):
+            True, if the user has positive TON Gram balance
+
+        url (:class:`str`):
+            The URL to open to launch the bot; may be empty if none
+
+    """
+
+    def __init__(
+        self, *, has_balance: bool | None = False, url: str | None = ""
+    ) -> None:
+        self.has_balance = has_balance
+        r"""True, if the user has positive TON Gram balance"""
+        self.url = url
+        r"""The URL to open to launch the bot; may be empty if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["walletBotBalance"]:
+        return "walletBotBalance"
+
+    @classmethod
+    def getClass(self) -> Literal["WalletBotBalance"]:
+        return "WalletBotBalance"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "has_balance": self.has_balance,
+            "url": self.url,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WalletBotBalance | None:
+        if data:
+            data_class = cls()
+            data_class.has_balance = data.get("has_balance", False)
+            data_class.url = data.get("url", "")
+
+        return data_class
+
+
+class UserTonWalletAddress(TlObject):
+    r"""Contains TON wallet address of a user
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user; 0 if unknown
+
+        wallet_address (:class:`str`):
+            Address of the user's wallet in the TON blockchain
+
+        public_key (:class:`bytes`):
+            Public key of the user
+
+    """
+
+    def __init__(
+        self,
+        *,
+        user_id: int | None = 0,
+        wallet_address: str | None = "",
+        public_key: bytes | None = b"",
+    ) -> None:
+        self.user_id = user_id
+        r"""Identifier of the user; 0 if unknown"""
+        self.wallet_address = wallet_address
+        r"""Address of the user's wallet in the TON blockchain"""
+        self.public_key = public_key
+        r"""Public key of the user"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["userTonWalletAddress"]:
+        return "userTonWalletAddress"
+
+    @classmethod
+    def getClass(self) -> Literal["UserTonWalletAddress"]:
+        return "UserTonWalletAddress"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "wallet_address": self.wallet_address,
+            "public_key": self.public_key,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UserTonWalletAddress | None:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.wallet_address = data.get("wallet_address", "")
+            data_class.public_key = b64decode(data.get("public_key", b""))
+
+        return data_class
+
+
+class UserTonWalletAddresses(TlObject):
+    r"""Represents a list of TON wallet addresses of users
+
+    Parameters:
+        addresses (list[:class:`~pytdbot.types.UserTonWalletAddress`]):
+            A list of TON wallet addresses
+
+    """
+
+    def __init__(self, *, addresses: list[UserTonWalletAddress] | None = None) -> None:
+        self.addresses = addresses or []
+        r"""A list of TON wallet addresses"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["userTonWalletAddresses"]:
+        return "userTonWalletAddresses"
+
+    @classmethod
+    def getClass(self) -> Literal["UserTonWalletAddresses"]:
+        return "UserTonWalletAddresses"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "addresses": self.addresses}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UserTonWalletAddresses | None:
+        if data:
+            data_class = cls()
+            data_class.addresses = data.get("addresses", None)
+
+        return data_class
+
+
+class TonWalletOwnershipProofChallenge(TlObject):
+    r"""Represents a challenge for TON wallet ownership proof
+
+    Parameters:
+        payload (:class:`str`):
+            Payload of the challenge
+
+        domain (:class:`str`):
+            Domain of the proof requester
+
+    """
+
+    def __init__(self, *, payload: str | None = "", domain: str | None = "") -> None:
+        self.payload = payload
+        r"""Payload of the challenge"""
+        self.domain = domain
+        r"""Domain of the proof requester"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletOwnershipProofChallenge"]:
+        return "tonWalletOwnershipProofChallenge"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletOwnershipProofChallenge"]:
+        return "TonWalletOwnershipProofChallenge"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "payload": self.payload, "domain": self.domain}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletOwnershipProofChallenge | None:
+        if data:
+            data_class = cls()
+            data_class.payload = data.get("payload", "")
+            data_class.domain = data.get("domain", "")
+
+        return data_class
+
+
+class TonWalletOwnershipProof(TlObject):
+    r"""Represents a proof of TON wallet ownership
+
+    Parameters:
+        public_key (:class:`bytes`):
+            Public key of the wallet
+
+        timestamp (:class:`int`):
+            The current UNIX timestamp which was used to create the proof
+
+        signature (:class:`bytes`):
+            The signature prooving the ownership
+
+    """
+
+    def __init__(
+        self,
+        *,
+        public_key: bytes | None = b"",
+        timestamp: int | None = 0,
+        signature: bytes | None = b"",
+    ) -> None:
+        self.public_key = public_key
+        r"""Public key of the wallet"""
+        self.timestamp = timestamp
+        r"""The current UNIX timestamp which was used to create the proof"""
+        self.signature = signature
+        r"""The signature prooving the ownership"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletOwnershipProof"]:
+        return "tonWalletOwnershipProof"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletOwnershipProof"]:
+        return "TonWalletOwnershipProof"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "public_key": self.public_key,
+            "timestamp": self.timestamp,
+            "signature": self.signature,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletOwnershipProof | None:
+        if data:
+            data_class = cls()
+            data_class.public_key = b64decode(data.get("public_key", b""))
+            data_class.timestamp = int(data.get("timestamp", 0))
+            data_class.signature = b64decode(data.get("signature", b""))
+
+        return data_class
+
+
+class TonWalletGaslessTransfersInfo(TlObject):
+    r"""Represents state of gasless transfers for the current user
+
+    Parameters:
+        left_count (:class:`int`):
+            Number of left gasless transfers\. The daily available number of gasless transfers is available as getOption\(\"ton\_wallet\_gasless\_transfer\_daily\_count\_max\"\)
+
+        reset_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the number of left transfers will be reset; 0 if never
+
+        relayer_address (:class:`str`):
+            Address of the relayer for gasless transfers; may be empty if unavailable
+
+    """
+
+    def __init__(
+        self,
+        *,
+        left_count: int | None = 0,
+        reset_date: int | None = 0,
+        relayer_address: str | None = "",
+    ) -> None:
+        self.left_count = left_count
+        r"""Number of left gasless transfers\. The daily available number of gasless transfers is available as getOption\(\"ton\_wallet\_gasless\_transfer\_daily\_count\_max\"\)"""
+        self.reset_date = reset_date
+        r"""Point in time \(Unix timestamp\) when the number of left transfers will be reset; 0 if never"""
+        self.relayer_address = relayer_address
+        r"""Address of the relayer for gasless transfers; may be empty if unavailable"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletGaslessTransfersInfo"]:
+        return "tonWalletGaslessTransfersInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletGaslessTransfersInfo"]:
+        return "TonWalletGaslessTransfersInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "left_count": self.left_count,
+            "reset_date": self.reset_date,
+            "relayer_address": self.relayer_address,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletGaslessTransfersInfo | None:
+        if data:
+            data_class = cls()
+            data_class.left_count = int(data.get("left_count", 0))
+            data_class.reset_date = int(data.get("reset_date", 0))
+            data_class.relayer_address = data.get("relayer_address", "")
+
+        return data_class
+
+
+class CurrencyExchangeRate(TlObject):
+    r"""Describes exchange rate of a currency to USD
+
+    Parameters:
+        currency (:class:`str`):
+            ISO 4217 currency code of the payment currency
+
+        rate (:class:`float`):
+            Exchange rate of the currency to USD
+
+    """
+
+    def __init__(self, *, currency: str | None = "", rate: float | None = 0.0) -> None:
+        self.currency = currency
+        r"""ISO 4217 currency code of the payment currency"""
+        self.rate = rate
+        r"""Exchange rate of the currency to USD"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["currencyExchangeRate"]:
+        return "currencyExchangeRate"
+
+    @classmethod
+    def getClass(self) -> Literal["CurrencyExchangeRate"]:
+        return "CurrencyExchangeRate"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "currency": self.currency, "rate": self.rate}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> CurrencyExchangeRate | None:
+        if data:
+            data_class = cls()
+            data_class.currency = data.get("currency", "")
+            data_class.rate = data.get("rate", 0.0)
+
+        return data_class
+
+
+class CurrencyExchangeRates(TlObject):
+    r"""Represents a list of currency exchange rates
+
+    Parameters:
+        rates (list[:class:`~pytdbot.types.CurrencyExchangeRate`]):
+            A list of currency exchange rates
+
+    """
+
+    def __init__(self, *, rates: list[CurrencyExchangeRate] | None = None) -> None:
+        self.rates = rates or []
+        r"""A list of currency exchange rates"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["currencyExchangeRates"]:
+        return "currencyExchangeRates"
+
+    @classmethod
+    def getClass(self) -> Literal["CurrencyExchangeRates"]:
+        return "CurrencyExchangeRates"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "rates": self.rates}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> CurrencyExchangeRates | None:
+        if data:
+            data_class = cls()
+            data_class.rates = data.get("rates", None)
+
+        return data_class
+
+
+class OnRampProvider(TlObject):
+    r"""Describes an on\-ramp provider
+
+    Parameters:
+        id (:class:`str`):
+            Unique identifier of the provider
+
+        name (:class:`str`):
+            Name of the provider
+
+        cryptocurrencies (list[:class:`str`]):
+            List of cryptocurrencies supported by the provider
+
+        supports_base_currencies (:class:`bool`):
+            True, if the provider supports base currencies and can be used in the method getOnRampProviderBaseCurrencies
+
+        supports_limits (:class:`bool`):
+            True, if the provider supports limits retrieval using the method getOnRampPaymentLimits
+
+        supports_quote (:class:`bool`):
+            True, if the provider supports quote retrieval using the method getOnRampPaymentQuote
+
+    """
+
+    def __init__(
+        self,
+        *,
+        id: str | None = "",
+        name: str | None = "",
+        cryptocurrencies: list[str] | None = None,
+        supports_base_currencies: bool | None = False,
+        supports_limits: bool | None = False,
+        supports_quote: bool | None = False,
+    ) -> None:
+        self.id = id
+        r"""Unique identifier of the provider"""
+        self.name = name
+        r"""Name of the provider"""
+        self.cryptocurrencies = cryptocurrencies or []
+        r"""List of cryptocurrencies supported by the provider"""
+        self.supports_base_currencies = supports_base_currencies
+        r"""True, if the provider supports base currencies and can be used in the method getOnRampProviderBaseCurrencies"""
+        self.supports_limits = supports_limits
+        r"""True, if the provider supports limits retrieval using the method getOnRampPaymentLimits"""
+        self.supports_quote = supports_quote
+        r"""True, if the provider supports quote retrieval using the method getOnRampPaymentQuote"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["onRampProvider"]:
+        return "onRampProvider"
+
+    @classmethod
+    def getClass(self) -> Literal["OnRampProvider"]:
+        return "OnRampProvider"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "name": self.name,
+            "cryptocurrencies": self.cryptocurrencies,
+            "supports_base_currencies": self.supports_base_currencies,
+            "supports_limits": self.supports_limits,
+            "supports_quote": self.supports_quote,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> OnRampProvider | None:
+        if data:
+            data_class = cls()
+            data_class.id = data.get("id", "")
+            data_class.name = data.get("name", "")
+            data_class.cryptocurrencies = data.get("cryptocurrencies", None)
+            data_class.supports_base_currencies = data.get(
+                "supports_base_currencies", False
+            )
+            data_class.supports_limits = data.get("supports_limits", False)
+            data_class.supports_quote = data.get("supports_quote", False)
+
+        return data_class
+
+
+class OnRampProviders(TlObject):
+    r"""Represents a list of on\-ramp providers
+
+    Parameters:
+        providers (list[:class:`~pytdbot.types.OnRampProvider`]):
+            A list of providers
+
+    """
+
+    def __init__(self, *, providers: list[OnRampProvider] | None = None) -> None:
+        self.providers = providers or []
+        r"""A list of providers"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["onRampProviders"]:
+        return "onRampProviders"
+
+    @classmethod
+    def getClass(self) -> Literal["OnRampProviders"]:
+        return "OnRampProviders"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "providers": self.providers}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> OnRampProviders | None:
+        if data:
+            data_class = cls()
+            data_class.providers = data.get("providers", None)
+
+        return data_class
+
+
+class Currencies(TlObject):
+    r"""Represents a list of currencies
+
+    Parameters:
+        currencies (list[:class:`str`]):
+            A list of ISO 4217 currency codes
+
+    """
+
+    def __init__(self, *, currencies: list[str] | None = None) -> None:
+        self.currencies = currencies or []
+        r"""A list of ISO 4217 currency codes"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["currencies"]:
+        return "currencies"
+
+    @classmethod
+    def getClass(self) -> Literal["Currencies"]:
+        return "Currencies"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "currencies": self.currencies}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Currencies | None:
+        if data:
+            data_class = cls()
+            data_class.currencies = data.get("currencies", None)
+
+        return data_class
+
+
+class OnRampPaymentMethod(TlObject):
+    r"""Describes a payment method of an on\-ramp provider
+
+    Parameters:
+        name (:class:`str`):
+            Name of the method
+
+        is_available (:class:`bool`):
+            True, if the method is available to the user
+
+    """
+
+    def __init__(
+        self, *, name: str | None = "", is_available: bool | None = False
+    ) -> None:
+        self.name = name
+        r"""Name of the method"""
+        self.is_available = is_available
+        r"""True, if the method is available to the user"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["onRampPaymentMethod"]:
+        return "onRampPaymentMethod"
+
+    @classmethod
+    def getClass(self) -> Literal["OnRampPaymentMethod"]:
+        return "OnRampPaymentMethod"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "name": self.name,
+            "is_available": self.is_available,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> OnRampPaymentMethod | None:
+        if data:
+            data_class = cls()
+            data_class.name = data.get("name", "")
+            data_class.is_available = data.get("is_available", False)
+
+        return data_class
+
+
+class OnRampPaymentAvailability(TlObject):
+    r"""Describes availability of cryptocurrency purchase through an on\-ramp provider
+
+    Parameters:
+        is_allowed (:class:`bool`):
+            True, if the current user can use the provider
+
+        is_purchase_allowed (:class:`bool`):
+            True, if the current user can purchase through the provider
+
+        methods (list[:class:`~pytdbot.types.OnRampPaymentMethod`]):
+            The list of available payment methods
+
+        country_code (:class:`str`):
+            A two\-letter ISO 3166\-1 alpha\-2 country code of the current user's country
+
+        state (:class:`str`):
+            Code of the state of the current user; may be empty if unknown
+
+    """
+
+    def __init__(
+        self,
+        *,
+        is_allowed: bool | None = False,
+        is_purchase_allowed: bool | None = False,
+        methods: list[OnRampPaymentMethod] | None = None,
+        country_code: str | None = "",
+        state: str | None = "",
+    ) -> None:
+        self.is_allowed = is_allowed
+        r"""True, if the current user can use the provider"""
+        self.is_purchase_allowed = is_purchase_allowed
+        r"""True, if the current user can purchase through the provider"""
+        self.methods = methods or []
+        r"""The list of available payment methods"""
+        self.country_code = country_code
+        r"""A two\-letter ISO 3166\-1 alpha\-2 country code of the current user's country"""
+        self.state = state
+        r"""Code of the state of the current user; may be empty if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["onRampPaymentAvailability"]:
+        return "onRampPaymentAvailability"
+
+    @classmethod
+    def getClass(self) -> Literal["OnRampPaymentAvailability"]:
+        return "OnRampPaymentAvailability"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "is_allowed": self.is_allowed,
+            "is_purchase_allowed": self.is_purchase_allowed,
+            "methods": self.methods,
+            "country_code": self.country_code,
+            "state": self.state,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> OnRampPaymentAvailability | None:
+        if data:
+            data_class = cls()
+            data_class.is_allowed = data.get("is_allowed", False)
+            data_class.is_purchase_allowed = data.get("is_purchase_allowed", False)
+            data_class.methods = data.get("methods", None)
+            data_class.country_code = data.get("country_code", "")
+            data_class.state = data.get("state", "")
+
+        return data_class
+
+
+class OnRampPaymentLimits(TlObject):
+    r"""Describes limits for an on\-ramp purchase
+
+    Parameters:
+        payment_method (:class:`str`):
+            The payment method to be used
+
+        base_currency_min_amount (:class:`str`):
+            The minimum allowed amount of the base currency
+
+        base_currency_max_amount (:class:`str`):
+            The maximum allowed amount of the base currency
+
+        cryptocurrency_min_amount (:class:`str`):
+            The minimum allowed amount of the bought cryptocurrency
+
+        cryptocurrency_max_amount (:class:`str`):
+            The maximum allowed amount of the bought cryptocurrency
+
+    """
+
+    def __init__(
+        self,
+        *,
+        payment_method: str | None = "",
+        base_currency_min_amount: str | None = "",
+        base_currency_max_amount: str | None = "",
+        cryptocurrency_min_amount: str | None = "",
+        cryptocurrency_max_amount: str | None = "",
+    ) -> None:
+        self.payment_method = payment_method
+        r"""The payment method to be used"""
+        self.base_currency_min_amount = base_currency_min_amount
+        r"""The minimum allowed amount of the base currency"""
+        self.base_currency_max_amount = base_currency_max_amount
+        r"""The maximum allowed amount of the base currency"""
+        self.cryptocurrency_min_amount = cryptocurrency_min_amount
+        r"""The minimum allowed amount of the bought cryptocurrency"""
+        self.cryptocurrency_max_amount = cryptocurrency_max_amount
+        r"""The maximum allowed amount of the bought cryptocurrency"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["onRampPaymentLimits"]:
+        return "onRampPaymentLimits"
+
+    @classmethod
+    def getClass(self) -> Literal["OnRampPaymentLimits"]:
+        return "OnRampPaymentLimits"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "payment_method": self.payment_method,
+            "base_currency_min_amount": self.base_currency_min_amount,
+            "base_currency_max_amount": self.base_currency_max_amount,
+            "cryptocurrency_min_amount": self.cryptocurrency_min_amount,
+            "cryptocurrency_max_amount": self.cryptocurrency_max_amount,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> OnRampPaymentLimits | None:
+        if data:
+            data_class = cls()
+            data_class.payment_method = data.get("payment_method", "")
+            data_class.base_currency_min_amount = data.get(
+                "base_currency_min_amount", ""
+            )
+            data_class.base_currency_max_amount = data.get(
+                "base_currency_max_amount", ""
+            )
+            data_class.cryptocurrency_min_amount = data.get(
+                "cryptocurrency_min_amount", ""
+            )
+            data_class.cryptocurrency_max_amount = data.get(
+                "cryptocurrency_max_amount", ""
+            )
+
+        return data_class
+
+
+class OnRampPaymentQuote(TlObject):
+    r"""Describes a quote for an on\-ramp purchase
+
+    Parameters:
+        payment_method (:class:`str`):
+            The payment method to be used
+
+        expiration_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the quote will expire
+
+        base_currency_amount (:class:`str`):
+            Paid amount of the base currency
+
+        cryptocurrency_amount (:class:`str`):
+            Purchased amount of the cryptocurrency
+
+        cryptocurrency_price (:class:`str`):
+            The price of the cryptocurrency
+
+        fee_amount (:class:`str`):
+            Fee amount
+
+        extra_fee_amount (:class:`str`):
+            Extra fee amount
+
+        network_fee_amount (:class:`str`):
+            Network fee amount
+
+        total_amount (:class:`str`):
+            Total paid amount
+
+    """
+
+    def __init__(
+        self,
+        *,
+        payment_method: str | None = "",
+        expiration_date: int | None = 0,
+        base_currency_amount: str | None = "",
+        cryptocurrency_amount: str | None = "",
+        cryptocurrency_price: str | None = "",
+        fee_amount: str | None = "",
+        extra_fee_amount: str | None = "",
+        network_fee_amount: str | None = "",
+        total_amount: str | None = "",
+    ) -> None:
+        self.payment_method = payment_method
+        r"""The payment method to be used"""
+        self.expiration_date = expiration_date
+        r"""Point in time \(Unix timestamp\) when the quote will expire"""
+        self.base_currency_amount = base_currency_amount
+        r"""Paid amount of the base currency"""
+        self.cryptocurrency_amount = cryptocurrency_amount
+        r"""Purchased amount of the cryptocurrency"""
+        self.cryptocurrency_price = cryptocurrency_price
+        r"""The price of the cryptocurrency"""
+        self.fee_amount = fee_amount
+        r"""Fee amount"""
+        self.extra_fee_amount = extra_fee_amount
+        r"""Extra fee amount"""
+        self.network_fee_amount = network_fee_amount
+        r"""Network fee amount"""
+        self.total_amount = total_amount
+        r"""Total paid amount"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["onRampPaymentQuote"]:
+        return "onRampPaymentQuote"
+
+    @classmethod
+    def getClass(self) -> Literal["OnRampPaymentQuote"]:
+        return "OnRampPaymentQuote"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "payment_method": self.payment_method,
+            "expiration_date": self.expiration_date,
+            "base_currency_amount": self.base_currency_amount,
+            "cryptocurrency_amount": self.cryptocurrency_amount,
+            "cryptocurrency_price": self.cryptocurrency_price,
+            "fee_amount": self.fee_amount,
+            "extra_fee_amount": self.extra_fee_amount,
+            "network_fee_amount": self.network_fee_amount,
+            "total_amount": self.total_amount,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> OnRampPaymentQuote | None:
+        if data:
+            data_class = cls()
+            data_class.payment_method = data.get("payment_method", "")
+            data_class.expiration_date = int(data.get("expiration_date", 0))
+            data_class.base_currency_amount = data.get("base_currency_amount", "")
+            data_class.cryptocurrency_amount = data.get("cryptocurrency_amount", "")
+            data_class.cryptocurrency_price = data.get("cryptocurrency_price", "")
+            data_class.fee_amount = data.get("fee_amount", "")
+            data_class.extra_fee_amount = data.get("extra_fee_amount", "")
+            data_class.network_fee_amount = data.get("network_fee_amount", "")
+            data_class.total_amount = data.get("total_amount", "")
+
+        return data_class
+
+
+class OnRampPaymentSession(TlObject):
+    r"""Describes a session for an on\-ramp purchase
+
+    Parameters:
+        session_id (:class:`str`):
+            Identifier of the session
+
+        expiration_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the session will expire
+
+        url (:class:`str`):
+            HTTPS URL to be opened in a WebView to complete the purchase
+
+    """
+
+    def __init__(
+        self,
+        *,
+        session_id: str | None = "",
+        expiration_date: int | None = 0,
+        url: str | None = "",
+    ) -> None:
+        self.session_id = session_id
+        r"""Identifier of the session"""
+        self.expiration_date = expiration_date
+        r"""Point in time \(Unix timestamp\) when the session will expire"""
+        self.url = url
+        r"""HTTPS URL to be opened in a WebView to complete the purchase"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["onRampPaymentSession"]:
+        return "onRampPaymentSession"
+
+    @classmethod
+    def getClass(self) -> Literal["OnRampPaymentSession"]:
+        return "OnRampPaymentSession"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "session_id": self.session_id,
+            "expiration_date": self.expiration_date,
+            "url": self.url,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> OnRampPaymentSession | None:
+        if data:
+            data_class = cls()
+            data_class.session_id = data.get("session_id", "")
+            data_class.expiration_date = int(data.get("expiration_date", 0))
+            data_class.url = data.get("url", "")
+
+        return data_class
+
+
+class TonWalletState(TlObject):
+    r"""Describes state of the wallet of the current user in the TON blockchain
+
+    Parameters:
+        address (:class:`str`):
+            Address of the wallet; may be empty if none
+
+        public_key (:class:`bytes`):
+            Public key of the wallet; may be empty if none
+
+        gram_amount (:class:`int`):
+            The total amount of owned TON Grams, in the smallest units of the cryptocurrency
+
+        is_being_created (:class:`bool`):
+            True, if the wallet is being created
+
+        is_backup_enabled (:class:`bool`):
+            True, if backup for the wallet key is enabled
+
+        can_enable_backup (:class:`bool`):
+            True, if the user can enable backup for the wallet key
+
+        can_export_phrase (:class:`bool`):
+            True, if the wallet key can be exported using getTonWalletSecretPhrase
+
+    """
+
+    def __init__(
+        self,
+        *,
+        address: str | None = "",
+        public_key: bytes | None = b"",
+        gram_amount: int | None = 0,
+        is_being_created: bool | None = False,
+        is_backup_enabled: bool | None = False,
+        can_enable_backup: bool | None = False,
+        can_export_phrase: bool | None = False,
+    ) -> None:
+        self.address = address
+        r"""Address of the wallet; may be empty if none"""
+        self.public_key = public_key
+        r"""Public key of the wallet; may be empty if none"""
+        self.gram_amount = gram_amount
+        r"""The total amount of owned TON Grams, in the smallest units of the cryptocurrency"""
+        self.is_being_created = is_being_created
+        r"""True, if the wallet is being created"""
+        self.is_backup_enabled = is_backup_enabled
+        r"""True, if backup for the wallet key is enabled"""
+        self.can_enable_backup = can_enable_backup
+        r"""True, if the user can enable backup for the wallet key"""
+        self.can_export_phrase = can_export_phrase
+        r"""True, if the wallet key can be exported using getTonWalletSecretPhrase"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletState"]:
+        return "tonWalletState"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletState"]:
+        return "TonWalletState"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "address": self.address,
+            "public_key": self.public_key,
+            "gram_amount": self.gram_amount,
+            "is_being_created": self.is_being_created,
+            "is_backup_enabled": self.is_backup_enabled,
+            "can_enable_backup": self.can_enable_backup,
+            "can_export_phrase": self.can_export_phrase,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletState | None:
+        if data:
+            data_class = cls()
+            data_class.address = data.get("address", "")
+            data_class.public_key = b64decode(data.get("public_key", b""))
+            data_class.gram_amount = int(data.get("gram_amount", 0))
+            data_class.is_being_created = data.get("is_being_created", False)
+            data_class.is_backup_enabled = data.get("is_backup_enabled", False)
+            data_class.can_enable_backup = data.get("can_enable_backup", False)
+            data_class.can_export_phrase = data.get("can_export_phrase", False)
+
+        return data_class
+
+
+class TonNftAttribute(TlObject):
+    r"""Represents an attribute of an NFT in the TON blockchain
+
+    Parameters:
+        trait_type (:class:`str`):
+            Trait type
+
+        value (:class:`str`):
+            Value of the attribute
+
+    """
+
+    def __init__(self, *, trait_type: str | None = "", value: str | None = "") -> None:
+        self.trait_type = trait_type
+        r"""Trait type"""
+        self.value = value
+        r"""Value of the attribute"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonNftAttribute"]:
+        return "tonNftAttribute"
+
+    @classmethod
+    def getClass(self) -> Literal["TonNftAttribute"]:
+        return "TonNftAttribute"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "trait_type": self.trait_type,
+            "value": self.value,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonNftAttribute | None:
+        if data:
+            data_class = cls()
+            data_class.trait_type = data.get("trait_type", "")
+            data_class.value = data.get("value", "")
+
+        return data_class
+
+
+class TonNft(TlObject):
+    r"""Represents an NFT in the TON blockchain
+
+    Parameters:
+        collection_address (:class:`str`):
+            Address of the collection to which the NFT belongs; may be empty if unknown
+
+        address (:class:`str`):
+            Address of the NFT
+
+        owner_address (:class:`str`):
+            Address of the owner of the NFT
+
+        index (:class:`str`):
+            Index of the NFT among all NFTs from the collection as a decimal number
+
+        name (:class:`str`):
+            Name of the NFT
+
+        description (:class:`str`):
+            Description of the NFT
+
+        image (:class:`~pytdbot.types.PhotoSize`):
+            Image of the NFT; may be null if none
+
+        thumbnail (:class:`~pytdbot.types.PhotoSize`):
+            Thumbnail of the NFT; may be null if none
+
+        content (:class:`~pytdbot.types.Document`):
+            Content of the NFT; may be null if none
+
+        sticker (:class:`~pytdbot.types.Sticker`):
+            Sticker of the NFT; may be null if none
+
+        attributes (list[:class:`~pytdbot.types.TonNftAttribute`]):
+            Attributes of the NFT
+
+        extra (:class:`~pytdbot.types.JsonValue`):
+            Additional data about the NFT; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        collection_address: str | None = "",
+        address: str | None = "",
+        owner_address: str | None = "",
+        index: str | None = "",
+        name: str | None = "",
+        description: str | None = "",
+        image: PhotoSize | None = None,
+        thumbnail: PhotoSize | None = None,
+        content: Document | None = None,
+        sticker: Sticker | None = None,
+        attributes: list[TonNftAttribute] | None = None,
+        extra: JsonValueNull
+        | JsonValueBoolean
+        | JsonValueNumber
+        | JsonValueString
+        | JsonValueArray
+        | JsonValueObject
+        | None = None,
+    ) -> None:
+        self.collection_address = collection_address
+        r"""Address of the collection to which the NFT belongs; may be empty if unknown"""
+        self.address = address
+        r"""Address of the NFT"""
+        self.owner_address = owner_address
+        r"""Address of the owner of the NFT"""
+        self.index = index
+        r"""Index of the NFT among all NFTs from the collection as a decimal number"""
+        self.name = name
+        r"""Name of the NFT"""
+        self.description = description
+        r"""Description of the NFT"""
+        self.image = image
+        r"""Image of the NFT; may be null if none"""
+        self.thumbnail = thumbnail
+        r"""Thumbnail of the NFT; may be null if none"""
+        self.content = content
+        r"""Content of the NFT; may be null if none"""
+        self.sticker = sticker
+        r"""Sticker of the NFT; may be null if none"""
+        self.attributes = attributes or []
+        r"""Attributes of the NFT"""
+        self.extra = extra
+        r"""Additional data about the NFT; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonNft"]:
+        return "tonNft"
+
+    @classmethod
+    def getClass(self) -> Literal["TonNft"]:
+        return "TonNft"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "collection_address": self.collection_address,
+            "address": self.address,
+            "owner_address": self.owner_address,
+            "index": self.index,
+            "name": self.name,
+            "description": self.description,
+            "image": self.image,
+            "thumbnail": self.thumbnail,
+            "content": self.content,
+            "sticker": self.sticker,
+            "attributes": self.attributes,
+            "extra": self.extra,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonNft | None:
+        if data:
+            data_class = cls()
+            data_class.collection_address = data.get("collection_address", "")
+            data_class.address = data.get("address", "")
+            data_class.owner_address = data.get("owner_address", "")
+            data_class.index = data.get("index", "")
+            data_class.name = data.get("name", "")
+            data_class.description = data.get("description", "")
+            data_class.image = data.get("image", None)
+            data_class.thumbnail = data.get("thumbnail", None)
+            data_class.content = data.get("content", None)
+            data_class.sticker = data.get("sticker", None)
+            data_class.attributes = data.get("attributes", None)
+            data_class.extra = data.get("extra", None)
+
+        return data_class
+
+
+class TonNfts(TlObject):
+    r"""Represents a list of TON NFTs
+
+    Parameters:
+        nfts (list[:class:`~pytdbot.types.TonNft`]):
+            List of NFTs
+
+        next_offset (:class:`str`):
+            The offset for the next request\. If empty, then there are no more results
+
+    """
+
+    def __init__(
+        self, *, nfts: list[TonNft] | None = None, next_offset: str | None = ""
+    ) -> None:
+        self.nfts = nfts or []
+        r"""List of NFTs"""
+        self.next_offset = next_offset
+        r"""The offset for the next request\. If empty, then there are no more results"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonNfts"]:
+        return "tonNfts"
+
+    @classmethod
+    def getClass(self) -> Literal["TonNfts"]:
+        return "TonNfts"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "nfts": self.nfts,
+            "next_offset": self.next_offset,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonNfts | None:
+        if data:
+            data_class = cls()
+            data_class.nfts = data.get("nfts", None)
+            data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
+class TonWalletTransactionStateSucceeded(TlObject, TonWalletTransactionState):
+    r"""The transaction succeeded
+
+    Parameters:
+        tx_hash (:class:`str`):
+            Hash of the transaction
+
+    """
+
+    def __init__(self, *, tx_hash: str | None = "") -> None:
+        self.tx_hash = tx_hash
+        r"""Hash of the transaction"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransactionStateSucceeded"]:
+        return "tonWalletTransactionStateSucceeded"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransactionState"]:
+        return "TonWalletTransactionState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "tx_hash": self.tx_hash}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletTransactionStateSucceeded | None:
+        if data:
+            data_class = cls()
+            data_class.tx_hash = data.get("tx_hash", "")
+
+        return data_class
+
+
+class TonWalletTransactionStateFailed(TlObject, TonWalletTransactionState):
+    r"""The transaction failed"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransactionStateFailed"]:
+        return "tonWalletTransactionStateFailed"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransactionState"]:
+        return "TonWalletTransactionState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletTransactionStateFailed | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonWalletTransactionTypeOnRampDeposit(TlObject, TonWalletTransactionType):
+    r"""The transaction is a deposit from an on\-ramp provider
+
+    Parameters:
+        amount (:class:`int`):
+            The amount of received cryptocurrency, in the smallest units of the cryptocurrency
+
+        provider_name (:class:`str`):
+            Name of the on\-ramp provider
+
+    """
+
+    def __init__(
+        self, *, amount: int | None = 0, provider_name: str | None = ""
+    ) -> None:
+        self.amount = amount
+        r"""The amount of received cryptocurrency, in the smallest units of the cryptocurrency"""
+        self.provider_name = provider_name
+        r"""Name of the on\-ramp provider"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransactionTypeOnRampDeposit"]:
+        return "tonWalletTransactionTypeOnRampDeposit"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransactionType"]:
+        return "TonWalletTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "amount": self.amount,
+            "provider_name": self.provider_name,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletTransactionTypeOnRampDeposit | None:
+        if data:
+            data_class = cls()
+            data_class.amount = int(data.get("amount", 0))
+            data_class.provider_name = data.get("provider_name", "")
+
+        return data_class
+
+
+class TonWalletTransactionTypeTransfer(TlObject, TonWalletTransactionType):
+    r"""A transfer of TON Grams to or from the wallet
+
+    Parameters:
+        amount (:class:`int`):
+            The amount of received cryptocurrency, in the smallest units of the cryptocurrency; negative for outgoing transactions
+
+        is_gasless (:class:`bool`):
+            True, if the fee was paid by Telegram
+
+        comment (:class:`str`):
+            Comment added to the transaction
+
+        is_comment_encrypted (:class:`bool`):
+            True, if the comment is encrypted and must be decrypted using the user's private key
+
+    """
+
+    def __init__(
+        self,
+        *,
+        amount: int | None = 0,
+        is_gasless: bool | None = False,
+        comment: str | None = "",
+        is_comment_encrypted: bool | None = False,
+    ) -> None:
+        self.amount = amount
+        r"""The amount of received cryptocurrency, in the smallest units of the cryptocurrency; negative for outgoing transactions"""
+        self.is_gasless = is_gasless
+        r"""True, if the fee was paid by Telegram"""
+        self.comment = comment
+        r"""Comment added to the transaction"""
+        self.is_comment_encrypted = is_comment_encrypted
+        r"""True, if the comment is encrypted and must be decrypted using the user's private key"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransactionTypeTransfer"]:
+        return "tonWalletTransactionTypeTransfer"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransactionType"]:
+        return "TonWalletTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "amount": self.amount,
+            "is_gasless": self.is_gasless,
+            "comment": self.comment,
+            "is_comment_encrypted": self.is_comment_encrypted,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletTransactionTypeTransfer | None:
+        if data:
+            data_class = cls()
+            data_class.amount = int(data.get("amount", 0))
+            data_class.is_gasless = data.get("is_gasless", False)
+            data_class.comment = data.get("comment", "")
+            data_class.is_comment_encrypted = data.get("is_comment_encrypted", False)
+
+        return data_class
+
+
+class TonWalletTransactionTypeNftTransfer(TlObject, TonWalletTransactionType):
+    r"""A transfer of a TON NFT to or from the wallet
+
+    Parameters:
+        nft (:class:`~pytdbot.types.TonNft`):
+            The transferred NFT
+
+        is_outgoing (:class:`bool`):
+            True, if the transfer is outgoing
+
+        comment (:class:`str`):
+            Comment added to the transaction
+
+        is_comment_encrypted (:class:`bool`):
+            True, if the comment is encrypted and must be decrypted using the user's private key
+
+    """
+
+    def __init__(
+        self,
+        *,
+        nft: TonNft | None = None,
+        is_outgoing: bool | None = False,
+        comment: str | None = "",
+        is_comment_encrypted: bool | None = False,
+    ) -> None:
+        self.nft = nft
+        r"""The transferred NFT"""
+        self.is_outgoing = is_outgoing
+        r"""True, if the transfer is outgoing"""
+        self.comment = comment
+        r"""Comment added to the transaction"""
+        self.is_comment_encrypted = is_comment_encrypted
+        r"""True, if the comment is encrypted and must be decrypted using the user's private key"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransactionTypeNftTransfer"]:
+        return "tonWalletTransactionTypeNftTransfer"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransactionType"]:
+        return "TonWalletTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "nft": self.nft,
+            "is_outgoing": self.is_outgoing,
+            "comment": self.comment,
+            "is_comment_encrypted": self.is_comment_encrypted,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletTransactionTypeNftTransfer | None:
+        if data:
+            data_class = cls()
+            data_class.nft = data.get("nft", None)
+            data_class.is_outgoing = data.get("is_outgoing", False)
+            data_class.comment = data.get("comment", "")
+            data_class.is_comment_encrypted = data.get("is_comment_encrypted", False)
+
+        return data_class
+
+
+class TonWalletTransactionTypeKeyChange(TlObject, TonWalletTransactionType):
+    r"""Change of the wallet key"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransactionTypeKeyChange"]:
+        return "tonWalletTransactionTypeKeyChange"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransactionType"]:
+        return "TonWalletTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletTransactionTypeKeyChange | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonWalletTransaction(TlObject):
+    r"""Represents a transaction with the TON wallet of the current user
+
+    Parameters:
+        id (:class:`str`):
+            Unique identifier of the transaction
+
+        peer_address (:class:`str`):
+            Address in the TON blockchain of the transaction peer; may be empty if the transaction isn't a wallet transfer
+
+        peer_user_id (:class:`int`):
+            Identifier of the other user who participated in the transaction; 0 if unknown
+
+        peer_domain (:class:`str`):
+            Identifier of the domain assigned to the peer address; may be empty if none
+
+        date (:class:`int`):
+            Point in time \(Unix timestamp\) when the transaction was completed
+
+        fee_amount (:class:`int`):
+            The fee amount paid for the transaction in TON Grams, in the smallest units of the cryptocurrency
+
+        state (:class:`~pytdbot.types.TonWalletTransactionState`):
+            State of the transaction
+
+        type (:class:`~pytdbot.types.TonWalletTransactionType`):
+            Type of the transaction
+
+    """
+
+    def __init__(
+        self,
+        *,
+        id: str | None = "",
+        peer_address: str | None = "",
+        peer_user_id: int | None = 0,
+        peer_domain: str | None = "",
+        date: int | None = 0,
+        fee_amount: int | None = 0,
+        state: TonWalletTransactionStateSucceeded
+        | TonWalletTransactionStateFailed
+        | None = None,
+        type: TonWalletTransactionTypeOnRampDeposit
+        | TonWalletTransactionTypeTransfer
+        | TonWalletTransactionTypeNftTransfer
+        | TonWalletTransactionTypeKeyChange
+        | None = None,
+    ) -> None:
+        self.id = id
+        r"""Unique identifier of the transaction"""
+        self.peer_address = peer_address
+        r"""Address in the TON blockchain of the transaction peer; may be empty if the transaction isn't a wallet transfer"""
+        self.peer_user_id = peer_user_id
+        r"""Identifier of the other user who participated in the transaction; 0 if unknown"""
+        self.peer_domain = peer_domain
+        r"""Identifier of the domain assigned to the peer address; may be empty if none"""
+        self.date = date
+        r"""Point in time \(Unix timestamp\) when the transaction was completed"""
+        self.fee_amount = fee_amount
+        r"""The fee amount paid for the transaction in TON Grams, in the smallest units of the cryptocurrency"""
+        self.state = state
+        r"""State of the transaction"""
+        self.type = type
+        r"""Type of the transaction"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransaction"]:
+        return "tonWalletTransaction"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransaction"]:
+        return "TonWalletTransaction"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "peer_address": self.peer_address,
+            "peer_user_id": self.peer_user_id,
+            "peer_domain": self.peer_domain,
+            "date": self.date,
+            "fee_amount": self.fee_amount,
+            "state": self.state,
+            "type": self.type,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletTransaction | None:
+        if data:
+            data_class = cls()
+            data_class.id = data.get("id", "")
+            data_class.peer_address = data.get("peer_address", "")
+            data_class.peer_user_id = int(data.get("peer_user_id", 0))
+            data_class.peer_domain = data.get("peer_domain", "")
+            data_class.date = int(data.get("date", 0))
+            data_class.fee_amount = int(data.get("fee_amount", 0))
+            data_class.state = data.get("state", None)
+            data_class.type = data.get("type", None)
+
+        return data_class
+
+
+class TonWalletTransactions(TlObject):
+    r"""Represents a list of TON Gram transactions
+
+    Parameters:
+        gram_amount (:class:`int`):
+            The total amount of owned TON Grams, in the smallest units of the cryptocurrency
+
+        transactions (list[:class:`~pytdbot.types.TonWalletTransaction`]):
+            List of transactions
+
+        next_offset (:class:`str`):
+            The offset for the next request\. If empty, then there are no more results
+
+    """
+
+    def __init__(
+        self,
+        *,
+        gram_amount: int | None = 0,
+        transactions: list[TonWalletTransaction] | None = None,
+        next_offset: str | None = "",
+    ) -> None:
+        self.gram_amount = gram_amount
+        r"""The total amount of owned TON Grams, in the smallest units of the cryptocurrency"""
+        self.transactions = transactions or []
+        r"""List of transactions"""
+        self.next_offset = next_offset
+        r"""The offset for the next request\. If empty, then there are no more results"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransactions"]:
+        return "tonWalletTransactions"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransactions"]:
+        return "TonWalletTransactions"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "gram_amount": self.gram_amount,
+            "transactions": self.transactions,
+            "next_offset": self.next_offset,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletTransactions | None:
+        if data:
+            data_class = cls()
+            data_class.gram_amount = int(data.get("gram_amount", 0))
+            data_class.transactions = data.get("transactions", None)
+            data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
+class TonConnectRequestStatePending(TlObject, TonConnectRequestState):
+    r"""The request must be accepted or rejected if it isn't expired yet
+
+    Parameters:
+        expiration_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the request will expire or has expired
+
+    """
+
+    def __init__(self, *, expiration_date: int | None = 0) -> None:
+        self.expiration_date = expiration_date
+        r"""Point in time \(Unix timestamp\) when the request will expire or has expired"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectRequestStatePending"]:
+        return "tonConnectRequestStatePending"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectRequestState"]:
+        return "TonConnectRequestState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "expiration_date": self.expiration_date}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectRequestStatePending | None:
+        if data:
+            data_class = cls()
+            data_class.expiration_date = int(data.get("expiration_date", 0))
+
+        return data_class
+
+
+class TonConnectRequestStateAccepted(TlObject, TonConnectRequestState):
+    r"""The request was accepted"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectRequestStateAccepted"]:
+        return "tonConnectRequestStateAccepted"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectRequestState"]:
+        return "TonConnectRequestState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectRequestStateAccepted | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonConnectRequestStateRejected(TlObject, TonConnectRequestState):
+    r"""The request was rejected"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectRequestStateRejected"]:
+        return "tonConnectRequestStateRejected"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectRequestState"]:
+        return "TonConnectRequestState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectRequestStateRejected | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonConnectManifestPending(TlObject, TonConnectManifest):
+    r"""The manifest is being downloaded"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectManifestPending"]:
+        return "tonConnectManifestPending"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectManifest"]:
+        return "TonConnectManifest"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectManifestPending | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonConnectManifestInfo(TlObject, TonConnectManifest):
+    r"""The manifest is available
+
+    Parameters:
+        url (:class:`str`):
+            URL of the dApp
+
+        name (:class:`str`):
+            Name of the dApp
+
+        icon (:class:`~pytdbot.types.Document`):
+            App icon in PNG or ICO format
+
+    """
+
+    def __init__(
+        self,
+        *,
+        url: str | None = "",
+        name: str | None = "",
+        icon: Document | None = None,
+    ) -> None:
+        self.url = url
+        r"""URL of the dApp"""
+        self.name = name
+        r"""Name of the dApp"""
+        self.icon = icon
+        r"""App icon in PNG or ICO format"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectManifestInfo"]:
+        return "tonConnectManifestInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectManifest"]:
+        return "TonConnectManifest"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "url": self.url,
+            "name": self.name,
+            "icon": self.icon,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectManifestInfo | None:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.name = data.get("name", "")
+            data_class.icon = data.get("icon", None)
+
+        return data_class
+
+
+class TonConnectManifestFailed(TlObject, TonConnectManifest):
+    r"""The manifest has failed to download"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectManifestFailed"]:
+        return "tonConnectManifestFailed"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectManifest"]:
+        return "TonConnectManifest"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectManifestFailed | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonConnectManifestInvalid(TlObject, TonConnectManifest):
+    r"""The manifest is invalid"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectManifestInvalid"]:
+        return "tonConnectManifestInvalid"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectManifest"]:
+        return "TonConnectManifest"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectManifestInvalid | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonConnectSessionStatePending(TlObject, TonConnectSessionState):
+    r"""The session is pending"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectSessionStatePending"]:
+        return "tonConnectSessionStatePending"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectSessionState"]:
+        return "TonConnectSessionState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectSessionStatePending | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonConnectSessionStateReady(TlObject, TonConnectSessionState):
+    r"""The session is ready"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectSessionStateReady"]:
+        return "tonConnectSessionStateReady"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectSessionState"]:
+        return "TonConnectSessionState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectSessionStateReady | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonConnectSessionStateClosing(TlObject, TonConnectSessionState):
+    r"""The session is being closed"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectSessionStateClosing"]:
+        return "tonConnectSessionStateClosing"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectSessionState"]:
+        return "TonConnectSessionState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectSessionStateClosing | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonConnectSessionStateClosed(TlObject, TonConnectSessionState):
+    r"""The session is closed"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectSessionStateClosed"]:
+        return "tonConnectSessionStateClosed"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectSessionState"]:
+        return "TonConnectSessionState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectSessionStateClosed | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonConnectConnectItemAddress(TlObject, TonConnectConnectItem):
+    r"""Address of the wallet
+
+    Parameters:
+        network (:class:`str`):
+            Stringified TON network global\_id \(e\.g\. \"\-239\" for mainnet\); may be empty
+
+    """
+
+    def __init__(self, *, network: str | None = "") -> None:
+        self.network = network
+        r"""Stringified TON network global\_id \(e\.g\. \"\-239\" for mainnet\); may be empty"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectConnectItemAddress"]:
+        return "tonConnectConnectItemAddress"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectConnectItem"]:
+        return "TonConnectConnectItem"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "network": self.network}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectConnectItemAddress | None:
+        if data:
+            data_class = cls()
+            data_class.network = data.get("network", "")
+
+        return data_class
+
+
+class TonConnectConnectItemProof(TlObject, TonConnectConnectItem):
+    r"""Proof of the wallet ownership
+
+    Parameters:
+        payload (:class:`str`):
+            Payload to be used for the proof \(e\.g\. nonce \+ expiration timestamp\)
+
+    """
+
+    def __init__(self, *, payload: str | None = "") -> None:
+        self.payload = payload
+        r"""Payload to be used for the proof \(e\.g\. nonce \+ expiration timestamp\)"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectConnectItemProof"]:
+        return "tonConnectConnectItemProof"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectConnectItem"]:
+        return "TonConnectConnectItem"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "payload": self.payload}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectConnectItemProof | None:
+        if data:
+            data_class = cls()
+            data_class.payload = data.get("payload", "")
+
+        return data_class
+
+
+class TonConnectConnectRequest(TlObject):
+    r"""Contains information about a request to connect the user's TON wallet to a dApp using TON Connect
+
+    Parameters:
+        manifest_url (:class:`str`):
+            URL of the manifest of the dApp
+
+        items (list[:class:`~pytdbot.types.TonConnectConnectItem`]):
+            Items requested from the wallet
+
+    """
+
+    def __init__(
+        self,
+        *,
+        manifest_url: str | None = "",
+        items: list[TonConnectConnectItem] | None = None,
+    ) -> None:
+        self.manifest_url = manifest_url
+        r"""URL of the manifest of the dApp"""
+        self.items = items or []
+        r"""Items requested from the wallet"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectConnectRequest"]:
+        return "tonConnectConnectRequest"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectConnectRequest"]:
+        return "TonConnectConnectRequest"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "manifest_url": self.manifest_url,
+            "items": self.items,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectConnectRequest | None:
+        if data:
+            data_class = cls()
+            data_class.manifest_url = data.get("manifest_url", "")
+            data_class.items = data.get("items", None)
+
+        return data_class
+
+
+class TonConnectSession(TlObject):
+    r"""Represents a TON Connect session\. See https://github\.com/ton\-blockchain/ton\-connect/tree/main/spec for full TON Connect protocol documentation
+
+    Parameters:
+        id (:class:`int`):
+            Unique identifier of the session
+
+        dapp_client_id (:class:`str`):
+            Hex\-encoded public X25519 key of the dApp
+
+        wallet_client_id (:class:`str`):
+            Hex\-encoded public X25519 key of the current user's application; may be empty if none
+
+        creation_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the session was created
+
+        manifest (:class:`~pytdbot.types.TonConnectManifest`):
+            Manifest of the dApp
+
+        nonce (:class:`bytes`):
+            Nonce used for the session
+
+        state (:class:`~pytdbot.types.TonConnectSessionState`):
+            Session state
+
+    """
+
+    def __init__(
+        self,
+        *,
+        id: int | None = 0,
+        dapp_client_id: str | None = "",
+        wallet_client_id: str | None = "",
+        creation_date: int | None = 0,
+        manifest: TonConnectManifestPending
+        | TonConnectManifestInfo
+        | TonConnectManifestFailed
+        | TonConnectManifestInvalid
+        | None = None,
+        nonce: bytes | None = b"",
+        state: TonConnectSessionStatePending
+        | TonConnectSessionStateReady
+        | TonConnectSessionStateClosing
+        | TonConnectSessionStateClosed
+        | None = None,
+    ) -> None:
+        self.id = id
+        r"""Unique identifier of the session"""
+        self.dapp_client_id = dapp_client_id
+        r"""Hex\-encoded public X25519 key of the dApp"""
+        self.wallet_client_id = wallet_client_id
+        r"""Hex\-encoded public X25519 key of the current user's application; may be empty if none"""
+        self.creation_date = creation_date
+        r"""Point in time \(Unix timestamp\) when the session was created"""
+        self.manifest = manifest
+        r"""Manifest of the dApp"""
+        self.nonce = nonce
+        r"""Nonce used for the session"""
+        self.state = state
+        r"""Session state"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectSession"]:
+        return "tonConnectSession"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectSession"]:
+        return "TonConnectSession"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "dapp_client_id": self.dapp_client_id,
+            "wallet_client_id": self.wallet_client_id,
+            "creation_date": self.creation_date,
+            "manifest": self.manifest,
+            "nonce": self.nonce,
+            "state": self.state,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectSession | None:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+            data_class.dapp_client_id = data.get("dapp_client_id", "")
+            data_class.wallet_client_id = data.get("wallet_client_id", "")
+            data_class.creation_date = int(data.get("creation_date", 0))
+            data_class.manifest = data.get("manifest", None)
+            data_class.nonce = b64decode(data.get("nonce", b""))
+            data_class.state = data.get("state", None)
+
+        return data_class
+
+
+class TonConnectSessions(TlObject):
+    r"""Contains a list of TON Connect sessions
+
+    Parameters:
+        sessions (list[:class:`~pytdbot.types.TonConnectSession`]):
+            The list of sessions
+
+    """
+
+    def __init__(self, *, sessions: list[TonConnectSession] | None = None) -> None:
+        self.sessions = sessions or []
+        r"""The list of sessions"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectSessions"]:
+        return "tonConnectSessions"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectSessions"]:
+        return "TonConnectSessions"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "sessions": self.sessions}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectSessions | None:
+        if data:
+            data_class = cls()
+            data_class.sessions = data.get("sessions", None)
+
+        return data_class
+
+
+class TonConnectRequest(TlObject):
+    r"""Represents a pending TON Connect request
+
+    Parameters:
+        session_id (:class:`int`):
+            Unique identifier of the session
+
+        message_id (:class:`int`):
+            Unique identifier of the service message in the chat 777000 with the request
+
+        body (:class:`bytes`):
+            Body of the request
+
+        expiration_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the request will expire; 0 if never
+
+        topic (:class:`str`):
+            Topic of the request; may be empty if none
+
+        trace_id (:class:`str`):
+            Identifier to trace the request; may be empty if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        session_id: int | None = 0,
+        message_id: int | None = 0,
+        body: bytes | None = b"",
+        expiration_date: int | None = 0,
+        topic: str | None = "",
+        trace_id: str | None = "",
+    ) -> None:
+        self.session_id = session_id
+        r"""Unique identifier of the session"""
+        self.message_id = message_id
+        r"""Unique identifier of the service message in the chat 777000 with the request"""
+        self.body = body
+        r"""Body of the request"""
+        self.expiration_date = expiration_date
+        r"""Point in time \(Unix timestamp\) when the request will expire; 0 if never"""
+        self.topic = topic
+        r"""Topic of the request; may be empty if none"""
+        self.trace_id = trace_id
+        r"""Identifier to trace the request; may be empty if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectRequest"]:
+        return "tonConnectRequest"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectRequest"]:
+        return "TonConnectRequest"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "session_id": self.session_id,
+            "message_id": self.message_id,
+            "body": self.body,
+            "expiration_date": self.expiration_date,
+            "topic": self.topic,
+            "trace_id": self.trace_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectRequest | None:
+        if data:
+            data_class = cls()
+            data_class.session_id = int(data.get("session_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.body = b64decode(data.get("body", b""))
+            data_class.expiration_date = int(data.get("expiration_date", 0))
+            data_class.topic = data.get("topic", "")
+            data_class.trace_id = data.get("trace_id", "")
+
+        return data_class
+
+
+class TonConnectRequests(TlObject):
+    r"""Represents a session with its pending TON Connect requests
+
+    Parameters:
+        session (:class:`~pytdbot.types.TonConnectSession`):
+            The session
+
+        requests (list[:class:`~pytdbot.types.TonConnectRequest`]):
+            The requests
+
+    """
+
+    def __init__(
+        self,
+        *,
+        session: TonConnectSession | None = None,
+        requests: list[TonConnectRequest] | None = None,
+    ) -> None:
+        self.session = session
+        r"""The session"""
+        self.requests = requests or []
+        r"""The requests"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectRequests"]:
+        return "tonConnectRequests"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectRequests"]:
+        return "TonConnectRequests"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "session": self.session,
+            "requests": self.requests,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectRequests | None:
+        if data:
+            data_class = cls()
+            data_class.session = data.get("session", None)
+            data_class.requests = data.get("requests", None)
+
+        return data_class
+
+
+class TonConnectChallenge(TlObject):
+    r"""Represents a TON Connect challenge
+
+    Parameters:
+        challenge (:class:`bytes`):
+            104\-byte challenge
+
+        event_id (:class:`int`):
+            Unique identifier of the first outgoing event
+
+    """
+
+    def __init__(
+        self, *, challenge: bytes | None = b"", event_id: int | None = 0
+    ) -> None:
+        self.challenge = challenge
+        r"""104\-byte challenge"""
+        self.event_id = event_id
+        r"""Unique identifier of the first outgoing event"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectChallenge"]:
+        return "tonConnectChallenge"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectChallenge"]:
+        return "TonConnectChallenge"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "challenge": self.challenge,
+            "event_id": self.event_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectChallenge | None:
+        if data:
+            data_class = cls()
+            data_class.challenge = b64decode(data.get("challenge", b""))
+            data_class.event_id = int(data.get("event_id", 0))
+
+        return data_class
+
+
+class TonConnectSessionEventId(TlObject):
+    r"""Represents identifier of an event in a TON Connect session
+
+    Parameters:
+        event_id (:class:`int`):
+            The event identifier
+
+    """
+
+    def __init__(self, *, event_id: int | None = 0) -> None:
+        self.event_id = event_id
+        r"""The event identifier"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectSessionEventId"]:
+        return "tonConnectSessionEventId"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectSessionEventId"]:
+        return "TonConnectSessionEventId"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "event_id": self.event_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectSessionEventId | None:
+        if data:
+            data_class = cls()
+            data_class.event_id = int(data.get("event_id", 0))
+
+        return data_class
+
+
+class TonWalletTransferResult(TlObject):
+    r"""Represents result of cryptocurrency transfer from the current user's TON wallet
+
+    Parameters:
+        is_gasless (:class:`bool`):
+            True, if the transfer is gasless
+
+        msg_hash (:class:`bytes`):
+            Unique identifier of the sent message; use getTonWalletTransactionByMsgHash to poll information about the transaction
+
+        transaction (:class:`~pytdbot.types.TonWalletTransaction`):
+            The completed transaction; may be null if the transaction is still pending
+
+    """
+
+    def __init__(
+        self,
+        *,
+        is_gasless: bool | None = False,
+        msg_hash: bytes | None = b"",
+        transaction: TonWalletTransaction | None = None,
+    ) -> None:
+        self.is_gasless = is_gasless
+        r"""True, if the transfer is gasless"""
+        self.msg_hash = msg_hash
+        r"""Unique identifier of the sent message; use getTonWalletTransactionByMsgHash to poll information about the transaction"""
+        self.transaction = transaction
+        r"""The completed transaction; may be null if the transaction is still pending"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransferResult"]:
+        return "tonWalletTransferResult"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransferResult"]:
+        return "TonWalletTransferResult"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "is_gasless": self.is_gasless,
+            "msg_hash": self.msg_hash,
+            "transaction": self.transaction,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletTransferResult | None:
+        if data:
+            data_class = cls()
+            data_class.is_gasless = data.get("is_gasless", False)
+            data_class.msg_hash = b64decode(data.get("msg_hash", b""))
+            data_class.transaction = data.get("transaction", None)
+
+        return data_class
+
+
 class ActiveStoryStateLive(TlObject, ActiveStoryState):
     r"""The chat has an active live story
 
@@ -24010,6 +26969,9 @@ class Usernames(TlObject):
         collectible_usernames (list[:class:`str`]):
             Collectible usernames that were purchased at https://fragment\.com and can be passed to getCollectibleItemInfo for more details
 
+        secondary_username (:class:`str`):
+            Secondary non\-collectible username; for bots only\. Can't be used in toggleBotUsernameIsActive; use addBotSecondaryUsername or deleteBotSecondaryUsername to edit it\. If the username is disabled, then Telegram Premium subscription is required to re\-enable it
+
     """
 
     def __init__(
@@ -24019,6 +26981,7 @@ class Usernames(TlObject):
         disabled_usernames: list[str] | None = None,
         editable_username: str | None = "",
         collectible_usernames: list[str] | None = None,
+        secondary_username: str | None = "",
     ) -> None:
         self.active_usernames = active_usernames or []
         r"""List of active usernames; the first one must be shown as the primary username\. The order of active usernames can be changed with reorderActiveUsernames, reorderBotActiveUsernames or reorderSupergroupActiveUsernames"""
@@ -24028,6 +26991,8 @@ class Usernames(TlObject):
         r"""Active or disabled username, which may be changed with setUsername or setSupergroupUsername"""
         self.collectible_usernames = collectible_usernames or []
         r"""Collectible usernames that were purchased at https://fragment\.com and can be passed to getCollectibleItemInfo for more details"""
+        self.secondary_username = secondary_username
+        r"""Secondary non\-collectible username; for bots only\. Can't be used in toggleBotUsernameIsActive; use addBotSecondaryUsername or deleteBotSecondaryUsername to edit it\. If the username is disabled, then Telegram Premium subscription is required to re\-enable it"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -24050,6 +27015,7 @@ class Usernames(TlObject):
             "disabled_usernames": self.disabled_usernames,
             "editable_username": self.editable_username,
             "collectible_usernames": self.collectible_usernames,
+            "secondary_username": self.secondary_username,
         }
 
     @classmethod
@@ -24060,6 +27026,7 @@ class Usernames(TlObject):
             data_class.disabled_usernames = data.get("disabled_usernames", None)
             data_class.editable_username = data.get("editable_username", "")
             data_class.collectible_usernames = data.get("collectible_usernames", None)
+            data_class.secondary_username = data.get("secondary_username", "")
 
         return data_class
 
@@ -24489,6 +27456,8 @@ class BotInfo(TlObject):
         | InternalLinkTypeStoryAlbum
         | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
+        | InternalLinkTypeTonConnect
+        | InternalLinkTypeTonWalletTransfer
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
         | InternalLinkTypeUserPhoneNumber
@@ -24547,6 +27516,8 @@ class BotInfo(TlObject):
         | InternalLinkTypeStoryAlbum
         | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
+        | InternalLinkTypeTonConnect
+        | InternalLinkTypeTonWalletTransfer
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
         | InternalLinkTypeUserPhoneNumber
@@ -24605,6 +27576,8 @@ class BotInfo(TlObject):
         | InternalLinkTypeStoryAlbum
         | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
+        | InternalLinkTypeTonConnect
+        | InternalLinkTypeTonWalletTransfer
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
         | InternalLinkTypeUserPhoneNumber
@@ -24663,6 +27636,8 @@ class BotInfo(TlObject):
         | InternalLinkTypeStoryAlbum
         | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
+        | InternalLinkTypeTonConnect
+        | InternalLinkTypeTonWalletTransfer
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
         | InternalLinkTypeUserPhoneNumber
@@ -26573,7 +29548,7 @@ class ChatInviteLink(TlObject):
             True, if the link only creates join request\. If true, total number of joining members will be unlimited
 
         is_primary (:class:`bool`):
-            True, if the link is primary\. Primary invite link can't have name, expiration date, or usage limit\. There is exactly one primary invite link for each administrator with can\_invite\_users right at a given time
+            True, if the link is primary\. Primary invite link can't have name, expiration date, or usage limit\. Primary link can create join requests only if this is set up using toggleSupergroupJoinByRequest\. There is exactly one primary invite link for each administrator with can\_invite\_users right at a given time
 
         is_revoked (:class:`bool`):
             True, if the link was revoked
@@ -26623,7 +29598,7 @@ class ChatInviteLink(TlObject):
         self.creates_join_request = creates_join_request
         r"""True, if the link only creates join request\. If true, total number of joining members will be unlimited"""
         self.is_primary = is_primary
-        r"""True, if the link is primary\. Primary invite link can't have name, expiration date, or usage limit\. There is exactly one primary invite link for each administrator with can\_invite\_users right at a given time"""
+        r"""True, if the link is primary\. Primary invite link can't have name, expiration date, or usage limit\. Primary link can create join requests only if this is set up using toggleSupergroupJoinByRequest\. There is exactly one primary invite link for each administrator with can\_invite\_users right at a given time"""
         self.is_revoked = is_revoked
         r"""True, if the link was revoked"""
 
@@ -30956,6 +33931,8 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         | MessageGiftedStars
         | MessageGiftedGrams
         | MessageGiveawayPrizeStars
+        | MessageTonWalletTransfer
+        | MessageTonConnectRequest
         | MessageGift
         | MessageUpgradedGift
         | MessageRefundedUpgradedGift
@@ -31489,6 +34466,8 @@ class EphemeralMessageContent(TlObject):
         | MessageGiftedStars
         | MessageGiftedGrams
         | MessageGiveawayPrizeStars
+        | MessageTonWalletTransfer
+        | MessageTonConnectRequest
         | MessageGift
         | MessageUpgradedGift
         | MessageRefundedUpgradedGift
@@ -31840,6 +34819,8 @@ class Message(TlObject, MessageBoundMethods):
         | MessageGiftedStars
         | MessageGiftedGrams
         | MessageGiveawayPrizeStars
+        | MessageTonWalletTransfer
+        | MessageTonConnectRequest
         | MessageGift
         | MessageUpgradedGift
         | MessageRefundedUpgradedGift
@@ -33174,6 +36155,8 @@ class SponsoredMessage(TlObject):
         | MessageGiftedStars
         | MessageGiftedGrams
         | MessageGiveawayPrizeStars
+        | MessageTonWalletTransfer
+        | MessageTonConnectRequest
         | MessageGift
         | MessageUpgradedGift
         | MessageRefundedUpgradedGift
@@ -40484,8 +43467,11 @@ class ThemeSettings(TlObject):
         animate_outgoing_message_fill (:class:`bool`):
             If true, the freeform gradient fill needs to be animated on every sent message
 
+        has_outgoing_message_accent_color (:class:`bool`):
+            True, if there is chosen accent color for outgoing messages; otherwise, the color must be deduced from other theme settings
+
         outgoing_message_accent_color (:class:`int`):
-            Accent color of outgoing messages in ARGB format
+            Accent color of outgoing messages in ARGB format; must be ignored if has\_outgoing\_message\_accent\_color is false
 
     """
 
@@ -40505,6 +43491,7 @@ class ThemeSettings(TlObject):
         | BackgroundFillFreeformGradient
         | None = None,
         animate_outgoing_message_fill: bool | None = False,
+        has_outgoing_message_accent_color: bool | None = False,
         outgoing_message_accent_color: int | None = 0,
     ) -> None:
         self.base_theme = base_theme
@@ -40517,8 +43504,10 @@ class ThemeSettings(TlObject):
         r"""The fill to be used as a background for outgoing messages; may be null if the fill from the base theme must be used instead"""
         self.animate_outgoing_message_fill = animate_outgoing_message_fill
         r"""If true, the freeform gradient fill needs to be animated on every sent message"""
+        self.has_outgoing_message_accent_color = has_outgoing_message_accent_color
+        r"""True, if there is chosen accent color for outgoing messages; otherwise, the color must be deduced from other theme settings"""
         self.outgoing_message_accent_color = outgoing_message_accent_color
-        r"""Accent color of outgoing messages in ARGB format"""
+        r"""Accent color of outgoing messages in ARGB format; must be ignored if has\_outgoing\_message\_accent\_color is false"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -40542,6 +43531,7 @@ class ThemeSettings(TlObject):
             "background": self.background,
             "outgoing_message_fill": self.outgoing_message_fill,
             "animate_outgoing_message_fill": self.animate_outgoing_message_fill,
+            "has_outgoing_message_accent_color": self.has_outgoing_message_accent_color,
             "outgoing_message_accent_color": self.outgoing_message_accent_color,
         }
 
@@ -40555,6 +43545,9 @@ class ThemeSettings(TlObject):
             data_class.outgoing_message_fill = data.get("outgoing_message_fill", None)
             data_class.animate_outgoing_message_fill = data.get(
                 "animate_outgoing_message_fill", False
+            )
+            data_class.has_outgoing_message_accent_color = data.get(
+                "has_outgoing_message_accent_color", False
             )
             data_class.outgoing_message_accent_color = int(
                 data.get("outgoing_message_accent_color", 0)
@@ -40595,6 +43588,7 @@ class InlineButton(TlObject):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -40736,6 +43730,7 @@ class RichTextBold(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -40809,6 +43804,7 @@ class RichTextItalic(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -40882,6 +43878,7 @@ class RichTextUnderline(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -40955,6 +43952,7 @@ class RichTextStrikethrough(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41028,6 +44026,7 @@ class RichTextSpoiler(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41101,6 +44100,7 @@ class RichTextSubscript(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41174,6 +44174,7 @@ class RichTextSuperscript(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41247,6 +44248,7 @@ class RichTextMarked(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41326,6 +44328,7 @@ class RichTextDateTime(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41417,6 +44420,7 @@ class RichTextMention(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41497,6 +44501,7 @@ class RichTextHashtag(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41577,6 +44582,7 @@ class RichTextCashtag(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41657,6 +44663,7 @@ class RichTextBankCardNumber(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41712,6 +44719,87 @@ class RichTextBankCardNumber(TlObject, RichText):
         return data_class
 
 
+class RichTextTonAddress(TlObject, RichText):
+    r"""An address in the TON blockchain
+
+    Parameters:
+        text (:class:`~pytdbot.types.RichText`):
+            Text
+
+        address (:class:`str`):
+            The address
+
+    """
+
+    def __init__(
+        self,
+        *,
+        text: RichTextPlain
+        | RichTextBold
+        | RichTextItalic
+        | RichTextUnderline
+        | RichTextStrikethrough
+        | RichTextSpoiler
+        | RichTextSubscript
+        | RichTextSuperscript
+        | RichTextMarked
+        | RichTextDateTime
+        | RichTextMention
+        | RichTextHashtag
+        | RichTextCashtag
+        | RichTextBankCardNumber
+        | RichTextTonAddress
+        | RichTextBotCommand
+        | RichTextFixed
+        | RichTextMentionName
+        | RichTextUrl
+        | RichTextEmailAddress
+        | RichTextPhoneNumber
+        | RichTextCustomEmoji
+        | RichTextIcon
+        | RichTextMathematicalExpression
+        | RichTextButton
+        | RichTextDiff
+        | RichTextReference
+        | RichTextReferenceLink
+        | RichTextAnchor
+        | RichTextAnchorLink
+        | RichTexts
+        | None = None,
+        address: str | None = "",
+    ) -> None:
+        self.text = text
+        r"""Text"""
+        self.address = address
+        r"""The address"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["richTextTonAddress"]:
+        return "richTextTonAddress"
+
+    @classmethod
+    def getClass(self) -> Literal["RichText"]:
+        return "RichText"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text, "address": self.address}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> RichTextTonAddress | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.address = data.get("address", "")
+
+        return data_class
+
+
 class RichTextBotCommand(TlObject, RichText):
     r"""A bot command
 
@@ -41741,6 +44829,7 @@ class RichTextBotCommand(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41822,6 +44911,7 @@ class RichTextFixed(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41898,6 +44988,7 @@ class RichTextMentionName(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -41981,6 +45072,7 @@ class RichTextUrl(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -42070,6 +45162,7 @@ class RichTextEmailAddress(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -42154,6 +45247,7 @@ class RichTextPhoneNumber(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -42429,6 +45523,7 @@ class RichTextDiff(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -42460,6 +45555,7 @@ class RichTextDiff(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -42540,6 +45636,7 @@ class RichTextReference(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -42622,6 +45719,7 @@ class RichTextReferenceLink(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -42753,6 +45851,7 @@ class RichTextAnchorLink(TlObject, RichText):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -42881,6 +45980,7 @@ class PageBlockCaption(TlObject):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -42912,6 +46012,7 @@ class PageBlockCaption(TlObject):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -43353,6 +46454,7 @@ class PageBlockTableCell(TlObject):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -43546,6 +46648,7 @@ class PageBlockTitle(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -43619,6 +46722,7 @@ class PageBlockSubtitle(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -43695,6 +46799,7 @@ class PageBlockAuthorDate(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -43776,6 +46881,7 @@ class PageBlockHeader(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -43849,6 +46955,7 @@ class PageBlockSubheader(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -43925,6 +47032,7 @@ class PageBlockSectionHeading(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -44002,6 +47110,7 @@ class PageBlockKicker(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -44075,6 +47184,7 @@ class PageBlockParagraph(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -44151,6 +47261,7 @@ class PageBlockPreformatted(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -44228,6 +47339,7 @@ class PageBlockFooter(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -44301,6 +47413,7 @@ class PageBlockThinking(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -44526,6 +47639,7 @@ class PageBlockBlockQuote(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -44605,6 +47719,7 @@ class PageBlockExpandableBlockQuote(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -44636,6 +47751,7 @@ class PageBlockExpandableBlockQuote(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -44715,6 +47831,7 @@ class PageBlockPullQuote(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -44746,6 +47863,7 @@ class PageBlockPullQuote(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -45644,6 +48762,7 @@ class PageBlockTable(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -45746,6 +48865,7 @@ class PageBlockDetails(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -45835,6 +48955,7 @@ class PageBlockRelatedArticles(TlObject, PageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -46135,6 +49256,8 @@ class WebPageInstantView(TlObject):
         | InternalLinkTypeStoryAlbum
         | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
+        | InternalLinkTypeTonConnect
+        | InternalLinkTypeTonWalletTransfer
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
         | InternalLinkTypeUserPhoneNumber
@@ -59010,6 +62133,173 @@ class MessageGiveawayPrizeStars(TlObject, MessageContent):
         return data_class
 
 
+class MessageTonWalletTransfer(TlObject, MessageContent):
+    r"""Represents a transfer with the TON wallet of the current user
+
+    Parameters:
+        sender_user_id (:class:`int`):
+            Sender of the transfer; 0 if unknown
+
+        transaction_id (:class:`str`):
+            Unique identifier of the transaction; may be empty if the transfer isn't send yet\. Use getTonWalletTransaction to get additional information about the transaction
+
+        peer_address (:class:`str`):
+            Address in the TON blockchain of the transaction peer
+
+        amount (:class:`int`):
+            The amount of received cryptocurrency, in the smallest units of the cryptocurrency; negative for outgoing transactions
+
+        comment (:class:`str`):
+            Comment added to the transaction
+
+        is_comment_encrypted (:class:`bool`):
+            True, if the comment is encrypted and must be decrypted using the receiver's or sender's private key
+
+    """
+
+    def __init__(
+        self,
+        *,
+        sender_user_id: int | None = 0,
+        transaction_id: str | None = "",
+        peer_address: str | None = "",
+        amount: int | None = 0,
+        comment: str | None = "",
+        is_comment_encrypted: bool | None = False,
+    ) -> None:
+        self.sender_user_id = sender_user_id
+        r"""Sender of the transfer; 0 if unknown"""
+        self.transaction_id = transaction_id
+        r"""Unique identifier of the transaction; may be empty if the transfer isn't send yet\. Use getTonWalletTransaction to get additional information about the transaction"""
+        self.peer_address = peer_address
+        r"""Address in the TON blockchain of the transaction peer"""
+        self.amount = amount
+        r"""The amount of received cryptocurrency, in the smallest units of the cryptocurrency; negative for outgoing transactions"""
+        self.comment = comment
+        r"""Comment added to the transaction"""
+        self.is_comment_encrypted = is_comment_encrypted
+        r"""True, if the comment is encrypted and must be decrypted using the receiver's or sender's private key"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["messageTonWalletTransfer"]:
+        return "messageTonWalletTransfer"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "sender_user_id": self.sender_user_id,
+            "transaction_id": self.transaction_id,
+            "peer_address": self.peer_address,
+            "amount": self.amount,
+            "comment": self.comment,
+            "is_comment_encrypted": self.is_comment_encrypted,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> MessageTonWalletTransfer | None:
+        if data:
+            data_class = cls()
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
+            data_class.transaction_id = data.get("transaction_id", "")
+            data_class.peer_address = data.get("peer_address", "")
+            data_class.amount = int(data.get("amount", 0))
+            data_class.comment = data.get("comment", "")
+            data_class.is_comment_encrypted = data.get("is_comment_encrypted", False)
+
+        return data_class
+
+
+class MessageTonConnectRequest(TlObject, MessageContent):
+    r"""A request from a dApp was received through TON Connect
+
+    Parameters:
+        session_id (:class:`int`):
+            Unique identifier of the TON Connect session
+
+        state (:class:`~pytdbot.types.TonConnectRequestState`):
+            State of the request
+
+        dapp_name (:class:`str`):
+            Name of the dApp; may be empty if unknown
+
+        topic (:class:`str`):
+            Topic of the request; may be empty if none
+
+        trace_id (:class:`str`):
+            Identifier to trace the request; may be empty if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        session_id: int | None = 0,
+        state: TonConnectRequestStatePending
+        | TonConnectRequestStateAccepted
+        | TonConnectRequestStateRejected
+        | None = None,
+        dapp_name: str | None = "",
+        topic: str | None = "",
+        trace_id: str | None = "",
+    ) -> None:
+        self.session_id = session_id
+        r"""Unique identifier of the TON Connect session"""
+        self.state = state
+        r"""State of the request"""
+        self.dapp_name = dapp_name
+        r"""Name of the dApp; may be empty if unknown"""
+        self.topic = topic
+        r"""Topic of the request; may be empty if none"""
+        self.trace_id = trace_id
+        r"""Identifier to trace the request; may be empty if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["messageTonConnectRequest"]:
+        return "messageTonConnectRequest"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "session_id": self.session_id,
+            "state": self.state,
+            "dapp_name": self.dapp_name,
+            "topic": self.topic,
+            "trace_id": self.trace_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> MessageTonConnectRequest | None:
+        if data:
+            data_class = cls()
+            data_class.session_id = int(data.get("session_id", 0))
+            data_class.state = data.get("state", None)
+            data_class.dapp_name = data.get("dapp_name", "")
+            data_class.topic = data.get("topic", "")
+            data_class.trace_id = data.get("trace_id", "")
+
+        return data_class
+
+
 class MessageGift(TlObject, MessageContent):
     r"""A regular gift was received or sent by the current user, or the current user was notified about a channel gift
 
@@ -61049,6 +64339,37 @@ class TextEntityTypeBankCardNumber(TlObject, TextEntityType):
 
     @classmethod
     def from_dict(cls, data: dict) -> TextEntityTypeBankCardNumber | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TextEntityTypeTonAddress(TlObject, TextEntityType):
+    r"""An address in the TON blockchain"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["textEntityTypeTonAddress"]:
+        return "textEntityTypeTonAddress"
+
+    @classmethod
+    def getClass(self) -> Literal["TextEntityType"]:
+        return "TextEntityType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TextEntityTypeTonAddress | None:
         if data:
             data_class = cls()
 
@@ -63409,6 +66730,7 @@ class InputPageBlockSectionHeading(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -63486,6 +66808,7 @@ class InputPageBlockParagraph(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -63562,6 +66885,7 @@ class InputPageBlockPreformatted(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -63639,6 +66963,7 @@ class InputPageBlockFooter(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -63712,6 +67037,7 @@ class InputPageBlockThinking(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -63937,6 +67263,7 @@ class InputPageBlockBlockQuote(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -64016,6 +67343,7 @@ class InputPageBlockExpandableBlockQuote(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -64047,6 +67375,7 @@ class InputPageBlockExpandableBlockQuote(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -64126,6 +67455,7 @@ class InputPageBlockPullQuote(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -64157,6 +67487,7 @@ class InputPageBlockPullQuote(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -64689,6 +68020,7 @@ class InputPageBlockTable(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -64791,6 +68123,7 @@ class InputPageBlockDetails(TlObject, InputPageBlock):
         | RichTextHashtag
         | RichTextCashtag
         | RichTextBankCardNumber
+        | RichTextTonAddress
         | RichTextBotCommand
         | RichTextFixed
         | RichTextMentionName
@@ -66607,6 +69940,9 @@ class MessageProperties(TlObject):
         can_set_fact_check (:class:`bool`):
             True, if fact check for the message can be changed through setMessageFactCheck
 
+        custom_emoji_ids (list[:class:`int`]):
+            Identifiers of custom emoji used in the message
+
         has_protected_content_by_current_user (:class:`bool`):
             True, if content of the message can't be saved locally, because it is protected by the current user; if true, then can\_be\_saved is false
 
@@ -66657,6 +69993,7 @@ class MessageProperties(TlObject):
         can_report_reactions: bool | None = False,
         can_report_supergroup_spam: bool | None = False,
         can_set_fact_check: bool | None = False,
+        custom_emoji_ids: list[int] | None = None,
         has_protected_content_by_current_user: bool | None = False,
         has_protected_content_by_other_user: bool | None = False,
         need_show_statistics: bool | None = False,
@@ -66733,6 +70070,8 @@ class MessageProperties(TlObject):
         r"""True, if the message can be reported using reportSupergroupSpam"""
         self.can_set_fact_check = can_set_fact_check
         r"""True, if fact check for the message can be changed through setMessageFactCheck"""
+        self.custom_emoji_ids = custom_emoji_ids or []
+        r"""Identifiers of custom emoji used in the message"""
         self.has_protected_content_by_current_user = (
             has_protected_content_by_current_user
         )
@@ -66795,6 +70134,7 @@ class MessageProperties(TlObject):
             "can_report_reactions": self.can_report_reactions,
             "can_report_supergroup_spam": self.can_report_supergroup_spam,
             "can_set_fact_check": self.can_set_fact_check,
+            "custom_emoji_ids": self.custom_emoji_ids,
             "has_protected_content_by_current_user": self.has_protected_content_by_current_user,
             "has_protected_content_by_other_user": self.has_protected_content_by_other_user,
             "need_show_statistics": self.need_show_statistics,
@@ -66868,6 +70208,7 @@ class MessageProperties(TlObject):
                 "can_report_supergroup_spam", False
             )
             data_class.can_set_fact_check = data.get("can_set_fact_check", False)
+            data_class.custom_emoji_ids = data.get("custom_emoji_ids", None)
             data_class.has_protected_content_by_current_user = data.get(
                 "has_protected_content_by_current_user", False
             )
@@ -72391,6 +75732,8 @@ class QuickReplyMessage(TlObject):
         | MessageGiftedStars
         | MessageGiftedGrams
         | MessageGiveawayPrizeStars
+        | MessageTonWalletTransfer
+        | MessageTonConnectRequest
         | MessageGift
         | MessageUpgradedGift
         | MessageRefundedUpgradedGift
@@ -72688,6 +76031,8 @@ class WelcomeMessage(TlObject):
         | MessageGiftedStars
         | MessageGiftedGrams
         | MessageGiveawayPrizeStars
+        | MessageTonWalletTransfer
+        | MessageTonConnectRequest
         | MessageGift
         | MessageUpgradedGift
         | MessageRefundedUpgradedGift
@@ -78862,6 +82207,8 @@ class TargetChatInternalLink(TlObject, TargetChat):
         | InternalLinkTypeStoryAlbum
         | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
+        | InternalLinkTypeTonConnect
+        | InternalLinkTypeTonWalletTransfer
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
         | InternalLinkTypeUserPhoneNumber
@@ -83546,7 +86893,7 @@ class ChatEventProfileAccentColorChanged(TlObject, ChatEventAction):
 
 
 class ChatEventHasProtectedContentToggled(TlObject, ChatEventAction):
-    r"""The has\_protected\_content setting of a channel was toggled
+    r"""The has\_protected\_content setting of a chat was toggled
 
     Parameters:
         has_protected_content (:class:`bool`):
@@ -84210,7 +87557,7 @@ class ChatEventVideoChatParticipantVolumeLevelChanged(TlObject, ChatEventAction)
 
 
 class ChatEventIsForumToggled(TlObject, ChatEventAction):
-    r"""The is\_forum setting of a channel was toggled
+    r"""The is\_forum setting of a supergroup was toggled
 
     Parameters:
         is_forum (:class:`bool`):
@@ -87567,6 +90914,8 @@ class PremiumFeatures(TlObject):
         | InternalLinkTypeStoryAlbum
         | InternalLinkTypeTextCompositionStyle
         | InternalLinkTypeTheme
+        | InternalLinkTypeTonConnect
+        | InternalLinkTypeTonWalletTransfer
         | InternalLinkTypeUnknownDeepLink
         | InternalLinkTypeUpgradedGift
         | InternalLinkTypeUserPhoneNumber
@@ -89019,7 +92368,7 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
             Number of bought Telegram Stars
 
         chat_id (:class:`int`):
-            Identifier of the chat that is supposed to receive the Telegram Stars; pass 0 if none
+            Identifier of the chat that is supposed to receive the Telegram Stars; pass 0 if none\. If non\-zero and getOption\(\"star\_top\_up\_disabled\"\), then the payment isn't allowed and the user can't buy Telegram Stars in this place
 
     """
 
@@ -89038,7 +92387,7 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
         self.star_count = star_count
         r"""Number of bought Telegram Stars"""
         self.chat_id = chat_id
-        r"""Identifier of the chat that is supposed to receive the Telegram Stars; pass 0 if none"""
+        r"""Identifier of the chat that is supposed to receive the Telegram Stars; pass 0 if none\. If non\-zero and getOption\(\"star\_top\_up\_disabled\"\), then the payment isn't allowed and the user can't buy Telegram Stars in this place"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -92549,6 +95898,107 @@ class PushMessageContentGiveaway(TlObject, PushMessageContent):
         return data_class
 
 
+class PushMessageContentTonWalletTransfer(TlObject, PushMessageContent):
+    r"""A message with a TON wallet transfer
+
+    Parameters:
+        sender_user_id (:class:`int`):
+            Sender of the transfer; 0 if unknown
+
+        amount (:class:`str`):
+            String representation of the received amount
+
+        comment (:class:`str`):
+            Comment added to the transaction if it is public
+
+    """
+
+    def __init__(
+        self,
+        *,
+        sender_user_id: int | None = 0,
+        amount: str | None = "",
+        comment: str | None = "",
+    ) -> None:
+        self.sender_user_id = sender_user_id
+        r"""Sender of the transfer; 0 if unknown"""
+        self.amount = amount
+        r"""String representation of the received amount"""
+        self.comment = comment
+        r"""Comment added to the transaction if it is public"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["pushMessageContentTonWalletTransfer"]:
+        return "pushMessageContentTonWalletTransfer"
+
+    @classmethod
+    def getClass(self) -> Literal["PushMessageContent"]:
+        return "PushMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "sender_user_id": self.sender_user_id,
+            "amount": self.amount,
+            "comment": self.comment,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PushMessageContentTonWalletTransfer | None:
+        if data:
+            data_class = cls()
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
+            data_class.amount = data.get("amount", "")
+            data_class.comment = data.get("comment", "")
+
+        return data_class
+
+
+class PushMessageContentTonConnectRequest(TlObject, PushMessageContent):
+    r"""A message with a request from a dApp was received through TON Connect
+
+    Parameters:
+        dapp_name (:class:`str`):
+            Name of the dApp; may be empty if unknown
+
+    """
+
+    def __init__(self, *, dapp_name: str | None = "") -> None:
+        self.dapp_name = dapp_name
+        r"""Name of the dApp; may be empty if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["pushMessageContentTonConnectRequest"]:
+        return "pushMessageContentTonConnectRequest"
+
+    @classmethod
+    def getClass(self) -> Literal["PushMessageContent"]:
+        return "PushMessageContent"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "dapp_name": self.dapp_name}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> PushMessageContentTonConnectRequest | None:
+        if data:
+            data_class = cls()
+            data_class.dapp_name = data.get("dapp_name", "")
+
+        return data_class
+
+
 class PushMessageContentGift(TlObject, PushMessageContent):
     r"""A message with a gift
 
@@ -94074,6 +97524,8 @@ class NotificationTypeNewPushMessage(TlObject, NotificationType):
         | PushMessageContentPoll
         | PushMessageContentPremiumGiftCode
         | PushMessageContentGiveaway
+        | PushMessageContentTonWalletTransfer
+        | PushMessageContentTonConnectRequest
         | PushMessageContentGift
         | PushMessageContentUpgradedGift
         | PushMessageContentScreenshotTaken
@@ -100606,7 +104058,7 @@ class InternalLinkTypeRequestManagedBot(TlObject, InternalLinkType):
             Username of the bot which will manage the new bot
 
         suggested_bot_username (:class:`str`):
-            Suggested username for the bot; always ends with \"bot\" case\-insensitive
+            Suggested username for the bot; always ends with \"bot\" or a string from updateAllowedBotUsernamePremiumSuffixes case\-insensitive
 
         suggested_bot_name (:class:`str`):
             Suggested name for the bot; may be empty if not specified
@@ -100623,7 +104075,7 @@ class InternalLinkTypeRequestManagedBot(TlObject, InternalLinkType):
         self.manager_bot_username = manager_bot_username
         r"""Username of the bot which will manage the new bot"""
         self.suggested_bot_username = suggested_bot_username
-        r"""Suggested username for the bot; always ends with \"bot\" case\-insensitive"""
+        r"""Suggested username for the bot; always ends with \"bot\" or a string from updateAllowedBotUsernamePremiumSuffixes case\-insensitive"""
         self.suggested_bot_name = suggested_bot_name
         r"""Suggested name for the bot; may be empty if not specified"""
 
@@ -101101,6 +104553,148 @@ class InternalLinkTypeTheme(TlObject, InternalLinkType):
         if data:
             data_class = cls()
             data_class.theme_name = data.get("theme_name", "")
+
+        return data_class
+
+
+class InternalLinkTypeTonConnect(TlObject, InternalLinkType):
+    r"""The link is a universal TON Connect link
+
+    Parameters:
+        version (:class:`int`):
+            TON Connect version
+
+        dapp_client_id (:class:`str`):
+            Hex\-encoded public X25519 key of the dApp
+
+        connect_request (:class:`~pytdbot.types.TonConnectConnectRequest`):
+            TON Connect connect request
+
+        return_strategy (:class:`str`):
+            Request return strategy; one of \"back\", \"none\", or a URL to open
+
+        rpc_request (:class:`str`):
+            Embedded RPC request represented as base64url\-encoded JSON
+
+        trace_id (:class:`str`):
+            Identifier to trace the connection request
+
+    """
+
+    def __init__(
+        self,
+        *,
+        version: int | None = 0,
+        dapp_client_id: str | None = "",
+        connect_request: TonConnectConnectRequest | None = None,
+        return_strategy: str | None = "",
+        rpc_request: str | None = "",
+        trace_id: str | None = "",
+    ) -> None:
+        self.version = version
+        r"""TON Connect version"""
+        self.dapp_client_id = dapp_client_id
+        r"""Hex\-encoded public X25519 key of the dApp"""
+        self.connect_request = connect_request
+        r"""TON Connect connect request"""
+        self.return_strategy = return_strategy
+        r"""Request return strategy; one of \"back\", \"none\", or a URL to open"""
+        self.rpc_request = rpc_request
+        r"""Embedded RPC request represented as base64url\-encoded JSON"""
+        self.trace_id = trace_id
+        r"""Identifier to trace the connection request"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["internalLinkTypeTonConnect"]:
+        return "internalLinkTypeTonConnect"
+
+    @classmethod
+    def getClass(self) -> Literal["InternalLinkType"]:
+        return "InternalLinkType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "version": self.version,
+            "dapp_client_id": self.dapp_client_id,
+            "connect_request": self.connect_request,
+            "return_strategy": self.return_strategy,
+            "rpc_request": self.rpc_request,
+            "trace_id": self.trace_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InternalLinkTypeTonConnect | None:
+        if data:
+            data_class = cls()
+            data_class.version = int(data.get("version", 0))
+            data_class.dapp_client_id = data.get("dapp_client_id", "")
+            data_class.connect_request = data.get("connect_request", None)
+            data_class.return_strategy = data.get("return_strategy", "")
+            data_class.rpc_request = data.get("rpc_request", "")
+            data_class.trace_id = data.get("trace_id", "")
+
+        return data_class
+
+
+class InternalLinkTypeTonWalletTransfer(TlObject, InternalLinkType):
+    r"""The link is a link for sending Grams from the user's TON wallet
+
+    Parameters:
+        receiver (:class:`~pytdbot.types.TonWalletTransferReceiver`):
+            Chosen receiver of the transfer; may be null if none
+
+        gram_amount (:class:`int`):
+            The pre\-filled amount of TON Grams to send; in the smallest units of the cryptocurrency
+
+    """
+
+    def __init__(
+        self,
+        *,
+        receiver: TonWalletTransferReceiverUser
+        | TonWalletTransferReceiverAddress
+        | None = None,
+        gram_amount: int | None = 0,
+    ) -> None:
+        self.receiver = receiver
+        r"""Chosen receiver of the transfer; may be null if none"""
+        self.gram_amount = gram_amount
+        r"""The pre\-filled amount of TON Grams to send; in the smallest units of the cryptocurrency"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["internalLinkTypeTonWalletTransfer"]:
+        return "internalLinkTypeTonWalletTransfer"
+
+    @classmethod
+    def getClass(self) -> Literal["InternalLinkType"]:
+        return "InternalLinkType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "receiver": self.receiver,
+            "gram_amount": self.gram_amount,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InternalLinkTypeTonWalletTransfer | None:
+        if data:
+            data_class = cls()
+            data_class.receiver = data.get("receiver", None)
+            data_class.gram_amount = int(data.get("gram_amount", 0))
 
         return data_class
 
@@ -104887,6 +108481,39 @@ class SuggestedActionViewChecksHint(TlObject, SuggestedAction):
         return data_class
 
 
+class SuggestedActionViewFirstTonWalletTransferHint(TlObject, SuggestedAction):
+    r"""Suggests the user to view a hint about receiving of the first TON wallet transfer"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["suggestedActionViewFirstTonWalletTransferHint"]:
+        return "suggestedActionViewFirstTonWalletTransferHint"
+
+    @classmethod
+    def getClass(self) -> Literal["SuggestedAction"]:
+        return "SuggestedAction"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> SuggestedActionViewFirstTonWalletTransferHint | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class SuggestedActionConvertToBroadcastGroup(TlObject, SuggestedAction):
     r"""Suggests the user to convert specified supergroup to a broadcast group
 
@@ -107205,7 +110832,7 @@ class ChatRevenueStatistics(TlObject):
             Amount of earned revenue
 
         usd_rate (:class:`float`):
-            Current conversion rate of the cryptocurrency in which revenue is calculated to USD
+            Current exchange rate of the cryptocurrency in which revenue is calculated to USD
 
     """
 
@@ -107230,7 +110857,7 @@ class ChatRevenueStatistics(TlObject):
         self.revenue_amount = revenue_amount
         r"""Amount of earned revenue"""
         self.usd_rate = usd_rate
-        r"""Current conversion rate of the cryptocurrency in which revenue is calculated to USD"""
+        r"""Current exchange rate of the cryptocurrency in which revenue is calculated to USD"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -107989,7 +111616,7 @@ class StarRevenueStatistics(TlObject):
             Telegram Star revenue status
 
         usd_rate (:class:`float`):
-            Current conversion rate of a Telegram Star to USD
+            Current exchange rate of a Telegram Star to USD
 
     """
 
@@ -108008,7 +111635,7 @@ class StarRevenueStatistics(TlObject):
         self.status = status
         r"""Telegram Star revenue status"""
         self.usd_rate = usd_rate
-        r"""Current conversion rate of a Telegram Star to USD"""
+        r"""Current exchange rate of a Telegram Star to USD"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -108124,7 +111751,7 @@ class GramRevenueStatistics(TlObject):
             Amount of earned revenue
 
         usd_rate (:class:`float`):
-            Current conversion rate of nanogram to USD cents
+            Current exchange rate of nanogram to USD cents
 
     """
 
@@ -108143,7 +111770,7 @@ class GramRevenueStatistics(TlObject):
         self.status = status
         r"""Amount of earned revenue"""
         self.usd_rate = usd_rate
-        r"""Current conversion rate of nanogram to USD cents"""
+        r"""Current exchange rate of nanogram to USD cents"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -109573,6 +113200,8 @@ class UpdateMessageContent(TlObject, Update):
         | MessageGiftedStars
         | MessageGiftedGrams
         | MessageGiveawayPrizeStars
+        | MessageTonWalletTransfer
+        | MessageTonConnectRequest
         | MessageGift
         | MessageUpgradedGift
         | MessageRefundedUpgradedGift
@@ -113581,6 +117210,8 @@ class UpdatePendingMessage(TlObject, Update):
         | MessageGiftedStars
         | MessageGiftedGrams
         | MessageGiveawayPrizeStars
+        | MessageTonWalletTransfer
+        | MessageTonConnectRequest
         | MessageGift
         | MessageUpgradedGift
         | MessageRefundedUpgradedGift
@@ -114282,6 +117913,8 @@ class UpdateServiceNotification(TlObject, Update):
         | MessageGiftedStars
         | MessageGiftedGrams
         | MessageGiveawayPrizeStars
+        | MessageTonWalletTransfer
+        | MessageTonConnectRequest
         | MessageGift
         | MessageUpgradedGift
         | MessageRefundedUpgradedGift
@@ -116193,6 +119826,45 @@ class UpdateStoryStealthMode(TlObject, Update):
         return data_class
 
 
+class UpdateAllowedBotUsernamePremiumSuffixes(TlObject, Update):
+    r"""Lists of suffixes allowed in secondary bot usernames, which can be added additionally to the main username if the bot's owner has a Telegram Premium subscription
+
+    Parameters:
+        suffixes (list[:class:`str`]):
+            The list of allowed suffixes
+
+    """
+
+    def __init__(self, *, suffixes: list[str] | None = None) -> None:
+        self.suffixes = suffixes or []
+        r"""The list of allowed suffixes"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateAllowedBotUsernamePremiumSuffixes"]:
+        return "updateAllowedBotUsernamePremiumSuffixes"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "suffixes": self.suffixes}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateAllowedBotUsernamePremiumSuffixes | None:
+        if data:
+            data_class = cls()
+            data_class.suffixes = data.get("suffixes", None)
+
+        return data_class
+
+
 class UpdateTrustedMiniAppBots(TlObject, Update):
     r"""Lists of bots which Mini Apps must be allowed to read text from clipboard and must be opened without a warning
 
@@ -117615,6 +121287,164 @@ class UpdateOwnedGramCount(TlObject, Update):
         if data:
             data_class = cls()
             data_class.gram_amount = int(data.get("gram_amount", 0))
+
+        return data_class
+
+
+class UpdateTonWalletState(TlObject, Update):
+    r"""The state of the TON wallet of the current user has changed
+
+    Parameters:
+        state (:class:`~pytdbot.types.TonWalletState`):
+            The new state of the wallet
+
+    """
+
+    def __init__(self, *, state: TonWalletState | None = None) -> None:
+        self.state = state
+        r"""The new state of the wallet"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateTonWalletState"]:
+        return "updateTonWalletState"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "state": self.state}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateTonWalletState | None:
+        if data:
+            data_class = cls()
+            data_class.state = data.get("state", None)
+
+        return data_class
+
+
+class UpdateTonWalletGaslessTransfersInfo(TlObject, Update):
+    r"""The information about gasless transfers has changed
+
+    Parameters:
+        info (:class:`~pytdbot.types.TonWalletGaslessTransfersInfo`):
+            The new state of the wallet
+
+    """
+
+    def __init__(self, *, info: TonWalletGaslessTransfersInfo | None = None) -> None:
+        self.info = info
+        r"""The new state of the wallet"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateTonWalletGaslessTransfersInfo"]:
+        return "updateTonWalletGaslessTransfersInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "info": self.info}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateTonWalletGaslessTransfersInfo | None:
+        if data:
+            data_class = cls()
+            data_class.info = data.get("info", None)
+
+        return data_class
+
+
+class UpdateTonWalletTonConnectSession(TlObject, Update):
+    r"""A session of a TON Connect has changed
+
+    Parameters:
+        session (:class:`~pytdbot.types.TonConnectSession`):
+            The new state of the session
+
+    """
+
+    def __init__(self, *, session: TonConnectSession | None = None) -> None:
+        self.session = session
+        r"""The new state of the session"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateTonWalletTonConnectSession"]:
+        return "updateTonWalletTonConnectSession"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "session": self.session}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateTonWalletTonConnectSession | None:
+        if data:
+            data_class = cls()
+            data_class.session = data.get("session", None)
+
+        return data_class
+
+
+class UpdateTonWalletTonConnectSessionDisconnectRequired(TlObject, Update):
+    r"""TON Connect sessions must be disconnected in a regular way
+
+    Parameters:
+        session_ids (list[:class:`int`]):
+            Identifiers of the sessions
+
+    """
+
+    def __init__(self, *, session_ids: list[int] | None = None) -> None:
+        self.session_ids = session_ids or []
+        r"""Identifiers of the sessions"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateTonWalletTonConnectSessionDisconnectRequired"]:
+        return "updateTonWalletTonConnectSessionDisconnectRequired"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "session_ids": self.session_ids}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> UpdateTonWalletTonConnectSessionDisconnectRequired | None:
+        if data:
+            data_class = cls()
+            data_class.session_ids = data.get("session_ids", None)
 
         return data_class
 

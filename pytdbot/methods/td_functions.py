@@ -2555,21 +2555,21 @@ class TDLibFunctions:
             }
         )
 
-    async def loadCommunityFullInfo(
+    async def getCommunityFullInfo(
         self, *, community_id: int | None = 0
-    ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Returns full information about a community\. The data will be sent through update\.
+    ) -> pytdbot.types.Error | pytdbot.types.CommunityFullInfo:
+        r"""Returns full information about a community
 
         Parameters:
             community_id (:class:`int`):
                 Community identifier
 
         Returns:
-            :class:`~pytdbot.types.Ok`
+            :class:`~pytdbot.types.CommunityFullInfo`
         """
 
         return await self.invoke(
-            {"@type": "loadCommunityFullInfo", "community_id": community_id}
+            {"@type": "getCommunityFullInfo", "community_id": community_id}
         )
 
     async def createCommunity(
@@ -2622,6 +2622,77 @@ class TDLibFunctions:
 
         return await self.invoke(
             {"@type": "setCommunityName", "community_id": community_id, "name": name}
+        )
+
+    async def setCommunityPhoto(
+        self,
+        *,
+        community_id: int | None = 0,
+        photo: pytdbot.types.InputChatPhotoPrevious
+        | pytdbot.types.InputChatPhotoStatic
+        | pytdbot.types.InputChatPhotoAnimation
+        | pytdbot.types.InputChatPhotoSticker
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Changes the photo of a community; requires can\_change\_info administrator right in the community
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            photo (:class:`~pytdbot.types.InputChatPhoto`):
+                New chat photo; pass null to delete the chat photo
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "setCommunityPhoto", "community_id": community_id, "photo": photo}
+        )
+
+    async def setCommunityPermissions(
+        self,
+        *,
+        community_id: int | None = 0,
+        permissions: pytdbot.types.CommunityPermissions | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Changes permissions of regular members in the given community; requires can\_ban\_members administrator right in the community
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            permissions (:class:`~pytdbot.types.CommunityPermissions`):
+                New permissions of the community
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setCommunityPermissions",
+                "community_id": community_id,
+                "permissions": permissions,
+            }
+        )
+
+    async def deleteCommunity(
+        self, *, community_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Deletes a community; requires owner privileges
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "deleteCommunity", "community_id": community_id}
         )
 
     async def getGroupsInCommon(
@@ -5945,10 +6016,11 @@ class TDLibFunctions:
             }
         )
 
-    async def editCallbackQueryMessage(
+    async def replyToCallbackQueryWithEphemeralMessage(
         self,
         *,
         callback_query_id: int | None = 0,
+        replace_callback_query_message: bool | None = False,
         protect_content: bool | None = False,
         reply_markup: pytdbot.types.ReplyMarkupRemoveKeyboard
         | pytdbot.types.ReplyMarkupForceReply
@@ -5980,11 +6052,14 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Edits the message from which a callback query has originated with an ephemeral message; for bots only
+        r"""Replies to a callback query with an ephemeral message; for bots only
 
         Parameters:
             callback_query_id (:class:`int`):
                 Identifier of the callback query
+
+            replace_callback_query_message (:class:`bool`):
+                Pass true if the ephemeral message must replace the message from which the callback query originated
 
             protect_content (:class:`bool`):
                 Pass true if the content of the message must be protected from forwarding and saving
@@ -6001,8 +6076,9 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "editCallbackQueryMessage",
+                "@type": "replyToCallbackQueryWithEphemeralMessage",
                 "callback_query_id": callback_query_id,
+                "replace_callback_query_message": replace_callback_query_message,
                 "protect_content": protect_content,
                 "reply_markup": reply_markup,
                 "input_message_content": input_message_content,
@@ -8585,7 +8661,7 @@ class TDLibFunctions:
     async def getTextEntities(
         self, *, text: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.TextEntities:
-        r"""Returns all entities \(mentions, hashtags, cashtags, bot commands, bank card numbers, URLs, and email addresses\) found in the text\. Can be called synchronously
+        r"""Returns all entities \(mentions, hashtags, cashtags, bot commands, bank card numbers, TON blockchain addresses, URLs, and email addresses\) found in the text\. Can be called synchronously
 
         Parameters:
             text (:class:`str`):
@@ -9088,6 +9164,7 @@ class TDLibFunctions:
         | pytdbot.types.SuggestedActionCheckPassword
         | pytdbot.types.SuggestedActionCheckPhoneNumber
         | pytdbot.types.SuggestedActionViewChecksHint
+        | pytdbot.types.SuggestedActionViewFirstTonWalletTransferHint
         | pytdbot.types.SuggestedActionConvertToBroadcastGroup
         | pytdbot.types.SuggestedActionSetPassword
         | pytdbot.types.SuggestedActionUpgradePremium
@@ -10692,6 +10769,8 @@ class TDLibFunctions:
         | pytdbot.types.InternalLinkTypeStoryAlbum
         | pytdbot.types.InternalLinkTypeTextCompositionStyle
         | pytdbot.types.InternalLinkTypeTheme
+        | pytdbot.types.InternalLinkTypeTonConnect
+        | pytdbot.types.InternalLinkTypeTonWalletTransfer
         | pytdbot.types.InternalLinkTypeUnknownDeepLink
         | pytdbot.types.InternalLinkTypeUpgradedGift
         | pytdbot.types.InternalLinkTypeUserPhoneNumber
@@ -20009,19 +20088,28 @@ class TDLibFunctions:
         )
 
     async def checkBotUsername(
-        self, *, username: str | None = ""
+        self, *, username: str | None = "", is_secondary: bool | None = False
     ) -> pytdbot.types.Error | pytdbot.types.CheckChatUsernameResult:
-        r"""Checks whether a username can be set for a new bot\. Use checkChatUsername to check username for other chat types
+        r"""Checks whether a username can be set for a new bot or assigned as a secondary username to an existing bot\. Use checkChatUsername to check username for other chat types
 
         Parameters:
             username (:class:`str`):
                 Username to be checked
 
+            is_secondary (:class:`bool`):
+                Pass true to check whether the username is suitable as a secondary username for an existing bot; pass false to check whether the username is suitable for createBot
+
         Returns:
             :class:`~pytdbot.types.CheckChatUsernameResult`
         """
 
-        return await self.invoke({"@type": "checkBotUsername", "username": username})
+        return await self.invoke(
+            {
+                "@type": "checkBotUsername",
+                "username": username,
+                "is_secondary": is_secondary,
+            }
+        )
 
     async def createBot(
         self,
@@ -20041,7 +20129,7 @@ class TDLibFunctions:
                 Name of the bot; 1\-64 characters
 
             username (:class:`str`):
-                Username of the bot\. The username must end with \"bot\"\. Use checkBotUsername to find whether the name is suitable
+                Username of the bot\. The username must end with \"bot\" or a string from updateAllowedBotUsernamePremiumSuffixes case\-insensitive\. Use checkBotUsername to find whether the name is suitable\. If the username doesn't end with \"bot\", then the current user must have Telegram Premium subscription, the chosen username will be assigned as secondary and an additional regular username ending with \"bot\" will be automatically assigned to the created bot
 
             via_link (:class:`bool`):
                 Pass true if the bot is created from an internalLinkTypeRequestManagedBot link
@@ -20209,6 +20297,47 @@ class TDLibFunctions:
 
         return await self.invoke(
             {"@type": "setBotProfilePhoto", "bot_user_id": bot_user_id, "photo": photo}
+        )
+
+    async def addBotSecondaryUsername(
+        self, *, bot_user_id: int | None = 0, username: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Adds a secondary username to a bot\. Can be called only if userTypeBot\.can\_be\_edited, the bot has no secondary username and the current user has Telegram Premium subscription\. May return an error with a message \"OWNER\_USERNAMES\_LIMIT\_EXCEEDED\" if the current user already owns at least getOption\(\"secondary\_bot\_username\_count\_max\"\) bots with a secondary username
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the target bot
+
+            username (:class:`str`):
+                The new secondary username; must be non\-empty\. Use checkBotUsername to check username validness
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addBotSecondaryUsername",
+                "bot_user_id": bot_user_id,
+                "username": username,
+            }
+        )
+
+    async def deleteBotSecondaryUsername(
+        self, *, bot_user_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Removes a secondary username from a bot\. Can be called only if userTypeBot\.can\_be\_edited \=\= true and the bot has a secondary username
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the target bot
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "deleteBotSecondaryUsername", "bot_user_id": bot_user_id}
         )
 
     async def toggleBotUsernameIsActive(
@@ -20386,7 +20515,7 @@ class TDLibFunctions:
         verified_id: pytdbot.types.MessageSenderUser
         | pytdbot.types.MessageSenderChat
         | None = None,
-        custom_description: str | None = "",
+        custom_description: pytdbot.types.FormattedText | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Changes the verification status of a user or a chat by an owned bot
 
@@ -20397,8 +20526,8 @@ class TDLibFunctions:
             verified_id (:class:`~pytdbot.types.MessageSender`):
                 Identifier of the user or the supergroup or channel chat, which will be verified by the bot
 
-            custom_description (:class:`str`):
-                Custom description of verification reason; 0\-getOption\(\"bot\_verification\_custom\_description\_length\_max\"\)\. If empty, then \"was verified by organization \"organization\_name\"\" will be used as description\. Can be specified only if the bot is allowed to provide custom description
+            custom_description (:class:`~pytdbot.types.FormattedText`):
+                Custom description of verification reason; 0\-getOption\(\"bot\_verification\_custom\_description\_length\_max\"\) characters\. Only TextUrl entities are supported\. If empty, then \"was verified by organization \"organization\_name\"\" will be used as description\. Can be specified only if the bot is allowed to provide custom description
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -23490,7 +23619,7 @@ class TDLibFunctions:
         message_ids: list[int] | None = None,
         text: str | None = "",
     ) -> pytdbot.types.Error | pytdbot.types.ReportChatResult:
-        r"""Reports a chat to the Telegram moderators\. A chat can be reported only from the chat action bar, or if chat\.can\_be\_reported
+        r"""Reports a chat to the Telegram moderators\. A chat can be reported only from the chat action bar, if chat\.can\_be\_reported, or if messageProperties\.can\_report\_chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -23685,7 +23814,7 @@ class TDLibFunctions:
         offset: str | None = "",
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.TonTransactions:
-        r"""Returns the list of TON blockchain transactions of the current user
+        r"""Returns the list of TON Gram transactions of the current user
 
         Parameters:
             direction (:class:`~pytdbot.types.TransactionDirection`):
@@ -23707,6 +23836,922 @@ class TDLibFunctions:
                 "direction": direction,
                 "offset": offset,
                 "limit": limit,
+            }
+        )
+
+    async def getTonWalletTransactions(
+        self,
+        *,
+        direction: pytdbot.types.TransactionDirectionIncoming
+        | pytdbot.types.TransactionDirectionOutgoing
+        | None = None,
+        offset: str | None = "",
+        limit: int | None = 0,
+    ) -> pytdbot.types.Error | pytdbot.types.TonWalletTransactions:
+        r"""Returns the list of TON wallet transactions of the current user; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Parameters:
+            direction (:class:`~pytdbot.types.TransactionDirection`):
+                Direction of the transactions to receive; pass null to get all transactions
+
+            offset (:class:`str`):
+                Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of transactions to return
+
+        Returns:
+            :class:`~pytdbot.types.TonWalletTransactions`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getTonWalletTransactions",
+                "direction": direction,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def getTonWalletTransaction(
+        self, *, transaction_id: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.TonWalletTransaction:
+        r"""Returns a TON wallet transaction by their identifier
+
+        Parameters:
+            transaction_id (:class:`str`):
+                Identifier of the transaction
+
+        Returns:
+            :class:`~pytdbot.types.TonWalletTransaction`
+        """
+
+        return await self.invoke(
+            {"@type": "getTonWalletTransaction", "transaction_id": transaction_id}
+        )
+
+    async def getTonWalletTransactionByMsgHash(
+        self, *, msg_hash: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.TonWalletTransaction:
+        r"""Returns a TON wallet transaction by their msg\_hash; return an error if the transaction isn't finalized yet
+
+        Parameters:
+            msg_hash (:class:`str`):
+                Value of msg\_hash of the transaction
+
+        Returns:
+            :class:`~pytdbot.types.TonWalletTransaction`
+        """
+
+        return await self.invoke(
+            {"@type": "getTonWalletTransactionByMsgHash", "msg_hash": msg_hash}
+        )
+
+    async def loadTonWalletState(self) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Loads state of the TON wallet of the current user; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "loadTonWalletState",
+            }
+        )
+
+    async def loadTonWalletGaslessTransfersInfo(
+        self,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Loads or reloads the current state of gasless transfers for the current user; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "loadTonWalletGaslessTransfersInfo",
+            }
+        )
+
+    async def checkWalletBotBalance(
+        self,
+    ) -> pytdbot.types.Error | pytdbot.types.WalletBotBalance:
+        r"""Returns information about balance of the current user in the bot https://t\.me/walt; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Returns:
+            :class:`~pytdbot.types.WalletBotBalance`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "checkWalletBotBalance",
+            }
+        )
+
+    async def getUserTonWalletAddresses(
+        self, *, user_ids: list[int] | None = None
+    ) -> pytdbot.types.Error | pytdbot.types.UserTonWalletAddresses:
+        r"""Returns TON wallet addresses of the specified users; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Parameters:
+            user_ids (list[:class:`int`]):
+                Identifiers of the users whose wallet addresses have to be returned\. If a user has no TON wallet, it will be skipped in the result
+
+        Returns:
+            :class:`~pytdbot.types.UserTonWalletAddresses`
+        """
+
+        return await self.invoke(
+            {"@type": "getUserTonWalletAddresses", "user_ids": user_ids}
+        )
+
+    async def createUserTonWallet(
+        self, *, user_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.UserTonWalletAddress:
+        r"""Creates a TON wallet for the specified regular user; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)\. The current user must have positive TON wallet balance
+
+        Parameters:
+            user_id (:class:`int`):
+                Identifier of the user
+
+        Returns:
+            :class:`~pytdbot.types.UserTonWalletAddress`
+        """
+
+        return await self.invoke({"@type": "createUserTonWallet", "user_id": user_id})
+
+    async def getAddressTonWallet(
+        self, *, address: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.UserTonWalletAddress:
+        r"""Returns information about a TON wallet with the given address; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Parameters:
+            address (:class:`str`):
+                Address in the TON blockchain
+
+        Returns:
+            :class:`~pytdbot.types.UserTonWalletAddress`
+        """
+
+        return await self.invoke({"@type": "getAddressTonWallet", "address": address})
+
+    async def getTonWalletSecretPhrase(
+        self, *, password: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Text:
+        r"""Returns the secret phrase of the user's TON wallet as a space separated list of words\. Works only if tonWalletState\.can\_export\_phrase is true
+
+        Parameters:
+            password (:class:`str`):
+                Password of the current user; pass an empty string unless receive an error with a message \"PASSWORD\_MISSING\" for a passwordless request
+
+        Returns:
+            :class:`~pytdbot.types.Text`
+        """
+
+        return await self.invoke(
+            {"@type": "getTonWalletSecretPhrase", "password": password}
+        )
+
+    async def getTonWalletOwnershipProofChallenge(
+        self,
+    ) -> pytdbot.types.Error | pytdbot.types.TonWalletOwnershipProofChallenge:
+        r"""Returns a challenge which may be used to proof ownership of a TON wallet; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Returns:
+            :class:`~pytdbot.types.TonWalletOwnershipProofChallenge`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getTonWalletOwnershipProofChallenge",
+            }
+        )
+
+    async def enableTonWalletBackup(
+        self,
+        *,
+        secret_phrase: str | None = "",
+        proof: pytdbot.types.TonWalletOwnershipProof | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Enables backup of the TON wallet of the user\. Works only if tonWalletState\.can\_enable\_backup is true
+
+        Parameters:
+            secret_phrase (:class:`str`):
+                The secret phrase of the user's TON wallet as a space separated list of words
+
+            proof (:class:`~pytdbot.types.TonWalletOwnershipProof`):
+                Proof of the TON wallet ownership; use getTonWalletOwnershipProofChallenge to get a challenge for the proof
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "enableTonWalletBackup",
+                "secret_phrase": secret_phrase,
+                "proof": proof,
+            }
+        )
+
+    async def disableTonWalletBackup(
+        self, *, password: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Disables backup of the TON wallet of the user\. Works only if tonWalletState\.is\_backup\_enabled is true
+
+        Parameters:
+            password (:class:`str`):
+                Password of the current user; pass an empty string unless receive an error with a message \"PASSWORD\_MISSING\" for a passwordless request
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "disableTonWalletBackup", "password": password}
+        )
+
+    async def disableTonWalletBackupWithProof(
+        self, *, proof: pytdbot.types.TonWalletOwnershipProof | None = None
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Disables backup of the TON wallet of the user using proof of wallet ownership instead of the password\. Works only if tonWalletState\.is\_backup\_enabled is true
+
+        Parameters:
+            proof (:class:`~pytdbot.types.TonWalletOwnershipProof`):
+                Proof of the TON wallet ownership; use getTonWalletOwnershipProofChallenge to get a challenge for the proof
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "disableTonWalletBackupWithProof", "proof": proof}
+        )
+
+    async def sendTonWalletTransfer(
+        self,
+        *,
+        user_id: int | None = 0,
+        address: str | None = "",
+        amount: int | None = 0,
+        comment: str | None = "",
+        is_comment_encrypted: bool | None = False,
+        sending_id: int | None = 0,
+        regular_transfer_data: bytes | None = b"",
+        gasless_transfer_data: bytes | None = b"",
+    ) -> pytdbot.types.Error | pytdbot.types.TonWalletTransferResult:
+        r"""Sends a cryptocurrency from the user's TON wallet; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Parameters:
+            user_id (:class:`int`):
+                Identifier of the user who will receive the transfer; pass 0 if unknown
+
+            address (:class:`str`):
+                Address in the TON blockchain of the transaction peer
+
+            amount (:class:`int`):
+                The amount of the sent cryptocurrency, in the smallest units of the cryptocurrency
+
+            comment (:class:`str`):
+                Comment added to the transaction
+
+            is_comment_encrypted (:class:`bool`):
+                Pass true if the comment is encrypted and must be decrypted using the receiver's or sender's private key
+
+            sending_id (:class:`int`):
+                Non\-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates
+
+            regular_transfer_data (:class:`bytes`):
+                Serialized data for regular cryptocurrency transfer request\. The minimum allowed transfer amount is getOption\(\"ton\_wallet\_transfer\_amount\_min\"\)
+
+            gasless_transfer_data (:class:`bytes`):
+                Serialized data for gasless cryptocurrency transfer request; pass an empty string to force a regular request\. The minimum allowed transfer amount for a gassless transfer is getOption\(\"ton\_wallet\_gasless\_transfer\_amount\_min\"\)
+
+        Returns:
+            :class:`~pytdbot.types.TonWalletTransferResult`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "sendTonWalletTransfer",
+                "user_id": user_id,
+                "address": address,
+                "amount": amount,
+                "comment": comment,
+                "is_comment_encrypted": is_comment_encrypted,
+                "sending_id": sending_id,
+                "regular_transfer_data": regular_transfer_data,
+                "gasless_transfer_data": gasless_transfer_data,
+            }
+        )
+
+    async def deleteTonWallet(
+        self, *, password: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Deletes the current TON wallet of the user and creates a new one; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Parameters:
+            password (:class:`str`):
+                Password of the current user; pass an empty string unless receive an error with a message \"PASSWORD\_MISSING\" for a passwordless request
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "deleteTonWallet", "password": password})
+
+    async def replaceTonWallet(
+        self,
+        *,
+        password: str | None = "",
+        anchor_public_key: bytes | None = b"",
+        proof: pytdbot.types.TonWalletOwnershipProof | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Replaces the current TON wallet with another existing v6r2 wallet or changes private key of the current TON wallet; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Parameters:
+            password (:class:`str`):
+                Password of the current user; pass an empty string unless receive an error with a message \"PASSWORD\_MISSING\" for a passwordless request
+
+            anchor_public_key (:class:`bytes`):
+                Original public key of the new TON wallet
+
+            proof (:class:`~pytdbot.types.TonWalletOwnershipProof`):
+                Proof of ownership of the new private key of the TON wallet; use getTonWalletOwnershipProofChallenge to get a challenge for the proof
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "replaceTonWallet",
+                "password": password,
+                "anchor_public_key": anchor_public_key,
+                "proof": proof,
+            }
+        )
+
+    async def getCurrencyExchangeRates(
+        self,
+    ) -> pytdbot.types.Error | pytdbot.types.CurrencyExchangeRates:
+        r"""Returns exchange rates of currencies to USD
+
+        Returns:
+            :class:`~pytdbot.types.CurrencyExchangeRates`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getCurrencyExchangeRates",
+            }
+        )
+
+    async def getTonWalletNfts(
+        self, *, offset: str | None = "", limit: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.TonNfts:
+        r"""Returns NFTs stored on the TON wallet of the user; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Parameters:
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of NFTs to be returned; must be positive and can't be greater than 20
+
+        Returns:
+            :class:`~pytdbot.types.TonNfts`
+        """
+
+        return await self.invoke(
+            {"@type": "getTonWalletNfts", "offset": offset, "limit": limit}
+        )
+
+    async def getTonConnectSessions(
+        self,
+    ) -> pytdbot.types.Error | pytdbot.types.TonConnectSessions:
+        r"""Returns active TON Connect sessions; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Returns:
+            :class:`~pytdbot.types.TonConnectSessions`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getTonConnectSessions",
+            }
+        )
+
+    async def createTonConnectSession(
+        self, *, dapp_client_id: str | None = "", manifest_url: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.TonConnectSession:
+        r"""Creates a TON Connect session; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Parameters:
+            dapp_client_id (:class:`str`):
+                Hex\-encoded public X25519 key of the dApp
+
+            manifest_url (:class:`str`):
+                URL of the manifest of the dApp
+
+        Returns:
+            :class:`~pytdbot.types.TonConnectSession`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "createTonConnectSession",
+                "dapp_client_id": dapp_client_id,
+                "manifest_url": manifest_url,
+            }
+        )
+
+    async def setTonConnectSessionWalletClientId(
+        self, *, session_id: int | None = 0, wallet_client_id: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.TonConnectChallenge:
+        r"""Sets wallet\_client\_id for a pending TON Connect session\. Then, sendTonConnectSessionConnectResult must be used to accept or reject the session
+
+        Parameters:
+            session_id (:class:`int`):
+                Unique identifier of the session
+
+            wallet_client_id (:class:`str`):
+                Hex\-encoded public X25519 key of the current user's application calculated from the TON wallet private key and session parameters
+
+        Returns:
+            :class:`~pytdbot.types.TonConnectChallenge`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setTonConnectSessionWalletClientId",
+                "session_id": session_id,
+                "wallet_client_id": wallet_client_id,
+            }
+        )
+
+    async def sendTonConnectSessionConnectResult(
+        self,
+        *,
+        session_id: int | None = 0,
+        challenge_answer: bytes | None = b"",
+        is_error: bool | None = False,
+        body: bytes | None = b"",
+        trace_id: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Accepts or rejects a TON Connect session
+
+        Parameters:
+            session_id (:class:`int`):
+                Unique identifier of the session
+
+            challenge_answer (:class:`bytes`):
+                Answer to the challenge received from setTonConnectSessionWalletClientId
+
+            is_error (:class:`bool`):
+                Pass true to reject the request; pass false to accept it
+
+            body (:class:`bytes`):
+                Body of the result
+
+            trace_id (:class:`str`):
+                Identifier to trace the connection request
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "sendTonConnectSessionConnectResult",
+                "session_id": session_id,
+                "challenge_answer": challenge_answer,
+                "is_error": is_error,
+                "body": body,
+                "trace_id": trace_id,
+            }
+        )
+
+    async def getTonConnectSessionPendingRequests(
+        self, *, session_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.TonConnectRequests:
+        r"""Returns pending requests in a TON Connect session
+
+        Parameters:
+            session_id (:class:`int`):
+                Unique identifier of the session
+
+        Returns:
+            :class:`~pytdbot.types.TonConnectRequests`
+        """
+
+        return await self.invoke(
+            {"@type": "getTonConnectSessionPendingRequests", "session_id": session_id}
+        )
+
+    async def getTonConnectDAppPendingRequests(
+        self, *, dapp_client_id: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.TonConnectRequests:
+        r"""Returns pending requests with a dApp through TON Connect
+
+        Parameters:
+            dapp_client_id (:class:`str`):
+                Hex\-encoded public X25519 key of the dApp
+
+        Returns:
+            :class:`~pytdbot.types.TonConnectRequests`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getTonConnectDAppPendingRequests",
+                "dapp_client_id": dapp_client_id,
+            }
+        )
+
+    async def claimTonConnectRequest(
+        self,
+        *,
+        session_id: int | None = 0,
+        message_id: int | None = 0,
+        dapp_request_id: str | None = "",
+        is_rejected: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Claims a request received through TON Connect for processing on this device
+
+        Parameters:
+            session_id (:class:`int`):
+                Unique identifier of the TON Connect session
+
+            message_id (:class:`int`):
+                Identifier of the message with the request
+
+            dapp_request_id (:class:`str`):
+                Identifier of the request assigned by the dApp
+
+            is_rejected (:class:`bool`):
+                Pass true to reject the request
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "claimTonConnectRequest",
+                "session_id": session_id,
+                "message_id": message_id,
+                "dapp_request_id": dapp_request_id,
+                "is_rejected": is_rejected,
+            }
+        )
+
+    async def answerTonConnectRequest(
+        self,
+        *,
+        session_id: int | None = 0,
+        message_id: int | None = 0,
+        trace_id: str | None = "",
+        body: bytes | None = b"",
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Sends an answer for a request received through TON Connect
+
+        Parameters:
+            session_id (:class:`int`):
+                Unique identifier of the TON Connect session
+
+            message_id (:class:`int`):
+                Identifier of the message with the request
+
+            trace_id (:class:`str`):
+                Identifier to trace the request
+
+            body (:class:`bytes`):
+                Body of the response
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "answerTonConnectRequest",
+                "session_id": session_id,
+                "message_id": message_id,
+                "trace_id": trace_id,
+                "body": body,
+            }
+        )
+
+    async def getTonConnectSessionNextEventId(
+        self, *, session_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.TonConnectSessionEventId:
+        r"""Returns the next event identifier for the given TON Connect session
+
+        Parameters:
+            session_id (:class:`int`):
+                Unique identifier of the TON Connect session
+
+        Returns:
+            :class:`~pytdbot.types.TonConnectSessionEventId`
+        """
+
+        return await self.invoke(
+            {"@type": "getTonConnectSessionNextEventId", "session_id": session_id}
+        )
+
+    async def disconnectTonConnectSession(
+        self, *, session_id: int | None = 0, body: bytes | None = b""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Closes a TON Connect session
+
+        Parameters:
+            session_id (:class:`int`):
+                Unique identifier of the TON Connect session to close
+
+            body (:class:`bytes`):
+                Encrypted body of the disconnect event; may be empty if the session has already been closed\. Use getTonConnectSessionNextEventId to get event identifier for the event
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "disconnectTonConnectSession",
+                "session_id": session_id,
+                "body": body,
+            }
+        )
+
+    async def getOnRampProviders(
+        self, *, cryptocurrency: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.OnRampProviders:
+        r"""Returns available on\-ramp providers
+
+        Parameters:
+            cryptocurrency (:class:`str`):
+                Pass a cryptocurrency to receive only providers that support it; pass an empty string to receive all providers
+
+        Returns:
+            :class:`~pytdbot.types.OnRampProviders`
+        """
+
+        return await self.invoke(
+            {"@type": "getOnRampProviders", "cryptocurrency": cryptocurrency}
+        )
+
+    async def getOnRampProviderBaseCurrencies(
+        self, *, provider_id: str | None = "", cryptocurrency: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Currencies:
+        r"""Returns the list of fiat currencies supported by an on\-ramp provider for the given cryptocurrency
+
+        Parameters:
+            provider_id (:class:`str`):
+                Unique identifier of the on\-ramp provider; only for providers that supports base currencies
+
+            cryptocurrency (:class:`str`):
+                The cryptocurrency that will be bought
+
+        Returns:
+            :class:`~pytdbot.types.Currencies`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getOnRampProviderBaseCurrencies",
+                "provider_id": provider_id,
+                "cryptocurrency": cryptocurrency,
+            }
+        )
+
+    async def getOnRampPaymentAvailability(
+        self,
+        *,
+        provider_id: str | None = "",
+        cryptocurrency: str | None = "",
+        base_currency: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.OnRampPaymentAvailability:
+        r"""Returns the available on\-ramp payment methods based on the current user location
+
+        Parameters:
+            provider_id (:class:`str`):
+                Unique identifier of the on\-ramp provider
+
+            cryptocurrency (:class:`str`):
+                The cryptocurrency that will be bought
+
+            base_currency (:class:`str`):
+                ISO 4217 currency code of the currency that will be used for the purchase; pass an empty string if unknown
+
+        Returns:
+            :class:`~pytdbot.types.OnRampPaymentAvailability`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getOnRampPaymentAvailability",
+                "provider_id": provider_id,
+                "cryptocurrency": cryptocurrency,
+                "base_currency": base_currency,
+            }
+        )
+
+    async def getOnRampPaymentLimits(
+        self,
+        *,
+        provider_id: str | None = "",
+        cryptocurrency: str | None = "",
+        base_currency: str | None = "",
+        payment_method_name: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.OnRampPaymentLimits:
+        r"""Returns the limits for an on\-ramp payment; only for providers that supports limits retrieval
+
+        Parameters:
+            provider_id (:class:`str`):
+                Unique identifier of the on\-ramp provider
+
+            cryptocurrency (:class:`str`):
+                The cryptocurrency that will be bought
+
+            base_currency (:class:`str`):
+                ISO 4217 currency code of the currency that will be used for the purchase
+
+            payment_method_name (:class:`str`):
+                Name of the chosen payment method; pass an empty string if none
+
+        Returns:
+            :class:`~pytdbot.types.OnRampPaymentLimits`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getOnRampPaymentLimits",
+                "provider_id": provider_id,
+                "cryptocurrency": cryptocurrency,
+                "base_currency": base_currency,
+                "payment_method_name": payment_method_name,
+            }
+        )
+
+    async def getOnRampPaymentQuote(
+        self,
+        *,
+        provider_id: str | None = "",
+        cryptocurrency: str | None = "",
+        base_currency: str | None = "",
+        cryptocurrency_amount: str | None = "",
+        base_currency_amount: str | None = "",
+        payment_method_name: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.OnRampPaymentQuote:
+        r"""Returns a quote for an on\-ramp payment; only for providers that supports quote retrieval
+
+        Parameters:
+            provider_id (:class:`str`):
+                Unique identifier of the on\-ramp provider
+
+            cryptocurrency (:class:`str`):
+                The cryptocurrency that will be bought
+
+            base_currency (:class:`str`):
+                ISO 4217 currency code of the currency that will be used for the purchase
+
+            cryptocurrency_amount (:class:`str`):
+                The amount of the cryptocurrency to buy; pass an empty string if the user selected base\_currency\_amount
+
+            base_currency_amount (:class:`str`):
+                The amount of the base currency to spend; pass an empty string if the user selected cryptocurrency\_amount
+
+            payment_method_name (:class:`str`):
+                Name of the chosen payment method; pass an empty string if none
+
+        Returns:
+            :class:`~pytdbot.types.OnRampPaymentQuote`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getOnRampPaymentQuote",
+                "provider_id": provider_id,
+                "cryptocurrency": cryptocurrency,
+                "base_currency": base_currency,
+                "cryptocurrency_amount": cryptocurrency_amount,
+                "base_currency_amount": base_currency_amount,
+                "payment_method_name": payment_method_name,
+            }
+        )
+
+    async def createOnRampPaymentSession(
+        self,
+        *,
+        provider_id: str | None = "",
+        cryptocurrency: str | None = "",
+        address: str | None = "",
+        payment_method_name: str | None = "",
+        base_currency: str | None = "",
+        cryptocurrency_amount: str | None = "",
+        base_currency_amount: str | None = "",
+        memo: str | None = "",
+        theme: str | None = "",
+        success_return_url: str | None = "",
+        fail_return_url: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.OnRampPaymentSession:
+        r"""Creates a session for an on\-ramp payment
+
+        Parameters:
+            provider_id (:class:`str`):
+                Unique identifier of the on\-ramp provider
+
+            cryptocurrency (:class:`str`):
+                The cryptocurrency that will be bought
+
+            address (:class:`str`):
+                Address to which the cryptocurrency will be sent
+
+            payment_method_name (:class:`str`):
+                Name of the chosen payment method; pass an empty string if none
+
+            base_currency (:class:`str`):
+                ISO 4217 currency code of the currency that will be used for the purchase; pass an empty string if unknown
+
+            cryptocurrency_amount (:class:`str`):
+                The amount of the cryptocurrency to buy; pass an empty string if the user selected base\_currency\_amount
+
+            base_currency_amount (:class:`str`):
+                The amount of the base currency to spend; pass an empty string if the user selected cryptocurrency\_amount
+
+            memo (:class:`str`):
+                Memo for the query; pass an empty string if none
+
+            theme (:class:`str`):
+                Preferred theme for the WebView; pass \"light\" for a light theme, \"dark\" for a dark theme, or leave empty for a default theme
+
+            success_return_url (:class:`str`):
+                The URL opened on successful payment; pass an empty string if none
+
+            fail_return_url (:class:`str`):
+                The URL opened on failed payment; pass an empty string if none
+
+        Returns:
+            :class:`~pytdbot.types.OnRampPaymentSession`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "createOnRampPaymentSession",
+                "provider_id": provider_id,
+                "cryptocurrency": cryptocurrency,
+                "address": address,
+                "payment_method_name": payment_method_name,
+                "base_currency": base_currency,
+                "cryptocurrency_amount": cryptocurrency_amount,
+                "base_currency_amount": base_currency_amount,
+                "memo": memo,
+                "theme": theme,
+                "success_return_url": success_return_url,
+                "fail_return_url": fail_return_url,
+            }
+        )
+
+    async def sendTonCenterApiRequest(
+        self,
+        *,
+        endpoint: str | None = "",
+        type: pytdbot.types.TonCenterApiRequestTypeGet
+        | pytdbot.types.TonCenterApiRequestTypePost
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Text:
+        r"""Sends a request to TON Center API and returns its response in JSON format
+
+        Parameters:
+            endpoint (:class:`str`):
+                The path of the requested endpoint\. See https://toncenter\.com/api/v3/index\.html for the list of supported endpoints
+
+            type (:class:`~pytdbot.types.TonCenterApiRequestType`):
+                Type of the request
+
+        Returns:
+            :class:`~pytdbot.types.Text`
+        """
+
+        return await self.invoke(
+            {"@type": "sendTonCenterApiRequest", "endpoint": endpoint, "type": type}
+        )
+
+    async def getTonCenterStreamingApiUrl(
+        self,
+    ) -> pytdbot.types.Error | pytdbot.types.TonCenterStreamingApiUrl:
+        r"""Returns a URL for TON Center Streaming API
+
+        Returns:
+            :class:`~pytdbot.types.TonCenterStreamingApiUrl`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getTonCenterStreamingApiUrl",
             }
         )
 
@@ -26234,6 +27279,21 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "getDeepLinkInfo", "link": link})
+
+    async def dismissWebToken(
+        self, *, token: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Dismissess a received web token without consumption; for official Telegram apps only
+
+        Parameters:
+            token (:class:`str`):
+                The token to dismiss
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "dismissWebToken", "token": token})
 
     async def getApplicationConfig(
         self,
