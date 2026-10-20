@@ -235,7 +235,7 @@ class TDLibFunctions:
         | pytdbot.types.ResendCodeReasonVerificationFailed
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Resends an authentication code to the user\. Works only when the current authorization state is authorizationStateWaitCode, the next\_code\_type of the result is not null and the server\-specified timeout has passed, or when the current authorization state is authorizationStateWaitEmailCode
+        r"""Resends an authentication code to the user\. Works only when the current authorization state is authorizationStateWaitCode, authorization\_state\.code\_info\.next\_type is not null and the server\-specified timeout has passed, or when the current authorization state is authorizationStateWaitEmailCode
 
         Parameters:
             reason (:class:`~pytdbot.types.ResendCodeReason`):
@@ -415,7 +415,7 @@ class TDLibFunctions:
     async def resetAuthenticationEmailAddress(
         self,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Resets the login email address\. May return an error with a message \"TASK\_ALREADY\_EXISTS\" if reset is still pending\. Works only when the current authorization state is authorizationStateWaitEmailCode and authorization\_state\.can\_reset\_email\_address \=\= true
+        r"""Resets the login email address\. May return an error with a message \"TASK\_ALREADY\_EXISTS\" if reset is still pending\. Works only when the current authorization state is authorizationStateWaitEmailCode and authorization\_state\.email\_address\_reset\_state \!\= null
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -962,7 +962,7 @@ class TDLibFunctions:
     async def createTemporaryPassword(
         self, *, password: str | None = "", valid_for: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.TemporaryPasswordState:
-        r"""Creates a new temporary password for processing payments
+        r"""Creates a new temporary password for processing payments and withdrawal of upgraded gifts
 
         Parameters:
             password (:class:`str`):
@@ -1204,7 +1204,7 @@ class TDLibFunctions:
     async def getChatPinnedMessage(
         self, *, chat_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.Message:
-        r"""Returns information about a newest pinned message in the chat\. Returns a 404 error if the message doesn't exist
+        r"""Returns information about the newest pinned message in the chat\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -1275,7 +1275,7 @@ class TDLibFunctions:
 
         Parameters:
             chat_id (:class:`int`):
-                Identifier of the chat the messages belong to
+                Identifier of the chat the message belongs to
 
             message_id (:class:`int`):
                 Identifier of the message
@@ -1508,7 +1508,7 @@ class TDLibFunctions:
         | None = None,
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Loads more chats from a chat list\. The loaded chats and their positions in the chat list will be sent through updates\. Chats are sorted by the pair \(chat\.position\.order, chat\.id\) in descending order\. Returns a 404 error if all chats have been loaded
+        r"""Loads more chats from a chat list\. The loaded chats and their positions in the chat list will be sent through updates\. Chats are sorted by the pair \(chatPosition\.order, chat\.id\) in descending order\. Returns a 404 error if all chats have been loaded
 
         Parameters:
             chat_list (:class:`~pytdbot.types.ChatList`):
@@ -2641,7 +2641,7 @@ class TDLibFunctions:
                 Identifier of the community
 
             photo (:class:`~pytdbot.types.InputChatPhoto`):
-                New chat photo; pass null to delete the chat photo
+                New community photo; pass null to delete the community photo
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -4500,7 +4500,7 @@ class TDLibFunctions:
                 Pass a language code to which the text will be translated; pass an empty string if translation isn't needed\. See translateText\.to\_language\_code for the list of supported values
 
             style_name (:class:`str`):
-                Name of the style of the resulted text; handle updateTextCompositionStyles to get the list of supported styles; pass an empty string to keep the current style of the text
+                Name of the style of the resulting text; handle updateTextCompositionStyles to get the list of supported styles; pass an empty string to keep the current style of the text
 
             add_emojis (:class:`bool`):
                 Pass true to add emoji to the text
@@ -4538,7 +4538,7 @@ class TDLibFunctions:
                 Pass a language code to which the text will be translated; pass an empty string if translation isn't needed\. See translateText\.to\_language\_code for the list of supported values
 
             style_name (:class:`str`):
-                Name of the style of the resulted text; handle updateTextCompositionStyles to get the list of supported styles; pass an empty string to keep the current style of the text or if a custom prompt is used
+                Name of the style of the resulting text; handle updateTextCompositionStyles to get the list of supported styles; pass an empty string to keep the current style of the text or if a custom prompt is used
 
             custom_prompt (:class:`str`):
                 Custom prompt that will be used instead of style\_name; 0\-getOption\(\"text\_composition\_style\_prompt\_length\_max\"\) characters
@@ -5148,7 +5148,7 @@ class TDLibFunctions:
                 Non\-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates
 
             only_preview (:class:`bool`):
-                Pass true to get a fake message instead of actually sending them
+                Pass true to get a fake message instead of actually sending it
 
             reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
                 Markup for replying to the message; pass null if none; for bots only
@@ -5572,7 +5572,7 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none; for bots only
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo
+                New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, or inputMessageVideo
 
         Returns:
             :class:`~pytdbot.types.Message`
@@ -5809,7 +5809,7 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none; for bots only
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo
+                New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, or inputMessageVideo
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -6533,7 +6533,7 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none; for bots only
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo
+                New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, or inputMessageVideo
 
         Returns:
             :class:`~pytdbot.types.BusinessMessage`
@@ -7210,7 +7210,7 @@ class TDLibFunctions:
                 Identifier of a quick reply message in the same shortcut to be replied; pass 0 if none
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                The content of the message to be added; inputMessagePaidMedia, inputMessageForwarded and inputMessageLiveLocation
+                The content of the message to be added; inputMessagePaidMedia, inputMessageForwarded and inputMessageLiveLocation aren't supported
 
         Returns:
             :class:`~pytdbot.types.QuickReplyMessage`
@@ -7353,7 +7353,7 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Asynchronously edits the text, media or caption of a quick reply message\. Use quickReplyMessage\.can\_be\_edited to check whether a message can be edited\. Media message can be edited only to a media message\. Checklist messages can be edited only to a checklist message\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa
+        r"""Asynchronously edits the text, media, or caption of a quick reply message\. Use quickReplyMessage\.can\_be\_edited to check whether a message can be edited\. Media message can be edited only to a media message\. Checklist messages can be edited only to a checklist message\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa
 
         Parameters:
             shortcut_id (:class:`int`):
@@ -8150,7 +8150,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             row_size (:class:`int`):
-                Number of reaction per row, 5\-25
+                Number of reactions per row, 5\-25
 
         Returns:
             :class:`~pytdbot.types.AvailableReactions`
@@ -8963,7 +8963,7 @@ class TDLibFunctions:
                 Identifier of the message containing the poll
 
             option_ids (list[:class:`int`]):
-                0\-based identifiers of answer options, chosen by the user\. User can choose more than 1 answer option only is the poll allows multiple answers
+                0\-based identifiers of answer options, chosen by the user\. User can choose more than 1 answer option only if the poll allows multiple answers
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -9128,7 +9128,7 @@ class TDLibFunctions:
         marked_as_done_task_ids: list[int] | None = None,
         marked_as_not_done_task_ids: list[int] | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Adds tasks of a checklist in a message as done or not done
+        r"""Marks tasks of a checklist in a message as done or not done
 
         Parameters:
             chat_id (:class:`int`):
@@ -9301,7 +9301,7 @@ class TDLibFunctions:
         shared_user_ids: list[int] | None = None,
         only_check: bool | None = False,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Shares users after pressing a keyboardButtonTypeRequestUsers button with the bot
+        r"""Shares users after pressing a keyboardButtonTypeRequestUsers or keyboardButtonTypeRequestManagedBot button with the bot
 
         Parameters:
             source (:class:`~pytdbot.types.KeyboardButtonSource`):
@@ -9544,7 +9544,7 @@ class TDLibFunctions:
     async def getPreparedInlineMessage(
         self, *, bot_user_id: int | None = 0, prepared_message_id: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.PreparedInlineMessage:
-        r"""Saves an inline message to be sent by the given user
+        r"""Returns an inline message prepared by a bot to be sent by the current user
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -10012,10 +10012,10 @@ class TDLibFunctions:
                 Identifier of the query
 
             result (:class:`~pytdbot.types.ChatJoinRequestResult`):
-                The result
+                The result; must be null if a URL is passed
 
             url (:class:`str`):
-                URL of the Web App to open
+                URL of the Web App to open; must be empty if a result is passed
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -10599,7 +10599,7 @@ class TDLibFunctions:
     async def openMessageContent(
         self, *, chat_id: int | None = 0, message_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Informs TDLib that the message content has been opened \(e\.g\., the user has opened a photo, video, document, location or venue, or has listened to an audio file or voice note message\)\. An updateMessageContentOpened update will be generated if something has changed
+        r"""Informs TDLib that the message content has been opened \(e\.g\., the user has opened a photo, video, document, location, or venue, or has listened to an audio file or voice note message\)\. An updateMessageContentOpened update will be generated if something has changed
 
         Parameters:
             chat_id (:class:`int`):
@@ -10869,7 +10869,7 @@ class TDLibFunctions:
     async def getOauthLinkInfo(
         self, *, url: str | None = "", in_app_origin: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.OauthLinkInfo:
-        r"""Returns information about an OAuth deep link\. Use checkOauthRequestMatchCode, acceptOauthRequest or declineOauthRequest to process the link
+        r"""Returns information about an OAuth deep link\. Use checkOauthRequestMatchCode, acceptOauthRequest, or declineOauthRequest to process the link
 
         Parameters:
             url (:class:`str`):
@@ -10917,6 +10917,7 @@ class TDLibFunctions:
         match_code: str | None = "",
         allow_write_access: bool | None = False,
         allow_phone_number_access: bool | None = False,
+        ton_connect_connect_data: pytdbot.types.TonConnectConnectData | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.HttpUrl:
         r"""Accepts an OAuth authorization request\. Returns an HTTP URL to open after successful authorization\. May return an empty link if just a toast about successful login has to be shown
 
@@ -10933,6 +10934,9 @@ class TDLibFunctions:
             allow_phone_number_access (:class:`bool`):
                 Pass true if the current user allowed the bot that was returned in getOauthLinkInfo, to access their phone number
 
+            ton_connect_connect_data (:class:`~pytdbot.types.TonConnectConnectData`):
+                Pass data required to access the user's TON wallet via TON Connect if the current user allowed this; pass null if the access wasn't requested or the user declined access
+
         Returns:
             :class:`~pytdbot.types.HttpUrl`
         """
@@ -10944,6 +10948,7 @@ class TDLibFunctions:
                 "match_code": match_code,
                 "allow_write_access": allow_write_access,
                 "allow_phone_number_access": allow_phone_number_access,
+                "ton_connect_connect_data": ton_connect_connect_data,
             }
         )
 
@@ -11631,7 +11636,7 @@ class TDLibFunctions:
     async def processChatFolderNewChats(
         self, *, chat_folder_id: int | None = 0, added_chat_ids: list[int] | None = None
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Process new chats added to a shareable chat folder by its owner
+        r"""Processes new chats added to a shareable chat folder by its owner
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -11798,7 +11803,7 @@ class TDLibFunctions:
     async def setChatMessageAutoDeleteTime(
         self, *, chat_id: int | None = 0, message_auto_delete_time: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Changes the message auto\-delete or self\-destruct \(for secret chats\) time in a chat\. Requires change\_info administrator right in basic groups, supergroups and channels\. Message auto\-delete time can't be changed in a chat with the current user \(Saved Messages\) and the chat 777000 \(Telegram\)\.
+        r"""Changes the message auto\-delete or self\-destruct \(for secret chats\) time in a chat\. Requires can\_change\_info administrator right in basic groups, supergroups and channels\. Message auto\-delete time can't be changed in a chat with the current user \(Saved Messages\) and the chat 777000 \(Telegram\)\.
 
         Parameters:
             chat_id (:class:`int`):
@@ -12092,7 +12097,7 @@ class TDLibFunctions:
                 Chat identifier
 
             request_message_id (:class:`int`):
-                Identifier of the message with the request\. The message must be incoming and has content of the type messageChatHasProtectedContentDisableRequested
+                Identifier of the message with the request\. The message must be incoming and have content of the type messageChatHasProtectedContentDisableRequested
 
             approve (:class:`bool`):
                 Pass true to approve the request; pass false to reject the request
@@ -13558,7 +13563,7 @@ class TDLibFunctions:
         from_story_id: int | None = 0,
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Stories:
-        r"""Returns the list of stories that posted by the given chat to its chat page\. If from\_story\_id \=\= 0, then pinned stories are returned first\. Then, stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        r"""Returns the list of stories that were posted by the given chat to its chat page\. If from\_story\_id \=\= 0, then pinned stories are returned first\. Then, stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -13694,7 +13699,7 @@ class TDLibFunctions:
 
         Parameters:
             row_size (:class:`int`):
-                Number of reaction per row, 5\-25
+                Number of reactions per row, 5\-25
 
         Returns:
             :class:`~pytdbot.types.AvailableReactions`
@@ -14114,7 +14119,7 @@ class TDLibFunctions:
                 Identifier of the story album
 
             story_ids (list[:class:`int`]):
-                Identifier of the stories to add to the album; 1\-getOption\(\"story\_album\_size\_max\"\) identifiers\. If after addition the album has more than getOption\(\"story\_album\_size\_max\"\) stories, then the last one are removed from the album
+                Identifier of the stories to add to the album; 1\-getOption\(\"story\_album\_size\_max\"\) identifiers\. If after addition the album has more than getOption\(\"story\_album\_size\_max\"\) stories, then the last ones are removed from the album
 
         Returns:
             :class:`~pytdbot.types.StoryAlbum`
@@ -15458,14 +15463,14 @@ class TDLibFunctions:
     async def deleteRevokedChatInviteLink(
         self, *, chat_id: int | None = 0, invite_link: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Deletes revoked chat invite links\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
+        r"""Deletes a revoked chat invite link\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
 
         Parameters:
             chat_id (:class:`int`):
                 Chat identifier
 
             invite_link (:class:`str`):
-                Invite link to revoke
+                Invite link to delete
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -17048,7 +17053,7 @@ class TDLibFunctions:
         | None = None,
         is_hand_raised: bool | None = False,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Toggles whether a group call participant hand is rased; for video chats only
+        r"""Toggles whether a group call participant hand is raised; for video chats only
 
         Parameters:
             group_call_id (:class:`int`):
@@ -19413,7 +19418,7 @@ class TDLibFunctions:
         | pytdbot.types.ResendCodeReasonVerificationFailed
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.AuthenticationCodeInfo:
-        r"""Resends the authentication code sent to a phone number\. Works only if the previously received authenticationCodeInfo next\_code\_type was not null and the server\-specified timeout has passed
+        r"""Resends the authentication code sent to a phone number\. Works only if the previously received authenticationCodeInfo\.next\_type was not null and the server\-specified timeout has passed
 
         Parameters:
             reason (:class:`~pytdbot.types.ResendCodeReason`):
@@ -19632,8 +19637,24 @@ class TDLibFunctions:
             {"@type": "getBusinessChatLinkInfo", "link_name": link_name}
         )
 
-    async def getUserLink(self) -> pytdbot.types.Error | pytdbot.types.UserLink:
+    async def getUserLink(
+        self,
+        *,
+        remove_messages_fee: bool | None = False,
+        return_permanent_link: bool | None = False,
+        revoke_previous_links: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.UserLink:
         r"""Returns an HTTPS link, which can be used to get information about the current user
+
+        Parameters:
+            remove_messages_fee (:class:`bool`):
+                Pass true to get a link, which allows other users to send unpaid messages to the current user\. By default, a temporary link is returned in this case
+
+            return_permanent_link (:class:`bool`):
+                Pass true to get a permanent link; ignored if remove\_messages\_fee is false\. Can be used only if can\_get\_permanent\_link is true in a previously received userLink
+
+            revoke_previous_links (:class:`bool`):
+                Pass true to revoke previously created links, which allow other users to send unpaid messages to the current user; ignored if remove\_messages\_fee is false\. If return\_permanent\_link is true, then the permanent link is revoked too; otherwise, only temporary links are revoked
 
         Returns:
             :class:`~pytdbot.types.UserLink`
@@ -19642,6 +19663,9 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "getUserLink",
+                "remove_messages_fee": remove_messages_fee,
+                "return_permanent_link": return_permanent_link,
+                "revoke_previous_links": revoke_previous_links,
             }
         )
 
@@ -19659,6 +19683,26 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "searchUserByToken", "token": token})
+
+    async def applyUnpaidMessagesToken(
+        self, *, user_id: int | None = 0, token: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Allows the current user to send unpaid messages to the given user, which requires payment for incoming messages, using a token from an internal link of the type internalLinkTypePublicChat, internalLinkTypeUserPhoneNumber, or internalLinkTypeUserToken\. The first message sent to the user will be preceded by a messageUnpaidMessagesAllowedByLink message\. Repeated calls and calls for the current user have no effect
+
+        Parameters:
+            user_id (:class:`int`):
+                Identifier of the user
+
+            token (:class:`str`):
+                Token from the link
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "applyUnpaidMessagesToken", "user_id": user_id, "token": token}
+        )
 
     async def setCommands(
         self,
@@ -20703,7 +20747,7 @@ class TDLibFunctions:
     async def getConnectedWebsites(
         self,
     ) -> pytdbot.types.Error | pytdbot.types.ConnectedWebsites:
-        r"""Returns all website where the current user used Telegram to log in
+        r"""Returns all websites where the current user used Telegram to log in
 
         Returns:
             :class:`~pytdbot.types.ConnectedWebsites`
@@ -20872,7 +20916,7 @@ class TDLibFunctions:
         supergroup_id: int | None = 0,
         custom_emoji_sticker_set_id: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Changes the custom emoji sticker set of a supergroup; requires can\_change\_info administrator right\. The chat must have at least chatBoostFeatures\.min\_custom\_emoji\_sticker\_set\_boost\_level boost level to pass the corresponding color
+        r"""Changes the custom emoji sticker set of a supergroup; requires can\_change\_info administrator right\. The chat must have at least chatBoostFeatures\.min\_custom\_emoji\_sticker\_set\_boost\_level boost level to set a custom emoji sticker set
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -21822,6 +21866,33 @@ class TDLibFunctions:
             }
         )
 
+    async def deleteGift(
+        self,
+        *,
+        business_connection_id: str | None = "",
+        received_gift_id: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Deletes a gift without receiving Telegram Stars for it\. Use receivedGift\.can\_be\_deleted or messageGift\.can\_be\_deleted to check whether the gift can be deleted
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which to send the request; for bots only
+
+            received_gift_id (:class:`str`):
+                Identifier of the gift
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteGift",
+                "business_connection_id": business_connection_id,
+                "received_gift_id": received_gift_id,
+            }
+        )
+
     async def toggleGiftIsSaved(
         self, *, received_gift_id: str | None = "", is_saved: bool | None = False
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -22328,7 +22399,7 @@ class TDLibFunctions:
         offset: str | None = "",
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.GiftsForCrafting:
-        r"""Returns upgraded gifts of the current user who can be used to craft another gifts
+        r"""Returns upgraded gifts of the current user, which can be used to craft other gifts
 
         Parameters:
             regular_gift_id (:class:`int`):
@@ -22384,16 +22455,13 @@ class TDLibFunctions:
         return await self.invoke({"@type": "getUpgradedGiftValueInfo", "name": name})
 
     async def getUpgradedGiftWithdrawalUrl(
-        self, *, received_gift_id: str | None = "", password: str | None = ""
+        self, *, received_gift_id: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.HttpUrl:
-        r"""Returns a URL for upgraded gift withdrawal in the TON blockchain as an NFT; requires owner privileges for gifts owned by a chat
+        r"""Returns a URL for upgraded gift withdrawal in the TON blockchain as an NFT; requires owner privileges for gifts owned by a chat\. The user must have a valid temporary password; see createTemporaryPassword
 
         Parameters:
             received_gift_id (:class:`str`):
                 Identifier of the gift
-
-            password (:class:`str`):
-                The 2\-step verification password of the current user
 
         Returns:
             :class:`~pytdbot.types.HttpUrl`
@@ -22403,8 +22471,90 @@ class TDLibFunctions:
             {
                 "@type": "getUpgradedGiftWithdrawalUrl",
                 "received_gift_id": received_gift_id,
-                "password": password,
             }
+        )
+
+    async def withdrawUpgradedGift(
+        self, *, received_gift_id: str | None = "", keep_on_profile: bool | None = False
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Withdraws an upgraded gift to the TON blockchain as an NFT directly to the TON wallet of the current user, which is created automatically if the user has no wallet yet; requires owner privileges for gifts owned by a chat\. The user must have a valid temporary password; see createTemporaryPassword\. The gift will be received by the wallet in a few seconds after the request succeeds
+
+        Parameters:
+            received_gift_id (:class:`str`):
+                Identifier of the gift
+
+            keep_on_profile (:class:`bool`):
+                Pass true to keep the gift displayed on the user's or the chat's profile page after withdrawal
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "withdrawUpgradedGift",
+                "received_gift_id": received_gift_id,
+                "keep_on_profile": keep_on_profile,
+            }
+        )
+
+    async def getUpgradedGiftDepositInfo(
+        self,
+        *,
+        owner_id: pytdbot.types.MessageSenderUser
+        | pytdbot.types.MessageSenderChat
+        | None = None,
+        name: str | None = "",
+        hide_sender: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.UpgradedGiftDepositInfo:
+        r"""Returns information needed to deposit an upgraded gift from the TON wallet of the current user to a Telegram account\. Use sendTonWalletTransfer to complete transfer of the gift\. The gift will be received by the new owner with a message about the gift after the transfer is confirmed in the blockchain
+
+        Parameters:
+            owner_id (:class:`~pytdbot.types.MessageSender`):
+                Identifier of the user or the channel chat that will receive the gift
+
+            name (:class:`str`):
+                Unique name of the upgraded gift
+
+            hide_sender (:class:`bool`):
+                Pass true to hide the sender of the gift in the message received by the new owner
+
+        Returns:
+            :class:`~pytdbot.types.UpgradedGiftDepositInfo`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getUpgradedGiftDepositInfo",
+                "owner_id": owner_id,
+                "name": name,
+                "hide_sender": hide_sender,
+            }
+        )
+
+    async def displayUpgradedGift(
+        self,
+        *,
+        owner_id: pytdbot.types.MessageSenderUser
+        | pytdbot.types.MessageSenderChat
+        | None = None,
+        name: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Shows an upgraded gift from the TON wallet of the current user on a profile page or hides it from all profile pages; the gift remains in the wallet
+
+        Parameters:
+            owner_id (:class:`~pytdbot.types.MessageSender`):
+                Identifier of the current user or a channel chat owned by the current user on whose profile page the gift will be shown; pass null to hide the gift from all profile pages
+
+            name (:class:`str`):
+                Unique name of the upgraded gift
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "displayUpgradedGift", "owner_id": owner_id, "name": name}
         )
 
     async def getUpgradedGiftsPromotionalAnimation(
@@ -22670,7 +22820,7 @@ class TDLibFunctions:
                 Identifier of the gift collection
 
             received_gift_ids (list[:class:`str`]):
-                Identifier of the gifts to add to the collection; 1\-getOption\(\"gift\_collection\_size\_max\"\) identifiers\. If after addition the collection has more than getOption\(\"gift\_collection\_size\_max\"\) gifts, then the last one are removed from the collection
+                Identifier of the gifts to add to the collection; 1\-getOption\(\"gift\_collection\_size\_max\"\) identifiers\. If after addition the collection has more than getOption\(\"gift\_collection\_size\_max\"\) gifts, then the last ones are removed from the collection
 
         Returns:
             :class:`~pytdbot.types.GiftCollection`
@@ -22985,6 +23135,46 @@ class TDLibFunctions:
             }
         )
 
+    async def getProfileShareThemeBackdrops(
+        self,
+    ) -> pytdbot.types.Error | pytdbot.types.ProfileShareThemeBackdrops:
+        r"""Returns the list of backdrops, which can be used as a background of a theme of the screen for sharing a link to a user or a chat
+
+        Returns:
+            :class:`~pytdbot.types.ProfileShareThemeBackdrops`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getProfileShareThemeBackdrops",
+            }
+        )
+
+    async def setProfileShareTheme(
+        self,
+        *,
+        chat_id: int | None = 0,
+        theme: pytdbot.types.InputProfileShareThemeEmoji
+        | pytdbot.types.InputProfileShareThemeUpgradedGift
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Changes the theme of the screen for sharing a link to the current user or a chat\. The chat must have a username\. Requires can\_change\_info administrator right in supergroups and channels
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat with the current user, or identifier of a supergroup or a channel chat
+
+            theme (:class:`~pytdbot.types.InputProfileShareTheme`):
+                The new theme; pass null to use the default theme
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "setProfileShareTheme", "chat_id": chat_id, "theme": theme}
+        )
+
     async def getLocalizationTargetInfo(
         self, *, only_local: bool | None = False
     ) -> pytdbot.types.Error | pytdbot.types.LocalizationTargetInfo:
@@ -23124,7 +23314,7 @@ class TDLibFunctions:
         language_pack_id: str | None = "",
         new_string: pytdbot.types.LanguagePackString | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Adds, edits or deletes a string in a custom local language pack\. Can be called before authorization
+        r"""Adds, edits, or deletes a string in a custom local language pack\. Can be called before authorization
 
         Parameters:
             language_pack_id (:class:`str`):
@@ -23876,7 +24066,7 @@ class TDLibFunctions:
     async def getTonWalletTransaction(
         self, *, transaction_id: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.TonWalletTransaction:
-        r"""Returns a TON wallet transaction by their identifier
+        r"""Returns a TON wallet transaction by its identifier
 
         Parameters:
             transaction_id (:class:`str`):
@@ -23893,7 +24083,7 @@ class TDLibFunctions:
     async def getTonWalletTransactionByMsgHash(
         self, *, msg_hash: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.TonWalletTransaction:
-        r"""Returns a TON wallet transaction by their msg\_hash; return an error if the transaction isn't finalized yet
+        r"""Returns a TON wallet transaction by its msg\_hash; returns an error if the transaction isn't finalized yet
 
         Parameters:
             msg_hash (:class:`str`):
@@ -23999,15 +24189,15 @@ class TDLibFunctions:
 
     async def getTonWalletSecretPhrase(
         self, *, password: str | None = ""
-    ) -> pytdbot.types.Error | pytdbot.types.Text:
-        r"""Returns the secret phrase of the user's TON wallet as a space separated list of words\. Works only if tonWalletState\.can\_export\_phrase is true
+    ) -> pytdbot.types.Error | pytdbot.types.TonWalletSecretPhrase:
+        r"""Returns the secret phrase of the user's TON wallet\. Works only if tonWalletState\.can\_export\_phrase is true
 
         Parameters:
             password (:class:`str`):
                 Password of the current user; pass an empty string unless receive an error with a message \"PASSWORD\_MISSING\" for a passwordless request
 
         Returns:
-            :class:`~pytdbot.types.Text`
+            :class:`~pytdbot.types.TonWalletSecretPhrase`
         """
 
         return await self.invoke(
@@ -24017,7 +24207,7 @@ class TDLibFunctions:
     async def getTonWalletOwnershipProofChallenge(
         self,
     ) -> pytdbot.types.Error | pytdbot.types.TonWalletOwnershipProofChallenge:
-        r"""Returns a challenge which may be used to proof ownership of a TON wallet; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+        r"""Returns a challenge which may be used to prove ownership of a TON wallet; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
 
         Returns:
             :class:`~pytdbot.types.TonWalletOwnershipProofChallenge`
@@ -24127,7 +24317,7 @@ class TDLibFunctions:
                 Serialized data for regular cryptocurrency transfer request\. The minimum allowed transfer amount is getOption\(\"ton\_wallet\_transfer\_amount\_min\"\)
 
             gasless_transfer_data (:class:`bytes`):
-                Serialized data for gasless cryptocurrency transfer request; pass an empty string to force a regular request\. The minimum allowed transfer amount for a gassless transfer is getOption\(\"ton\_wallet\_gasless\_transfer\_amount\_min\"\)
+                Serialized data for gasless cryptocurrency transfer request; pass an empty string to force a regular request\. The minimum allowed transfer amount for a gasless transfer is getOption\(\"ton\_wallet\_gasless\_transfer\_amount\_min\"\)
 
         Returns:
             :class:`~pytdbot.types.TonWalletTransferResult`
@@ -24229,6 +24419,48 @@ class TDLibFunctions:
             {"@type": "getTonWalletNfts", "offset": offset, "limit": limit}
         )
 
+    async def getTonWalletCardBackgroundGiftCollectionNames(
+        self,
+    ) -> pytdbot.types.Error | pytdbot.types.UpgradedGiftCollectionNames:
+        r"""Returns names of upgraded gift collections whose NFTs can be used as background\_nft\_address in setTonWalletCardStickers; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)
+
+        Returns:
+            :class:`~pytdbot.types.UpgradedGiftCollectionNames`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getTonWalletCardBackgroundGiftCollectionNames",
+            }
+        )
+
+    async def setTonWalletCardStickers(
+        self,
+        *,
+        stickers: list[pytdbot.types.InputTonWalletCardSticker] | None = None,
+        background_nft_address: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.TonWalletCard:
+        r"""Changes the list of stickers on the TON wallet card of the current user; can be used only if getOption\(\"can\_use\_ton\_wallet\"\)\. The whole list of stickers is replaced\. The request can take up to 20 seconds to complete, so it must be called only on explicit user action\. Stickers are removed automatically if the corresponding NFT leaves the wallet or the wallet is replaced\. Returns the updated card
+
+        Parameters:
+            stickers (list[:class:`~pytdbot.types.InputTonWalletCardSticker`]):
+                The new list of stickers; pass an empty list to remove all stickers\. Up to 10 stickers can be added\. Each NFT can be used only once
+
+            background_nft_address (:class:`str`):
+                Address of the NFT from the new list of stickers, whose colors will be used for the card background; pass an empty string to use the default background\. The NFT must correspond to an upgraded gift with can\_be\_ton\_wallet\_card\_background \=\= true
+
+        Returns:
+            :class:`~pytdbot.types.TonWalletCard`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setTonWalletCardStickers",
+                "stickers": stickers,
+                "background_nft_address": background_nft_address,
+            }
+        )
+
     async def getTonConnectSessions(
         self,
     ) -> pytdbot.types.Error | pytdbot.types.TonConnectSessions:
@@ -24271,7 +24503,7 @@ class TDLibFunctions:
     async def setTonConnectSessionWalletClientId(
         self, *, session_id: int | None = 0, wallet_client_id: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.TonConnectChallenge:
-        r"""Sets wallet\_client\_id for a pending TON Connect session\. Then, sendTonConnectSessionConnectResult must be used to accept or reject the session
+        r"""Sets wallet\_client\_id for a pending TON Connect session\. Then, sendTonConnectSessionConnectResult must be used to accept or reject the session\. If the session was created for an OAuth request, then acceptOauthRequest must be used instead
 
         Parameters:
             session_id (:class:`int`):
@@ -24510,7 +24742,7 @@ class TDLibFunctions:
 
         Parameters:
             provider_id (:class:`str`):
-                Unique identifier of the on\-ramp provider; only for providers that supports base currencies
+                Unique identifier of the on\-ramp provider; only for providers that support base currencies
 
             cryptocurrency (:class:`str`):
                 The cryptocurrency that will be bought
@@ -24567,7 +24799,7 @@ class TDLibFunctions:
         base_currency: str | None = "",
         payment_method_name: str | None = "",
     ) -> pytdbot.types.Error | pytdbot.types.OnRampPaymentLimits:
-        r"""Returns the limits for an on\-ramp payment; only for providers that supports limits retrieval
+        r"""Returns the limits for an on\-ramp payment; only for providers that support limits retrieval
 
         Parameters:
             provider_id (:class:`str`):
@@ -24606,7 +24838,7 @@ class TDLibFunctions:
         base_currency_amount: str | None = "",
         payment_method_name: str | None = "",
     ) -> pytdbot.types.Error | pytdbot.types.OnRampPaymentQuote:
-        r"""Returns a quote for an on\-ramp payment; only for providers that supports quote retrieval
+        r"""Returns a quote for an on\-ramp payment; only for providers that support quote retrieval
 
         Parameters:
             provider_id (:class:`str`):
@@ -26968,7 +27200,7 @@ class TDLibFunctions:
 
         Parameters:
             affiliate (:class:`~pytdbot.types.AffiliateType`):
-                The affiliate to which the affiliate program will be connected
+                The affiliate to which the affiliate program is connected
 
             bot_user_id (:class:`int`):
                 Identifier of the bot that created the program
@@ -27283,7 +27515,7 @@ class TDLibFunctions:
     async def dismissWebToken(
         self, *, token: str | None = ""
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Dismissess a received web token without consumption; for official Telegram apps only
+        r"""Dismisses a received web token without consumption; for official Telegram apps only
 
         Parameters:
             token (:class:`str`):
@@ -27497,6 +27729,67 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "pingProxy", "proxy": proxy})
+
+    async def processWebProxyCarrierMessage(
+        self,
+        *,
+        carrier_id: int | None = 0,
+        message: pytdbot.types.WebProxyCarrierMessageText
+        | pytdbot.types.WebProxyCarrierMessageBinary
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Passes a message, which the page of a web proxy carrier passed to postMessage of the bridge object, to TDLib\. Must be called in the order in which the messages were passed\. Can be called before authorization
+
+        Parameters:
+            carrier_id (:class:`int`):
+                Identifier of the carrier
+
+            message (:class:`~pytdbot.types.WebProxyCarrierMessage`):
+                The received message
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "processWebProxyCarrierMessage",
+                "carrier_id": carrier_id,
+                "message": message,
+            }
+        )
+
+    async def reportWebProxyCarrierError(
+        self,
+        *,
+        carrier_id: int | None = 0,
+        error: pytdbot.types.WebProxyCarrierErrorUnsupported
+        | pytdbot.types.WebProxyCarrierErrorPaused
+        | pytdbot.types.WebProxyCarrierErrorLoadFailed
+        | pytdbot.types.WebProxyCarrierErrorTerminated
+        | pytdbot.types.WebProxyCarrierErrorRefused
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Reports that a web proxy carrier failed\. TDLib closes the carrier and decides whether and when to request a new one\. Can be called before authorization
+
+        Parameters:
+            carrier_id (:class:`int`):
+                Identifier of the carrier
+
+            error (:class:`~pytdbot.types.WebProxyCarrierError`):
+                The error
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "reportWebProxyCarrierError",
+                "carrier_id": carrier_id,
+                "error": error,
+            }
+        )
 
     async def setLogStream(
         self,

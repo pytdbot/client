@@ -302,7 +302,7 @@ class TonTransactionType:
 
 
 class TonCenterApiRequestType:
-    r"""Describes state of active stories posted by a chat"""
+    r"""Describes a type of request to the TON Center API"""
 
     pass
 
@@ -601,6 +601,24 @@ class BuiltInTheme:
     pass
 
 
+class EmojiType:
+    r"""Describes an emoji"""
+
+    pass
+
+
+class ProfileShareTheme:
+    r"""Describes a theme of the screen for sharing a link to a user or a chat"""
+
+    pass
+
+
+class InputProfileShareTheme:
+    r"""Describes a theme of the screen for sharing a link to a user or a chat to be set"""
+
+    pass
+
+
 class RichText:
     r"""Describes a formatted text object"""
 
@@ -614,7 +632,7 @@ class PageBlockHorizontalAlignment:
 
 
 class PageBlockVerticalAlignment:
-    r"""Describes a Vertical alignment of a table cell content"""
+    r"""Describes a vertical alignment of a table cell content"""
 
     pass
 
@@ -1305,6 +1323,18 @@ class TextParseMode:
 
 class ProxyType:
     r"""Describes the type of proxy server"""
+
+    pass
+
+
+class WebProxyCarrierMessage:
+    r"""Describes a message passed by the page of a web proxy carrier to postMessage of the bridge object"""
+
+    pass
+
+
+class WebProxyCarrierError:
+    r"""Describes the reason why a web proxy carrier failed"""
 
     pass
 
@@ -4061,7 +4091,7 @@ class RecoveryEmailAddress(TlObject):
 
 
 class TemporaryPasswordState(TlObject):
-    r"""Returns information about the availability of a temporary password, which can be used for payments
+    r"""Contains information about the availability of a temporary password, which can be used for payments and withdrawal of upgraded gifts
 
     Parameters:
         has_password (:class:`bool`):
@@ -7972,7 +8002,7 @@ class Poll(TlObject):
             The list of two\-letter ISO 3166\-1 alpha\-2 codes of countries, users from which will be able to vote\. If empty, then all users can participate in the poll
 
         option_order (list[:class:`int`]):
-            The list of 0\-based poll identifiers in which the options of the poll must be shown; empty if the order of options must not be changed
+            The list of 0\-based poll option identifiers in which the options of the poll must be shown; empty if the order of options must not be changed
 
         type (:class:`~pytdbot.types.PollType`):
             Type of the poll
@@ -8044,7 +8074,7 @@ class Poll(TlObject):
         self.country_codes = country_codes or []
         r"""The list of two\-letter ISO 3166\-1 alpha\-2 codes of countries, users from which will be able to vote\. If empty, then all users can participate in the poll"""
         self.option_order = option_order or []
-        r"""The list of 0\-based poll identifiers in which the options of the poll must be shown; empty if the order of options must not be changed"""
+        r"""The list of 0\-based poll option identifiers in which the options of the poll must be shown; empty if the order of options must not be changed"""
         self.type = type
         r"""Type of the poll"""
         self.open_period = open_period
@@ -10146,7 +10176,7 @@ class BusinessBotRights(TlObject):
             True, if the bot can view gifts and Telegram Star amount owned by the business account
 
         can_sell_gifts (:class:`bool`):
-            True, if the bot can sell regular gifts received by the business account
+            True, if the bot can sell or delete regular gifts received by the business account
 
         can_change_gift_settings (:class:`bool`):
             True, if the bot can change gift receiving settings of the business account
@@ -10199,7 +10229,7 @@ class BusinessBotRights(TlObject):
         self.can_view_gifts_and_stars = can_view_gifts_and_stars
         r"""True, if the bot can view gifts and Telegram Star amount owned by the business account"""
         self.can_sell_gifts = can_sell_gifts
-        r"""True, if the bot can sell regular gifts received by the business account"""
+        r"""True, if the bot can sell or delete regular gifts received by the business account"""
         self.can_change_gift_settings = can_change_gift_settings
         r"""True, if the bot can change gift receiving settings of the business account"""
         self.can_transfer_and_upgrade_gifts = can_transfer_and_upgrade_gifts
@@ -11173,7 +11203,7 @@ class ChatPhoto(TlObject):
             Photo minithumbnail; may be null
 
         sizes (list[:class:`~pytdbot.types.PhotoSize`]):
-            Available variants of the photo in JPEG format, in different size
+            Available variants of the photo in JPEG format, in different sizes
 
         animation (:class:`~pytdbot.types.AnimatedChatPhoto`):
             A big \(up to 1280x1280\) animated variant of the photo in MPEG4 format; may be null
@@ -11204,7 +11234,7 @@ class ChatPhoto(TlObject):
         self.minithumbnail = minithumbnail
         r"""Photo minithumbnail; may be null"""
         self.sizes = sizes or []
-        r"""Available variants of the photo in JPEG format, in different size"""
+        r"""Available variants of the photo in JPEG format, in different sizes"""
         self.animation = animation
         r"""A big \(up to 1280x1280\) animated variant of the photo in MPEG4 format; may be null"""
         self.small_animation = small_animation
@@ -12384,6 +12414,94 @@ class WebAppOpenParameters(TlObject):
             data_class.theme = data.get("theme", None)
             data_class.application_name = data.get("application_name", "")
             data_class.mode = data.get("mode", None)
+
+        return data_class
+
+
+class AreaPosition(TlObject):
+    r"""Describes position of a rectangle area on a story media or a TON wallet card
+
+    Parameters:
+        x_percentage (:class:`float`):
+            The abscissa of the rectangle's center, as a percentage of the media or the card width
+
+        y_percentage (:class:`float`):
+            The ordinate of the rectangle's center, as a percentage of the media or the card height
+
+        width_percentage (:class:`float`):
+            The width of the rectangle, as a percentage of the media or the card width
+
+        height_percentage (:class:`float`):
+            The height of the rectangle, as a percentage of the media or the card height
+
+        rotation_angle (:class:`float`):
+            Clockwise rotation angle of the rectangle, in degrees; 0\-360
+
+        corner_radius_percentage (:class:`float`):
+            The radius of the rectangle corner rounding, as a percentage of the media or the card width
+
+    """
+
+    def __init__(
+        self,
+        *,
+        x_percentage: float | None = 0.0,
+        y_percentage: float | None = 0.0,
+        width_percentage: float | None = 0.0,
+        height_percentage: float | None = 0.0,
+        rotation_angle: float | None = 0.0,
+        corner_radius_percentage: float | None = 0.0,
+    ) -> None:
+        self.x_percentage = x_percentage
+        r"""The abscissa of the rectangle's center, as a percentage of the media or the card width"""
+        self.y_percentage = y_percentage
+        r"""The ordinate of the rectangle's center, as a percentage of the media or the card height"""
+        self.width_percentage = width_percentage
+        r"""The width of the rectangle, as a percentage of the media or the card width"""
+        self.height_percentage = height_percentage
+        r"""The height of the rectangle, as a percentage of the media or the card height"""
+        self.rotation_angle = rotation_angle
+        r"""Clockwise rotation angle of the rectangle, in degrees; 0\-360"""
+        self.corner_radius_percentage = corner_radius_percentage
+        r"""The radius of the rectangle corner rounding, as a percentage of the media or the card width"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["areaPosition"]:
+        return "areaPosition"
+
+    @classmethod
+    def getClass(self) -> Literal["AreaPosition"]:
+        return "AreaPosition"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "x_percentage": self.x_percentage,
+            "y_percentage": self.y_percentage,
+            "width_percentage": self.width_percentage,
+            "height_percentage": self.height_percentage,
+            "rotation_angle": self.rotation_angle,
+            "corner_radius_percentage": self.corner_radius_percentage,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> AreaPosition | None:
+        if data:
+            data_class = cls()
+            data_class.x_percentage = data.get("x_percentage", 0.0)
+            data_class.y_percentage = data.get("y_percentage", 0.0)
+            data_class.width_percentage = data.get("width_percentage", 0.0)
+            data_class.height_percentage = data.get("height_percentage", 0.0)
+            data_class.rotation_angle = data.get("rotation_angle", 0.0)
+            data_class.corner_radius_percentage = data.get(
+                "corner_radius_percentage", 0.0
+            )
 
         return data_class
 
@@ -13696,7 +13814,7 @@ class FoundAffiliateProgram(TlObject):
 
     Parameters:
         bot_user_id (:class:`int`):
-            User identifier of the bot created the program
+            User identifier of the bot that created the program
 
         info (:class:`~pytdbot.types.AffiliateProgramInfo`):
             Information about the affiliate program
@@ -13707,7 +13825,7 @@ class FoundAffiliateProgram(TlObject):
         self, *, bot_user_id: int | None = 0, info: AffiliateProgramInfo | None = None
     ) -> None:
         self.bot_user_id = bot_user_id
-        r"""User identifier of the bot created the program"""
+        r"""User identifier of the bot that created the program"""
         self.info = info
         r"""Information about the affiliate program"""
 
@@ -13812,7 +13930,7 @@ class ConnectedAffiliateProgram(TlObject):
             The link that can be used to refer users if the program is still active
 
         bot_user_id (:class:`int`):
-            User identifier of the bot created the program
+            User identifier of the bot that created the program
 
         parameters (:class:`~pytdbot.types.AffiliateProgramParameters`):
             The parameters of the affiliate program
@@ -13845,7 +13963,7 @@ class ConnectedAffiliateProgram(TlObject):
         self.url = url
         r"""The link that can be used to refer users if the program is still active"""
         self.bot_user_id = bot_user_id
-        r"""User identifier of the bot created the program"""
+        r"""User identifier of the bot that created the program"""
         self.parameters = parameters
         r"""The parameters of the affiliate program"""
         self.connection_date = connection_date
@@ -15585,7 +15703,7 @@ class UpgradedGiftOriginResale(TlObject, UpgradedGiftOrigin):
 
 
 class UpgradedGiftOriginBlockchain(TlObject, UpgradedGiftOrigin):
-    r"""The gift was assigned from blockchain and isn't owned by the current user\. The gift can't be transferred, resold or withdrawn to blockchain"""
+    r"""The gift was assigned from blockchain and isn't owned by the current user\. The gift can't be transferred, resold, or withdrawn to blockchain"""
 
     def __init__(self) -> None:
         pass
@@ -16385,7 +16503,7 @@ class Gift(TlObject):
             Number of times the gift can be purchased by all users; may be null if not limited
 
         background (:class:`~pytdbot.types.GiftBackground`):
-            Background of the gift
+            Background of the gift; may be null if the gift has no background
 
         first_send_date (:class:`int`):
             Point in time \(Unix timestamp\) when the gift was sent for the first time; for sold out gifts only
@@ -16445,7 +16563,7 @@ class Gift(TlObject):
         self.overall_limits = overall_limits
         r"""Number of times the gift can be purchased by all users; may be null if not limited"""
         self.background = background
-        r"""Background of the gift"""
+        r"""Background of the gift; may be null if the gift has no background"""
         self.first_send_date = first_send_date
         r"""Point in time \(Unix timestamp\) when the gift was sent for the first time; for sold out gifts only"""
         self.last_send_date = last_send_date
@@ -16572,6 +16690,9 @@ class UpgradedGift(TlObject):
         gift_address (:class:`str`):
             Address of the gift NFT in TON blockchain; may be empty if none\. Append the address to getOption\(\"ton\_blockchain\_explorer\_url\"\) to get a link with information about the address
 
+        can_be_ton_wallet_card_background (:class:`bool`):
+            True, if the gift NFT can be used as background\_nft\_address in setTonWalletCardStickers
+
         model (:class:`~pytdbot.types.UpgradedGiftModel`):
             Model of the upgraded gift
 
@@ -16628,6 +16749,7 @@ class UpgradedGift(TlObject):
         owner_address: str | None = "",
         owner_name: str | None = "",
         gift_address: str | None = "",
+        can_be_ton_wallet_card_background: bool | None = False,
         model: UpgradedGiftModel | None = None,
         symbol: UpgradedGiftSymbol | None = None,
         backdrop: UpgradedGiftBackdrop | None = None,
@@ -16676,6 +16798,8 @@ class UpgradedGift(TlObject):
         r"""Name of the owner for the case when owner identifier and address aren't known"""
         self.gift_address = gift_address
         r"""Address of the gift NFT in TON blockchain; may be empty if none\. Append the address to getOption\(\"ton\_blockchain\_explorer\_url\"\) to get a link with information about the address"""
+        self.can_be_ton_wallet_card_background = can_be_ton_wallet_card_background
+        r"""True, if the gift NFT can be used as background\_nft\_address in setTonWalletCardStickers"""
         self.model = model
         r"""Model of the upgraded gift"""
         self.symbol = symbol
@@ -16734,6 +16858,7 @@ class UpgradedGift(TlObject):
             "owner_address": self.owner_address,
             "owner_name": self.owner_name,
             "gift_address": self.gift_address,
+            "can_be_ton_wallet_card_background": self.can_be_ton_wallet_card_background,
             "model": self.model,
             "symbol": self.symbol,
             "backdrop": self.backdrop,
@@ -16769,6 +16894,9 @@ class UpgradedGift(TlObject):
             data_class.owner_address = data.get("owner_address", "")
             data_class.owner_name = data.get("owner_name", "")
             data_class.gift_address = data.get("gift_address", "")
+            data_class.can_be_ton_wallet_card_background = data.get(
+                "can_be_ton_wallet_card_background", False
+            )
             data_class.model = data.get("model", None)
             data_class.symbol = data.get("symbol", None)
             data_class.backdrop = data.get("backdrop", None)
@@ -16942,6 +17070,68 @@ class UpgradedGiftValueInfo(TlObject):
                 data.get("fragment_listed_gift_count", 0)
             )
             data_class.fragment_url = data.get("fragment_url", "")
+
+        return data_class
+
+
+class UpgradedGiftDepositInfo(TlObject):
+    r"""Contains information needed to deposit an upgraded gift from the TON wallet of the current user to a Telegram account\. The gift must be transferred by an internal message from the wallet to nft\_address with gram\_amount attached and with payload as the message body
+
+    Parameters:
+        nft_address (:class:`str`):
+            Address in TON blockchain to which the message must be sent
+
+        payload (:class:`bytes`):
+            Body of the NFT transfer message
+
+        gram_amount (:class:`int`):
+            The amount of TON Grams that must be attached to the message to cover fees, in the smallest units of the cryptocurrency; excess amount will be returned to the wallet
+
+    """
+
+    def __init__(
+        self,
+        *,
+        nft_address: str | None = "",
+        payload: bytes | None = b"",
+        gram_amount: int | None = 0,
+    ) -> None:
+        self.nft_address = nft_address
+        r"""Address in TON blockchain to which the message must be sent"""
+        self.payload = payload
+        r"""Body of the NFT transfer message"""
+        self.gram_amount = gram_amount
+        r"""The amount of TON Grams that must be attached to the message to cover fees, in the smallest units of the cryptocurrency; excess amount will be returned to the wallet"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["upgradedGiftDepositInfo"]:
+        return "upgradedGiftDepositInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["UpgradedGiftDepositInfo"]:
+        return "UpgradedGiftDepositInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "nft_address": self.nft_address,
+            "payload": self.payload,
+            "gram_amount": self.gram_amount,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpgradedGiftDepositInfo | None:
+        if data:
+            data_class = cls()
+            data_class.nft_address = data.get("nft_address", "")
+            data_class.payload = b64decode(data.get("payload", b""))
+            data_class.gram_amount = int(data.get("gram_amount", 0))
 
         return data_class
 
@@ -17595,7 +17785,7 @@ class UpgradedGiftBackdropCount(TlObject):
             The backdrop
 
         total_count (:class:`int`):
-            Total number of gifts with the symbol
+            Total number of gifts with the backdrop
 
     """
 
@@ -17608,7 +17798,7 @@ class UpgradedGiftBackdropCount(TlObject):
         self.backdrop = backdrop
         r"""The backdrop"""
         self.total_count = total_count
-        r"""Total number of gifts with the symbol"""
+        r"""Total number of gifts with the backdrop"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -18046,7 +18236,7 @@ class ReceivedGift(TlObject):
             Unique number of the gift among gifts upgraded from the same gift after upgrade; 0 if yet unassigned
 
         is_private (:class:`bool`):
-            True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone are able to see them
+            True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone is able to see them
 
         is_saved (:class:`bool`):
             True, if the gift is displayed on the chat's profile page; only for the receiver of the gift
@@ -18059,6 +18249,9 @@ class ReceivedGift(TlObject):
 
         can_be_transferred (:class:`bool`):
             True, if the gift is an upgraded gift that can be transferred to another owner; only for the receiver of the gift
+
+        can_be_deleted (:class:`bool`):
+            True, if the gift is a regular gift that can be deleted using deleteGift; only for the receiver of the gift
 
         was_refunded (:class:`bool`):
             True, if the gift was refunded and isn't available anymore
@@ -18116,6 +18309,7 @@ class ReceivedGift(TlObject):
         is_pinned: bool | None = False,
         can_be_upgraded: bool | None = False,
         can_be_transferred: bool | None = False,
+        can_be_deleted: bool | None = False,
         was_refunded: bool | None = False,
         date: int | None = 0,
         gift: SentGiftRegular | SentGiftUpgraded | None = None,
@@ -18140,7 +18334,7 @@ class ReceivedGift(TlObject):
         self.unique_gift_number = unique_gift_number
         r"""Unique number of the gift among gifts upgraded from the same gift after upgrade; 0 if yet unassigned"""
         self.is_private = is_private
-        r"""True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone are able to see them"""
+        r"""True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone is able to see them"""
         self.is_saved = is_saved
         r"""True, if the gift is displayed on the chat's profile page; only for the receiver of the gift"""
         self.is_pinned = is_pinned
@@ -18149,6 +18343,8 @@ class ReceivedGift(TlObject):
         r"""True, if the gift is a regular gift that can be upgraded to a unique gift; only for the receiver of the gift"""
         self.can_be_transferred = can_be_transferred
         r"""True, if the gift is an upgraded gift that can be transferred to another owner; only for the receiver of the gift"""
+        self.can_be_deleted = can_be_deleted
+        r"""True, if the gift is a regular gift that can be deleted using deleteGift; only for the receiver of the gift"""
         self.was_refunded = was_refunded
         r"""True, if the gift was refunded and isn't available anymore"""
         self.date = date
@@ -18204,6 +18400,7 @@ class ReceivedGift(TlObject):
             "is_pinned": self.is_pinned,
             "can_be_upgraded": self.can_be_upgraded,
             "can_be_transferred": self.can_be_transferred,
+            "can_be_deleted": self.can_be_deleted,
             "was_refunded": self.was_refunded,
             "date": self.date,
             "gift": self.gift,
@@ -18233,6 +18430,7 @@ class ReceivedGift(TlObject):
             data_class.is_pinned = data.get("is_pinned", False)
             data_class.can_be_upgraded = data.get("can_be_upgraded", False)
             data_class.can_be_transferred = data.get("can_be_transferred", False)
+            data_class.can_be_deleted = data.get("can_be_deleted", False)
             data_class.was_refunded = data.get("was_refunded", False)
             data_class.date = int(data.get("date", 0))
             data_class.gift = data.get("gift", None)
@@ -18332,7 +18530,7 @@ class AttributeCraftPersistenceProbability(TlObject):
 
     Parameters:
         persistence_chance_per_mille (list[:class:`int`]):
-            The 4 numbers that describe probability of the craft result to have the same attribute as one of the original gifts if 1, 2, 3, or 4 gifts with the attribute are used in the craft\. Each number represents the number of crafted gifts with the original attribute per 1000 successful craftings
+            The 4 numbers that describe probability of the craft result to have the same attribute as one of the original gifts if 1, 2, 3, or 4 gifts with the attribute are used in the craft\. Each number represents the number of crafted gifts with the original attribute per 1000 successful crafts
 
     """
 
@@ -18340,7 +18538,7 @@ class AttributeCraftPersistenceProbability(TlObject):
         self, *, persistence_chance_per_mille: list[int] | None = None
     ) -> None:
         self.persistence_chance_per_mille = persistence_chance_per_mille or []
-        r"""The 4 numbers that describe probability of the craft result to have the same attribute as one of the original gifts if 1, 2, 3, or 4 gifts with the attribute are used in the craft\. Each number represents the number of crafted gifts with the original attribute per 1000 successful craftings"""
+        r"""The 4 numbers that describe probability of the craft result to have the same attribute as one of the original gifts if 1, 2, 3, or 4 gifts with the attribute are used in the craft\. Each number represents the number of crafted gifts with the original attribute per 1000 successful crafts"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -18384,7 +18582,7 @@ class GiftsForCrafting(TlObject):
             The list of gifts
 
         attribute_persistence_probabilities (list[:class:`~pytdbot.types.AttributeCraftPersistenceProbability`]):
-            The 4 objects that describe probabilities of the crafted gift to have the backdrop or symbol of one of the original gifts for the cases when 1, 2, 3 or 4 gifts are used in the craft correspondingly
+            The 4 objects that describe probabilities of the crafted gift to have the backdrop or symbol of one of the original gifts for the cases when 1\-4 gifts are used in the craft correspondingly
 
         next_offset (:class:`str`):
             The offset for the next request\. If empty, then there are no more results
@@ -18407,7 +18605,7 @@ class GiftsForCrafting(TlObject):
         self.attribute_persistence_probabilities = (
             attribute_persistence_probabilities or []
         )
-        r"""The 4 objects that describe probabilities of the crafted gift to have the backdrop or symbol of one of the original gifts for the cases when 1, 2, 3 or 4 gifts are used in the craft correspondingly"""
+        r"""The 4 objects that describe probabilities of the crafted gift to have the backdrop or symbol of one of the original gifts for the cases when 1\-4 gifts are used in the craft correspondingly"""
         self.next_offset = next_offset
         r"""The offset for the next request\. If empty, then there are no more results"""
 
@@ -19043,7 +19241,7 @@ class AuctionStateFinished(TlObject, AuctionState):
 
 
 class GiftAuctionState(TlObject):
-    r"""Represent auction state of a gift
+    r"""Represents auction state of a gift
 
     Parameters:
         gift (:class:`~pytdbot.types.Gift`):
@@ -20014,7 +20212,7 @@ class StarTransactionTypeBotSubscriptionPurchase(TlObject, StarTransactionType):
             The number of seconds between consecutive Telegram Star debitings
 
         product_info (:class:`~pytdbot.types.ProductInfo`):
-            Information about the bought subscription
+            Information about the bought subscription; may be null if no information about the subscription is available
 
     """
 
@@ -20030,7 +20228,7 @@ class StarTransactionTypeBotSubscriptionPurchase(TlObject, StarTransactionType):
         self.subscription_period = subscription_period
         r"""The number of seconds between consecutive Telegram Star debitings"""
         self.product_info = product_info
-        r"""Information about the bought subscription"""
+        r"""Information about the bought subscription; may be null if no information about the subscription is available"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -20076,7 +20274,7 @@ class StarTransactionTypeBotSubscriptionSale(TlObject, StarTransactionType):
             The number of seconds between consecutive Telegram Star debitings
 
         product_info (:class:`~pytdbot.types.ProductInfo`):
-            Information about the bought subscription
+            Information about the bought subscription; may be null if no information about the subscription is available
 
         invoice_payload (:class:`bytes`):
             Invoice payload
@@ -20100,7 +20298,7 @@ class StarTransactionTypeBotSubscriptionSale(TlObject, StarTransactionType):
         self.subscription_period = subscription_period
         r"""The number of seconds between consecutive Telegram Star debitings"""
         self.product_info = product_info
-        r"""Information about the bought subscription"""
+        r"""Information about the bought subscription; may be null if no information about the subscription is available"""
         self.invoice_payload = invoice_payload
         r"""Invoice payload"""
         self.affiliate = affiliate
@@ -21133,7 +21331,7 @@ class StarTransactionTypePaidGroupCallMessageReceive(TlObject, StarTransactionTy
 
 
 class StarTransactionTypePaidGroupCallReactionSend(TlObject, StarTransactionType):
-    r"""The transaction is a sending of a paid group reaction; relevant for regular users only
+    r"""The transaction is a sending of a paid group call reaction; relevant for regular users only
 
     Parameters:
         chat_id (:class:`int`):
@@ -22661,7 +22859,7 @@ class TonWalletOwnershipProof(TlObject):
             The current UNIX timestamp which was used to create the proof
 
         signature (:class:`bytes`):
-            The signature prooving the ownership
+            The signature proving the ownership
 
     """
 
@@ -22677,7 +22875,7 @@ class TonWalletOwnershipProof(TlObject):
         self.timestamp = timestamp
         r"""The current UNIX timestamp which was used to create the proof"""
         self.signature = signature
-        r"""The signature prooving the ownership"""
+        r"""The signature proving the ownership"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -22708,6 +22906,45 @@ class TonWalletOwnershipProof(TlObject):
             data_class.public_key = b64decode(data.get("public_key", b""))
             data_class.timestamp = int(data.get("timestamp", 0))
             data_class.signature = b64decode(data.get("signature", b""))
+
+        return data_class
+
+
+class TonWalletSecretPhrase(TlObject):
+    r"""Contains the secret phrase of a TON wallet
+
+    Parameters:
+        secret_phrase (:class:`str`):
+            The secret phrase as a space separated list of words
+
+    """
+
+    def __init__(self, *, secret_phrase: str | None = "") -> None:
+        self.secret_phrase = secret_phrase
+        r"""The secret phrase as a space separated list of words"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletSecretPhrase"]:
+        return "tonWalletSecretPhrase"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletSecretPhrase"]:
+        return "TonWalletSecretPhrase"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "secret_phrase": self.secret_phrase}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletSecretPhrase | None:
+        if data:
+            data_class = cls()
+            data_class.secret_phrase = data.get("secret_phrase", "")
 
         return data_class
 
@@ -23594,6 +23831,9 @@ class TonNft(TlObject):
         extra (:class:`~pytdbot.types.JsonValue`):
             Additional data about the NFT; may be null if none
 
+        gift (:class:`~pytdbot.types.UpgradedGift`):
+            The upgraded gift corresponding to the NFT; may be null if none\. Information about the owner of the gift isn't available\. Original details of the gift are available only to the sender and the receiver of the original gift
+
     """
 
     def __init__(
@@ -23617,6 +23857,7 @@ class TonNft(TlObject):
         | JsonValueArray
         | JsonValueObject
         | None = None,
+        gift: UpgradedGift | None = None,
     ) -> None:
         self.collection_address = collection_address
         r"""Address of the collection to which the NFT belongs; may be empty if unknown"""
@@ -23642,6 +23883,8 @@ class TonNft(TlObject):
         r"""Attributes of the NFT"""
         self.extra = extra
         r"""Additional data about the NFT; may be null if none"""
+        self.gift = gift
+        r"""The upgraded gift corresponding to the NFT; may be null if none\. Information about the owner of the gift isn't available\. Original details of the gift are available only to the sender and the receiver of the original gift"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -23672,6 +23915,7 @@ class TonNft(TlObject):
             "sticker": self.sticker,
             "attributes": self.attributes,
             "extra": self.extra,
+            "gift": self.gift,
         }
 
     @classmethod
@@ -23690,6 +23934,7 @@ class TonNft(TlObject):
             data_class.sticker = data.get("sticker", None)
             data_class.attributes = data.get("attributes", None)
             data_class.extra = data.get("extra", None)
+            data_class.gift = data.get("gift", None)
 
         return data_class
 
@@ -23741,6 +23986,213 @@ class TonNfts(TlObject):
             data_class = cls()
             data_class.nfts = data.get("nfts", None)
             data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
+class TonWalletCardSticker(TlObject):
+    r"""Describes a sticker on a TON wallet card
+
+    Parameters:
+        position (:class:`~pytdbot.types.AreaPosition`):
+            Position of the sticker on the card
+
+        nft (:class:`~pytdbot.types.TonNft`):
+            The NFT shown as the sticker\. If nft\.gift is non\-null, then it is enough to draw the sticker and there is no need to download the media of the NFT
+
+    """
+
+    def __init__(
+        self, *, position: AreaPosition | None = None, nft: TonNft | None = None
+    ) -> None:
+        self.position = position
+        r"""Position of the sticker on the card"""
+        self.nft = nft
+        r"""The NFT shown as the sticker\. If nft\.gift is non\-null, then it is enough to draw the sticker and there is no need to download the media of the NFT"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletCardSticker"]:
+        return "tonWalletCardSticker"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletCardSticker"]:
+        return "TonWalletCardSticker"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "position": self.position, "nft": self.nft}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletCardSticker | None:
+        if data:
+            data_class = cls()
+            data_class.position = data.get("position", None)
+            data_class.nft = data.get("nft", None)
+
+        return data_class
+
+
+class TonWalletCard(TlObject):
+    r"""Describes a TON wallet card, which is shown on the profile page of a user to everyone
+
+    Parameters:
+        address (:class:`str`):
+            Address of the wallet
+
+        gram_amount (:class:`int`):
+            Balance of the wallet, in the smallest units of the cryptocurrency; may be slightly outdated
+
+        stickers (list[:class:`~pytdbot.types.TonWalletCardSticker`]):
+            Stickers placed on the card
+
+        background_nft_address (:class:`str`):
+            Address of the NFT of one of the stickers, whose colors must be used for the card background; may be empty if the default background must be used
+
+    """
+
+    def __init__(
+        self,
+        *,
+        address: str | None = "",
+        gram_amount: int | None = 0,
+        stickers: list[TonWalletCardSticker] | None = None,
+        background_nft_address: str | None = "",
+    ) -> None:
+        self.address = address
+        r"""Address of the wallet"""
+        self.gram_amount = gram_amount
+        r"""Balance of the wallet, in the smallest units of the cryptocurrency; may be slightly outdated"""
+        self.stickers = stickers or []
+        r"""Stickers placed on the card"""
+        self.background_nft_address = background_nft_address
+        r"""Address of the NFT of one of the stickers, whose colors must be used for the card background; may be empty if the default background must be used"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletCard"]:
+        return "tonWalletCard"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletCard"]:
+        return "TonWalletCard"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "address": self.address,
+            "gram_amount": self.gram_amount,
+            "stickers": self.stickers,
+            "background_nft_address": self.background_nft_address,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonWalletCard | None:
+        if data:
+            data_class = cls()
+            data_class.address = data.get("address", "")
+            data_class.gram_amount = int(data.get("gram_amount", 0))
+            data_class.stickers = data.get("stickers", None)
+            data_class.background_nft_address = data.get("background_nft_address", "")
+
+        return data_class
+
+
+class InputTonWalletCardSticker(TlObject):
+    r"""Describes a sticker to be placed on the TON wallet card of the current user
+
+    Parameters:
+        position (:class:`~pytdbot.types.AreaPosition`):
+            Position of the sticker on the card
+
+        nft_address (:class:`str`):
+            Address of an NFT owned by the wallet, which is an upgraded gift; use getTonWalletNfts to get the list of owned NFTs
+
+    """
+
+    def __init__(
+        self, *, position: AreaPosition | None = None, nft_address: str | None = ""
+    ) -> None:
+        self.position = position
+        r"""Position of the sticker on the card"""
+        self.nft_address = nft_address
+        r"""Address of an NFT owned by the wallet, which is an upgraded gift; use getTonWalletNfts to get the list of owned NFTs"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["inputTonWalletCardSticker"]:
+        return "inputTonWalletCardSticker"
+
+    @classmethod
+    def getClass(self) -> Literal["InputTonWalletCardSticker"]:
+        return "InputTonWalletCardSticker"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "position": self.position,
+            "nft_address": self.nft_address,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputTonWalletCardSticker | None:
+        if data:
+            data_class = cls()
+            data_class.position = data.get("position", None)
+            data_class.nft_address = data.get("nft_address", "")
+
+        return data_class
+
+
+class UpgradedGiftCollectionNames(TlObject):
+    r"""Contains a list of names of upgraded gift collections\. The name of the collection of an upgraded gift is the part of upgradedGift\.name before the last \"\-\"
+
+    Parameters:
+        names (list[:class:`str`]):
+            The names
+
+    """
+
+    def __init__(self, *, names: list[str] | None = None) -> None:
+        self.names = names or []
+        r"""The names"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["upgradedGiftCollectionNames"]:
+        return "upgradedGiftCollectionNames"
+
+    @classmethod
+    def getClass(self) -> Literal["UpgradedGiftCollectionNames"]:
+        return "UpgradedGiftCollectionNames"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "names": self.names}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpgradedGiftCollectionNames | None:
+        if data:
+            data_class = cls()
+            data_class.names = data.get("names", None)
 
         return data_class
 
@@ -24006,6 +24458,70 @@ class TonWalletTransactionTypeNftTransfer(TlObject, TonWalletTransactionType):
         return data_class
 
 
+class TonWalletTransactionTypeTelegramGiftTransfer(TlObject, TonWalletTransactionType):
+    r"""A Telegram gift was minted as a TON NFT or was transferred from Telegram to the wallet or back; peer details aren't available for the transaction
+
+    Parameters:
+        nft (:class:`~pytdbot.types.TonNft`):
+            The minted or transferred NFT
+
+        is_outgoing (:class:`bool`):
+            True, if the transfer is from the wallet to Telegram
+
+        is_saved (:class:`bool`):
+            True, if the gift was displayed on the current user's profile page before or after the transfer
+
+    """
+
+    def __init__(
+        self,
+        *,
+        nft: TonNft | None = None,
+        is_outgoing: bool | None = False,
+        is_saved: bool | None = False,
+    ) -> None:
+        self.nft = nft
+        r"""The minted or transferred NFT"""
+        self.is_outgoing = is_outgoing
+        r"""True, if the transfer is from the wallet to Telegram"""
+        self.is_saved = is_saved
+        r"""True, if the gift was displayed on the current user's profile page before or after the transfer"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonWalletTransactionTypeTelegramGiftTransfer"]:
+        return "tonWalletTransactionTypeTelegramGiftTransfer"
+
+    @classmethod
+    def getClass(self) -> Literal["TonWalletTransactionType"]:
+        return "TonWalletTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "nft": self.nft,
+            "is_outgoing": self.is_outgoing,
+            "is_saved": self.is_saved,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> TonWalletTransactionTypeTelegramGiftTransfer | None:
+        if data:
+            data_class = cls()
+            data_class.nft = data.get("nft", None)
+            data_class.is_outgoing = data.get("is_outgoing", False)
+            data_class.is_saved = data.get("is_saved", False)
+
+        return data_class
+
+
 class TonWalletTransactionTypeKeyChange(TlObject, TonWalletTransactionType):
     r"""Change of the wallet key"""
 
@@ -24082,6 +24598,7 @@ class TonWalletTransaction(TlObject):
         type: TonWalletTransactionTypeOnRampDeposit
         | TonWalletTransactionTypeTransfer
         | TonWalletTransactionTypeNftTransfer
+        | TonWalletTransactionTypeTelegramGiftTransfer
         | TonWalletTransactionTypeKeyChange
         | None = None,
     ) -> None:
@@ -24715,6 +25232,76 @@ class TonConnectConnectRequest(TlObject):
             data_class = cls()
             data_class.manifest_url = data.get("manifest_url", "")
             data_class.items = data.get("items", None)
+
+        return data_class
+
+
+class TonConnectConnectData(TlObject):
+    r"""Contains data required to give access to the TON wallet of the current user in acceptOauthRequest
+
+    Parameters:
+        session_id (:class:`int`):
+            Unique identifier of the session
+
+        challenge_answer (:class:`bytes`):
+            Answer to the challenge received from setTonConnectSessionWalletClientId
+
+        body (:class:`bytes`):
+            Body of the result of the connection request as in sendTonConnectSessionConnectResult
+
+        proof (:class:`~pytdbot.types.TonWalletOwnershipProof`):
+            Proof of the TON wallet ownership for the payload oauthLinkInfo\.ton\_proof\_payload
+
+    """
+
+    def __init__(
+        self,
+        *,
+        session_id: int | None = 0,
+        challenge_answer: bytes | None = b"",
+        body: bytes | None = b"",
+        proof: TonWalletOwnershipProof | None = None,
+    ) -> None:
+        self.session_id = session_id
+        r"""Unique identifier of the session"""
+        self.challenge_answer = challenge_answer
+        r"""Answer to the challenge received from setTonConnectSessionWalletClientId"""
+        self.body = body
+        r"""Body of the result of the connection request as in sendTonConnectSessionConnectResult"""
+        self.proof = proof
+        r"""Proof of the TON wallet ownership for the payload oauthLinkInfo\.ton\_proof\_payload"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["tonConnectConnectData"]:
+        return "tonConnectConnectData"
+
+    @classmethod
+    def getClass(self) -> Literal["TonConnectConnectData"]:
+        return "TonConnectConnectData"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "session_id": self.session_id,
+            "challenge_answer": self.challenge_answer,
+            "body": self.body,
+            "proof": self.proof,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TonConnectConnectData | None:
+        if data:
+            data_class = cls()
+            data_class.session_id = int(data.get("session_id", 0))
+            data_class.challenge_answer = b64decode(data.get("challenge_answer", b""))
+            data_class.body = b64decode(data.get("body", b""))
+            data_class.proof = data.get("proof", None)
 
         return data_class
 
@@ -26958,7 +27545,7 @@ class Usernames(TlObject):
 
     Parameters:
         active_usernames (list[:class:`str`]):
-            List of active usernames; the first one must be shown as the primary username\. The order of active usernames can be changed with reorderActiveUsernames, reorderBotActiveUsernames or reorderSupergroupActiveUsernames
+            List of active usernames; the first one must be shown as the primary username\. The order of active usernames can be changed with reorderActiveUsernames, reorderBotActiveUsernames, or reorderSupergroupActiveUsernames
 
         disabled_usernames (list[:class:`str`]):
             List of currently disabled usernames; the username can be activated with toggleUsernameIsActive, toggleBotUsernameIsActive, or toggleSupergroupUsernameIsActive
@@ -26970,7 +27557,7 @@ class Usernames(TlObject):
             Collectible usernames that were purchased at https://fragment\.com and can be passed to getCollectibleItemInfo for more details
 
         secondary_username (:class:`str`):
-            Secondary non\-collectible username; for bots only\. Can't be used in toggleBotUsernameIsActive; use addBotSecondaryUsername or deleteBotSecondaryUsername to edit it\. If the username is disabled, then Telegram Premium subscription is required to re\-enable it
+            Secondary non\-collectible username\. Currently, must be non\-empty only for bot accounts\. Can't be used in toggleBotUsernameIsActive; use addBotSecondaryUsername or deleteBotSecondaryUsername to edit it\. If the username is disabled, then Telegram Premium subscription is required to re\-enable it
 
     """
 
@@ -26984,7 +27571,7 @@ class Usernames(TlObject):
         secondary_username: str | None = "",
     ) -> None:
         self.active_usernames = active_usernames or []
-        r"""List of active usernames; the first one must be shown as the primary username\. The order of active usernames can be changed with reorderActiveUsernames, reorderBotActiveUsernames or reorderSupergroupActiveUsernames"""
+        r"""List of active usernames; the first one must be shown as the primary username\. The order of active usernames can be changed with reorderActiveUsernames, reorderBotActiveUsernames, or reorderSupergroupActiveUsernames"""
         self.disabled_usernames = disabled_usernames or []
         r"""List of currently disabled usernames; the username can be activated with toggleUsernameIsActive, toggleBotUsernameIsActive, or toggleSupergroupUsernameIsActive"""
         self.editable_username = editable_username
@@ -26992,7 +27579,7 @@ class Usernames(TlObject):
         self.collectible_usernames = collectible_usernames or []
         r"""Collectible usernames that were purchased at https://fragment\.com and can be passed to getCollectibleItemInfo for more details"""
         self.secondary_username = secondary_username
-        r"""Secondary non\-collectible username; for bots only\. Can't be used in toggleBotUsernameIsActive; use addBotSecondaryUsername or deleteBotSecondaryUsername to edit it\. If the username is disabled, then Telegram Premium subscription is required to re\-enable it"""
+        r"""Secondary non\-collectible username\. Currently, must be non\-empty only for bot accounts\. Can't be used in toggleBotUsernameIsActive; use addBotSecondaryUsername or deleteBotSecondaryUsername to edit it\. If the username is disabled, then Telegram Premium subscription is required to re\-enable it"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -27880,6 +28467,12 @@ class UserFullInfo(TlObject):
         note (:class:`~pytdbot.types.FormattedText`):
             Note added to the user's contact; may be null if none
 
+        ton_wallet_card (:class:`~pytdbot.types.TonWalletCard`):
+            TON wallet card of the user; may be null if none
+
+        share_theme (:class:`~pytdbot.types.ProfileShareTheme`):
+            Theme of the screen for sharing a link to the user; may be null if the default theme is used
+
         business_info (:class:`~pytdbot.types.BusinessInfo`):
             Information about business settings for Telegram Business accounts; may be null if none
 
@@ -27929,6 +28522,10 @@ class UserFullInfo(TlObject):
         pending_rating: UserRating | None = None,
         pending_rating_date: int | None = 0,
         note: FormattedText | None = None,
+        ton_wallet_card: TonWalletCard | None = None,
+        share_theme: ProfileShareThemeEmoji
+        | ProfileShareThemeUpgradedGift
+        | None = None,
         business_info: BusinessInfo | None = None,
         bot_info: BotInfo | None = None,
     ) -> None:
@@ -27994,6 +28591,10 @@ class UserFullInfo(TlObject):
         r"""Unix timestamp when rating of the user will change to pending\_rating; 0 if the user isn't the current user or there are no pending rating changes"""
         self.note = note
         r"""Note added to the user's contact; may be null if none"""
+        self.ton_wallet_card = ton_wallet_card
+        r"""TON wallet card of the user; may be null if none"""
+        self.share_theme = share_theme
+        r"""Theme of the screen for sharing a link to the user; may be null if the default theme is used"""
         self.business_info = business_info
         r"""Information about business settings for Telegram Business accounts; may be null if none"""
         self.bot_info = bot_info
@@ -28046,6 +28647,8 @@ class UserFullInfo(TlObject):
             "pending_rating": self.pending_rating,
             "pending_rating_date": self.pending_rating_date,
             "note": self.note,
+            "ton_wallet_card": self.ton_wallet_card,
+            "share_theme": self.share_theme,
             "business_info": self.business_info,
             "bot_info": self.bot_info,
         }
@@ -28096,6 +28699,8 @@ class UserFullInfo(TlObject):
             data_class.pending_rating = data.get("pending_rating", None)
             data_class.pending_rating_date = int(data.get("pending_rating_date", 0))
             data_class.note = data.get("note", None)
+            data_class.ton_wallet_card = data.get("ton_wallet_card", None)
+            data_class.share_theme = data.get("share_theme", None)
             data_class.business_info = data.get("business_info", None)
             data_class.bot_info = data.get("bot_info", None)
 
@@ -29302,7 +29907,7 @@ class ChatJoinResultSuccess(TlObject, ChatJoinResult):
 
 
 class ChatJoinResultRequestSent(TlObject, ChatJoinResult):
-    r"""The join request was sent and have to be approved by administrators of the chat"""
+    r"""The join request was sent and has to be approved by administrators of the chat"""
 
     def __init__(self) -> None:
         pass
@@ -30930,7 +31535,7 @@ class SupergroupFullInfo(TlObject):
             True, if aggressive anti\-spam checks can be enabled or disabled in the supergroup
 
         is_all_history_available (:class:`bool`):
-            True, if new chat members will have access to old messages\. In public, discussion, of forum groups and all channels, old messages are always available, so this option affects only private non\-forum supergroups without a linked chat\. The value of this field is only available to chat administrators
+            True, if new chat members will have access to old messages\. In public, discussion, or forum groups and all channels, old messages are always available, so this option affects only private non\-forum supergroups without a linked chat\. The value of this field is only available to chat administrators
 
         can_have_sponsored_messages (:class:`bool`):
             True, if the chat can have sponsored messages\. The value of this field is only available to the owner of the chat
@@ -30979,6 +31584,9 @@ class SupergroupFullInfo(TlObject):
 
         main_profile_tab (:class:`~pytdbot.types.ProfileTab`):
             The main tab chosen by the administrators of the channel; may be null if not chosen manually
+
+        share_theme (:class:`~pytdbot.types.ProfileShareTheme`):
+            Theme of the screen for sharing a link to the supergroup or the channel; may be null if the default theme is used
 
         upgraded_from_basic_group_id (:class:`int`):
             Identifier of the basic group from which supergroup was upgraded; 0 if none
@@ -31039,6 +31647,9 @@ class SupergroupFullInfo(TlObject):
         | ProfileTabVoice
         | ProfileTabGifs
         | None = None,
+        share_theme: ProfileShareThemeEmoji
+        | ProfileShareThemeUpgradedGift
+        | None = None,
         upgraded_from_basic_group_id: int | None = 0,
         upgraded_from_max_message_id: int | None = 0,
     ) -> None:
@@ -31089,7 +31700,7 @@ class SupergroupFullInfo(TlObject):
         self.can_toggle_aggressive_anti_spam = can_toggle_aggressive_anti_spam
         r"""True, if aggressive anti\-spam checks can be enabled or disabled in the supergroup"""
         self.is_all_history_available = is_all_history_available
-        r"""True, if new chat members will have access to old messages\. In public, discussion, of forum groups and all channels, old messages are always available, so this option affects only private non\-forum supergroups without a linked chat\. The value of this field is only available to chat administrators"""
+        r"""True, if new chat members will have access to old messages\. In public, discussion, or forum groups and all channels, old messages are always available, so this option affects only private non\-forum supergroups without a linked chat\. The value of this field is only available to chat administrators"""
         self.can_have_sponsored_messages = can_have_sponsored_messages
         r"""True, if the chat can have sponsored messages\. The value of this field is only available to the owner of the chat"""
         self.has_aggressive_anti_spam_enabled = has_aggressive_anti_spam_enabled
@@ -31122,6 +31733,8 @@ class SupergroupFullInfo(TlObject):
         r"""Information about verification status of the supergroup or the channel provided by a bot; may be null if none or unknown"""
         self.main_profile_tab = main_profile_tab
         r"""The main tab chosen by the administrators of the channel; may be null if not chosen manually"""
+        self.share_theme = share_theme
+        r"""Theme of the screen for sharing a link to the supergroup or the channel; may be null if the default theme is used"""
         self.upgraded_from_basic_group_id = upgraded_from_basic_group_id
         r"""Identifier of the basic group from which supergroup was upgraded; 0 if none"""
         self.upgraded_from_max_message_id = upgraded_from_max_message_id
@@ -31184,6 +31797,7 @@ class SupergroupFullInfo(TlObject):
             "bot_commands": self.bot_commands,
             "bot_verification": self.bot_verification,
             "main_profile_tab": self.main_profile_tab,
+            "share_theme": self.share_theme,
             "upgraded_from_basic_group_id": self.upgraded_from_basic_group_id,
             "upgraded_from_max_message_id": self.upgraded_from_max_message_id,
         }
@@ -31260,6 +31874,7 @@ class SupergroupFullInfo(TlObject):
             data_class.bot_commands = data.get("bot_commands", None)
             data_class.bot_verification = data.get("bot_verification", None)
             data_class.main_profile_tab = data.get("main_profile_tab", None)
+            data_class.share_theme = data.get("share_theme", None)
             data_class.upgraded_from_basic_group_id = int(
                 data.get("upgraded_from_basic_group_id", 0)
             )
@@ -32678,7 +33293,7 @@ class LiveStoryDonors(TlObject):
 
     Parameters:
         total_star_count (:class:`int`):
-            Total amount of spend Telegram Stars
+            Total amount of spent Telegram Stars
 
         top_donors (list[:class:`~pytdbot.types.PaidReactor`]):
             List of top donors in the live story
@@ -32692,7 +33307,7 @@ class LiveStoryDonors(TlObject):
         top_donors: list[PaidReactor] | None = None,
     ) -> None:
         self.total_star_count = total_star_count
-        r"""Total amount of spend Telegram Stars"""
+        r"""Total amount of spent Telegram Stars"""
         self.top_donors = top_donors or []
         r"""List of top donors in the live story"""
 
@@ -33703,10 +34318,13 @@ class TextQuote(TlObject):
 
     Parameters:
         text (:class:`~pytdbot.types.FormattedText`):
-            Text of the quote\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities can be present in the text
+            Text of the quote\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities can be present in the text\. May be empty if the quote was chosen from a rich message
+
+        rich_texts (list[:class:`~pytdbot.types.RichText`]):
+            Rich text of the quote if it was chosen from a rich message; empty if the quote wasn't chosen from a rich message\. Only richTextPlain, richTextBold, richTextItalic, richTextUnderline, richTextStrikethrough, richTextSpoiler, richTextSubscript, richTextSuperscript, richTextDateTime, richTextCustomEmoji, richTextMathematicalExpression, and richTexts can be present in the texts
 
         position (:class:`int`):
-            Approximate quote position in the original message in UTF\-16 code units as specified by the message sender
+            Approximate quote position in the original message in UTF\-16 code units as specified by the message sender\. For quotes from rich messages, it is the position in the text formed by joining plain texts of all quotable texts of the message, separated by line feeds
 
         is_manual (:class:`bool`):
             True, if the quote was manually chosen by the message sender
@@ -33717,13 +34335,16 @@ class TextQuote(TlObject):
         self,
         *,
         text: FormattedText | None = None,
+        rich_texts: list[RichText] | None = None,
         position: int | None = 0,
         is_manual: bool | None = False,
     ) -> None:
         self.text = text
-        r"""Text of the quote\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities can be present in the text"""
+        r"""Text of the quote\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities can be present in the text\. May be empty if the quote was chosen from a rich message"""
+        self.rich_texts = rich_texts or []
+        r"""Rich text of the quote if it was chosen from a rich message; empty if the quote wasn't chosen from a rich message\. Only richTextPlain, richTextBold, richTextItalic, richTextUnderline, richTextStrikethrough, richTextSpoiler, richTextSubscript, richTextSuperscript, richTextDateTime, richTextCustomEmoji, richTextMathematicalExpression, and richTexts can be present in the texts"""
         self.position = position
-        r"""Approximate quote position in the original message in UTF\-16 code units as specified by the message sender"""
+        r"""Approximate quote position in the original message in UTF\-16 code units as specified by the message sender\. For quotes from rich messages, it is the position in the text formed by joining plain texts of all quotable texts of the message, separated by line feeds"""
         self.is_manual = is_manual
         r"""True, if the quote was manually chosen by the message sender"""
 
@@ -33745,6 +34366,7 @@ class TextQuote(TlObject):
         return {
             "@type": self.getType(),
             "text": self.text,
+            "rich_texts": self.rich_texts,
             "position": self.position,
             "is_manual": self.is_manual,
         }
@@ -33754,6 +34376,7 @@ class TextQuote(TlObject):
         if data:
             data_class = cls()
             data_class.text = data.get("text", None)
+            data_class.rich_texts = data.get("rich_texts", None)
             data_class.position = int(data.get("position", 0))
             data_class.is_manual = data.get("is_manual", False)
 
@@ -33765,20 +34388,29 @@ class InputTextQuote(TlObject):
 
     Parameters:
         text (:class:`~pytdbot.types.FormattedText`):
-            Text of the quote; 0\-getOption\(\"message\_reply\_quote\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed to be kept and must be kept in the quote
+            Text of the quote; 0\-getOption\(\"message\_reply\_quote\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed to be kept and must be kept in the quote\. Ignored if rich\_texts are non\-empty
+
+        rich_texts (list[:class:`~pytdbot.types.RichText`]):
+            Quote from a rich message; pass an empty array if the quote isn't chosen from a rich message\. Must contain one element for each quoted text of the message in the order of their appearance\. The first and the last elements can contain only a part of the corresponding text; all other elements must contain the whole text\. Formatting of the quoted parts must be kept\. Mathematical expressions must be quoted entirely\. Buttons in pageBlockButtonRow, anchors and dividers can't be quoted\. There can be up to 32 quoted texts with total length up to getOption\(\"message\_reply\_quote\_length\_max\"\) characters
 
         position (:class:`int`):
-            Quote position in the original message in UTF\-16 code units
+            Quote position in the original message in UTF\-16 code units\. For quotes from rich messages, it is the position in the text formed by joining plain texts of all quotable texts of the message, separated by line feeds
 
     """
 
     def __init__(
-        self, *, text: FormattedText | None = None, position: int | None = 0
+        self,
+        *,
+        text: FormattedText | None = None,
+        rich_texts: list[RichText] | None = None,
+        position: int | None = 0,
     ) -> None:
         self.text = text
-        r"""Text of the quote; 0\-getOption\(\"message\_reply\_quote\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed to be kept and must be kept in the quote"""
+        r"""Text of the quote; 0\-getOption\(\"message\_reply\_quote\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed to be kept and must be kept in the quote\. Ignored if rich\_texts are non\-empty"""
+        self.rich_texts = rich_texts or []
+        r"""Quote from a rich message; pass an empty array if the quote isn't chosen from a rich message\. Must contain one element for each quoted text of the message in the order of their appearance\. The first and the last elements can contain only a part of the corresponding text; all other elements must contain the whole text\. Formatting of the quoted parts must be kept\. Mathematical expressions must be quoted entirely\. Buttons in pageBlockButtonRow, anchors and dividers can't be quoted\. There can be up to 32 quoted texts with total length up to getOption\(\"message\_reply\_quote\_length\_max\"\) characters"""
         self.position = position
-        r"""Quote position in the original message in UTF\-16 code units"""
+        r"""Quote position in the original message in UTF\-16 code units\. For quotes from rich messages, it is the position in the text formed by joining plain texts of all quotable texts of the message, separated by line feeds"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -33795,13 +34427,19 @@ class InputTextQuote(TlObject):
         return "InputTextQuote"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "text": self.text, "position": self.position}
+        return {
+            "@type": self.getType(),
+            "text": self.text,
+            "rich_texts": self.rich_texts,
+            "position": self.position,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> InputTextQuote | None:
         if data:
             data_class = cls()
             data_class.text = data.get("text", None)
+            data_class.rich_texts = data.get("rich_texts", None)
             data_class.position = int(data.get("position", 0))
 
         return data_class
@@ -33941,6 +34579,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         | MessagePaidMessagesRefunded
         | MessagePaidMessagePriceChanged
         | MessageDirectMessagePriceChanged
+        | MessageUnpaidMessagesAllowedByLink
         | MessageChecklistTasksDone
         | MessageChecklistTasksAdded
         | MessageSuggestedPostApprovalFailed
@@ -34476,6 +35115,7 @@ class EphemeralMessageContent(TlObject):
         | MessagePaidMessagesRefunded
         | MessagePaidMessagePriceChanged
         | MessageDirectMessagePriceChanged
+        | MessageUnpaidMessagesAllowedByLink
         | MessageChecklistTasksDone
         | MessageChecklistTasksAdded
         | MessageSuggestedPostApprovalFailed
@@ -34648,7 +35288,7 @@ class Message(TlObject, MessageBoundMethods):
             Number of times the sender of the message boosted the supergroup at the time the message was sent; 0 if none or unknown\. For messages sent by the current user, supergroupFullInfo\.my\_boost\_count must be used instead
 
         sender_tag (:class:`str`):
-            Tag of the sender of the message in the supergroup at the time the message was sent; may be empty if none or unknown\. For messages sent in basic groups or supergroup administrators, the current custom title or tag must be used instead
+            Tag of the sender of the message in the supergroup at the time the message was sent; may be empty if none or unknown\. For messages sent in basic groups or by supergroup administrators, the current custom title or tag must be used instead
 
         paid_message_star_count (:class:`int`):
             The number of Telegram Stars the sender paid to send the message
@@ -34829,6 +35469,7 @@ class Message(TlObject, MessageBoundMethods):
         | MessagePaidMessagesRefunded
         | MessagePaidMessagePriceChanged
         | MessageDirectMessagePriceChanged
+        | MessageUnpaidMessagesAllowedByLink
         | MessageChecklistTasksDone
         | MessageChecklistTasksAdded
         | MessageSuggestedPostApprovalFailed
@@ -34923,7 +35564,7 @@ class Message(TlObject, MessageBoundMethods):
         self.sender_boost_count = sender_boost_count
         r"""Number of times the sender of the message boosted the supergroup at the time the message was sent; 0 if none or unknown\. For messages sent by the current user, supergroupFullInfo\.my\_boost\_count must be used instead"""
         self.sender_tag = sender_tag
-        r"""Tag of the sender of the message in the supergroup at the time the message was sent; may be empty if none or unknown\. For messages sent in basic groups or supergroup administrators, the current custom title or tag must be used instead"""
+        r"""Tag of the sender of the message in the supergroup at the time the message was sent; may be empty if none or unknown\. For messages sent in basic groups or by supergroup administrators, the current custom title or tag must be used instead"""
         self.paid_message_star_count = paid_message_star_count
         r"""The number of Telegram Stars the sender paid to send the message"""
         self.author_signature = author_signature
@@ -36165,6 +36806,7 @@ class SponsoredMessage(TlObject):
         | MessagePaidMessagesRefunded
         | MessagePaidMessagePriceChanged
         | MessageDirectMessagePriceChanged
+        | MessageUnpaidMessagesAllowedByLink
         | MessageChecklistTasksDone
         | MessageChecklistTasksAdded
         | MessageSuggestedPostApprovalFailed
@@ -42206,6 +42848,18 @@ class OauthLinkInfo(TlObject):
         request_phone_number_access (:class:`bool`):
             True, if the user must be asked for the permission to share their phone number
 
+        request_ton_wallet_access (:class:`bool`):
+            True, if access to the user's TON wallet is requested by the app\. If true and the user agrees to give access, then use createTonConnectSession with dapp\_client\_id and ton\_connect\_manifest\_url to create the TON Connect session, then setTonConnectSessionWalletClientId, then create a tonWalletOwnershipProof for the given domain with the payload ton\_proof\_payload, and then pass all data to acceptOauthRequest in the parameter ton\_connect\_connect\_data
+
+        dapp_client_id (:class:`str`):
+            Hex\-encoded public X25519 key of the dApp; may be empty if TON wallet access wasn't requested
+
+        ton_connect_manifest_url (:class:`str`):
+            URL of the TON Connect manifest of the dApp; may be empty if TON wallet access wasn't requested
+
+        ton_proof_payload (:class:`str`):
+            Payload for TON wallet ownership proof; may be empty if TON wallet access wasn't requested
+
         browser (:class:`str`):
             The version of a browser used for the authorization
 
@@ -42237,6 +42891,10 @@ class OauthLinkInfo(TlObject):
         bot_user_id: int | None = 0,
         request_write_access: bool | None = False,
         request_phone_number_access: bool | None = False,
+        request_ton_wallet_access: bool | None = False,
+        dapp_client_id: str | None = "",
+        ton_connect_manifest_url: str | None = "",
+        ton_proof_payload: str | None = "",
         browser: str | None = "",
         platform: str | None = "",
         ip_address: str | None = "",
@@ -42260,6 +42918,14 @@ class OauthLinkInfo(TlObject):
         r"""True, if the user must be asked for the permission to the bot to send them messages"""
         self.request_phone_number_access = request_phone_number_access
         r"""True, if the user must be asked for the permission to share their phone number"""
+        self.request_ton_wallet_access = request_ton_wallet_access
+        r"""True, if access to the user's TON wallet is requested by the app\. If true and the user agrees to give access, then use createTonConnectSession with dapp\_client\_id and ton\_connect\_manifest\_url to create the TON Connect session, then setTonConnectSessionWalletClientId, then create a tonWalletOwnershipProof for the given domain with the payload ton\_proof\_payload, and then pass all data to acceptOauthRequest in the parameter ton\_connect\_connect\_data"""
+        self.dapp_client_id = dapp_client_id
+        r"""Hex\-encoded public X25519 key of the dApp; may be empty if TON wallet access wasn't requested"""
+        self.ton_connect_manifest_url = ton_connect_manifest_url
+        r"""URL of the TON Connect manifest of the dApp; may be empty if TON wallet access wasn't requested"""
+        self.ton_proof_payload = ton_proof_payload
+        r"""Payload for TON wallet ownership proof; may be empty if TON wallet access wasn't requested"""
         self.browser = browser
         r"""The version of a browser used for the authorization"""
         self.platform = platform
@@ -42298,6 +42964,10 @@ class OauthLinkInfo(TlObject):
             "bot_user_id": self.bot_user_id,
             "request_write_access": self.request_write_access,
             "request_phone_number_access": self.request_phone_number_access,
+            "request_ton_wallet_access": self.request_ton_wallet_access,
+            "dapp_client_id": self.dapp_client_id,
+            "ton_connect_manifest_url": self.ton_connect_manifest_url,
+            "ton_proof_payload": self.ton_proof_payload,
             "browser": self.browser,
             "platform": self.platform,
             "ip_address": self.ip_address,
@@ -42320,6 +42990,14 @@ class OauthLinkInfo(TlObject):
             data_class.request_phone_number_access = data.get(
                 "request_phone_number_access", False
             )
+            data_class.request_ton_wallet_access = data.get(
+                "request_ton_wallet_access", False
+            )
+            data_class.dapp_client_id = data.get("dapp_client_id", "")
+            data_class.ton_connect_manifest_url = data.get(
+                "ton_connect_manifest_url", ""
+            )
+            data_class.ton_proof_payload = data.get("ton_proof_payload", "")
             data_class.browser = data.get("browser", "")
             data_class.platform = data.get("platform", "")
             data_class.ip_address = data.get("ip_address", "")
@@ -42417,7 +43095,7 @@ class MessageThreadInfo(TlObject):
 
 
 class SavedMessagesTopicTypeMyNotes(TlObject, SavedMessagesTopicType):
-    r"""Topic containing messages sent by the current user of forwarded from an unknown chat"""
+    r"""Topic containing messages sent by the current user or forwarded from an unknown chat"""
 
     def __init__(self) -> None:
         pass
@@ -43552,6 +44230,397 @@ class ThemeSettings(TlObject):
             data_class.outgoing_message_accent_color = int(
                 data.get("outgoing_message_accent_color", 0)
             )
+
+        return data_class
+
+
+class ProfileShareThemeBackdrop(TlObject):
+    r"""Describes a backdrop, which can be used as a background of a theme of the screen for sharing a link to a user or a chat
+
+    Parameters:
+        id (:class:`int`):
+            Unique identifier of the backdrop
+
+        name (:class:`str`):
+            Name of the backdrop
+
+        colors (:class:`~pytdbot.types.UpgradedGiftBackdropColors`):
+            Colors of the backdrop
+
+    """
+
+    def __init__(
+        self,
+        *,
+        id: int | None = 0,
+        name: str | None = "",
+        colors: UpgradedGiftBackdropColors | None = None,
+    ) -> None:
+        self.id = id
+        r"""Unique identifier of the backdrop"""
+        self.name = name
+        r"""Name of the backdrop"""
+        self.colors = colors
+        r"""Colors of the backdrop"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["profileShareThemeBackdrop"]:
+        return "profileShareThemeBackdrop"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileShareThemeBackdrop"]:
+        return "ProfileShareThemeBackdrop"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "name": self.name,
+            "colors": self.colors,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ProfileShareThemeBackdrop | None:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+            data_class.name = data.get("name", "")
+            data_class.colors = data.get("colors", None)
+
+        return data_class
+
+
+class ProfileShareThemeBackdrops(TlObject):
+    r"""Contains a list of backdrops, which can be used as a background of a theme of the screen for sharing a link to a user or a chat
+
+    Parameters:
+        backdrops (list[:class:`~pytdbot.types.ProfileShareThemeBackdrop`]):
+            The list of backdrops
+
+    """
+
+    def __init__(
+        self, *, backdrops: list[ProfileShareThemeBackdrop] | None = None
+    ) -> None:
+        self.backdrops = backdrops or []
+        r"""The list of backdrops"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["profileShareThemeBackdrops"]:
+        return "profileShareThemeBackdrops"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileShareThemeBackdrops"]:
+        return "ProfileShareThemeBackdrops"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "backdrops": self.backdrops}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ProfileShareThemeBackdrops | None:
+        if data:
+            data_class = cls()
+            data_class.backdrops = data.get("backdrops", None)
+
+        return data_class
+
+
+class EmojiTypeRegular(TlObject, EmojiType):
+    r"""A regular emoji
+
+    Parameters:
+        emoji (:class:`str`):
+            Text representation of the emoji
+
+    """
+
+    def __init__(self, *, emoji: str | None = "") -> None:
+        self.emoji = emoji
+        r"""Text representation of the emoji"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["emojiTypeRegular"]:
+        return "emojiTypeRegular"
+
+    @classmethod
+    def getClass(self) -> Literal["EmojiType"]:
+        return "EmojiType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "emoji": self.emoji}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> EmojiTypeRegular | None:
+        if data:
+            data_class = cls()
+            data_class.emoji = data.get("emoji", "")
+
+        return data_class
+
+
+class EmojiTypeCustomEmoji(TlObject, EmojiType):
+    r"""A custom emoji
+
+    Parameters:
+        custom_emoji_id (:class:`int`):
+            Identifier of the custom emoji
+
+    """
+
+    def __init__(self, *, custom_emoji_id: int | None = 0) -> None:
+        self.custom_emoji_id = custom_emoji_id
+        r"""Identifier of the custom emoji"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["emojiTypeCustomEmoji"]:
+        return "emojiTypeCustomEmoji"
+
+    @classmethod
+    def getClass(self) -> Literal["EmojiType"]:
+        return "EmojiType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "custom_emoji_id": self.custom_emoji_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> EmojiTypeCustomEmoji | None:
+        if data:
+            data_class = cls()
+            data_class.custom_emoji_id = int(data.get("custom_emoji_id", 0))
+
+        return data_class
+
+
+class ProfileShareThemeEmoji(TlObject, ProfileShareTheme):
+    r"""A theme with emoji placed on a background
+
+    Parameters:
+        emojis (list[:class:`~pytdbot.types.EmojiType`]):
+            The emoji; 0\-6 regular or custom emoji\. If empty, then use\_default\_background is false
+
+        use_default_background (:class:`bool`):
+            True, if the default background is used; otherwise, the backdrop with identifier background\_backdrop\_id is used as background
+
+        background_backdrop_id (:class:`int`):
+            Identifier of the backdrop used as background; must be ignored if use\_default\_background is true\. Use getProfileShareThemeBackdrops to get details about the backdrop
+
+    """
+
+    def __init__(
+        self,
+        *,
+        emojis: list[EmojiType] | None = None,
+        use_default_background: bool | None = False,
+        background_backdrop_id: int | None = 0,
+    ) -> None:
+        self.emojis = emojis or []
+        r"""The emoji; 0\-6 regular or custom emoji\. If empty, then use\_default\_background is false"""
+        self.use_default_background = use_default_background
+        r"""True, if the default background is used; otherwise, the backdrop with identifier background\_backdrop\_id is used as background"""
+        self.background_backdrop_id = background_backdrop_id
+        r"""Identifier of the backdrop used as background; must be ignored if use\_default\_background is true\. Use getProfileShareThemeBackdrops to get details about the backdrop"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["profileShareThemeEmoji"]:
+        return "profileShareThemeEmoji"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileShareTheme"]:
+        return "ProfileShareTheme"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "emojis": self.emojis,
+            "use_default_background": self.use_default_background,
+            "background_backdrop_id": self.background_backdrop_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ProfileShareThemeEmoji | None:
+        if data:
+            data_class = cls()
+            data_class.emojis = data.get("emojis", None)
+            data_class.use_default_background = data.get(
+                "use_default_background", False
+            )
+            data_class.background_backdrop_id = int(
+                data.get("background_backdrop_id", 0)
+            )
+
+        return data_class
+
+
+class ProfileShareThemeUpgradedGift(TlObject, ProfileShareTheme):
+    r"""A theme based on an upgraded gift owned by the user or the chat
+
+    Parameters:
+        gift (:class:`~pytdbot.types.UpgradedGift`):
+            The upgraded gift
+
+    """
+
+    def __init__(self, *, gift: UpgradedGift | None = None) -> None:
+        self.gift = gift
+        r"""The upgraded gift"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["profileShareThemeUpgradedGift"]:
+        return "profileShareThemeUpgradedGift"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileShareTheme"]:
+        return "ProfileShareTheme"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "gift": self.gift}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ProfileShareThemeUpgradedGift | None:
+        if data:
+            data_class = cls()
+            data_class.gift = data.get("gift", None)
+
+        return data_class
+
+
+class InputProfileShareThemeEmoji(TlObject, InputProfileShareTheme):
+    r"""A theme with emoji placed on a background
+
+    Parameters:
+        emojis (list[:class:`~pytdbot.types.EmojiType`]):
+            The emoji; 0\-6 regular or custom emoji\. If empty, then use\_default\_background must be false
+
+        use_default_background (:class:`bool`):
+            Pass true to use the default background; otherwise, the backdrop with identifier background\_backdrop\_id will be used as background
+
+        background_backdrop_id (:class:`int`):
+            Identifier of the backdrop to be used as background; ignored if use\_default\_background is true\. Use getProfileShareThemeBackdrops to get the list of available backdrops
+
+    """
+
+    def __init__(
+        self,
+        *,
+        emojis: list[EmojiType] | None = None,
+        use_default_background: bool | None = False,
+        background_backdrop_id: int | None = 0,
+    ) -> None:
+        self.emojis = emojis or []
+        r"""The emoji; 0\-6 regular or custom emoji\. If empty, then use\_default\_background must be false"""
+        self.use_default_background = use_default_background
+        r"""Pass true to use the default background; otherwise, the backdrop with identifier background\_backdrop\_id will be used as background"""
+        self.background_backdrop_id = background_backdrop_id
+        r"""Identifier of the backdrop to be used as background; ignored if use\_default\_background is true\. Use getProfileShareThemeBackdrops to get the list of available backdrops"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["inputProfileShareThemeEmoji"]:
+        return "inputProfileShareThemeEmoji"
+
+    @classmethod
+    def getClass(self) -> Literal["InputProfileShareTheme"]:
+        return "InputProfileShareTheme"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "emojis": self.emojis,
+            "use_default_background": self.use_default_background,
+            "background_backdrop_id": self.background_backdrop_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputProfileShareThemeEmoji | None:
+        if data:
+            data_class = cls()
+            data_class.emojis = data.get("emojis", None)
+            data_class.use_default_background = data.get(
+                "use_default_background", False
+            )
+            data_class.background_backdrop_id = int(
+                data.get("background_backdrop_id", 0)
+            )
+
+        return data_class
+
+
+class InputProfileShareThemeUpgradedGift(TlObject, InputProfileShareTheme):
+    r"""A theme based on an upgraded gift
+
+    Parameters:
+        received_gift_id (:class:`str`):
+            Identifier of the upgraded gift, which is owned by the user or the chat, for which the theme is set
+
+    """
+
+    def __init__(self, *, received_gift_id: str | None = "") -> None:
+        self.received_gift_id = received_gift_id
+        r"""Identifier of the upgraded gift, which is owned by the user or the chat, for which the theme is set"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["inputProfileShareThemeUpgradedGift"]:
+        return "inputProfileShareThemeUpgradedGift"
+
+    @classmethod
+    def getClass(self) -> Literal["InputProfileShareTheme"]:
+        return "InputProfileShareTheme"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "received_gift_id": self.received_gift_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputProfileShareThemeUpgradedGift | None:
+        if data:
+            data_class = cls()
+            data_class.received_gift_id = data.get("received_gift_id", "")
 
         return data_class
 
@@ -45359,7 +46428,7 @@ class RichTextIcon(TlObject, RichText):
 
     Parameters:
         document (:class:`~pytdbot.types.Document`):
-            The image represented as a document\. The image can be in GIF, JPEG or PNG format
+            The image represented as a document\. The image can be in GIF, JPEG, or PNG format
 
         width (:class:`int`):
             Width of a bounding box in which the image must be shown; 0 if unknown
@@ -45377,7 +46446,7 @@ class RichTextIcon(TlObject, RichText):
         height: int | None = 0,
     ) -> None:
         self.document = document
-        r"""The image represented as a document\. The image can be in GIF, JPEG or PNG format"""
+        r"""The image represented as a document\. The image can be in GIF, JPEG, or PNG format"""
         self.width = width
         r"""Width of a bounding box in which the image must be shown; 0 if unknown"""
         self.height = height
@@ -46083,7 +47152,7 @@ class PageBlockListItem(TlObject):
             Value of the item; 0 for unordered lists
 
         type (:class:`str`):
-            Type of the item numbering type; must be one of \"a\" for lowercase letters, \"A\" for uppercase letters, \"i\" for lowercase Roman numerals, \"I\" for uppercase Roman numerals, \"1\" for decimal numbers, or empty for unordered lists
+            Type of item numbering; must be one of \"a\" for lowercase letters, \"A\" for uppercase letters, \"i\" for lowercase Roman numerals, \"I\" for uppercase Roman numerals, \"1\" for decimal numbers, or an empty string for unordered lists
 
     """
 
@@ -46108,7 +47177,7 @@ class PageBlockListItem(TlObject):
         self.value = value
         r"""Value of the item; 0 for unordered lists"""
         self.type = type
-        r"""Type of the item numbering type; must be one of \"a\" for lowercase letters, \"A\" for uppercase letters, \"i\" for lowercase Roman numerals, \"I\" for uppercase Roman numerals, \"1\" for decimal numbers, or empty for unordered lists"""
+        r"""Type of item numbering; must be one of \"a\" for lowercase letters, \"A\" for uppercase letters, \"i\" for lowercase Roman numerals, \"I\" for uppercase Roman numerals, \"1\" for decimal numbers, or an empty string for unordered lists"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -46166,7 +47235,7 @@ class InputPageBlockListItem(TlObject):
             Value of the item; pass 0 for unordered lists
 
         type (:class:`str`):
-            Type of the item numbering type; must be one of \"a\" for a lowercase letter, \"A\" for an uppercase letter, \"i\" for lowercase Roman numerals, \"I\" for uppercase Roman numerals, \"1\" for decimal numbers, or empty for unordered lists
+            Type of item numbering; pass \"a\" for lowercase letters, \"A\" for uppercase letters, \"i\" for lowercase Roman numerals, \"I\" for uppercase Roman numerals, \"1\" for decimal numbers, or an empty string for unordered lists
 
     """
 
@@ -46188,7 +47257,7 @@ class InputPageBlockListItem(TlObject):
         self.value = value
         r"""Value of the item; pass 0 for unordered lists"""
         self.type = type
-        r"""Type of the item numbering type; must be one of \"a\" for a lowercase letter, \"A\" for an uppercase letter, \"i\" for lowercase Roman numerals, \"I\" for uppercase Roman numerals, \"1\" for decimal numbers, or empty for unordered lists"""
+        r"""Type of item numbering; pass \"a\" for lowercase letters, \"A\" for uppercase letters, \"i\" for lowercase Roman numerals, \"I\" for uppercase Roman numerals, \"1\" for decimal numbers, or an empty string for unordered lists"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -50545,7 +51614,7 @@ class LinkPreviewTypePremiumGiftCode(TlObject, LinkPreviewType):
 
 
 class LinkPreviewTypeRequestManagedBot(TlObject, LinkPreviewType):
-    r"""The link is a link to a dialog for creating of a managed bot"""
+    r"""The link is a link to a dialog for creating a managed bot"""
 
     def __init__(self) -> None:
         pass
@@ -56423,7 +57492,7 @@ class PassportAuthorizationForm(TlObject):
 
 
 class PassportElementsWithErrors(TlObject):
-    r"""Contains information about a Telegram Passport elements and corresponding errors
+    r"""Contains information about Telegram Passport elements and corresponding errors
 
     Parameters:
         elements (list[:class:`~pytdbot.types.PassportElement`]):
@@ -56549,7 +57618,7 @@ class EncryptedPassportElement(TlObject):
             Encrypted JSON\-encoded data about the user
 
         front_side (:class:`~pytdbot.types.DatedFile`):
-            The front side of an identity document
+            The front side of an identity document; may be null if the element isn't an identity document
 
         reverse_side (:class:`~pytdbot.types.DatedFile`):
             The reverse side of an identity document; may be null
@@ -56602,7 +57671,7 @@ class EncryptedPassportElement(TlObject):
         self.data = data
         r"""Encrypted JSON\-encoded data about the user"""
         self.front_side = front_side
-        r"""The front side of an identity document"""
+        r"""The front side of an identity document; may be null if the element isn't an identity document"""
         self.reverse_side = reverse_side
         r"""The reverse side of an identity document; may be null"""
         self.selfie = selfie
@@ -59171,7 +60240,7 @@ class MessageCall(TlObject, MessageContent):
 
 
 class MessageGroupCall(TlObject, MessageContent):
-    r"""A message with information about a group call not bound to a chat\. If the message is incoming, the call isn't active, isn't missed, and has no duration, and getOption\(\"can\_accept\_calls\"\) is true, then incoming call screen must be shown to the user\. Use getGroupCallParticipants to show current group call participants on the screen\. Use joinGroupCall to accept the call or declineGroupCallInvitation to decline it\. If the call become active or missed, then the call screen must be hidden
+    r"""A message with information about a group call not bound to a chat\. If the message is incoming, the call isn't active, isn't missed, and has no duration, and getOption\(\"can\_accept\_calls\"\) is true, then incoming call screen must be shown to the user\. Use getGroupCallParticipants to show current group call participants on the screen\. Use joinGroupCall to accept the call or declineGroupCallInvitation to decline it\. If the call becomes active or missed, then the call screen must be hidden
 
     Parameters:
         unique_id (:class:`int`):
@@ -59764,13 +60833,13 @@ class MessageChatOwnerLeft(TlObject, MessageContent):
 
     Parameters:
         new_owner_user_id (:class:`int`):
-            Identifier of the user who will become the new owner of the chat if the previous owner isn't return; 0 if none
+            Identifier of the user who will become the new owner of the chat if the previous owner doesn't return; 0 if none
 
     """
 
     def __init__(self, *, new_owner_user_id: int | None = 0) -> None:
         self.new_owner_user_id = new_owner_user_id
-        r"""Identifier of the user who will become the new owner of the chat if the previous owner isn't return; 0 if none"""
+        r"""Identifier of the user who will become the new owner of the chat if the previous owner doesn't return; 0 if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -62141,7 +63210,7 @@ class MessageTonWalletTransfer(TlObject, MessageContent):
             Sender of the transfer; 0 if unknown
 
         transaction_id (:class:`str`):
-            Unique identifier of the transaction; may be empty if the transfer isn't send yet\. Use getTonWalletTransaction to get additional information about the transaction
+            Unique identifier of the transaction; may be empty if the transfer isn't sent yet\. Use getTonWalletTransaction to get additional information about the transaction
 
         peer_address (:class:`str`):
             Address in the TON blockchain of the transaction peer
@@ -62170,7 +63239,7 @@ class MessageTonWalletTransfer(TlObject, MessageContent):
         self.sender_user_id = sender_user_id
         r"""Sender of the transfer; 0 if unknown"""
         self.transaction_id = transaction_id
-        r"""Unique identifier of the transaction; may be empty if the transfer isn't send yet\. Use getTonWalletTransaction to get additional information about the transaction"""
+        r"""Unique identifier of the transaction; may be empty if the transfer isn't sent yet\. Use getTonWalletTransaction to get additional information about the transaction"""
         self.peer_address = peer_address
         r"""Address in the TON blockchain of the transaction peer"""
         self.amount = amount
@@ -62346,6 +63415,9 @@ class MessageGift(TlObject, MessageContent):
         can_be_upgraded (:class:`bool`):
             True, if the gift can be upgraded to a unique gift; only for the receiver of the gift
 
+        can_be_deleted (:class:`bool`):
+            True, if the gift can be deleted using deleteGift; only for the receiver of the gift
+
         was_converted (:class:`bool`):
             True, if the gift was converted to Telegram Stars; only for the receiver of the gift
 
@@ -62380,6 +63452,7 @@ class MessageGift(TlObject, MessageContent):
         is_saved: bool | None = False,
         is_prepaid_upgrade: bool | None = False,
         can_be_upgraded: bool | None = False,
+        can_be_deleted: bool | None = False,
         was_converted: bool | None = False,
         was_upgraded: bool | None = False,
         was_refunded: bool | None = False,
@@ -62414,6 +63487,8 @@ class MessageGift(TlObject, MessageContent):
         r"""True, if the message is about prepaid upgrade of the gift by another user"""
         self.can_be_upgraded = can_be_upgraded
         r"""True, if the gift can be upgraded to a unique gift; only for the receiver of the gift"""
+        self.can_be_deleted = can_be_deleted
+        r"""True, if the gift can be deleted using deleteGift; only for the receiver of the gift"""
         self.was_converted = was_converted
         r"""True, if the gift was converted to Telegram Stars; only for the receiver of the gift"""
         self.was_upgraded = was_upgraded
@@ -62456,6 +63531,7 @@ class MessageGift(TlObject, MessageContent):
             "is_saved": self.is_saved,
             "is_prepaid_upgrade": self.is_prepaid_upgrade,
             "can_be_upgraded": self.can_be_upgraded,
+            "can_be_deleted": self.can_be_deleted,
             "was_converted": self.was_converted,
             "was_upgraded": self.was_upgraded,
             "was_refunded": self.was_refunded,
@@ -62483,6 +63559,7 @@ class MessageGift(TlObject, MessageContent):
             data_class.is_saved = data.get("is_saved", False)
             data_class.is_prepaid_upgrade = data.get("is_prepaid_upgrade", False)
             data_class.can_be_upgraded = data.get("can_be_upgraded", False)
+            data_class.can_be_deleted = data.get("can_be_deleted", False)
             data_class.was_converted = data.get("was_converted", False)
             data_class.was_upgraded = data.get("was_upgraded", False)
             data_class.was_refunded = data.get("was_refunded", False)
@@ -62670,7 +63747,7 @@ class MessageUpgradedGift(TlObject, MessageContent):
 
 
 class MessageRefundedUpgradedGift(TlObject, MessageContent):
-    r"""A gift which purchase, upgrade or transfer were refunded
+    r"""A gift which purchase, upgrade, or transfer were refunded
 
     Parameters:
         gift (:class:`~pytdbot.types.Gift`):
@@ -63036,6 +64113,37 @@ class MessageDirectMessagePriceChanged(TlObject, MessageContent):
             data_class.paid_message_star_count = int(
                 data.get("paid_message_star_count", 0)
             )
+
+        return data_class
+
+
+class MessageUnpaidMessagesAllowedByLink(TlObject, MessageContent):
+    r"""The sender of the message used a link of the other user, which allows sending unpaid messages to the user"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["messageUnpaidMessagesAllowedByLink"]:
+        return "messageUnpaidMessagesAllowedByLink"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> MessageUnpaidMessagesAllowedByLink | None:
+        if data:
+            data_class = cls()
 
         return data_class
 
@@ -64734,7 +65842,7 @@ class TextEntityTypeTextUrl(TlObject, TextEntityType):
 
 
 class TextEntityTypeMentionName(TlObject, TextEntityType):
-    r"""A text shows instead of a raw mention of the user \(e\.g\., when the user has no username\)
+    r"""A text shown instead of a raw mention of the user \(e\.g\., when the user has no username\)
 
     Parameters:
         user_id (:class:`int`):
@@ -65674,7 +66782,7 @@ class InputVideoNote(TlObject):
 
 
 class InputVoiceNote(TlObject):
-    r"""A video note to be sent
+    r"""A voice note to be sent
 
     Parameters:
         voice_note (:class:`~pytdbot.types.InputFile`):
@@ -66166,7 +67274,7 @@ class MessageSendOptions(TlObject):
             The number of Telegram Stars the user agreed to pay to send the messages
 
         update_order_of_installed_sticker_sets (:class:`bool`):
-            Pass true if the user explicitly chosen a sticker or a custom emoji from an installed sticker set; applicable only to sendMessage and sendMessageAlbum
+            Pass true if the user has explicitly chosen a sticker or a custom emoji from an installed sticker set; applicable only to sendMessage and sendMessageAlbum
 
         scheduling_state (:class:`~pytdbot.types.MessageSchedulingState`):
             Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, to a chat with paid messages, to a channel direct messages chat, live location messages and self\-destructing messages can't be scheduled
@@ -66215,7 +67323,7 @@ class MessageSendOptions(TlObject):
         self.update_order_of_installed_sticker_sets = (
             update_order_of_installed_sticker_sets
         )
-        r"""Pass true if the user explicitly chosen a sticker or a custom emoji from an installed sticker set; applicable only to sendMessage and sendMessageAlbum"""
+        r"""Pass true if the user has explicitly chosen a sticker or a custom emoji from an installed sticker set; applicable only to sendMessage and sendMessageAlbum"""
         self.scheduling_state = scheduling_state
         r"""Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, to a chat with paid messages, to a channel direct messages chat, live location messages and self\-destructing messages can't be scheduled"""
         self.effect_id = effect_id
@@ -69857,7 +70965,7 @@ class MessageProperties(TlObject):
             True, if the message can be deleted for all users using the method deleteMessages with revoke \=\= true
 
         can_be_edited (:class:`bool`):
-            True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location, poll, and checklist messages this fields shows whether editMessageLiveLocation, stopPoll, or editMessageChecklist respectively can be used with this message
+            True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location, poll, and checklist messages this field shows whether editMessageLiveLocation, stopPoll, or editMessageChecklist respectively can be used with this message
 
         can_be_forwarded (:class:`bool`):
             True, if the message can be forwarded using inputMessageForwarded or forwardMessages without copy options
@@ -69902,7 +71010,7 @@ class MessageProperties(TlObject):
             True, if a link can be generated for the message using getMessageLink
 
         can_get_media_timestamp_links (:class:`bool`):
-            True, if media timestamp links can be generated for media timestamp entities in the message text, caption or link preview description using getMessageLink
+            True, if media timestamp links can be generated for media timestamp entities in the message text, caption, or link preview description using getMessageLink
 
         can_get_message_thread (:class:`bool`):
             True, if information about the message thread is available through getMessageThread and getMessageThreadHistory
@@ -70015,7 +71123,7 @@ class MessageProperties(TlObject):
         self.can_be_deleted_for_all_users = can_be_deleted_for_all_users
         r"""True, if the message can be deleted for all users using the method deleteMessages with revoke \=\= true"""
         self.can_be_edited = can_be_edited
-        r"""True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location, poll, and checklist messages this fields shows whether editMessageLiveLocation, stopPoll, or editMessageChecklist respectively can be used with this message"""
+        r"""True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location, poll, and checklist messages this field shows whether editMessageLiveLocation, stopPoll, or editMessageChecklist respectively can be used with this message"""
         self.can_be_forwarded = can_be_forwarded
         r"""True, if the message can be forwarded using inputMessageForwarded or forwardMessages without copy options"""
         self.can_be_paid = can_be_paid
@@ -70045,7 +71153,7 @@ class MessageProperties(TlObject):
         self.can_get_link = can_get_link
         r"""True, if a link can be generated for the message using getMessageLink"""
         self.can_get_media_timestamp_links = can_get_media_timestamp_links
-        r"""True, if media timestamp links can be generated for media timestamp entities in the message text, caption or link preview description using getMessageLink"""
+        r"""True, if media timestamp links can be generated for media timestamp entities in the message text, caption, or link preview description using getMessageLink"""
         self.can_get_message_thread = can_get_message_thread
         r"""True, if information about the message thread is available through getMessageThread and getMessageThreadHistory"""
         self.can_get_poll_vote_statistics = can_get_poll_vote_statistics
@@ -72784,94 +73892,6 @@ class CurrentWeather(TlObject):
         return data_class
 
 
-class StoryAreaPosition(TlObject):
-    r"""Describes position of a clickable rectangle area on a story media
-
-    Parameters:
-        x_percentage (:class:`float`):
-            The abscissa of the rectangle's center, as a percentage of the media width
-
-        y_percentage (:class:`float`):
-            The ordinate of the rectangle's center, as a percentage of the media height
-
-        width_percentage (:class:`float`):
-            The width of the rectangle, as a percentage of the media width
-
-        height_percentage (:class:`float`):
-            The height of the rectangle, as a percentage of the media height
-
-        rotation_angle (:class:`float`):
-            Clockwise rotation angle of the rectangle, in degrees; 0\-360
-
-        corner_radius_percentage (:class:`float`):
-            The radius of the rectangle corner rounding, as a percentage of the media width
-
-    """
-
-    def __init__(
-        self,
-        *,
-        x_percentage: float | None = 0.0,
-        y_percentage: float | None = 0.0,
-        width_percentage: float | None = 0.0,
-        height_percentage: float | None = 0.0,
-        rotation_angle: float | None = 0.0,
-        corner_radius_percentage: float | None = 0.0,
-    ) -> None:
-        self.x_percentage = x_percentage
-        r"""The abscissa of the rectangle's center, as a percentage of the media width"""
-        self.y_percentage = y_percentage
-        r"""The ordinate of the rectangle's center, as a percentage of the media height"""
-        self.width_percentage = width_percentage
-        r"""The width of the rectangle, as a percentage of the media width"""
-        self.height_percentage = height_percentage
-        r"""The height of the rectangle, as a percentage of the media height"""
-        self.rotation_angle = rotation_angle
-        r"""Clockwise rotation angle of the rectangle, in degrees; 0\-360"""
-        self.corner_radius_percentage = corner_radius_percentage
-        r"""The radius of the rectangle corner rounding, as a percentage of the media width"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def __repr__(self):
-        return self.__str__()
-
-    @classmethod
-    def getType(self) -> Literal["storyAreaPosition"]:
-        return "storyAreaPosition"
-
-    @classmethod
-    def getClass(self) -> Literal["StoryAreaPosition"]:
-        return "StoryAreaPosition"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "x_percentage": self.x_percentage,
-            "y_percentage": self.y_percentage,
-            "width_percentage": self.width_percentage,
-            "height_percentage": self.height_percentage,
-            "rotation_angle": self.rotation_angle,
-            "corner_radius_percentage": self.corner_radius_percentage,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> StoryAreaPosition | None:
-        if data:
-            data_class = cls()
-            data_class.x_percentage = data.get("x_percentage", 0.0)
-            data_class.y_percentage = data.get("y_percentage", 0.0)
-            data_class.width_percentage = data.get("width_percentage", 0.0)
-            data_class.height_percentage = data.get("height_percentage", 0.0)
-            data_class.rotation_angle = data.get("rotation_angle", 0.0)
-            data_class.corner_radius_percentage = data.get(
-                "corner_radius_percentage", 0.0
-            )
-
-        return data_class
-
-
 class StoryAreaTypeLocation(TlObject, StoryAreaType):
     r"""An area pointing to a location
 
@@ -73088,7 +74108,7 @@ class StoryAreaTypeMessage(TlObject, StoryAreaType):
 
 
 class StoryAreaTypeLink(TlObject, StoryAreaType):
-    r"""An area pointing to a HTTP or tg:// link
+    r"""An area pointing to an HTTP or tg:// link
 
     Parameters:
         url (:class:`str`):
@@ -73231,7 +74251,7 @@ class StoryArea(TlObject):
     r"""Describes a clickable rectangle area on a story media
 
     Parameters:
-        position (:class:`~pytdbot.types.StoryAreaPosition`):
+        position (:class:`~pytdbot.types.AreaPosition`):
             Position of the area
 
         type (:class:`~pytdbot.types.StoryAreaType`):
@@ -73242,7 +74262,7 @@ class StoryArea(TlObject):
     def __init__(
         self,
         *,
-        position: StoryAreaPosition | None = None,
+        position: AreaPosition | None = None,
         type: StoryAreaTypeLocation
         | StoryAreaTypeVenue
         | StoryAreaTypeSuggestedReaction
@@ -73343,7 +74363,7 @@ class InputStoryAreaTypeFoundVenue(TlObject, InputStoryAreaType):
 
     Parameters:
         query_id (:class:`int`):
-            Identifier of the inline query, used to found the venue
+            Identifier of the inline query, used to find the venue
 
         result_id (:class:`str`):
             Identifier of the inline query result
@@ -73352,7 +74372,7 @@ class InputStoryAreaTypeFoundVenue(TlObject, InputStoryAreaType):
 
     def __init__(self, *, query_id: int | None = 0, result_id: str | None = "") -> None:
         self.query_id = query_id
-        r"""Identifier of the inline query, used to found the venue"""
+        r"""Identifier of the inline query, used to find the venue"""
         self.result_id = result_id
         r"""Identifier of the inline query result"""
 
@@ -73553,7 +74573,7 @@ class InputStoryAreaTypeMessage(TlObject, InputStoryAreaType):
 
 
 class InputStoryAreaTypeLink(TlObject, InputStoryAreaType):
-    r"""An area pointing to a HTTP or tg:// link
+    r"""An area pointing to an HTTP or tg:// link
 
     Parameters:
         url (:class:`str`):
@@ -73696,7 +74716,7 @@ class InputStoryArea(TlObject):
     r"""Describes a clickable rectangle area on a story media to be added
 
     Parameters:
-        position (:class:`~pytdbot.types.StoryAreaPosition`):
+        position (:class:`~pytdbot.types.AreaPosition`):
             Position of the area
 
         type (:class:`~pytdbot.types.InputStoryAreaType`):
@@ -73707,7 +74727,7 @@ class InputStoryArea(TlObject):
     def __init__(
         self,
         *,
-        position: StoryAreaPosition | None = None,
+        position: AreaPosition | None = None,
         type: InputStoryAreaTypeLocation
         | InputStoryAreaTypeFoundVenue
         | InputStoryAreaTypePreviousVenue
@@ -75742,6 +76762,7 @@ class QuickReplyMessage(TlObject):
         | MessagePaidMessagesRefunded
         | MessagePaidMessagePriceChanged
         | MessageDirectMessagePriceChanged
+        | MessageUnpaidMessagesAllowedByLink
         | MessageChecklistTasksDone
         | MessageChecklistTasksAdded
         | MessageSuggestedPostApprovalFailed
@@ -76041,6 +77062,7 @@ class WelcomeMessage(TlObject):
         | MessagePaidMessagesRefunded
         | MessagePaidMessagePriceChanged
         | MessageDirectMessagePriceChanged
+        | MessageUnpaidMessagesAllowedByLink
         | MessageChecklistTasksDone
         | MessageChecklistTasksAdded
         | MessageSuggestedPostApprovalFailed
@@ -76762,7 +77784,7 @@ class ChatBoostSourceGiveaway(TlObject, ChatBoostSource):
             Identifier of a user who won in the giveaway; 0 if none
 
         gift_code (:class:`str`):
-            The created Telegram Premium gift code if it was used by the user or can be claimed by the current user; an empty string otherwise; for Telegram Premium giveways only
+            The created Telegram Premium gift code if it was used by the user or can be claimed by the current user; an empty string otherwise; for Telegram Premium giveaways only
 
         star_count (:class:`int`):
             Number of Telegram Stars distributed among winners of the giveaway
@@ -76787,7 +77809,7 @@ class ChatBoostSourceGiveaway(TlObject, ChatBoostSource):
         self.user_id = user_id
         r"""Identifier of a user who won in the giveaway; 0 if none"""
         self.gift_code = gift_code
-        r"""The created Telegram Premium gift code if it was used by the user or can be claimed by the current user; an empty string otherwise; for Telegram Premium giveways only"""
+        r"""The created Telegram Premium gift code if it was used by the user or can be claimed by the current user; an empty string otherwise; for Telegram Premium giveaways only"""
         self.star_count = star_count
         r"""Number of Telegram Stars distributed among winners of the giveaway"""
         self.giveaway_message_id = giveaway_message_id
@@ -78693,7 +79715,7 @@ class GroupCallRecentSpeaker(TlObject):
             Group call participant identifier
 
         is_speaking (:class:`bool`):
-            True, is the user has spoken recently
+            True, if the user has spoken recently
 
     """
 
@@ -78706,7 +79728,7 @@ class GroupCallRecentSpeaker(TlObject):
         self.participant_id = participant_id
         r"""Group call participant identifier"""
         self.is_speaking = is_speaking
-        r"""True, is the user has spoken recently"""
+        r"""True, if the user has spoken recently"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -79578,7 +80600,7 @@ class GroupCallMessageLevel(TlObject):
             The second color used to show the message text in the RGB format
 
         background_color (:class:`int`):
-            Background color for the message the RGB format
+            Background color for the message in the RGB format
 
     """
 
@@ -79606,7 +80628,7 @@ class GroupCallMessageLevel(TlObject):
         self.second_color = second_color
         r"""The second color used to show the message text in the RGB format"""
         self.background_color = background_color
-        r"""Background color for the message the RGB format"""
+        r"""Background color for the message in the RGB format"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -81967,15 +82989,26 @@ class UserLink(TlObject):
             The URL
 
         expires_in (:class:`int`):
-            Left time for which the link is valid, in seconds; 0 if the link is a public username link
+            Left time for which the link is valid, in seconds; 0 if the link is permanent
+
+        can_get_permanent_link (:class:`bool`):
+            True, if a permanent link to the current user can be received; false if all links to the current user expire
 
     """
 
-    def __init__(self, *, url: str | None = "", expires_in: int | None = 0) -> None:
+    def __init__(
+        self,
+        *,
+        url: str | None = "",
+        expires_in: int | None = 0,
+        can_get_permanent_link: bool | None = False,
+    ) -> None:
         self.url = url
         r"""The URL"""
         self.expires_in = expires_in
-        r"""Left time for which the link is valid, in seconds; 0 if the link is a public username link"""
+        r"""Left time for which the link is valid, in seconds; 0 if the link is permanent"""
+        self.can_get_permanent_link = can_get_permanent_link
+        r"""True, if a permanent link to the current user can be received; false if all links to the current user expire"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -81992,7 +83025,12 @@ class UserLink(TlObject):
         return "UserLink"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "url": self.url, "expires_in": self.expires_in}
+        return {
+            "@type": self.getType(),
+            "url": self.url,
+            "expires_in": self.expires_in,
+            "can_get_permanent_link": self.can_get_permanent_link,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> UserLink | None:
@@ -82000,6 +83038,9 @@ class UserLink(TlObject):
             data_class = cls()
             data_class.url = data.get("url", "")
             data_class.expires_in = int(data.get("expires_in", 0))
+            data_class.can_get_permanent_link = data.get(
+                "can_get_permanent_link", False
+            )
 
         return data_class
 
@@ -82281,7 +83322,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
 
     """
 
@@ -82348,7 +83389,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -82428,7 +83469,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
 
     """
 
@@ -82489,7 +83530,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -82559,7 +83600,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
 
     """
 
@@ -82614,7 +83655,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -82680,7 +83721,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
 
     """
 
@@ -82735,7 +83776,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -82810,7 +83851,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
 
     """
 
@@ -82874,7 +83915,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -83018,7 +84059,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
 
     """
 
@@ -83079,7 +84120,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -83155,7 +84196,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
 
     """
 
@@ -83216,7 +84257,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -83286,7 +84327,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
 
     """
 
@@ -83341,7 +84382,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -83407,7 +84448,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
 
     """
 
@@ -83462,7 +84503,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -83540,7 +84581,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
 
     """
 
@@ -83607,7 +84648,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -83678,7 +84719,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
 
     """
 
@@ -83730,7 +84771,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -89704,7 +90745,7 @@ class PremiumFeatureForumTopicIcon(TlObject, PremiumFeature):
 
 
 class PremiumFeatureAppIcons(TlObject, PremiumFeature):
-    r"""Allowed to set a premium application icons"""
+    r"""Allowed to set premium application icons"""
 
     def __init__(self) -> None:
         pass
@@ -90572,7 +91613,7 @@ class PremiumStoryFeaturePriorityOrder(TlObject, PremiumStoryFeature):
 
 
 class PremiumStoryFeatureStealthMode(TlObject, PremiumStoryFeature):
-    r"""The ability to hide the fact that the user viewed other's stories"""
+    r"""The ability to hide the fact that the user viewed others' stories"""
 
     def __init__(self) -> None:
         pass
@@ -90667,7 +91708,7 @@ class PremiumStoryFeatureCustomExpirationDuration(TlObject, PremiumStoryFeature)
 
 
 class PremiumStoryFeatureSaveStories(TlObject, PremiumStoryFeature):
-    r"""The ability to save other's unprotected stories"""
+    r"""The ability to save others' unprotected stories"""
 
     def __init__(self) -> None:
         pass
@@ -91145,7 +92186,7 @@ class PremiumSourceBusinessFeature(TlObject, PremiumSource):
 
     Parameters:
         feature (:class:`~pytdbot.types.BusinessFeature`):
-            The used feature; pass null if none specific feature was used
+            The used feature; pass null if no specific feature was used
 
     """
 
@@ -91166,7 +92207,7 @@ class PremiumSourceBusinessFeature(TlObject, PremiumSource):
         | None = None,
     ) -> None:
         self.feature = feature
-        r"""The used feature; pass null if none specific feature was used"""
+        r"""The used feature; pass null if no specific feature was used"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -93959,13 +95000,13 @@ class InputChatThemeGift(TlObject, InputChatTheme):
 
     Parameters:
         name (:class:`str`):
-            Name of the upgraded gift\. A gift can be used only in one chat in a time\. When the same gift is used in another chat, theme in the previous chat is reset to default
+            Name of the upgraded gift\. A gift can be used only in one chat at a time\. When the same gift is used in another chat, theme in the previous chat is reset to default
 
     """
 
     def __init__(self, *, name: str | None = "") -> None:
         self.name = name
-        r"""Name of the upgraded gift\. A gift can be used only in one chat in a time\. When the same gift is used in another chat, theme in the previous chat is reset to default"""
+        r"""Name of the upgraded gift\. A gift can be used only in one chat at a time\. When the same gift is used in another chat, theme in the previous chat is reset to default"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -97244,7 +98285,7 @@ class PushMessageContentPollOptionAdded(TlObject, PushMessageContent):
 
 
 class PushMessageContentMessageForwards(TlObject, PushMessageContent):
-    r"""A forwarded messages
+    r"""Forwarded messages
 
     Parameters:
         total_count (:class:`int`):
@@ -98037,7 +99078,11 @@ class Proxy(TlObject):
         *,
         server: str | None = "",
         port: int | None = 0,
-        type: ProxyTypeSocks5 | ProxyTypeHttp | ProxyTypeMtproto | None = None,
+        type: ProxyTypeSocks5
+        | ProxyTypeHttp
+        | ProxyTypeMtproto
+        | ProxyTypeWeb
+        | None = None,
     ) -> None:
         self.server = server
         r"""Proxy server domain or IP address"""
@@ -98821,7 +99866,7 @@ class UserPrivacySettingRuleAllowUsers(TlObject, UserPrivacySettingRule):
 
 
 class UserPrivacySettingRuleAllowChatMembers(TlObject, UserPrivacySettingRule):
-    r"""A rule to allow all members of certain specified basic groups and supergroups to doing something
+    r"""A rule to allow all members of certain specified basic groups and supergroups to do something
 
     Parameters:
         chat_ids (list[:class:`int`]):
@@ -99518,13 +100563,13 @@ class ReadDatePrivacySettings(TlObject):
 
     Parameters:
         show_read_date (:class:`bool`):
-            True, if message read date is shown to other users in private chats\. If false and the current user isn't a Telegram Premium user, then they will not be able to see other's message read date
+            True, if message read date is shown to other users in private chats\. If false and the current user isn't a Telegram Premium user, then they will not be able to see others' message read date
 
     """
 
     def __init__(self, *, show_read_date: bool | None = False) -> None:
         self.show_read_date = show_read_date
-        r"""True, if message read date is shown to other users in private chats\. If false and the current user isn't a Telegram Premium user, then they will not be able to see other's message read date"""
+        r"""True, if message read date is shown to other users in private chats\. If false and the current user isn't a Telegram Premium user, then they will not be able to see others' message read date"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -102279,7 +103324,7 @@ class SettingsSectionSendGift(TlObject, SettingsSection):
 
 
 class InternalLinkTypeAttachmentMenuBot(TlObject, InternalLinkType):
-    r"""The link is a link to an attachment menu bot to be opened in the specified or a chosen chat\. Process given target\_chat to open the chat\. Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu\. Then, use getAttachmentMenuBot to receive information about the bot\. If the bot isn't added to attachment menu, then show a disclaimer about Mini Apps being third\-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu\. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. If the attachment menu bot can't be used in the opened chat, show an error to the user\. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL
+    r"""The link is a link to an attachment menu bot to be opened in the specified or a chosen chat\. Process given target\_chat to open the chat\. Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu\. Then, use getAttachmentMenuBot to receive information about the bot\. If the bot isn't added to attachment menu, then show a disclaimer about Mini Apps being third\-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu\. If the user accepts the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. If the attachment menu bot can't be used in the opened chat, show an error to the user\. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL
 
     Parameters:
         target_chat (:class:`~pytdbot.types.TargetChat`):
@@ -103636,7 +104681,7 @@ class InternalLinkTypeNewStory(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeOauth(TlObject, InternalLinkType):
-    r"""The link is an OAuth link\. Call getOauthLinkInfo with the given URL to process the link if the link was received from outside of the application; otherwise, ignore it\. After getOauthLinkInfo, show the user confirmation dialog and process it with checkOauthRequestMatchCode, acceptOauthRequest or declineOauthRequest
+    r"""The link is an OAuth link\. Call getOauthLinkInfo with the given URL to process the link if the link was received from outside of the application; otherwise, ignore it\. After getOauthLinkInfo, show the user confirmation dialog and process it with checkOauthRequestMatchCode, acceptOauthRequest, or declineOauthRequest
 
     Parameters:
         url (:class:`str`):
@@ -103970,6 +105015,9 @@ class InternalLinkTypePublicChat(TlObject, InternalLinkType):
         open_profile (:class:`bool`):
             True, if chat profile information screen must be opened; otherwise, the chat itself must be opened
 
+        unpaid_messages_token (:class:`str`):
+            Token, which allows the current user to send unpaid messages; may be empty if none\. If the token isn't empty and the chat is a private chat with a regular user, then call applyUnpaidMessagesToken with the user and the token
+
     """
 
     def __init__(
@@ -103978,6 +105026,7 @@ class InternalLinkTypePublicChat(TlObject, InternalLinkType):
         chat_username: str | None = "",
         draft_text: str | None = "",
         open_profile: bool | None = False,
+        unpaid_messages_token: str | None = "",
     ) -> None:
         self.chat_username = chat_username
         r"""Username of the chat"""
@@ -103985,6 +105034,8 @@ class InternalLinkTypePublicChat(TlObject, InternalLinkType):
         r"""Draft text for message to send in the chat"""
         self.open_profile = open_profile
         r"""True, if chat profile information screen must be opened; otherwise, the chat itself must be opened"""
+        self.unpaid_messages_token = unpaid_messages_token
+        r"""Token, which allows the current user to send unpaid messages; may be empty if none\. If the token isn't empty and the chat is a private chat with a regular user, then call applyUnpaidMessagesToken with the user and the token"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -104006,6 +105057,7 @@ class InternalLinkTypePublicChat(TlObject, InternalLinkType):
             "chat_username": self.chat_username,
             "draft_text": self.draft_text,
             "open_profile": self.open_profile,
+            "unpaid_messages_token": self.unpaid_messages_token,
         }
 
     @classmethod
@@ -104015,6 +105067,7 @@ class InternalLinkTypePublicChat(TlObject, InternalLinkType):
             data_class.chat_username = data.get("chat_username", "")
             data_class.draft_text = data.get("draft_text", "")
             data_class.open_profile = data.get("open_profile", False)
+            data_class.unpaid_messages_token = data.get("unpaid_messages_token", "")
 
         return data_class
 
@@ -104790,6 +105843,9 @@ class InternalLinkTypeUserPhoneNumber(TlObject, InternalLinkType):
         open_profile (:class:`bool`):
             True, if user's profile information screen must be opened; otherwise, the chat itself must be opened
 
+        unpaid_messages_token (:class:`str`):
+            Token, which allows the current user to send unpaid messages to the user; may be empty if none\. If the token isn't empty and the user is found, then call applyUnpaidMessagesToken with the user and the token
+
     """
 
     def __init__(
@@ -104798,6 +105854,7 @@ class InternalLinkTypeUserPhoneNumber(TlObject, InternalLinkType):
         phone_number: str | None = "",
         draft_text: str | None = "",
         open_profile: bool | None = False,
+        unpaid_messages_token: str | None = "",
     ) -> None:
         self.phone_number = phone_number
         r"""Phone number of the user"""
@@ -104805,6 +105862,8 @@ class InternalLinkTypeUserPhoneNumber(TlObject, InternalLinkType):
         r"""Draft text for message to send in the chat"""
         self.open_profile = open_profile
         r"""True, if user's profile information screen must be opened; otherwise, the chat itself must be opened"""
+        self.unpaid_messages_token = unpaid_messages_token
+        r"""Token, which allows the current user to send unpaid messages to the user; may be empty if none\. If the token isn't empty and the user is found, then call applyUnpaidMessagesToken with the user and the token"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -104826,6 +105885,7 @@ class InternalLinkTypeUserPhoneNumber(TlObject, InternalLinkType):
             "phone_number": self.phone_number,
             "draft_text": self.draft_text,
             "open_profile": self.open_profile,
+            "unpaid_messages_token": self.unpaid_messages_token,
         }
 
     @classmethod
@@ -104835,6 +105895,7 @@ class InternalLinkTypeUserPhoneNumber(TlObject, InternalLinkType):
             data_class.phone_number = data.get("phone_number", "")
             data_class.draft_text = data.get("draft_text", "")
             data_class.open_profile = data.get("open_profile", False)
+            data_class.unpaid_messages_token = data.get("unpaid_messages_token", "")
 
         return data_class
 
@@ -104846,11 +105907,18 @@ class InternalLinkTypeUserToken(TlObject, InternalLinkType):
         token (:class:`str`):
             The token
 
+        unpaid_messages_token (:class:`str`):
+            Token, which allows the current user to send unpaid messages to the user; may be empty if none\. If the token isn't empty and the user is found, then call applyUnpaidMessagesToken with the user and the token
+
     """
 
-    def __init__(self, *, token: str | None = "") -> None:
+    def __init__(
+        self, *, token: str | None = "", unpaid_messages_token: str | None = ""
+    ) -> None:
         self.token = token
         r"""The token"""
+        self.unpaid_messages_token = unpaid_messages_token
+        r"""Token, which allows the current user to send unpaid messages to the user; may be empty if none\. If the token isn't empty and the user is found, then call applyUnpaidMessagesToken with the user and the token"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -104867,13 +105935,18 @@ class InternalLinkTypeUserToken(TlObject, InternalLinkType):
         return "InternalLinkType"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "token": self.token}
+        return {
+            "@type": self.getType(),
+            "token": self.token,
+            "unpaid_messages_token": self.unpaid_messages_token,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> InternalLinkTypeUserToken | None:
         if data:
             data_class = cls()
             data_class.token = data.get("token", "")
+            data_class.unpaid_messages_token = data.get("unpaid_messages_token", "")
 
         return data_class
 
@@ -104941,7 +106014,7 @@ class InternalLinkTypeVideoChat(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeWebApp(TlObject, InternalLinkType):
-    r"""The link is a link to a Web App\. Call searchPublicChat with the given bot username, check that the user is a bot\. If the bot is restricted for the current user, then show an error message\. Otherwise, call searchWebApp with the received bot and the given web\_app\_short\_name\. Process received foundWebApp by showing a confirmation dialog if needed\. If the bot can be added to attachment or side menu, but isn't added yet, then show a disclaimer about Mini Apps being third\-party applications instead of the dialog and ask the user to accept their Terms of service\. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. Then, call getWebAppLinkUrl and open the returned URL as a Web App
+    r"""The link is a link to a Web App\. Call searchPublicChat with the given bot username, check that the user is a bot\. If the bot is restricted for the current user, then show an error message\. Otherwise, call searchWebApp with the received bot and the given web\_app\_short\_name\. Process received foundWebApp by showing a confirmation dialog if needed\. If the bot can be added to attachment or side menu, but isn't added yet, then show a disclaimer about Mini Apps being third\-party applications instead of the dialog and ask the user to accept their Terms of service\. If the user accepts the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. Then, call getWebAppLinkUrl and open the returned URL as a Web App
 
     Parameters:
         bot_username (:class:`str`):
@@ -109506,6 +110579,51 @@ class ProxyTypeMtproto(TlObject, ProxyType):
         return data_class
 
 
+class ProxyTypeWeb(TlObject, ProxyType):
+    r"""A web proxy server\. MTProto traffic goes through an HTTPS relay page hosted by the application in a hidden web view; see updateWebProxyCarrierOpened\. The proxy server must be a domain name and the port must be 443
+
+    Parameters:
+        path (:class:`str`):
+            Base path of the relay on the server, without leading and trailing slashes; may be empty\. Consists of 0\-128 characters; each \"/\"\-separated segment must match \[A\-Za\-z0\-9\]\[A\-Za\-z0\-9\_\-\]\*
+
+        secret (:class:`str`):
+            The MTProto proxy secret in hexadecimal encoding; must be 16 bytes long, optionally prefixed with the byte 0xdd
+
+    """
+
+    def __init__(self, *, path: str | None = "", secret: str | None = "") -> None:
+        self.path = path
+        r"""Base path of the relay on the server, without leading and trailing slashes; may be empty\. Consists of 0\-128 characters; each \"/\"\-separated segment must match \[A\-Za\-z0\-9\]\[A\-Za\-z0\-9\_\-\]\*"""
+        self.secret = secret
+        r"""The MTProto proxy secret in hexadecimal encoding; must be 16 bytes long, optionally prefixed with the byte 0xdd"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["proxyTypeWeb"]:
+        return "proxyTypeWeb"
+
+    @classmethod
+    def getClass(self) -> Literal["ProxyType"]:
+        return "ProxyType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "path": self.path, "secret": self.secret}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ProxyTypeWeb | None:
+        if data:
+            data_class = cls()
+            data_class.path = data.get("path", "")
+            data_class.secret = data.get("secret", "")
+
+        return data_class
+
+
 class AddedProxy(TlObject):
     r"""Contains information about a proxy server added to the list of proxies
 
@@ -109619,6 +110737,341 @@ class AddedProxies(TlObject):
         if data:
             data_class = cls()
             data_class.proxies = data.get("proxies", None)
+
+        return data_class
+
+
+class WebProxyCarrier(TlObject):
+    r"""Describes a web proxy carrier: an HTTPS relay page, which carries traffic of a web proxy and must be loaded by the application as the top\-level document of a hidden web view\. Before loading the page, the application must arrange for an object named carrier\.bridge\_object\_name to be defined in the top\-level document whenever its origin is exactly carrier\.origin, and in no other document or frame\. The object must be read\-only and must have two members: a method postMessage\(value\), which passes an ArrayBuffer or a typed array to processWebProxyCarrierMessage as webProxyCarrierMessageBinary, passes a string as webProxyCarrierMessageText, and rejects any other value; and a property onmessage, which the page sets to a function\. The application delivers data to the page by calling that function with an object \{data: value\}, where value is an ArrayBuffer for binary data and a string for text\. Each carrier needs its own web view
+
+    Parameters:
+        id (:class:`int`):
+            Unique identifier of the carrier
+
+        proxy_id (:class:`int`):
+            Identifier of the added proxy that uses the carrier; 0 if the carrier is used by pingProxy or testProxy
+
+        url (:class:`str`):
+            The HTTPS URL to load\. The URL contains the capability for the proxy and a fragment, which must be kept; the URL must never be logged or shown to the user
+
+        origin (:class:`str`):
+            Origin of the relay page, for example, \"https://proxy\.example\.com\"\. The web view must not be allowed to navigate to another origin
+
+        path_prefix (:class:`str`):
+            The only path prefix on carrier\.origin from which the page may load resources or to which it may send requests, for example, \"/\" or \"/relay/\"
+
+        bridge_object_name (:class:`str`):
+            Name of the object to define in the top\-level document; currently, always \"TelegramWebProxy\"
+
+        is_temporary (:class:`bool`):
+            True, if the carrier is needed only to test the proxy and will be closed after the test\. The application may refuse to open such carriers, for example, to avoid creating a web view for every saved proxy
+
+    """
+
+    def __init__(
+        self,
+        *,
+        id: int | None = 0,
+        proxy_id: int | None = 0,
+        url: str | None = "",
+        origin: str | None = "",
+        path_prefix: str | None = "",
+        bridge_object_name: str | None = "",
+        is_temporary: bool | None = False,
+    ) -> None:
+        self.id = id
+        r"""Unique identifier of the carrier"""
+        self.proxy_id = proxy_id
+        r"""Identifier of the added proxy that uses the carrier; 0 if the carrier is used by pingProxy or testProxy"""
+        self.url = url
+        r"""The HTTPS URL to load\. The URL contains the capability for the proxy and a fragment, which must be kept; the URL must never be logged or shown to the user"""
+        self.origin = origin
+        r"""Origin of the relay page, for example, \"https://proxy\.example\.com\"\. The web view must not be allowed to navigate to another origin"""
+        self.path_prefix = path_prefix
+        r"""The only path prefix on carrier\.origin from which the page may load resources or to which it may send requests, for example, \"/\" or \"/relay/\""""
+        self.bridge_object_name = bridge_object_name
+        r"""Name of the object to define in the top\-level document; currently, always \"TelegramWebProxy\""""
+        self.is_temporary = is_temporary
+        r"""True, if the carrier is needed only to test the proxy and will be closed after the test\. The application may refuse to open such carriers, for example, to avoid creating a web view for every saved proxy"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["webProxyCarrier"]:
+        return "webProxyCarrier"
+
+    @classmethod
+    def getClass(self) -> Literal["WebProxyCarrier"]:
+        return "WebProxyCarrier"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "proxy_id": self.proxy_id,
+            "url": self.url,
+            "origin": self.origin,
+            "path_prefix": self.path_prefix,
+            "bridge_object_name": self.bridge_object_name,
+            "is_temporary": self.is_temporary,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebProxyCarrier | None:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+            data_class.proxy_id = int(data.get("proxy_id", 0))
+            data_class.url = data.get("url", "")
+            data_class.origin = data.get("origin", "")
+            data_class.path_prefix = data.get("path_prefix", "")
+            data_class.bridge_object_name = data.get("bridge_object_name", "")
+            data_class.is_temporary = data.get("is_temporary", False)
+
+        return data_class
+
+
+class WebProxyCarrierMessageText(TlObject, WebProxyCarrierMessage):
+    r"""A string message
+
+    Parameters:
+        text (:class:`str`):
+            The string
+
+    """
+
+    def __init__(self, *, text: str | None = "") -> None:
+        self.text = text
+        r"""The string"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["webProxyCarrierMessageText"]:
+        return "webProxyCarrierMessageText"
+
+    @classmethod
+    def getClass(self) -> Literal["WebProxyCarrierMessage"]:
+        return "WebProxyCarrierMessage"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "text": self.text}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebProxyCarrierMessageText | None:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", "")
+
+        return data_class
+
+
+class WebProxyCarrierMessageBinary(TlObject, WebProxyCarrierMessage):
+    r"""A binary message, passed as an ArrayBuffer or a typed array
+
+    Parameters:
+        data (:class:`bytes`):
+            Data of the message
+
+    """
+
+    def __init__(self, *, data: bytes | None = b"") -> None:
+        self.data = data
+        r"""Data of the message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["webProxyCarrierMessageBinary"]:
+        return "webProxyCarrierMessageBinary"
+
+    @classmethod
+    def getClass(self) -> Literal["WebProxyCarrierMessage"]:
+        return "WebProxyCarrierMessage"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "data": self.data}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebProxyCarrierMessageBinary | None:
+        if data:
+            data_class = cls()
+            data_class.data = b64decode(data.get("data", b""))
+
+        return data_class
+
+
+class WebProxyCarrierErrorUnsupported(TlObject, WebProxyCarrierError):
+    r"""The application can't open the carrier, because the platform can't create hidden web views or define the bridge object; TDLib will not retry until the proxy is enabled again"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["webProxyCarrierErrorUnsupported"]:
+        return "webProxyCarrierErrorUnsupported"
+
+    @classmethod
+    def getClass(self) -> Literal["WebProxyCarrierError"]:
+        return "WebProxyCarrierError"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebProxyCarrierErrorUnsupported | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class WebProxyCarrierErrorPaused(TlObject, WebProxyCarrierError):
+    r"""The application can't open the carrier now, for example, because it is in the background; TDLib will request it again after the next call to setNetworkType or after a delay"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["webProxyCarrierErrorPaused"]:
+        return "webProxyCarrierErrorPaused"
+
+    @classmethod
+    def getClass(self) -> Literal["WebProxyCarrierError"]:
+        return "WebProxyCarrierError"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebProxyCarrierErrorPaused | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class WebProxyCarrierErrorLoadFailed(TlObject, WebProxyCarrierError):
+    r"""The page failed to load: a network, TLS, or HTTP error, or a forbidden navigation
+
+    Parameters:
+        message (:class:`str`):
+            The error to be logged; must not contain the URL
+
+    """
+
+    def __init__(self, *, message: str | None = "") -> None:
+        self.message = message
+        r"""The error to be logged; must not contain the URL"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["webProxyCarrierErrorLoadFailed"]:
+        return "webProxyCarrierErrorLoadFailed"
+
+    @classmethod
+    def getClass(self) -> Literal["WebProxyCarrierError"]:
+        return "WebProxyCarrierError"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "message": self.message}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebProxyCarrierErrorLoadFailed | None:
+        if data:
+            data_class = cls()
+            data_class.message = data.get("message", "")
+
+        return data_class
+
+
+class WebProxyCarrierErrorTerminated(TlObject, WebProxyCarrierError):
+    r"""The web view or its renderer process was terminated, or passing data between the application and the page failed"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["webProxyCarrierErrorTerminated"]:
+        return "webProxyCarrierErrorTerminated"
+
+    @classmethod
+    def getClass(self) -> Literal["WebProxyCarrierError"]:
+        return "WebProxyCarrierError"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebProxyCarrierErrorTerminated | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class WebProxyCarrierErrorRefused(TlObject, WebProxyCarrierError):
+    r"""The application refused to open a temporary carrier"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["webProxyCarrierErrorRefused"]:
+        return "webProxyCarrierErrorRefused"
+
+    @classmethod
+    def getClass(self) -> Literal["WebProxyCarrierError"]:
+        return "WebProxyCarrierError"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WebProxyCarrierErrorRefused | None:
+        if data:
+            data_class = cls()
 
         return data_class
 
@@ -110757,7 +112210,7 @@ class ChatRevenueAmount(TlObject):
             Amount of the cryptocurrency available for withdrawal, in the smallest units of the cryptocurrency
 
         withdrawal_enabled (:class:`bool`):
-            True, if Telegram Stars can be withdrawn now or later
+            True, if the cryptocurrency can be withdrawn now or later
 
     """
 
@@ -110779,7 +112232,7 @@ class ChatRevenueAmount(TlObject):
         self.available_amount = available_amount
         r"""Amount of the cryptocurrency available for withdrawal, in the smallest units of the cryptocurrency"""
         self.withdrawal_enabled = withdrawal_enabled
-        r"""True, if Telegram Stars can be withdrawn now or later"""
+        r"""True, if the cryptocurrency can be withdrawn now or later"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -111399,7 +112852,7 @@ class ChatRevenueTransactionTypeFragmentRefund(TlObject, ChatRevenueTransactionT
 
 
 class ChatRevenueTransaction(TlObject):
-    r"""Contains a chat revenue transactions
+    r"""Contains a chat revenue transaction
 
     Parameters:
         cryptocurrency (:class:`str`):
@@ -113210,6 +114663,7 @@ class UpdateMessageContent(TlObject, Update):
         | MessagePaidMessagesRefunded
         | MessagePaidMessagePriceChanged
         | MessageDirectMessagePriceChanged
+        | MessageUnpaidMessagesAllowedByLink
         | MessageChecklistTasksDone
         | MessageChecklistTasksAdded
         | MessageSuggestedPostApprovalFailed
@@ -117220,6 +118674,7 @@ class UpdatePendingMessage(TlObject, Update):
         | MessagePaidMessagesRefunded
         | MessagePaidMessagePriceChanged
         | MessageDirectMessagePriceChanged
+        | MessageUnpaidMessagesAllowedByLink
         | MessageChecklistTasksDone
         | MessageChecklistTasksAdded
         | MessageSuggestedPostApprovalFailed
@@ -117923,6 +119378,7 @@ class UpdateServiceNotification(TlObject, Update):
         | MessagePaidMessagesRefunded
         | MessagePaidMessagePriceChanged
         | MessageDirectMessagePriceChanged
+        | MessageUnpaidMessagesAllowedByLink
         | MessageChecklistTasksDone
         | MessageChecklistTasksAdded
         | MessageSuggestedPostApprovalFailed
@@ -120636,6 +122092,133 @@ class UpdateConnectionState(TlObject, Update):
         return data_class
 
 
+class UpdateWebProxyCarrierOpened(TlObject, Update):
+    r"""A web proxy carrier must be opened as described in webProxyCarrier\. Messages passed by the page to the bridge object must be passed to processWebProxyCarrierMessage\. Failures of the carrier must be reported with reportWebProxyCarrierError
+
+    Parameters:
+        carrier (:class:`~pytdbot.types.WebProxyCarrier`):
+            The carrier
+
+    """
+
+    def __init__(self, *, carrier: WebProxyCarrier | None = None) -> None:
+        self.carrier = carrier
+        r"""The carrier"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateWebProxyCarrierOpened"]:
+        return "updateWebProxyCarrierOpened"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "carrier": self.carrier}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateWebProxyCarrierOpened | None:
+        if data:
+            data_class = cls()
+            data_class.carrier = data.get("carrier", None)
+
+        return data_class
+
+
+class UpdateWebProxyCarrierData(TlObject, Update):
+    r"""Data must be delivered as an ArrayBuffer to the page of a web proxy carrier through the onmessage function of the bridge object, in the order of the updates
+
+    Parameters:
+        carrier_id (:class:`int`):
+            Identifier of the carrier
+
+        data (:class:`bytes`):
+            The data to deliver
+
+    """
+
+    def __init__(self, *, carrier_id: int | None = 0, data: bytes | None = b"") -> None:
+        self.carrier_id = carrier_id
+        r"""Identifier of the carrier"""
+        self.data = data
+        r"""The data to deliver"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateWebProxyCarrierData"]:
+        return "updateWebProxyCarrierData"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "carrier_id": self.carrier_id,
+            "data": self.data,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateWebProxyCarrierData | None:
+        if data:
+            data_class = cls()
+            data_class.carrier_id = int(data.get("carrier_id", 0))
+            data_class.data = b64decode(data.get("data", b""))
+
+        return data_class
+
+
+class UpdateWebProxyCarrierClosed(TlObject, Update):
+    r"""A web proxy carrier must be closed\. If the page has passed any message to the bridge object, then the application must deliver the string \{\"t\":\"close\"\} to the page, so that it can end its relay session, and destroy the web view shortly after, for example, in 200 milliseconds; otherwise, the web view must be destroyed immediately\. Messages from the carrier received after this update must be ignored
+
+    Parameters:
+        carrier_id (:class:`int`):
+            Identifier of the carrier
+
+    """
+
+    def __init__(self, *, carrier_id: int | None = 0) -> None:
+        self.carrier_id = carrier_id
+        r"""Identifier of the carrier"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateWebProxyCarrierClosed"]:
+        return "updateWebProxyCarrierClosed"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "carrier_id": self.carrier_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateWebProxyCarrierClosed | None:
+        if data:
+            data_class = cls()
+            data_class.carrier_id = int(data.get("carrier_id", 0))
+
+        return data_class
+
+
 class UpdateFreezeState(TlObject, Update):
     r"""The freeze state of the current user's account has changed
 
@@ -121123,7 +122706,7 @@ class UpdateSavedMessagesTags(TlObject, Update):
 
     Parameters:
         saved_messages_topic_id (:class:`int`):
-            Identifier of Saved Messages topic which tags were changed; 0 if tags for the whole chat has changed
+            Identifier of Saved Messages topic which tags were changed; 0 if tags for the whole chat have changed
 
         tags (:class:`~pytdbot.types.SavedMessagesTags`):
             The new tags
@@ -121137,7 +122720,7 @@ class UpdateSavedMessagesTags(TlObject, Update):
         tags: SavedMessagesTags | None = None,
     ) -> None:
         self.saved_messages_topic_id = saved_messages_topic_id
-        r"""Identifier of Saved Messages topic which tags were changed; 0 if tags for the whole chat has changed"""
+        r"""Identifier of Saved Messages topic which tags were changed; 0 if tags for the whole chat have changed"""
         self.tags = tags
         r"""The new tags"""
 
@@ -121335,13 +122918,13 @@ class UpdateTonWalletGaslessTransfersInfo(TlObject, Update):
 
     Parameters:
         info (:class:`~pytdbot.types.TonWalletGaslessTransfersInfo`):
-            The new state of the wallet
+            The new information about gasless transfers
 
     """
 
     def __init__(self, *, info: TonWalletGaslessTransfersInfo | None = None) -> None:
         self.info = info
-        r"""The new state of the wallet"""
+        r"""The new information about gasless transfers"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
