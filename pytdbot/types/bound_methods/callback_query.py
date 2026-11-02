@@ -82,7 +82,11 @@ class CallbackQueryBoundMethods:
         message = await self.getMessage()
         if message:
             ephemeral_message_id = message.ephemeral_message_id
-            receiver_user_id = pytdbot.utils.get_message_sender_id(message.receiver_id)
+            receiver_user_id = (
+                pytdbot.utils.get_message_sender_id(message.receiver_id)
+                if message.receiver_id
+                else 0
+            )
 
         return await self._client.editTextMessage(
             chat_id=self.chat_id,
