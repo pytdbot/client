@@ -2063,6 +2063,21 @@ class TDLibFunctions:
             }
         )
 
+    async def getSuitableCommunityChats(
+        self,
+    ) -> pytdbot.types.Error | pytdbot.types.Chats:
+        r"""Returns a list of supergroup and channel chats owned by the current user, which can be added to a community
+
+        Returns:
+            :class:`~pytdbot.types.Chats`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getSuitableCommunityChats",
+            }
+        )
+
     async def loadDirectMessagesChatTopics(
         self, *, chat_id: int | None = 0, limit: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -2120,7 +2135,7 @@ class TDLibFunctions:
         offset: int | None = 0,
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Messages:
-        r"""Returns messages in the topic in a channel direct messages chat administered by the current user\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+        r"""Returns messages in the topic in a channel direct messages chat administered by the current user\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\.id\)
 
         Parameters:
             chat_id (:class:`int`):
@@ -2406,7 +2421,7 @@ class TDLibFunctions:
         offset: int | None = 0,
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Messages:
-        r"""Returns messages in a Saved Messages topic\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+        r"""Returns messages in a Saved Messages topic\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\.id\)
 
         Parameters:
             saved_messages_topic_id (:class:`int`):
@@ -2572,6 +2587,21 @@ class TDLibFunctions:
             {"@type": "getCommunityFullInfo", "community_id": community_id}
         )
 
+    async def getJoinedCommunities(
+        self,
+    ) -> pytdbot.types.Error | pytdbot.types.Communities:
+        r"""Returns the list of communities joined by the current user
+
+        Returns:
+            :class:`~pytdbot.types.Communities`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getJoinedCommunities",
+            }
+        )
+
     async def createCommunity(
         self,
         *,
@@ -2678,6 +2708,264 @@ class TDLibFunctions:
             }
         )
 
+    async def setCommunityNotificationSettings(
+        self,
+        *,
+        community_id: int | None = 0,
+        notification_settings: pytdbot.types.ChatNotificationSettings | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Changes notification settings of a community
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            notification_settings (:class:`~pytdbot.types.ChatNotificationSettings`):
+                New notification settings for the community
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setCommunityNotificationSettings",
+                "community_id": community_id,
+                "notification_settings": notification_settings,
+            }
+        )
+
+    async def addCommunityChat(
+        self,
+        *,
+        community_id: int | None = 0,
+        chat_id: int | None = 0,
+        is_hidden: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Adds a chat to a community\. If the current user isn't allowed to change the list of chats in the community, then a request to add the chat is sent to administrators of the community instead and the method fails with the error \"COMMUNITY\_REQUEST\_CREATED\"
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            chat_id (:class:`int`):
+                Identifier of the chat to add; only chats with owned bots and owned basic group, supergroup and channel chats are allowed; basic group chats will be automatically upgraded to supergroup chats\. A community can have up to getOption\(\"community\_chat\_count\_max\"\) supergroup and channel chats and up to getOption\(\"community\_bot\_count\_max\"\) chats with bots; otherwise, the method fails with the error \"COMMUNITY\_PEERS\_TOO\_MUCH\"
+
+            is_hidden (:class:`bool`):
+                Pass true if the chat will be visible only to administrators of the community
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addCommunityChat",
+                "community_id": community_id,
+                "chat_id": chat_id,
+                "is_hidden": is_hidden,
+            }
+        )
+
+    async def removeCommunityChat(
+        self, *, community_id: int | None = 0, chat_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Removes a chat from a community\. Members of the chat, which aren't members of other chats in the community, will be removed from the community\. Requires owner privileges in the supergroup or channel chat, or ownership of the bot for chats with bots, or can\_edit\_chat\_list administrator right in the community
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            chat_id (:class:`int`):
+                Identifier of the chat to remove
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "removeCommunityChat",
+                "community_id": community_id,
+                "chat_id": chat_id,
+            }
+        )
+
+    async def getCommunityAddChatRequests(
+        self,
+        *,
+        community_id: int | None = 0,
+        offset: str | None = "",
+        limit: int | None = 0,
+    ) -> pytdbot.types.Error | pytdbot.types.CommunityAddChatRequests:
+        r"""Returns pending requests to add chats to a community\. Administrators of the community with can\_edit\_chat\_list right receive all requests; other users receive only requests sent by them
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of requests to return
+
+        Returns:
+            :class:`~pytdbot.types.CommunityAddChatRequests`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getCommunityAddChatRequests",
+                "community_id": community_id,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def processCommunityAddChatRequest(
+        self,
+        *,
+        community_id: int | None = 0,
+        chat_id: int | None = 0,
+        approve: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Handles a pending request to add a chat to a community; requires can\_edit\_chat\_list administrator right in the community
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            chat_id (:class:`int`):
+                Identifier of the chat from the request
+
+            approve (:class:`bool`):
+                Pass true to approve the request and add the chat to the community; pass false to decline it\. If the community already has the maximum number of chats, then approval fails with the error \"COMMUNITY\_PEERS\_TOO\_MUCH\"
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "processCommunityAddChatRequest",
+                "community_id": community_id,
+                "chat_id": chat_id,
+                "approve": approve,
+            }
+        )
+
+    async def processCommunityAddChatRequests(
+        self, *, community_id: int | None = 0, approve: bool | None = False
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Handles all pending requests to add chats to a community; requires can\_edit\_chat\_list administrator right in the community
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            approve (:class:`bool`):
+                Pass true to approve all requests and add the chats to the community; pass false to decline them
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "processCommunityAddChatRequests",
+                "community_id": community_id,
+                "approve": approve,
+            }
+        )
+
+    async def toggleCommunityAreChatsCollapsed(
+        self, *, community_id: int | None = 0, are_chats_collapsed: bool | None = False
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Changes whether all chats of a community are collapsed into one entry in the chat list\. If the chats are expanded, then the community is removed from all chat folders
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            are_chats_collapsed (:class:`bool`):
+                Pass true to collapse all chats of the community into one entry in the chat list
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "toggleCommunityAreChatsCollapsed",
+                "community_id": community_id,
+                "are_chats_collapsed": are_chats_collapsed,
+            }
+        )
+
+    async def toggleCommunityMemberIsBanned(
+        self,
+        *,
+        community_id: int | None = 0,
+        member_id: pytdbot.types.MessageSenderUser
+        | pytdbot.types.MessageSenderChat
+        | None = None,
+        is_banned: bool | None = False,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Bans or unbans a member of a community; requires can\_ban\_members administrator right in the community\. A banned member is banned in all chats of the community\. Administrators of the community can be banned only by the owner of the community and administrators, which can edit administrator rights of the member\. If an owner of a chat in the community is banned, then the chat is removed from the community; in this case, can\_edit\_chat\_list administrator right is also required
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            member_id (:class:`~pytdbot.types.MessageSender`):
+                Identifier of the member to ban or unban
+
+            is_banned (:class:`bool`):
+                Pass true to ban the member; pass false to unban the member
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "toggleCommunityMemberIsBanned",
+                "community_id": community_id,
+                "member_id": member_id,
+                "is_banned": is_banned,
+            }
+        )
+
+    async def getCommunityMemberChats(
+        self,
+        *,
+        community_id: int | None = 0,
+        member_id: pytdbot.types.MessageSenderUser
+        | pytdbot.types.MessageSenderChat
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.CommunityMemberChats:
+        r"""Returns chats in a community, which were joined by a member of the community; requires can\_ban\_members administrator right in the community\. Can be used to show chats that will be affected by the member ban
+
+        Parameters:
+            community_id (:class:`int`):
+                Identifier of the community
+
+            member_id (:class:`~pytdbot.types.MessageSender`):
+                Identifier of the member
+
+        Returns:
+            :class:`~pytdbot.types.CommunityMemberChats`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getCommunityMemberChats",
+                "community_id": community_id,
+                "member_id": member_id,
+            }
+        )
+
     async def deleteCommunity(
         self, *, community_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -2736,7 +3024,7 @@ class TDLibFunctions:
         limit: int | None = 0,
         only_local: bool | None = False,
     ) -> pytdbot.types.Error | pytdbot.types.Messages:
-        r"""Returns messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib\. This is an offline method if only\_local is true
+        r"""Returns messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\.id\)\. For optimal performance, the number of returned messages is chosen by TDLib\. This is an offline method if only\_local is true
 
         Parameters:
             chat_id (:class:`int`):
@@ -2778,7 +3066,7 @@ class TDLibFunctions:
         offset: int | None = 0,
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Messages:
-        r"""Returns messages in a message thread of a message\. Can be used only if messageProperties\.can\_get\_message\_thread \=\= true\. Message thread of a channel message is in the channel's linked supergroup\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
+        r"""Returns messages in a message thread of a message\. Can be used only if messageProperties\.can\_get\_message\_thread \=\= true\. Message thread of a channel message is in the channel's linked supergroup\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\.id\)\. For optimal performance, the number of returned messages is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -2895,7 +3183,7 @@ class TDLibFunctions:
         | pytdbot.types.SearchMessagesFilterPinned
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.FoundChatMessages:
-        r"""Searches for messages with given words in the chat\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. Cannot be used in secret chats with a non\-empty query \(searchSecretMessages must be used instead\), or without an enabled message database\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit\. A combination of query, sender\_id, filter and topic\_id search criteria is expected to be supported, only if it is required for Telegram official application implementation
+        r"""Searches for messages with given words in the chat\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\.id\. Cannot be used in secret chats with a non\-empty query \(searchSecretMessages must be used instead\), or without an enabled message database\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit\. A combination of query, sender\_id, filter and topic\_id search criteria is expected to be supported, only if it is required for Telegram official application implementation
 
         Parameters:
             chat_id (:class:`int`):
@@ -2978,7 +3266,7 @@ class TDLibFunctions:
         min_date: int | None = 0,
         max_date: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.FoundMessages:
-        r"""Searches for messages in all chats except secret chats\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing \(date, chat\_id, message\_id\)\)\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+        r"""Searches for messages in all chats except secret chats\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing \(message\.date, message\.chat\_id, message\.id\)\)\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
             chat_list (:class:`~pytdbot.types.ChatList`):
@@ -3097,7 +3385,7 @@ class TDLibFunctions:
         offset: int | None = 0,
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.FoundChatMessages:
-        r"""Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+        r"""Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\.id\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
             saved_messages_topic_id (:class:`int`):
@@ -3141,7 +3429,7 @@ class TDLibFunctions:
         limit: int | None = 0,
         only_missed: bool | None = False,
     ) -> pytdbot.types.Error | pytdbot.types.FoundMessages:
-        r"""Searches for call and group call messages\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
+        r"""Searches for call and group call messages\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\.id\)\. For optimal performance, the number of returned messages is chosen by TDLib
 
         Parameters:
             offset (:class:`str`):
@@ -3727,7 +4015,7 @@ class TDLibFunctions:
     async def getChatScheduledMessages(
         self, *, chat_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.Messages:
-        r"""Returns all scheduled messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+        r"""Returns all scheduled messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\.id\)
 
         Parameters:
             chat_id (:class:`int`):
@@ -4623,6 +4911,38 @@ class TDLibFunctions:
 
         return await self.invoke({"@type": "fixRichMessageWithAi", "message": message})
 
+    async def fixRecognizedTextWithAi(
+        self, *, text: pytdbot.types.FormattedText | None = None
+    ) -> pytdbot.types.Error | pytdbot.types.FormattedText:
+        r"""Fixes text received as a result of speech recognition using an AI model by correcting recognition errors and adding punctuation; must not be used in secret chats\. May return an error with a message \"AICOMPOSE\_FLOOD\_PREMIUM\" if Telegram Premium is required to send further requests
+
+        Parameters:
+            text (:class:`~pytdbot.types.FormattedText`):
+                The recognized text
+
+        Returns:
+            :class:`~pytdbot.types.FormattedText`
+        """
+
+        return await self.invoke({"@type": "fixRecognizedTextWithAi", "text": text})
+
+    async def fixRecognizedRichMessageWithAi(
+        self, *, message: pytdbot.types.InputRichMessage | None = None
+    ) -> pytdbot.types.Error | pytdbot.types.RichMessage:
+        r"""Fixes a rich message with text received as a result of speech recognition using an AI model by correcting recognition errors and adding punctuation\. May return an error with a message \"AICOMPOSE\_FLOOD\_PREMIUM\" if Telegram Premium is required to send further requests
+
+        Parameters:
+            message (:class:`~pytdbot.types.InputRichMessage`):
+                The message with the recognized text
+
+        Returns:
+            :class:`~pytdbot.types.RichMessage`
+        """
+
+        return await self.invoke(
+            {"@type": "fixRecognizedRichMessageWithAi", "message": message}
+        )
+
     async def recognizeSpeech(
         self, *, chat_id: int | None = 0, message_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -4673,6 +4993,54 @@ class TDLibFunctions:
                 "message_id": message_id,
                 "is_good": is_good,
             }
+        )
+
+    async def recognizeSpeechInFile(
+        self,
+        *,
+        audio_file: pytdbot.types.InputFileId
+        | pytdbot.types.InputFileRemote
+        | pytdbot.types.InputFileLocal
+        | pytdbot.types.InputFileGenerated
+        | None = None,
+        recognition_id: int | None = 0,
+    ) -> pytdbot.types.Error | pytdbot.types.Text:
+        r"""Recognizes speech in an audio file and returns the recognized text\. The file must be in OGG format with Opus codec and must have size up to 1 MB\. The same rules as for recognizeSpeech apply to the Telegram Premium requirement and speech recognition trial; must not be used in secret chats
+
+        Parameters:
+            audio_file (:class:`~pytdbot.types.InputFile`):
+                The audio file
+
+            recognition_id (:class:`int`):
+                Unique identifier of the speech recognition, which will be used in updateSpeechRecognitionInFile to send partially recognized text; pass 0 if partial results aren't needed
+
+        Returns:
+            :class:`~pytdbot.types.Text`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "recognizeSpeechInFile",
+                "audio_file": audio_file,
+                "recognition_id": recognition_id,
+            }
+        )
+
+    async def getSpeechRecognitionLanguages(
+        self, *, chat_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.SpeechRecognitionLanguages:
+        r"""Returns 1\-3 most probable languages of speech in voice notes
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat; pass 0 if none
+
+        Returns:
+            :class:`~pytdbot.types.SpeechRecognitionLanguages`
+        """
+
+        return await self.invoke(
+            {"@type": "getSpeechRecognitionLanguages", "chat_id": chat_id}
         )
 
     async def getChatAvailableMessageSenders(
@@ -4763,6 +5131,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
@@ -4926,7 +5296,7 @@ class TDLibFunctions:
                 Identifier of the inline query result
 
             hide_via_bot (:class:`bool`):
-                Pass true to hide the bot, via which the message is sent\. Can be used only for bots getOption\(\"animation\_search\_bot\_username\"\), getOption\(\"photo\_search\_bot\_username\"\), and getOption\(\"venue\_search\_bot\_username\"\)
+                Pass true to hide the bot, via which the message is sent\. Can be used only for bots getOption\(\"animation\_search\_bot\_username\"\) and getOption\(\"photo\_search\_bot\_username\"\)
 
         Returns:
             :class:`~pytdbot.types.Message`
@@ -5117,6 +5487,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
@@ -5212,6 +5584,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
@@ -5410,6 +5784,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
@@ -5556,6 +5932,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
@@ -5670,6 +6048,53 @@ class TDLibFunctions:
             }
         )
 
+    async def editMessageWidgetData(
+        self,
+        *,
+        chat_id: int | None = 0,
+        message_id: int | None = 0,
+        edit_public_data: bool | None = False,
+        public_data: str | None = "",
+        edit_chat_data: bool | None = False,
+        chat_data: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Edits data of a widget sent by the bot; for bots only
+
+        Parameters:
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the widget message
+
+            edit_public_data (:class:`bool`):
+                Pass true to edit public data of the widget
+
+            public_data (:class:`str`):
+                New public data of the widget; ignored if edit\_public\_data is false
+
+            edit_chat_data (:class:`bool`):
+                Pass true to edit data of the widget, which is specific to the chat
+
+            chat_data (:class:`str`):
+                New data of the widget, which is specific to the chat; ignored if edit\_chat\_data is false
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editMessageWidgetData",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "edit_public_data": edit_public_data,
+                "public_data": public_data,
+                "edit_chat_data": edit_chat_data,
+                "chat_data": chat_data,
+            }
+        )
+
     async def editInlineMessageText(
         self,
         *,
@@ -5701,6 +6126,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -5796,6 +6223,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -5896,6 +6325,80 @@ class TDLibFunctions:
             }
         )
 
+    async def editInlineMessageWidgetData(
+        self,
+        *,
+        inline_message_id: str | None = "",
+        edit_public_data: bool | None = False,
+        public_data: str | None = "",
+        edit_chat_data: bool | None = False,
+        chat_data: str | None = "",
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Edits data of a widget in an inline message sent via the bot; for bots only
+
+        Parameters:
+            inline_message_id (:class:`str`):
+                Inline message identifier
+
+            edit_public_data (:class:`bool`):
+                Pass true to edit public data of the widget
+
+            public_data (:class:`str`):
+                New public data of the widget; ignored if edit\_public\_data is false
+
+            edit_chat_data (:class:`bool`):
+                Pass true to edit data of the widget, which is specific to the chat
+
+            chat_data (:class:`str`):
+                New data of the widget, which is specific to the chat; ignored if edit\_chat\_data is false
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editInlineMessageWidgetData",
+                "inline_message_id": inline_message_id,
+                "edit_public_data": edit_public_data,
+                "public_data": public_data,
+                "edit_chat_data": edit_chat_data,
+                "chat_data": chat_data,
+            }
+        )
+
+    async def editWidgetData(
+        self,
+        *,
+        widget_id: int | None = 0,
+        public_data: str | None = "",
+        cache_time: int | None = 0,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Edits public data of a shared widget created by the bot; for bots only
+
+        Parameters:
+            widget_id (:class:`int`):
+                Identifier of the shared widget
+
+            public_data (:class:`str`):
+                New public data of the widget
+
+            cache_time (:class:`int`):
+                Time during which the public data can be cached, in seconds; 5\-3600\. Pass 0 to keep the current value, which is 30 by default
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editWidgetData",
+                "widget_id": widget_id,
+                "public_data": public_data,
+                "cache_time": cache_time,
+            }
+        )
+
     async def editEphemeralMessage(
         self,
         *,
@@ -5929,6 +6432,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -6049,6 +6554,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -6068,7 +6575,7 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none
 
             input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-                New content of the message\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote
+                New content of the message\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote, inputMessageLocation, inputMessageVenue, inputMessageContact
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -6216,6 +6723,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.BusinessMessage:
@@ -6353,6 +6862,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.BusinessMessage:
@@ -6514,6 +7025,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.BusinessMessage:
@@ -7197,6 +7710,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.QuickReplyMessage:
@@ -7250,7 +7765,7 @@ class TDLibFunctions:
                 Identifier of the inline query result
 
             hide_via_bot (:class:`bool`):
-                Pass true to hide the bot, via which the message is sent\. Can be used only for bots getOption\(\"animation\_search\_bot\_username\"\), getOption\(\"photo\_search\_bot\_username\"\), and getOption\(\"venue\_search\_bot\_username\"\)
+                Pass true to hide the bot, via which the message is sent\. Can be used only for bots getOption\(\"animation\_search\_bot\_username\"\) and getOption\(\"photo\_search\_bot\_username\"\)
 
         Returns:
             :class:`~pytdbot.types.QuickReplyMessage`
@@ -7350,6 +7865,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -7421,6 +7938,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -7472,6 +7991,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
@@ -7668,7 +8189,7 @@ class TDLibFunctions:
         offset: int | None = 0,
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Messages:
-        r"""Returns messages in a topic in a forum supergroup chat or a chat with a bot with topics\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
+        r"""Returns messages in a topic in a forum supergroup chat or a chat with a bot with topics\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\.id\)\. For optimal performance, the number of returned messages is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -7704,7 +8225,7 @@ class TDLibFunctions:
     async def getForumTopicLink(
         self, *, chat_id: int | None = 0, forum_topic_id: int | None = 0
     ) -> pytdbot.types.Error | pytdbot.types.MessageLink:
-        r"""Returns an HTTPS link to a topic in a forum supergroup chat\. This is an offline method
+        r"""Returns an HTTPS link to a topic in a forum supergroup chat or a chat with a bot\. This is an offline method
 
         Parameters:
             chat_id (:class:`int`):
@@ -8672,6 +9193,21 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "getTextEntities", "text": text})
+
+    async def getTextEmojiRanges(
+        self, *, text: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.TextRanges:
+        r"""Returns positions of all emoji found in the text in order of their appearance\. Can be called synchronously
+
+        Parameters:
+            text (:class:`str`):
+                The text in which to look for emoji
+
+        Returns:
+            :class:`~pytdbot.types.TextRanges`
+        """
+
+        return await self.invoke({"@type": "getTextEmojiRanges", "text": text})
 
     async def parseTextEntities(
         self,
@@ -10104,6 +10640,94 @@ class TDLibFunctions:
                 "show_alert": show_alert,
                 "url": url,
                 "cache_time": cache_time,
+            }
+        )
+
+    async def answerWidgetQuery(
+        self, *, widget_query_id: int | None = 0, data: str | None = ""
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Sets the result of a widget query; for bots only
+
+        Parameters:
+            widget_query_id (:class:`int`):
+                Identifier of the widget query
+
+            data (:class:`str`):
+                Data to be returned to the widget
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "answerWidgetQuery",
+                "widget_query_id": widget_query_id,
+                "data": data,
+            }
+        )
+
+    async def getWidgetQueryAnswer(
+        self,
+        *,
+        chat_id: int | None = 0,
+        message_id: int | None = 0,
+        query_type: pytdbot.types.WidgetQueryTypeData
+        | pytdbot.types.WidgetQueryTypeSignData
+        | pytdbot.types.WidgetQueryTypeSentTransaction
+        | None = None,
+        data: bytes | None = b"",
+    ) -> pytdbot.types.Error | pytdbot.types.WidgetQueryAnswer:
+        r"""Sends a widget query to a bot and returns an answer\. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat with the message
+
+            message_id (:class:`int`):
+                Identifier of the widget message from which the query originated\. The message must not be scheduled
+
+            query_type (:class:`~pytdbot.types.WidgetQueryType`):
+                Type of the query
+
+            data (:class:`bytes`):
+                Data of the query
+
+        Returns:
+            :class:`~pytdbot.types.WidgetQueryAnswer`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getWidgetQueryAnswer",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "query_type": query_type,
+                "data": data,
+            }
+        )
+
+    async def getWidgetPublicData(
+        self, *, chat_id: int | None = 0, message_id: int | None = 0
+    ) -> pytdbot.types.Error | pytdbot.types.WidgetPublicData:
+        r"""Returns the current public data of a widget\. Must be called only if the widget is visible on the screen and asked to poll its public data
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat with the message
+
+            message_id (:class:`int`):
+                Identifier of the widget message\. The message must not be scheduled
+
+        Returns:
+            :class:`~pytdbot.types.WidgetPublicData`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getWidgetPublicData",
+                "chat_id": chat_id,
+                "message_id": message_id,
             }
         )
 
@@ -13198,6 +13822,7 @@ class TDLibFunctions:
         | None = None,
         areas: pytdbot.types.InputStoryAreas | None = None,
         caption: pytdbot.types.FormattedText | None = None,
+        music: pytdbot.types.InputAudio | None = None,
         privacy_settings: pytdbot.types.StoryPrivacySettingsEveryone
         | pytdbot.types.StoryPrivacySettingsContacts
         | pytdbot.types.StoryPrivacySettingsCloseFriends
@@ -13223,6 +13848,9 @@ class TDLibFunctions:
 
             caption (:class:`~pytdbot.types.FormattedText`):
                 Story caption; pass null to use an empty caption; 0\-getOption\(\"story\_caption\_length\_max\"\) characters; can have entities only if getOption\(\"can\_use\_text\_entities\_in\_story\_caption\"\)
+
+            music (:class:`~pytdbot.types.InputAudio`):
+                Music to be attached to the story; pass null if none\. The music can be up to 60 seconds long
 
             privacy_settings (:class:`~pytdbot.types.StoryPrivacySettings`):
                 The privacy settings for the story; ignored for stories posted on behalf of supergroup and channel chats
@@ -13253,6 +13881,7 @@ class TDLibFunctions:
                 "content": content,
                 "areas": areas,
                 "caption": caption,
+                "music": music,
                 "privacy_settings": privacy_settings,
                 "album_ids": album_ids,
                 "active_period": active_period,
@@ -13389,6 +14018,38 @@ class TDLibFunctions:
             }
         )
 
+    async def editStoryMusic(
+        self,
+        *,
+        story_poster_chat_id: int | None = 0,
+        story_id: int | None = 0,
+        music: pytdbot.types.InputAudio | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Changes music attached to a story\. Can be called only if story\.can\_be\_edited \=\= true and the story isn't being edited now
+
+        Parameters:
+            story_poster_chat_id (:class:`int`):
+                Identifier of the chat that posted the story
+
+            story_id (:class:`int`):
+                Identifier of the story to edit
+
+            music (:class:`~pytdbot.types.InputAudio`):
+                The new music; pass null to remove music from the story\. The music can be up to 60 seconds long
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editStoryMusic",
+                "story_poster_chat_id": story_poster_chat_id,
+                "story_id": story_id,
+                "music": music,
+            }
+        )
+
     async def setStoryPrivacySettings(
         self,
         *,
@@ -13498,7 +14159,7 @@ class TDLibFunctions:
         | pytdbot.types.StoryListArchive
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Loads more active stories from a story list\. The loaded stories will be sent through updates\. Active stories are sorted by the pair \(active\_stories\.order, active\_stories\.story\_poster\_chat\_id\) in descending order\. Returns a 404 error if all active stories have been loaded
+        r"""Loads more active stories from a story list\. The loaded stories will be sent through updates\. Active stories are sorted by the pair \(active\_stories\.order, active\_stories\.chat\_id\) in descending order\. Returns a 404 error if all active stories have been loaded
 
         Parameters:
             story_list (:class:`~pytdbot.types.StoryList`):
@@ -13563,7 +14224,7 @@ class TDLibFunctions:
         from_story_id: int | None = 0,
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Stories:
-        r"""Returns the list of stories that were posted by the given chat to its chat page\. If from\_story\_id \=\= 0, then pinned stories are returned first\. Then, stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        r"""Returns the list of stories that were posted by the given chat to its chat page\. If from\_story\_id \=\= 0, then pinned stories are returned first\. Then, stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\.id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -13595,7 +14256,7 @@ class TDLibFunctions:
         from_story_id: int | None = 0,
         limit: int | None = 0,
     ) -> pytdbot.types.Error | pytdbot.types.Stories:
-        r"""Returns the list of all stories posted by the given chat; requires can\_edit\_stories administrator right in the chat\. The stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        r"""Returns the list of all stories posted by the given chat; requires can\_edit\_stories administrator right in the chat\. The stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\.id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -21230,6 +21891,7 @@ class TDLibFunctions:
         supergroup_id: int | None = 0,
         is_forum: bool | None = False,
         has_forum_tabs: bool | None = False,
+        has_forum_sidebar: bool | None = False,
     ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Toggles whether the supergroup is a forum; requires owner privileges in the supergroup\. Discussion supergroups can't be converted to forums
 
@@ -21243,6 +21905,9 @@ class TDLibFunctions:
             has_forum_tabs (:class:`bool`):
                 New value of has\_forum\_tabs; ignored if is\_forum is false
 
+            has_forum_sidebar (:class:`bool`):
+                New value of has\_forum\_sidebar; ignored if is\_forum is false\. Must be false if has\_forum\_tabs is true
+
         Returns:
             :class:`~pytdbot.types.Ok`
         """
@@ -21253,6 +21918,7 @@ class TDLibFunctions:
                 "supergroup_id": supergroup_id,
                 "is_forum": is_forum,
                 "has_forum_tabs": has_forum_tabs,
+                "has_forum_sidebar": has_forum_sidebar,
             }
         )
 
@@ -21396,7 +22062,7 @@ class TDLibFunctions:
         filters: pytdbot.types.ChatEventLogFilters | None = None,
         user_ids: list[int] | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.ChatEvents:
-        r"""Returns a list of service actions taken by chat members and administrators in the last 48 hours\. Available only in supergroups and channels\. Requires administrator rights\. Returns results in reverse chronological order \(i\.e\., in order of decreasing event\_id\)
+        r"""Returns a list of service actions taken by chat members and administrators in the last 48 hours\. Available only in supergroups and channels\. Requires administrator rights\. Returns results in reverse chronological order \(i\.e\., in order of decreasing chatEvent\.id\)
 
         Parameters:
             chat_id (:class:`int`):
@@ -22097,7 +22763,7 @@ class TDLibFunctions:
 
         Parameters:
             received_gift_ids (list[:class:`str`]):
-                Identifier of the gifts to use for crafting\. In the case of a successful craft, the resulting gift will have the number of the first gift\. Consequently, the first gift must not have been withdrawn to the TON blockchain as an NFT and must have an empty gift\_address
+                Identifier of the gifts to use for crafting\. In the case of a successful craft, the resulting gift will have the number of the first gift\. Consequently, unless getOption\(\"can\_craft\_from\_withdrawn\_first\_gift\"\) is true, the first gift must not have been withdrawn to the TON blockchain as an NFT and must have an empty gift\_address
 
         Returns:
             :class:`~pytdbot.types.CraftGiftResult`
@@ -22929,6 +23595,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageStakeDice
         | pytdbot.types.InputMessageStory
         | pytdbot.types.InputMessageChecklist
+        | pytdbot.types.InputMessageWidget
+        | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.HttpUrl:
@@ -23819,7 +24487,7 @@ class TDLibFunctions:
                 Option identifier chosen by the user; leave empty for the initial request
 
             message_ids (list[:class:`int`]):
-                Identifiers of reported messages\. Use messageProperties\.can\_report\_chat to check whether the message can be reported
+                Identifiers of reported messages\. Use messageProperties\.can\_report\_chat to check whether the message can be reported\. Ephemeral messages must be reported separately
 
             text (:class:`str`):
                 Additional report details if asked by the server; 0\-1024 characters; leave empty for the initial request

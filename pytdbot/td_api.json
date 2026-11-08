@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.69",
-    "commit_hash": "0e88653dcbf4e44c73cb655a05b58cd749a91169",
+    "version": "1.8.70",
+    "commit_hash": "23383aef218a3123f02b744bfa91bde21056a814",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -564,6 +564,24 @@
             ],
             "functions": []
         },
+        "NotificationSettingsScope": {
+            "description": "Describes the types of chats to which notification settings are relevant",
+            "types": [
+                "notificationSettingsScopePrivateChats",
+                "notificationSettingsScopeGroupChats",
+                "notificationSettingsScopeChannelChats"
+            ],
+            "functions": []
+        },
+        "ReactionNotificationSource": {
+            "description": "Describes sources of reactions for which notifications will be shown",
+            "types": [
+                "reactionNotificationSourceNone",
+                "reactionNotificationSourceContacts",
+                "reactionNotificationSourceAll"
+            ],
+            "functions": []
+        },
         "CommunityMemberStatus": {
             "description": "Provides information about the status of a member in a community",
             "types": [
@@ -788,24 +806,6 @@
                 "reportSponsoredChat",
                 "reportVideoMessageAdvertisement"
             ]
-        },
-        "NotificationSettingsScope": {
-            "description": "Describes the types of chats to which notification settings are relevant",
-            "types": [
-                "notificationSettingsScopePrivateChats",
-                "notificationSettingsScopeGroupChats",
-                "notificationSettingsScopeChannelChats"
-            ],
-            "functions": []
-        },
-        "ReactionNotificationSource": {
-            "description": "Describes sources of reactions for which notifications will be shown",
-            "types": [
-                "reactionNotificationSourceNone",
-                "reactionNotificationSourceContacts",
-                "reactionNotificationSourceAll"
-            ],
-            "functions": []
         },
         "DraftMessageContent": {
             "description": "Content of the message draft",
@@ -1335,6 +1335,7 @@
                 "messagePoll",
                 "messageStakeDice",
                 "messageStory",
+                "messageWidget",
                 "messageChecklist",
                 "messageInvoice",
                 "messageCall",
@@ -1572,6 +1573,8 @@
                 "inputMessageStakeDice",
                 "inputMessageStory",
                 "inputMessageChecklist",
+                "inputMessageWidget",
+                "inputMessageSharedWidget",
                 "inputMessageForwarded"
             ],
             "functions": []
@@ -1687,7 +1690,6 @@
             "description": "Describes type of clickable area on a story media to be added",
             "types": [
                 "inputStoryAreaTypeLocation",
-                "inputStoryAreaTypeFoundVenue",
                 "inputStoryAreaTypePreviousVenue",
                 "inputStoryAreaTypeSuggestedReaction",
                 "inputStoryAreaTypeMessage",
@@ -1970,6 +1972,15 @@
                 "callbackQueryPayloadData",
                 "callbackQueryPayloadDataWithPassword",
                 "callbackQueryPayloadGame"
+            ],
+            "functions": []
+        },
+        "WidgetQueryType": {
+            "description": "Describes type of a widget query",
+            "types": [
+                "widgetQueryTypeData",
+                "widgetQueryTypeSignData",
+                "widgetQueryTypeSentTransaction"
             ],
             "functions": []
         },
@@ -3073,6 +3084,7 @@
                 "updateStarRevenueStatus",
                 "updateGramRevenueStatus",
                 "updateSpeechRecognitionTrial",
+                "updateSpeechRecognitionInFile",
                 "updateGroupCallMessageLevels",
                 "updateDiceEmojis",
                 "updateStakeDiceState",
@@ -3093,6 +3105,9 @@
                 "updateNewCallbackQuery",
                 "updateNewInlineCallbackQuery",
                 "updateNewBusinessCallbackQuery",
+                "updateNewWidgetQuery",
+                "updateNewInlineWidgetQuery",
+                "updateNewWidgetCopyQuery",
                 "updateNewShippingQuery",
                 "updateNewPreCheckoutQuery",
                 "updateNewCustomEvent",
@@ -3409,6 +3424,33 @@
                 }
             },
             "type": "TextEntities"
+        },
+        "textRange": {
+            "description": "Describes a part of a text",
+            "args": {
+                "offset": {
+                    "description": "Offset of the part, in UTF-16 code units",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "length": {
+                    "description": "Length of the part, in UTF-16 code units",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "TextRange"
+        },
+        "textRanges": {
+            "description": "Contains a list of text parts",
+            "args": {
+                "ranges": {
+                    "description": "List of text parts",
+                    "is_optional": false,
+                    "type": "vector<textRange>"
+                }
+            },
+            "type": "TextRanges"
         },
         "formattedText": {
             "description": "A text with some entities",
@@ -5622,6 +5664,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "has_topic_sidebar": {
+                    "description": "True, if the bot has topics, which are shown in a sidebar",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "allows_users_to_create_topics": {
                     "description": "True, if users can create and delete topics in the chat with the bot",
                     "is_optional": false,
@@ -6531,7 +6578,7 @@
                     "type": "Bool"
                 },
                 "can_send_other_messages": {
-                    "description": "True, if the user can send animations, games, stickers, and dice and use inline bots",
+                    "description": "True, if the user can send animations, games, stickers, widgets, and dice and use inline bots",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -8478,7 +8525,7 @@
                 "gram_amount": {
                     "description": "The amount of TON Grams that must be attached to the message to cover fees, in the smallest units of the cryptocurrency; excess amount will be returned to the wallet",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int64"
                 }
             },
             "type": "UpgradedGiftDepositInfo"
@@ -10661,7 +10708,7 @@
                 "gram_amount": {
                     "description": "The total amount of owned TON Grams, in the smallest units of the cryptocurrency",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int64"
                 },
                 "is_being_created": {
                     "description": "True, if the wallet is being created",
@@ -10816,7 +10863,7 @@
                 "gram_amount": {
                     "description": "Balance of the wallet, in the smallest units of the cryptocurrency; may be slightly outdated",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int64"
                 },
                 "stickers": {
                     "description": "Stickers placed on the card",
@@ -10880,7 +10927,7 @@
                 "amount": {
                     "description": "The amount of received cryptocurrency, in the smallest units of the cryptocurrency",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int64"
                 },
                 "provider_name": {
                     "description": "Name of the on-ramp provider",
@@ -10896,7 +10943,7 @@
                 "amount": {
                     "description": "The amount of received cryptocurrency, in the smallest units of the cryptocurrency; negative for outgoing transactions",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int64"
                 },
                 "is_gasless": {
                     "description": "True, if the fee was paid by Telegram",
@@ -10999,7 +11046,7 @@
                 "fee_amount": {
                     "description": "The fee amount paid for the transaction in TON Grams, in the smallest units of the cryptocurrency",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int64"
                 },
                 "state": {
                     "description": "State of the transaction",
@@ -11020,7 +11067,7 @@
                 "gram_amount": {
                     "description": "The total amount of owned TON Grams, in the smallest units of the cryptocurrency",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int64"
                 },
                 "transactions": {
                     "description": "List of transactions",
@@ -11595,6 +11642,204 @@
             },
             "type": "ProfileAccentColor"
         },
+        "notificationSettingsScopePrivateChats": {
+            "description": "Notification settings applied to all private and secret chats when the corresponding chat setting has a default value",
+            "args": {},
+            "type": "NotificationSettingsScope"
+        },
+        "notificationSettingsScopeGroupChats": {
+            "description": "Notification settings applied to all basic group and supergroup chats when the corresponding chat setting has a default value",
+            "args": {},
+            "type": "NotificationSettingsScope"
+        },
+        "notificationSettingsScopeChannelChats": {
+            "description": "Notification settings applied to all channel chats when the corresponding chat setting has a default value",
+            "args": {},
+            "type": "NotificationSettingsScope"
+        },
+        "chatNotificationSettings": {
+            "description": "Contains information about notification settings for a chat or a forum topic",
+            "args": {
+                "use_default_mute_for": {
+                    "description": "If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of mute_for",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "mute_for": {
+                    "description": "Time left before notifications will be unmuted, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "use_default_sound": {
+                    "description": "If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of sound_id",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "sound_id": {
+                    "description": "Identifier of the notification sound to be played for messages; 0 if sound is disabled",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "use_default_show_preview": {
+                    "description": "If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of show_preview",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "show_preview": {
+                    "description": "True, if message content must be displayed in notifications",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "use_default_mute_stories": {
+                    "description": "If true, the value for the chat's community or the relevant type of chat is used instead of mute_stories",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "mute_stories": {
+                    "description": "True, if story notifications are disabled for the chat",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "use_default_story_sound": {
+                    "description": "If true, the value for the chat's community or the relevant type of chat is used instead of story_sound_id",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "story_sound_id": {
+                    "description": "Identifier of the notification sound to be played for stories; 0 if sound is disabled",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "use_default_show_story_poster": {
+                    "description": "If true, the value for the chat's community or the relevant type of chat is used instead of show_story_poster",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "show_story_poster": {
+                    "description": "True, if the chat that posted a story must be displayed in notifications",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "use_default_disable_pinned_message_notifications": {
+                    "description": "If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of disable_pinned_message_notifications",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "disable_pinned_message_notifications": {
+                    "description": "If true, notifications for incoming pinned messages will be created as for an ordinary unread message",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "use_default_disable_mention_notifications": {
+                    "description": "If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of disable_mention_notifications",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "disable_mention_notifications": {
+                    "description": "If true, notifications for messages with mentions will be created as for an ordinary unread message",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ChatNotificationSettings"
+        },
+        "scopeNotificationSettings": {
+            "description": "Contains information about notification settings for several chats",
+            "args": {
+                "mute_for": {
+                    "description": "Time left before notifications will be unmuted, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "sound_id": {
+                    "description": "Identifier of the notification sound to be played; 0 if sound is disabled; pass -1 to use the app-dependent default sound",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "show_preview": {
+                    "description": "True, if message content must be displayed in notifications",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "use_default_mute_stories": {
+                    "description": "If true, story notifications are received only for the first 5 chats from topChatCategoryUsers regardless of the value of mute_stories",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "mute_stories": {
+                    "description": "True, if story notifications are disabled",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "story_sound_id": {
+                    "description": "Identifier of the notification sound to be played for stories; 0 if sound is disabled; pass -1 to use the app-dependent default sound",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "show_story_poster": {
+                    "description": "True, if the chat that posted a story must be displayed in notifications",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "disable_pinned_message_notifications": {
+                    "description": "True, if notifications for incoming pinned messages will be created as for an ordinary unread message",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "disable_mention_notifications": {
+                    "description": "True, if notifications for messages with mentions will be created as for an ordinary unread message",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ScopeNotificationSettings"
+        },
+        "reactionNotificationSourceNone": {
+            "description": "Notifications for reactions are disabled",
+            "args": {},
+            "type": "ReactionNotificationSource"
+        },
+        "reactionNotificationSourceContacts": {
+            "description": "Notifications for reactions are shown only for reactions from contacts",
+            "args": {},
+            "type": "ReactionNotificationSource"
+        },
+        "reactionNotificationSourceAll": {
+            "description": "Notifications for reactions are shown for all reactions",
+            "args": {},
+            "type": "ReactionNotificationSource"
+        },
+        "reactionNotificationSettings": {
+            "description": "Contains information about notification settings for reactions and poll votes",
+            "args": {
+                "message_reaction_source": {
+                    "description": "Source of message reactions for which notifications are shown",
+                    "is_optional": false,
+                    "type": "ReactionNotificationSource"
+                },
+                "story_reaction_source": {
+                    "description": "Source of story reactions for which notifications are shown",
+                    "is_optional": false,
+                    "type": "ReactionNotificationSource"
+                },
+                "poll_vote_source": {
+                    "description": "Source of poll votes for which notifications are shown",
+                    "is_optional": false,
+                    "type": "ReactionNotificationSource"
+                },
+                "sound_id": {
+                    "description": "Identifier of the notification sound to be played; 0 if sound is disabled; pass -1 to use the app-dependent default sound",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "show_preview": {
+                    "description": "True, if reaction sender and emoji must be displayed in notifications",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ReactionNotificationSettings"
+        },
         "communityId": {
             "description": "Contains identifier of a community",
             "args": {
@@ -11721,6 +11966,11 @@
                     "description": "Actions that non-administrator community members are allowed to take in the community",
                     "is_optional": false,
                     "type": "communityPermissions"
+                },
+                "are_chats_collapsed": {
+                    "description": "True, if all chats of the community are collapsed into one entry in the chat list",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Community"
@@ -11773,9 +12023,88 @@
                     "description": "Number of pending requests for addition of chats to the community; 0 if the current user isn't an administrator of the community",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "notification_settings": {
+                    "description": "Notification settings for the community. Default notification settings are chosen based on the type of a chat in the community",
+                    "is_optional": false,
+                    "type": "chatNotificationSettings"
                 }
             },
             "type": "CommunityFullInfo"
+        },
+        "communities": {
+            "description": "Represents a list of communities",
+            "args": {
+                "community_ids": {
+                    "description": "List of community identifiers",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "Communities"
+        },
+        "communityAddChatRequest": {
+            "description": "Describes a request to add a chat to a community",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to be added",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_hidden": {
+                    "description": "True, if the chat will be visible only to administrators of the community",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "sender_user_id": {
+                    "description": "Identifier of the user who sent the request",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the request was sent",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "CommunityAddChatRequest"
+        },
+        "communityAddChatRequests": {
+            "description": "Contains a list of requests to add chats to a community",
+            "args": {
+                "total_count": {
+                    "description": "Approximate total number of requests found",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "requests": {
+                    "description": "List of the requests",
+                    "is_optional": false,
+                    "type": "vector<communityAddChatRequest>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next getCommunityAddChatRequests request. If empty, then there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "CommunityAddChatRequests"
+        },
+        "communityMemberChats": {
+            "description": "Contains information about chats in a community, which are joined or owned by a member of the community",
+            "args": {
+                "owned_chat_ids": {
+                    "description": "Identifiers of the chats owned by the member. The chats will be removed from the community if the member is banned in the community",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                },
+                "joined_chat_ids": {
+                    "description": "Identifiers of the non-owned chats joined by the member",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "CommunityMemberChats"
         },
         "userRating": {
             "description": "Contains description of user rating",
@@ -13258,6 +13587,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "has_forum_sidebar": {
+                    "description": "True, if the supergroup is a forum, which topics are shown in a sidebar. If true, then has_forum_tabs is false",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "restriction_info": {
                     "description": "Information about the restrictions that must be applied to the corresponding supergroup or channel chat; may be null if none",
                     "is_optional": true,
@@ -14341,7 +14675,7 @@
                     "type": "int32"
                 },
                 "content": {
-                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageStakeDice, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
+                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageStakeDice, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, messageVoiceNote, or messageWidget",
                     "is_optional": true,
                     "type": "MessageContent"
                 }
@@ -15277,204 +15611,6 @@
                 }
             },
             "type": "FoundFileDownloads"
-        },
-        "notificationSettingsScopePrivateChats": {
-            "description": "Notification settings applied to all private and secret chats when the corresponding chat setting has a default value",
-            "args": {},
-            "type": "NotificationSettingsScope"
-        },
-        "notificationSettingsScopeGroupChats": {
-            "description": "Notification settings applied to all basic group and supergroup chats when the corresponding chat setting has a default value",
-            "args": {},
-            "type": "NotificationSettingsScope"
-        },
-        "notificationSettingsScopeChannelChats": {
-            "description": "Notification settings applied to all channel chats when the corresponding chat setting has a default value",
-            "args": {},
-            "type": "NotificationSettingsScope"
-        },
-        "chatNotificationSettings": {
-            "description": "Contains information about notification settings for a chat or a forum topic",
-            "args": {
-                "use_default_mute_for": {
-                    "description": "If true, the value for the relevant type of chat or the forum chat is used instead of mute_for",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "mute_for": {
-                    "description": "Time left before notifications will be unmuted, in seconds",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "use_default_sound": {
-                    "description": "If true, the value for the relevant type of chat or the forum chat is used instead of sound_id",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "sound_id": {
-                    "description": "Identifier of the notification sound to be played for messages; 0 if sound is disabled",
-                    "is_optional": false,
-                    "type": "int64"
-                },
-                "use_default_show_preview": {
-                    "description": "If true, the value for the relevant type of chat or the forum chat is used instead of show_preview",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "show_preview": {
-                    "description": "True, if message content must be displayed in notifications",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "use_default_mute_stories": {
-                    "description": "If true, the value for the relevant type of chat is used instead of mute_stories",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "mute_stories": {
-                    "description": "True, if story notifications are disabled for the chat",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "use_default_story_sound": {
-                    "description": "If true, the value for the relevant type of chat is used instead of story_sound_id",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "story_sound_id": {
-                    "description": "Identifier of the notification sound to be played for stories; 0 if sound is disabled",
-                    "is_optional": false,
-                    "type": "int64"
-                },
-                "use_default_show_story_poster": {
-                    "description": "If true, the value for the relevant type of chat is used instead of show_story_poster",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "show_story_poster": {
-                    "description": "True, if the chat that posted a story must be displayed in notifications",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "use_default_disable_pinned_message_notifications": {
-                    "description": "If true, the value for the relevant type of chat or the forum chat is used instead of disable_pinned_message_notifications",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "disable_pinned_message_notifications": {
-                    "description": "If true, notifications for incoming pinned messages will be created as for an ordinary unread message",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "use_default_disable_mention_notifications": {
-                    "description": "If true, the value for the relevant type of chat or the forum chat is used instead of disable_mention_notifications",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "disable_mention_notifications": {
-                    "description": "If true, notifications for messages with mentions will be created as for an ordinary unread message",
-                    "is_optional": false,
-                    "type": "Bool"
-                }
-            },
-            "type": "ChatNotificationSettings"
-        },
-        "scopeNotificationSettings": {
-            "description": "Contains information about notification settings for several chats",
-            "args": {
-                "mute_for": {
-                    "description": "Time left before notifications will be unmuted, in seconds",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "sound_id": {
-                    "description": "Identifier of the notification sound to be played; 0 if sound is disabled; pass -1 to use the app-dependent default sound",
-                    "is_optional": false,
-                    "type": "int64"
-                },
-                "show_preview": {
-                    "description": "True, if message content must be displayed in notifications",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "use_default_mute_stories": {
-                    "description": "If true, story notifications are received only for the first 5 chats from topChatCategoryUsers regardless of the value of mute_stories",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "mute_stories": {
-                    "description": "True, if story notifications are disabled",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "story_sound_id": {
-                    "description": "Identifier of the notification sound to be played for stories; 0 if sound is disabled; pass -1 to use the app-dependent default sound",
-                    "is_optional": false,
-                    "type": "int64"
-                },
-                "show_story_poster": {
-                    "description": "True, if the chat that posted a story must be displayed in notifications",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "disable_pinned_message_notifications": {
-                    "description": "True, if notifications for incoming pinned messages will be created as for an ordinary unread message",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "disable_mention_notifications": {
-                    "description": "True, if notifications for messages with mentions will be created as for an ordinary unread message",
-                    "is_optional": false,
-                    "type": "Bool"
-                }
-            },
-            "type": "ScopeNotificationSettings"
-        },
-        "reactionNotificationSourceNone": {
-            "description": "Notifications for reactions are disabled",
-            "args": {},
-            "type": "ReactionNotificationSource"
-        },
-        "reactionNotificationSourceContacts": {
-            "description": "Notifications for reactions are shown only for reactions from contacts",
-            "args": {},
-            "type": "ReactionNotificationSource"
-        },
-        "reactionNotificationSourceAll": {
-            "description": "Notifications for reactions are shown for all reactions",
-            "args": {},
-            "type": "ReactionNotificationSource"
-        },
-        "reactionNotificationSettings": {
-            "description": "Contains information about notification settings for reactions and poll votes",
-            "args": {
-                "message_reaction_source": {
-                    "description": "Source of message reactions for which notifications are shown",
-                    "is_optional": false,
-                    "type": "ReactionNotificationSource"
-                },
-                "story_reaction_source": {
-                    "description": "Source of story reactions for which notifications are shown",
-                    "is_optional": false,
-                    "type": "ReactionNotificationSource"
-                },
-                "poll_vote_source": {
-                    "description": "Source of poll votes for which notifications are shown",
-                    "is_optional": false,
-                    "type": "ReactionNotificationSource"
-                },
-                "sound_id": {
-                    "description": "Identifier of the notification sound to be played; 0 if sound is disabled; pass -1 to use the app-dependent default sound",
-                    "is_optional": false,
-                    "type": "int64"
-                },
-                "show_preview": {
-                    "description": "True, if reaction sender and emoji must be displayed in notifications",
-                    "is_optional": false,
-                    "type": "Bool"
-                }
-            },
-            "type": "ReactionNotificationSettings"
         },
         "draftMessageContentText": {
             "description": "A text message draft",
@@ -17133,7 +17269,7 @@
                     "type": "int32"
                 },
                 "messages": {
-                    "description": "The messages from which the thread starts. The messages are returned in reverse chronological order (i.e., in order of decreasing message_id)",
+                    "description": "The messages from which the thread starts. The messages are returned in reverse chronological order (i.e., in order of decreasing message.id)",
                     "is_optional": false,
                     "type": "vector<message>"
                 },
@@ -22034,6 +22170,67 @@
             },
             "type": "MessageContent"
         },
+        "messageWidget": {
+            "description": "A message with an HTML widget",
+            "args": {
+                "width": {
+                    "description": "Width of the widget; 0 if the widget must occupy the whole width of the message bubble",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "height": {
+                    "description": "Height of the widget; 0 if the height of the widget isn't fixed",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "html": {
+                    "description": "HTML code of the widget",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "public_data": {
+                    "description": "Public data of the widget",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_data": {
+                    "description": "Data of the widget, which is specific to the chat",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "widget_id": {
+                    "description": "Identifier of the shared widget; 0 if the widget isn't shared",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "caption": {
+                    "description": "Widget caption",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "show_caption_above_media": {
+                    "description": "True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_copy": {
+                    "description": "True, if the message is a copy of the widget",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_send_queries": {
+                    "description": "True, if the widget can send queries to the bot",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_send_background_queries": {
+                    "description": "True, if the widget can send queries to the bot in the background",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "MessageContent"
+        },
         "messageChecklist": {
             "description": "A message with a checklist",
             "args": {
@@ -23180,7 +23377,7 @@
                 "amount": {
                     "description": "The amount of received cryptocurrency, in the smallest units of the cryptocurrency; negative for outgoing transactions",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int64"
                 },
                 "comment": {
                     "description": "Comment added to the transaction",
@@ -24026,7 +24223,7 @@
             "description": "A thumbnail to be sent along with a file; must be in JPEG or WEBP format for stickers, and less than 200 KB in size",
             "args": {
                 "thumbnail": {
-                    "description": "Thumbnail file to send. Sending thumbnails by file_id is currently not supported",
+                    "description": "Thumbnail file to send. Sending thumbnails by inputFileId or inputFileRemote is currently not supported",
                     "is_optional": false,
                     "type": "InputFile"
                 },
@@ -25508,6 +25705,83 @@
             },
             "type": "InputMessageContent"
         },
+        "inputMessageWidget": {
+            "description": "A message with an HTML widget; for bots only",
+            "args": {
+                "width": {
+                    "description": "Width of the widget; 0 if the widget must occupy the whole width of the message bubble",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "height": {
+                    "description": "Height of the widget; 0 if the height of the widget isn't fixed",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "html": {
+                    "description": "HTML code of the widget; 1-32768 bytes; must not exceed 4096 bytes when compressed by zlib with the maximal compression level",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "public_data": {
+                    "description": "Public data of the widget, which will be available in copies and forwards of the message",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_data": {
+                    "description": "Data of the widget, which is specific to the chat",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "caption": {
+                    "description": "Widget caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
+                    "is_optional": true,
+                    "type": "formattedText"
+                },
+                "show_caption_above_media": {
+                    "description": "True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "allow_queries": {
+                    "description": "Pass true to allow the widget to send queries to the bot",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_shared": {
+                    "description": "Pass true to create a shared widget, which can be sent again by its identifier",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "InputMessageContent"
+        },
+        "inputMessageSharedWidget": {
+            "description": "A message with an existing shared widget; for bots only",
+            "args": {
+                "widget_id": {
+                    "description": "Identifier of the shared widget",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "chat_data": {
+                    "description": "Data of the widget, which is specific to the chat",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "caption": {
+                    "description": "Widget caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
+                    "is_optional": true,
+                    "type": "formattedText"
+                },
+                "show_caption_above_media": {
+                    "description": "True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "InputMessageContent"
+        },
         "inputMessageForwarded": {
             "description": "A forwarded message",
             "args": {
@@ -26559,22 +26833,6 @@
             },
             "type": "InputStoryAreaType"
         },
-        "inputStoryAreaTypeFoundVenue": {
-            "description": "An area pointing to a venue found by the bot getOption(\"venue_search_bot_username\")",
-            "args": {
-                "query_id": {
-                    "description": "Identifier of the inline query, used to find the venue",
-                    "is_optional": false,
-                    "type": "int64"
-                },
-                "result_id": {
-                    "description": "Identifier of the inline query result",
-                    "is_optional": false,
-                    "type": "string"
-                }
-            },
-            "type": "InputStoryAreaType"
-        },
         "inputStoryAreaTypePreviousVenue": {
             "description": "An area pointing to a venue already added to the story",
             "args": {
@@ -26691,7 +26949,7 @@
             "description": "Contains a list of story areas to be added",
             "args": {
                 "areas": {
-                    "description": "List of input story areas. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption(\"story_suggested_reaction_area_count_max\") inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption(\"story_link_area_count_max\") inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, up to 3 inputStoryAreaTypeWeather areas, and up to 1 inputStoryAreaTypeUpgradedGift area",
+                    "description": "List of input story areas. Currently, a story can have up to 10 inputStoryAreaTypeLocation and inputStoryAreaTypePreviousVenue areas, up to getOption(\"story_suggested_reaction_area_count_max\") inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption(\"story_link_area_count_max\") inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, up to 3 inputStoryAreaTypeWeather areas, and up to 1 inputStoryAreaTypeUpgradedGift area",
                     "is_optional": false,
                     "type": "vector<inputStoryArea>"
                 }
@@ -27081,6 +27339,11 @@
                     "is_optional": false,
                     "type": "formattedText"
                 },
+                "music": {
+                    "description": "Music attached to the story; may be null if none",
+                    "is_optional": true,
+                    "type": "audio"
+                },
                 "album_ids": {
                     "description": "Identifiers of story albums to which the story is added; only for manageable stories",
                     "is_optional": false,
@@ -27224,7 +27487,7 @@
                     "type": "StoryList"
                 },
                 "order": {
-                    "description": "A parameter used to determine order of the stories in the story list; 0 if the stories don't need to be shown in the story list. Stories must be sorted by the pair (order, story_poster_chat_id) in descending order",
+                    "description": "A parameter used to determine order of the stories in the story list; 0 if the stories don't need to be shown in the story list. Stories must be sorted by the pair (order, chat_id) in descending order",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -29238,6 +29501,17 @@
             },
             "type": "SpeechRecognitionResult"
         },
+        "speechRecognitionLanguages": {
+            "description": "Contains a list of probable languages of speech",
+            "args": {
+                "language_codes": {
+                    "description": "IETF language tags of the languages in descending order of their probability; for example, \"en-US\"",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                }
+            },
+            "type": "SpeechRecognitionLanguages"
+        },
         "businessConnection": {
             "description": "Describes a connection of the bot with a business account",
             "args": {
@@ -29582,7 +29856,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact",
+                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -29633,7 +29907,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact",
+                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -29674,7 +29948,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact",
+                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -29715,7 +29989,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact",
+                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -29771,7 +30045,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact",
+                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -29843,7 +30117,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact",
+                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -29894,7 +30168,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact",
+                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -29935,7 +30209,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact",
+                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -29976,7 +30250,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact",
+                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -30037,7 +30311,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact",
+                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -30073,7 +30347,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact",
+                    "description": "The content of the message to be sent. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -30517,6 +30791,102 @@
                 }
             },
             "type": "CallbackQueryAnswer"
+        },
+        "widgetQueryWallet": {
+            "description": "Describes a TON wallet of the user, who is used in a widget query",
+            "args": {
+                "address": {
+                    "description": "Address of the wallet",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "gram_amount": {
+                    "description": "Balance of the wallet, in the smallest units of the cryptocurrency",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "public_key": {
+                    "description": "Public key of the wallet; may be empty if unknown",
+                    "is_optional": true,
+                    "type": "bytes"
+                },
+                "state_init": {
+                    "description": "Serialized StateInit of the wallet contract; must be empty if and only if public_key is empty",
+                    "is_optional": false,
+                    "type": "bytes"
+                }
+            },
+            "type": "WidgetQueryWallet"
+        },
+        "widgetQueryTypeData": {
+            "description": "The query contains data for the bot",
+            "args": {
+                "with_wallet": {
+                    "description": "True, if the TON wallet card of the user who sends the query is sent to the bot along with the query",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "WidgetQueryType"
+        },
+        "widgetQueryTypeSignData": {
+            "description": "The query contains data signed by a TON wallet of the user who sends the query",
+            "args": {
+                "wallet": {
+                    "description": "The wallet that signed the data",
+                    "is_optional": false,
+                    "type": "widgetQueryWallet"
+                },
+                "sign_data": {
+                    "description": "JSON-serialized signed data",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "WidgetQueryType"
+        },
+        "widgetQueryTypeSentTransaction": {
+            "description": "The query notifies the bot about a transaction sent from a TON wallet of the user who sends the query",
+            "args": {
+                "wallet": {
+                    "description": "The wallet from which the transaction was sent",
+                    "is_optional": false,
+                    "type": "widgetQueryWallet"
+                },
+                "msg_hash": {
+                    "description": "Value of msg_hash of the transaction",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "WidgetQueryType"
+        },
+        "widgetQueryAnswer": {
+            "description": "Contains an answer to a widget query",
+            "args": {
+                "data": {
+                    "description": "Data returned by the bot",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "WidgetQueryAnswer"
+        },
+        "widgetPublicData": {
+            "description": "Contains public data of a widget",
+            "args": {
+                "data": {
+                    "description": "Public data of the widget",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "poll_period": {
+                    "description": "The number of seconds after which the public data can be polled again",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "WidgetPublicData"
         },
         "customRequestResult": {
             "description": "Contains the result of a custom request",
@@ -35792,7 +36162,7 @@
                 "gram_amount": {
                     "description": "The pre-filled amount of TON Grams to send; in the smallest units of the cryptocurrency",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int64"
                 }
             },
             "type": "InternalLinkType"
@@ -40913,6 +41283,22 @@
             },
             "type": "Update"
         },
+        "updateSpeechRecognitionInFile": {
+            "description": "Speech in an audio file was partially recognized. The final result will be returned by the corresponding recognizeSpeechInFile request",
+            "args": {
+                "recognition_id": {
+                    "description": "Identifier of the speech recognition as specified in recognizeSpeechInFile",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "partial_text": {
+                    "description": "Partially recognized text",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Update"
+        },
         "updateGroupCallMessageLevels": {
             "description": "The levels of live story group call messages have changed",
             "args": {
@@ -41299,6 +41685,149 @@
                     "description": "Query payload",
                     "is_optional": false,
                     "type": "CallbackQueryPayload"
+                }
+            },
+            "type": "Update"
+        },
+        "updateNewWidgetQuery": {
+            "description": "A new incoming widget query; for bots only",
+            "args": {
+                "id": {
+                    "description": "Unique query identifier",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "sender_user_id": {
+                    "description": "Identifier of the user who sent the query",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "chat_id": {
+                    "description": "Identifier of the chat where the query was sent",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message from which the query originated",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "chat_instance": {
+                    "description": "Identifier that uniquely corresponds to the chat to which the message was sent",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "chat_type": {
+                    "description": "Type of the chat to which the message was sent",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "query_type": {
+                    "description": "Type of the query",
+                    "is_optional": false,
+                    "type": "WidgetQueryType"
+                },
+                "data": {
+                    "description": "Data of the query",
+                    "is_optional": false,
+                    "type": "bytes"
+                },
+                "widget_id": {
+                    "description": "Identifier of the shared widget from which the query originated; 0 if the widget isn't shared",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "wallet_card": {
+                    "description": "TON wallet card of the user who sent the query; may be null if none",
+                    "is_optional": true,
+                    "type": "tonWalletCard"
+                }
+            },
+            "type": "Update"
+        },
+        "updateNewInlineWidgetQuery": {
+            "description": "A new incoming widget query from a message sent via a bot; for bots only",
+            "args": {
+                "id": {
+                    "description": "Unique query identifier",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "sender_user_id": {
+                    "description": "Identifier of the user who sent the query",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "inline_message_id": {
+                    "description": "Identifier of the inline message from which the query originated",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_instance": {
+                    "description": "Identifier that uniquely corresponds to the chat to which the message was sent",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "chat_type": {
+                    "description": "Type of the chat to which the message was sent",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "query_type": {
+                    "description": "Type of the query",
+                    "is_optional": false,
+                    "type": "WidgetQueryType"
+                },
+                "data": {
+                    "description": "Data of the query",
+                    "is_optional": false,
+                    "type": "bytes"
+                },
+                "widget_id": {
+                    "description": "Identifier of the shared widget from which the query originated; 0 if the widget isn't shared",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "wallet_card": {
+                    "description": "TON wallet card of the user who sent the query; may be null if none",
+                    "is_optional": true,
+                    "type": "tonWalletCard"
+                }
+            },
+            "type": "Update"
+        },
+        "updateNewWidgetCopyQuery": {
+            "description": "A new incoming widget query from a copy of a shared widget; for bots only",
+            "args": {
+                "id": {
+                    "description": "Unique query identifier",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "sender_user_id": {
+                    "description": "Identifier of the user who sent the query",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "query_type": {
+                    "description": "Type of the query",
+                    "is_optional": false,
+                    "type": "WidgetQueryType"
+                },
+                "data": {
+                    "description": "Data of the query",
+                    "is_optional": false,
+                    "type": "bytes"
+                },
+                "widget_id": {
+                    "description": "Identifier of the shared widget from which the query originated",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "wallet_card": {
+                    "description": "TON wallet card of the user who sent the query; may be null if none",
+                    "is_optional": true,
+                    "type": "tonWalletCard"
                 }
             },
             "type": "Update"
@@ -42928,6 +43457,11 @@
             "args": {},
             "type": "Chats"
         },
+        "getSuitableCommunityChats": {
+            "description": "Returns a list of supergroup and channel chats owned by the current user, which can be added to a community",
+            "args": {},
+            "type": "Chats"
+        },
         "loadDirectMessagesChatTopics": {
             "description": "Loads more topics in a channel direct messages chat administered by the current user. The loaded topics will be sent through updateDirectMessagesChatTopic. Topics are sorted by their topic.order in descending order. Returns a 404 error if all topics have been loaded",
             "args": {
@@ -42961,7 +43495,7 @@
             "type": "DirectMessagesChatTopic"
         },
         "getDirectMessagesChatTopicHistory": {
-            "description": "Returns messages in the topic in a channel direct messages chat administered by the current user. The messages are returned in reverse chronological order (i.e., in order of decreasing message_id)",
+            "description": "Returns messages in the topic in a channel direct messages chat administered by the current user. The messages are returned in reverse chronological order (i.e., in order of decreasing message.id)",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier of the channel direct messages chat",
@@ -43161,7 +43695,7 @@
             "type": "Ok"
         },
         "getSavedMessagesTopicHistory": {
-            "description": "Returns messages in a Saved Messages topic. The messages are returned in reverse chronological order (i.e., in order of decreasing message_id)",
+            "description": "Returns messages in a Saved Messages topic. The messages are returned in reverse chronological order (i.e., in order of decreasing message.id)",
             "args": {
                 "saved_messages_topic_id": {
                     "description": "Identifier of Saved Messages topic which messages will be fetched",
@@ -43272,6 +43806,11 @@
             },
             "type": "CommunityFullInfo"
         },
+        "getJoinedCommunities": {
+            "description": "Returns the list of communities joined by the current user",
+            "args": {},
+            "type": "Communities"
+        },
         "createCommunity": {
             "description": "Creates a new community for the given chat. Returns identifier of the created community",
             "args": {
@@ -43341,6 +43880,170 @@
             },
             "type": "Ok"
         },
+        "setCommunityNotificationSettings": {
+            "description": "Changes notification settings of a community",
+            "args": {
+                "community_id": {
+                    "description": "Identifier of the community",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "notification_settings": {
+                    "description": "New notification settings for the community",
+                    "is_optional": false,
+                    "type": "chatNotificationSettings"
+                }
+            },
+            "type": "Ok"
+        },
+        "addCommunityChat": {
+            "description": "Adds a chat to a community. If the current user isn't allowed to change the list of chats in the community, then a request to add the chat is sent to administrators of the community instead and the method fails with the error \"COMMUNITY_REQUEST_CREATED\"",
+            "args": {
+                "community_id": {
+                    "description": "Identifier of the community",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "chat_id": {
+                    "description": "Identifier of the chat to add; only chats with owned bots and owned basic group, supergroup and channel chats are allowed; basic group chats will be automatically upgraded to supergroup chats. A community can have up to getOption(\"community_chat_count_max\") supergroup and channel chats and up to getOption(\"community_bot_count_max\") chats with bots; otherwise, the method fails with the error \"COMMUNITY_PEERS_TOO_MUCH\"",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_hidden": {
+                    "description": "Pass true if the chat will be visible only to administrators of the community",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "removeCommunityChat": {
+            "description": "Removes a chat from a community. Members of the chat, which aren't members of other chats in the community, will be removed from the community. Requires owner privileges in the supergroup or channel chat, or ownership of the bot for chats with bots, or can_edit_chat_list administrator right in the community",
+            "args": {
+                "community_id": {
+                    "description": "Identifier of the community",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "chat_id": {
+                    "description": "Identifier of the chat to remove",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "getCommunityAddChatRequests": {
+            "description": "Returns pending requests to add chats to a community. Administrators of the community with can_edit_chat_list right receive all requests; other users receive only requests sent by them",
+            "args": {
+                "community_id": {
+                    "description": "Identifier of the community",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of requests to return",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "CommunityAddChatRequests"
+        },
+        "processCommunityAddChatRequest": {
+            "description": "Handles a pending request to add a chat to a community; requires can_edit_chat_list administrator right in the community",
+            "args": {
+                "community_id": {
+                    "description": "Identifier of the community",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "chat_id": {
+                    "description": "Identifier of the chat from the request",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "approve": {
+                    "description": "Pass true to approve the request and add the chat to the community; pass false to decline it. If the community already has the maximum number of chats, then approval fails with the error \"COMMUNITY_PEERS_TOO_MUCH\"",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "processCommunityAddChatRequests": {
+            "description": "Handles all pending requests to add chats to a community; requires can_edit_chat_list administrator right in the community",
+            "args": {
+                "community_id": {
+                    "description": "Identifier of the community",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "approve": {
+                    "description": "Pass true to approve all requests and add the chats to the community; pass false to decline them",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleCommunityAreChatsCollapsed": {
+            "description": "Changes whether all chats of a community are collapsed into one entry in the chat list. If the chats are expanded, then the community is removed from all chat folders",
+            "args": {
+                "community_id": {
+                    "description": "Identifier of the community",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "are_chats_collapsed": {
+                    "description": "Pass true to collapse all chats of the community into one entry in the chat list",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleCommunityMemberIsBanned": {
+            "description": "Bans or unbans a member of a community; requires can_ban_members administrator right in the community. A banned member is banned in all chats of the community. Administrators of the community can be banned only by the owner of the community and administrators, which can edit administrator rights of the member. If an owner of a chat in the community is banned, then the chat is removed from the community; in this case, can_edit_chat_list administrator right is also required",
+            "args": {
+                "community_id": {
+                    "description": "Identifier of the community",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "member_id": {
+                    "description": "Identifier of the member to ban or unban",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "is_banned": {
+                    "description": "Pass true to ban the member; pass false to unban the member",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "getCommunityMemberChats": {
+            "description": "Returns chats in a community, which were joined by a member of the community; requires can_ban_members administrator right in the community. Can be used to show chats that will be affected by the member ban",
+            "args": {
+                "community_id": {
+                    "description": "Identifier of the community",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "member_id": {
+                    "description": "Identifier of the member",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                }
+            },
+            "type": "CommunityMemberChats"
+        },
         "deleteCommunity": {
             "description": "Deletes a community; requires owner privileges",
             "args": {
@@ -43374,7 +44077,7 @@
             "type": "Chats"
         },
         "getChatHistory": {
-            "description": "Returns messages in a chat. The messages are returned in reverse chronological order (i.e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib. This is an offline method if only_local is true",
+            "description": "Returns messages in a chat. The messages are returned in reverse chronological order (i.e., in order of decreasing message.id). For optimal performance, the number of returned messages is chosen by TDLib. This is an offline method if only_local is true",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -43405,7 +44108,7 @@
             "type": "Messages"
         },
         "getMessageThreadHistory": {
-            "description": "Returns messages in a message thread of a message. Can be used only if messageProperties.can_get_message_thread == true. Message thread of a channel message is in the channel's linked supergroup. The messages are returned in reverse chronological order (i.e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib",
+            "description": "Returns messages in a message thread of a message. Can be used only if messageProperties.can_get_message_thread == true. Message thread of a channel message is in the channel's linked supergroup. The messages are returned in reverse chronological order (i.e., in order of decreasing message.id). For optimal performance, the number of returned messages is chosen by TDLib",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -43468,7 +44171,7 @@
             "type": "Ok"
         },
         "searchChatMessages": {
-            "description": "Searches for messages with given words in the chat. Returns the results in reverse chronological order, i.e. in order of decreasing message_id. Cannot be used in secret chats with a non-empty query (searchSecretMessages must be used instead), or without an enabled message database. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit. A combination of query, sender_id, filter and topic_id search criteria is expected to be supported, only if it is required for Telegram official application implementation",
+            "description": "Searches for messages with given words in the chat. Returns the results in reverse chronological order, i.e. in order of decreasing message.id. Cannot be used in secret chats with a non-empty query (searchSecretMessages must be used instead), or without an enabled message database. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit. A combination of query, sender_id, filter and topic_id search criteria is expected to be supported, only if it is required for Telegram official application implementation",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat in which to search messages",
@@ -43514,7 +44217,7 @@
             "type": "FoundChatMessages"
         },
         "searchMessages": {
-            "description": "Searches for messages in all chats except secret chats. Returns the results in reverse chronological order (i.e., in order of decreasing (date, chat_id, message_id)). For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+            "description": "Searches for messages in all chats except secret chats. Returns the results in reverse chronological order (i.e., in order of decreasing (message.date, message.chat_id, message.id)). For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
             "args": {
                 "chat_list": {
                     "description": "Chat list in which to search messages; pass null to search in all chats regardless of their chat list. Only Main and Archive chat lists are supported",
@@ -43591,7 +44294,7 @@
             "type": "FoundMessages"
         },
         "searchSavedMessages": {
-            "description": "Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only. Returns the results in reverse chronological order, i.e. in order of decreasing message_id. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+            "description": "Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only. Returns the results in reverse chronological order, i.e. in order of decreasing message.id. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
             "args": {
                 "saved_messages_topic_id": {
                     "description": "If not 0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all messages",
@@ -43627,7 +44330,7 @@
             "type": "FoundChatMessages"
         },
         "searchCallMessages": {
-            "description": "Searches for call and group call messages. Returns the results in reverse chronological order (i.e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib",
+            "description": "Searches for call and group call messages. Returns the results in reverse chronological order (i.e., in order of decreasing message.id). For optimal performance, the number of returned messages is chosen by TDLib",
             "args": {
                 "offset": {
                     "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
@@ -43985,7 +44688,7 @@
             "type": "Count"
         },
         "getChatScheduledMessages": {
-            "description": "Returns all scheduled messages in a chat. The messages are returned in reverse chronological order (i.e., in order of decreasing message_id)",
+            "description": "Returns all scheduled messages in a chat. The messages are returned in reverse chronological order (i.e., in order of decreasing message.id)",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -44598,6 +45301,28 @@
             },
             "type": "RichMessage"
         },
+        "fixRecognizedTextWithAi": {
+            "description": "Fixes text received as a result of speech recognition using an AI model by correcting recognition errors and adding punctuation; must not be used in secret chats. May return an error with a message \"AICOMPOSE_FLOOD_PREMIUM\" if Telegram Premium is required to send further requests",
+            "args": {
+                "text": {
+                    "description": "The recognized text",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "FormattedText"
+        },
+        "fixRecognizedRichMessageWithAi": {
+            "description": "Fixes a rich message with text received as a result of speech recognition using an AI model by correcting recognition errors and adding punctuation. May return an error with a message \"AICOMPOSE_FLOOD_PREMIUM\" if Telegram Premium is required to send further requests",
+            "args": {
+                "message": {
+                    "description": "The message with the recognized text",
+                    "is_optional": false,
+                    "type": "inputRichMessage"
+                }
+            },
+            "type": "RichMessage"
+        },
         "recognizeSpeech": {
             "description": "Recognizes speech in a video note or a voice note message",
             "args": {
@@ -44634,6 +45359,33 @@
                 }
             },
             "type": "Ok"
+        },
+        "recognizeSpeechInFile": {
+            "description": "Recognizes speech in an audio file and returns the recognized text. The file must be in OGG format with Opus codec and must have size up to 1 MB. The same rules as for recognizeSpeech apply to the Telegram Premium requirement and speech recognition trial; must not be used in secret chats",
+            "args": {
+                "audio_file": {
+                    "description": "The audio file",
+                    "is_optional": false,
+                    "type": "InputFile"
+                },
+                "recognition_id": {
+                    "description": "Unique identifier of the speech recognition, which will be used in updateSpeechRecognitionInFile to send partially recognized text; pass 0 if partial results aren't needed",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "Text"
+        },
+        "getSpeechRecognitionLanguages": {
+            "description": "Returns 1-3 most probable languages of speech in voice notes",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat; pass 0 if none",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "SpeechRecognitionLanguages"
         },
         "getChatAvailableMessageSenders": {
             "description": "Returns the list of message sender identifiers, which can be used to send messages in a chat",
@@ -44784,7 +45536,7 @@
                     "type": "string"
                 },
                 "hide_via_bot": {
-                    "description": "Pass true to hide the bot, via which the message is sent. Can be used only for bots getOption(\"animation_search_bot_username\"), getOption(\"photo_search_bot_username\"), and getOption(\"venue_search_bot_username\")",
+                    "description": "Pass true to hide the bot, via which the message is sent. Can be used only for bots getOption(\"animation_search_bot_username\") and getOption(\"photo_search_bot_username\")",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -45211,6 +45963,42 @@
             },
             "type": "Message"
         },
+        "editMessageWidgetData": {
+            "description": "Edits data of a widget sent by the bot; for bots only",
+            "args": {
+                "chat_id": {
+                    "description": "The chat the message belongs to",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the widget message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "edit_public_data": {
+                    "description": "Pass true to edit public data of the widget",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "public_data": {
+                    "description": "New public data of the widget; ignored if edit_public_data is false",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "edit_chat_data": {
+                    "description": "Pass true to edit data of the widget, which is specific to the chat",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "chat_data": {
+                    "description": "New data of the widget, which is specific to the chat; ignored if edit_chat_data is false",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
         "editInlineMessageText": {
             "description": "Edits the text of an inline text or game message sent via the bot; for bots only",
             "args": {
@@ -45316,6 +46104,58 @@
             },
             "type": "Ok"
         },
+        "editInlineMessageWidgetData": {
+            "description": "Edits data of a widget in an inline message sent via the bot; for bots only",
+            "args": {
+                "inline_message_id": {
+                    "description": "Inline message identifier",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "edit_public_data": {
+                    "description": "Pass true to edit public data of the widget",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "public_data": {
+                    "description": "New public data of the widget; ignored if edit_public_data is false",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "edit_chat_data": {
+                    "description": "Pass true to edit data of the widget, which is specific to the chat",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "chat_data": {
+                    "description": "New data of the widget, which is specific to the chat; ignored if edit_chat_data is false",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "editWidgetData": {
+            "description": "Edits public data of a shared widget created by the bot; for bots only",
+            "args": {
+                "widget_id": {
+                    "description": "Identifier of the shared widget",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "public_data": {
+                    "description": "New public data of the widget",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "cache_time": {
+                    "description": "Time during which the public data can be cached, in seconds; 5-3600. Pass 0 to keep the current value, which is 30 by default",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
         "editEphemeralMessage": {
             "description": "Edits the text, media, or reply markup of an ephemeral message sent by the bot; for bots only",
             "args": {
@@ -45407,7 +46247,7 @@
                     "type": "ReplyMarkup"
                 },
                 "input_message_content": {
-                    "description": "New content of the message. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote",
+                    "description": "New content of the message. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote, inputMessageLocation, inputMessageVenue, inputMessageContact",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -46129,7 +46969,7 @@
                     "type": "string"
                 },
                 "hide_via_bot": {
-                    "description": "Pass true to hide the bot, via which the message is sent. Can be used only for bots getOption(\"animation_search_bot_username\"), getOption(\"photo_search_bot_username\"), and getOption(\"venue_search_bot_username\")",
+                    "description": "Pass true to hide the bot, via which the message is sent. Can be used only for bots getOption(\"animation_search_bot_username\") and getOption(\"photo_search_bot_username\")",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -46348,7 +47188,7 @@
             "type": "ForumTopic"
         },
         "getForumTopicHistory": {
-            "description": "Returns messages in a topic in a forum supergroup chat or a chat with a bot with topics. The messages are returned in reverse chronological order (i.e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib",
+            "description": "Returns messages in a topic in a forum supergroup chat or a chat with a bot with topics. The messages are returned in reverse chronological order (i.e., in order of decreasing message.id). For optimal performance, the number of returned messages is chosen by TDLib",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -46379,7 +47219,7 @@
             "type": "Messages"
         },
         "getForumTopicLink": {
-            "description": "Returns an HTTPS link to a topic in a forum supergroup chat. This is an offline method",
+            "description": "Returns an HTTPS link to a topic in a forum supergroup chat or a chat with a bot. This is an offline method",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -47000,6 +47840,17 @@
                 }
             },
             "type": "TextEntities"
+        },
+        "getTextEmojiRanges": {
+            "description": "Returns positions of all emoji found in the text in order of their appearance. Can be called synchronously",
+            "args": {
+                "text": {
+                    "description": "The text in which to look for emoji",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "TextRanges"
         },
         "parseTextEntities": {
             "description": "Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl, MentionName, and DateTime entities from a marked-up text. Can be called synchronously",
@@ -47922,6 +48773,64 @@
                 }
             },
             "type": "Ok"
+        },
+        "answerWidgetQuery": {
+            "description": "Sets the result of a widget query; for bots only",
+            "args": {
+                "widget_query_id": {
+                    "description": "Identifier of the widget query",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "data": {
+                    "description": "Data to be returned to the widget",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "getWidgetQueryAnswer": {
+            "description": "Sends a widget query to a bot and returns an answer. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the widget message from which the query originated. The message must not be scheduled",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "query_type": {
+                    "description": "Type of the query",
+                    "is_optional": false,
+                    "type": "WidgetQueryType"
+                },
+                "data": {
+                    "description": "Data of the query",
+                    "is_optional": false,
+                    "type": "bytes"
+                }
+            },
+            "type": "WidgetQueryAnswer"
+        },
+        "getWidgetPublicData": {
+            "description": "Returns the current public data of a widget. Must be called only if the widget is visible on the screen and asked to poll its public data",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the widget message. The message must not be scheduled",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "WidgetPublicData"
         },
         "answerShippingQuery": {
             "description": "Sets the result of a shipping query; for bots only",
@@ -49905,6 +50814,11 @@
                     "is_optional": true,
                     "type": "formattedText"
                 },
+                "music": {
+                    "description": "Music to be attached to the story; pass null if none. The music can be up to 60 seconds long",
+                    "is_optional": true,
+                    "type": "inputAudio"
+                },
                 "privacy_settings": {
                     "description": "The privacy settings for the story; ignored for stories posted on behalf of supergroup and channel chats",
                     "is_optional": false,
@@ -50026,6 +50940,27 @@
             },
             "type": "Ok"
         },
+        "editStoryMusic": {
+            "description": "Changes music attached to a story. Can be called only if story.can_be_edited == true and the story isn't being edited now",
+            "args": {
+                "story_poster_chat_id": {
+                    "description": "Identifier of the chat that posted the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_id": {
+                    "description": "Identifier of the story to edit",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "music": {
+                    "description": "The new music; pass null to remove music from the story. The music can be up to 60 seconds long",
+                    "is_optional": true,
+                    "type": "inputAudio"
+                }
+            },
+            "type": "Ok"
+        },
         "setStoryPrivacySettings": {
             "description": "Changes privacy settings of a story. The method can be called only for stories posted on behalf of the current user and if story.can_set_privacy_settings == true",
             "args": {
@@ -50085,7 +51020,7 @@
             "type": "Chats"
         },
         "loadActiveStories": {
-            "description": "Loads more active stories from a story list. The loaded stories will be sent through updates. Active stories are sorted by the pair (active_stories.order, active_stories.story_poster_chat_id) in descending order. Returns a 404 error if all active stories have been loaded",
+            "description": "Loads more active stories from a story list. The loaded stories will be sent through updates. Active stories are sorted by the pair (active_stories.order, active_stories.chat_id) in descending order. Returns a 404 error if all active stories have been loaded",
             "args": {
                 "story_list": {
                     "description": "The story list in which to load active stories",
@@ -50123,7 +51058,7 @@
             "type": "ChatActiveStories"
         },
         "getChatPostedToChatPageStories": {
-            "description": "Returns the list of stories that were posted by the given chat to its chat page. If from_story_id == 0, then pinned stories are returned first. Then, stories are returned in reverse chronological order (i.e., in order of decreasing story_id). For optimal performance, the number of returned stories is chosen by TDLib",
+            "description": "Returns the list of stories that were posted by the given chat to its chat page. If from_story_id == 0, then pinned stories are returned first. Then, stories are returned in reverse chronological order (i.e., in order of decreasing story.id). For optimal performance, the number of returned stories is chosen by TDLib",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -50144,7 +51079,7 @@
             "type": "Stories"
         },
         "getChatArchivedStories": {
-            "description": "Returns the list of all stories posted by the given chat; requires can_edit_stories administrator right in the chat. The stories are returned in reverse chronological order (i.e., in order of decreasing story_id). For optimal performance, the number of returned stories is chosen by TDLib",
+            "description": "Returns the list of all stories posted by the given chat; requires can_edit_stories administrator right in the chat. The stories are returned in reverse chronological order (i.e., in order of decreasing story.id). For optimal performance, the number of returned stories is chosen by TDLib",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -55004,6 +55939,11 @@
                     "description": "New value of has_forum_tabs; ignored if is_forum is false",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "has_forum_sidebar": {
+                    "description": "New value of has_forum_sidebar; ignored if is_forum is false. Must be false if has_forum_tabs is true",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Ok"
@@ -55089,7 +56029,7 @@
             "type": "Ok"
         },
         "getChatEventLog": {
-            "description": "Returns a list of service actions taken by chat members and administrators in the last 48 hours. Available only in supergroups and channels. Requires administrator rights. Returns results in reverse chronological order (i.e., in order of decreasing event_id)",
+            "description": "Returns a list of service actions taken by chat members and administrators in the last 48 hours. Available only in supergroups and channels. Requires administrator rights. Returns results in reverse chronological order (i.e., in order of decreasing chatEvent.id)",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -55545,7 +56485,7 @@
             "description": "Crafts a new gift from other gifts that will be permanently lost",
             "args": {
                 "received_gift_ids": {
-                    "description": "Identifier of the gifts to use for crafting. In the case of a successful craft, the resulting gift will have the number of the first gift. Consequently, the first gift must not have been withdrawn to the TON blockchain as an NFT and must have an empty gift_address",
+                    "description": "Identifier of the gifts to use for crafting. In the case of a successful craft, the resulting gift will have the number of the first gift. Consequently, unless getOption(\"can_craft_from_withdrawn_first_gift\") is true, the first gift must not have been withdrawn to the TON blockchain as an NFT and must have an empty gift_address",
                     "is_optional": false,
                     "type": "vector<string>"
                 }
@@ -56601,7 +57541,7 @@
                     "type": "bytes"
                 },
                 "message_ids": {
-                    "description": "Identifiers of reported messages. Use messageProperties.can_report_chat to check whether the message can be reported",
+                    "description": "Identifiers of reported messages. Use messageProperties.can_report_chat to check whether the message can be reported. Ephemeral messages must be reported separately",
                     "is_optional": false,
                     "type": "vector<int53>"
                 },
@@ -56895,7 +57835,7 @@
                 "amount": {
                     "description": "The amount of the sent cryptocurrency, in the smallest units of the cryptocurrency",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int64"
                 },
                 "comment": {
                     "description": "Comment added to the transaction",

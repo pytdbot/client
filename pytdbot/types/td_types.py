@@ -373,6 +373,18 @@ class GiveawayPrize:
     pass
 
 
+class NotificationSettingsScope:
+    r"""Describes the types of chats to which notification settings are relevant"""
+
+    pass
+
+
+class ReactionNotificationSource:
+    r"""Describes sources of reactions for which notifications will be shown"""
+
+    pass
+
+
 class CommunityMemberStatus:
     r"""Provides information about the status of a member in a community"""
 
@@ -495,18 +507,6 @@ class MessageSource:
 
 class ReportSponsoredResult:
     r"""Describes result of sponsored message or chat report"""
-
-    pass
-
-
-class NotificationSettingsScope:
-    r"""Describes the types of chats to which notification settings are relevant"""
-
-    pass
-
-
-class ReactionNotificationSource:
-    r"""Describes sources of reactions for which notifications will be shown"""
 
     pass
 
@@ -1017,6 +1017,12 @@ class InlineQueryResultsButtonType:
 
 class CallbackQueryPayload:
     r"""Represents a payload of a callback query"""
+
+    pass
+
+
+class WidgetQueryType:
+    r"""Describes type of a widget query"""
 
     pass
 
@@ -2386,6 +2392,90 @@ class TextEntities(TlObject):
         return data_class
 
 
+class TextRange(TlObject):
+    r"""Describes a part of a text
+
+    Parameters:
+        offset (:class:`int`):
+            Offset of the part, in UTF\-16 code units
+
+        length (:class:`int`):
+            Length of the part, in UTF\-16 code units
+
+    """
+
+    def __init__(self, *, offset: int | None = 0, length: int | None = 0) -> None:
+        self.offset = offset
+        r"""Offset of the part, in UTF\-16 code units"""
+        self.length = length
+        r"""Length of the part, in UTF\-16 code units"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["textRange"]:
+        return "textRange"
+
+    @classmethod
+    def getClass(self) -> Literal["TextRange"]:
+        return "TextRange"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "offset": self.offset, "length": self.length}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TextRange | None:
+        if data:
+            data_class = cls()
+            data_class.offset = int(data.get("offset", 0))
+            data_class.length = int(data.get("length", 0))
+
+        return data_class
+
+
+class TextRanges(TlObject):
+    r"""Contains a list of text parts
+
+    Parameters:
+        ranges (list[:class:`~pytdbot.types.TextRange`]):
+            List of text parts
+
+    """
+
+    def __init__(self, *, ranges: list[TextRange] | None = None) -> None:
+        self.ranges = ranges or []
+        r"""List of text parts"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["textRanges"]:
+        return "textRanges"
+
+    @classmethod
+    def getClass(self) -> Literal["TextRanges"]:
+        return "TextRanges"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "ranges": self.ranges}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> TextRanges | None:
+        if data:
+            data_class = cls()
+            data_class.ranges = data.get("ranges", None)
+
+        return data_class
+
+
 class FormattedText(TlObject):
     r"""A text with some entities
 
@@ -2533,6 +2623,8 @@ class InputRichMessageMedia(TlObject):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -8985,6 +9077,9 @@ class UserTypeBot(TlObject, UserType):
         has_topics (:class:`bool`):
             True, if the bot has topics
 
+        has_topic_sidebar (:class:`bool`):
+            True, if the bot has topics, which are shown in a sidebar
+
         allows_users_to_create_topics (:class:`bool`):
             True, if users can create and delete topics in the chat with the bot
 
@@ -9025,6 +9120,7 @@ class UserTypeBot(TlObject, UserType):
         can_read_all_group_messages: bool | None = False,
         has_main_web_app: bool | None = False,
         has_topics: bool | None = False,
+        has_topic_sidebar: bool | None = False,
         allows_users_to_create_topics: bool | None = False,
         can_manage_bots: bool | None = False,
         is_inline: bool | None = False,
@@ -9046,6 +9142,8 @@ class UserTypeBot(TlObject, UserType):
         r"""True, if the bot has the main Web App"""
         self.has_topics = has_topics
         r"""True, if the bot has topics"""
+        self.has_topic_sidebar = has_topic_sidebar
+        r"""True, if the bot has topics, which are shown in a sidebar"""
         self.allows_users_to_create_topics = allows_users_to_create_topics
         r"""True, if users can create and delete topics in the chat with the bot"""
         self.can_manage_bots = can_manage_bots
@@ -9089,6 +9187,7 @@ class UserTypeBot(TlObject, UserType):
             "can_read_all_group_messages": self.can_read_all_group_messages,
             "has_main_web_app": self.has_main_web_app,
             "has_topics": self.has_topics,
+            "has_topic_sidebar": self.has_topic_sidebar,
             "allows_users_to_create_topics": self.allows_users_to_create_topics,
             "can_manage_bots": self.can_manage_bots,
             "is_inline": self.is_inline,
@@ -9112,6 +9211,7 @@ class UserTypeBot(TlObject, UserType):
             )
             data_class.has_main_web_app = data.get("has_main_web_app", False)
             data_class.has_topics = data.get("has_topics", False)
+            data_class.has_topic_sidebar = data.get("has_topic_sidebar", False)
             data_class.allows_users_to_create_topics = data.get(
                 "allows_users_to_create_topics", False
             )
@@ -11546,7 +11646,7 @@ class ChatPermissions(TlObject):
             True, if the user can send polls and checklists
 
         can_send_other_messages (:class:`bool`):
-            True, if the user can send animations, games, stickers, and dice and use inline bots
+            True, if the user can send animations, games, stickers, widgets, and dice and use inline bots
 
         can_add_link_previews (:class:`bool`):
             True, if the user may add a link preview to their messages
@@ -11608,7 +11708,7 @@ class ChatPermissions(TlObject):
         self.can_send_polls = can_send_polls
         r"""True, if the user can send polls and checklists"""
         self.can_send_other_messages = can_send_other_messages
-        r"""True, if the user can send animations, games, stickers, and dice and use inline bots"""
+        r"""True, if the user can send animations, games, stickers, widgets, and dice and use inline bots"""
         self.can_add_link_previews = can_add_link_previews
         r"""True, if the user may add a link preview to their messages"""
         self.can_react_to_messages = can_react_to_messages
@@ -26572,6 +26672,583 @@ class ProfileAccentColor(TlObject):
         return data_class
 
 
+class NotificationSettingsScopePrivateChats(TlObject, NotificationSettingsScope):
+    r"""Notification settings applied to all private and secret chats when the corresponding chat setting has a default value"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["notificationSettingsScopePrivateChats"]:
+        return "notificationSettingsScopePrivateChats"
+
+    @classmethod
+    def getClass(self) -> Literal["NotificationSettingsScope"]:
+        return "NotificationSettingsScope"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> NotificationSettingsScopePrivateChats | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class NotificationSettingsScopeGroupChats(TlObject, NotificationSettingsScope):
+    r"""Notification settings applied to all basic group and supergroup chats when the corresponding chat setting has a default value"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["notificationSettingsScopeGroupChats"]:
+        return "notificationSettingsScopeGroupChats"
+
+    @classmethod
+    def getClass(self) -> Literal["NotificationSettingsScope"]:
+        return "NotificationSettingsScope"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> NotificationSettingsScopeGroupChats | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class NotificationSettingsScopeChannelChats(TlObject, NotificationSettingsScope):
+    r"""Notification settings applied to all channel chats when the corresponding chat setting has a default value"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["notificationSettingsScopeChannelChats"]:
+        return "notificationSettingsScopeChannelChats"
+
+    @classmethod
+    def getClass(self) -> Literal["NotificationSettingsScope"]:
+        return "NotificationSettingsScope"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> NotificationSettingsScopeChannelChats | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ChatNotificationSettings(TlObject):
+    r"""Contains information about notification settings for a chat or a forum topic
+
+    Parameters:
+        use_default_mute_for (:class:`bool`):
+            If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of mute\_for
+
+        mute_for (:class:`int`):
+            Time left before notifications will be unmuted, in seconds
+
+        use_default_sound (:class:`bool`):
+            If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of sound\_id
+
+        sound_id (:class:`int`):
+            Identifier of the notification sound to be played for messages; 0 if sound is disabled
+
+        use_default_show_preview (:class:`bool`):
+            If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of show\_preview
+
+        show_preview (:class:`bool`):
+            True, if message content must be displayed in notifications
+
+        use_default_mute_stories (:class:`bool`):
+            If true, the value for the chat's community or the relevant type of chat is used instead of mute\_stories
+
+        mute_stories (:class:`bool`):
+            True, if story notifications are disabled for the chat
+
+        use_default_story_sound (:class:`bool`):
+            If true, the value for the chat's community or the relevant type of chat is used instead of story\_sound\_id
+
+        story_sound_id (:class:`int`):
+            Identifier of the notification sound to be played for stories; 0 if sound is disabled
+
+        use_default_show_story_poster (:class:`bool`):
+            If true, the value for the chat's community or the relevant type of chat is used instead of show\_story\_poster
+
+        show_story_poster (:class:`bool`):
+            True, if the chat that posted a story must be displayed in notifications
+
+        use_default_disable_pinned_message_notifications (:class:`bool`):
+            If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of disable\_pinned\_message\_notifications
+
+        disable_pinned_message_notifications (:class:`bool`):
+            If true, notifications for incoming pinned messages will be created as for an ordinary unread message
+
+        use_default_disable_mention_notifications (:class:`bool`):
+            If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of disable\_mention\_notifications
+
+        disable_mention_notifications (:class:`bool`):
+            If true, notifications for messages with mentions will be created as for an ordinary unread message
+
+    """
+
+    def __init__(
+        self,
+        *,
+        use_default_mute_for: bool | None = False,
+        mute_for: int | None = 0,
+        use_default_sound: bool | None = False,
+        sound_id: int | None = 0,
+        use_default_show_preview: bool | None = False,
+        show_preview: bool | None = False,
+        use_default_mute_stories: bool | None = False,
+        mute_stories: bool | None = False,
+        use_default_story_sound: bool | None = False,
+        story_sound_id: int | None = 0,
+        use_default_show_story_poster: bool | None = False,
+        show_story_poster: bool | None = False,
+        use_default_disable_pinned_message_notifications: bool | None = False,
+        disable_pinned_message_notifications: bool | None = False,
+        use_default_disable_mention_notifications: bool | None = False,
+        disable_mention_notifications: bool | None = False,
+    ) -> None:
+        self.use_default_mute_for = use_default_mute_for
+        r"""If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of mute\_for"""
+        self.mute_for = mute_for
+        r"""Time left before notifications will be unmuted, in seconds"""
+        self.use_default_sound = use_default_sound
+        r"""If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of sound\_id"""
+        self.sound_id = sound_id
+        r"""Identifier of the notification sound to be played for messages; 0 if sound is disabled"""
+        self.use_default_show_preview = use_default_show_preview
+        r"""If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of show\_preview"""
+        self.show_preview = show_preview
+        r"""True, if message content must be displayed in notifications"""
+        self.use_default_mute_stories = use_default_mute_stories
+        r"""If true, the value for the chat's community or the relevant type of chat is used instead of mute\_stories"""
+        self.mute_stories = mute_stories
+        r"""True, if story notifications are disabled for the chat"""
+        self.use_default_story_sound = use_default_story_sound
+        r"""If true, the value for the chat's community or the relevant type of chat is used instead of story\_sound\_id"""
+        self.story_sound_id = story_sound_id
+        r"""Identifier of the notification sound to be played for stories; 0 if sound is disabled"""
+        self.use_default_show_story_poster = use_default_show_story_poster
+        r"""If true, the value for the chat's community or the relevant type of chat is used instead of show\_story\_poster"""
+        self.show_story_poster = show_story_poster
+        r"""True, if the chat that posted a story must be displayed in notifications"""
+        self.use_default_disable_pinned_message_notifications = (
+            use_default_disable_pinned_message_notifications
+        )
+        r"""If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of disable\_pinned\_message\_notifications"""
+        self.disable_pinned_message_notifications = disable_pinned_message_notifications
+        r"""If true, notifications for incoming pinned messages will be created as for an ordinary unread message"""
+        self.use_default_disable_mention_notifications = (
+            use_default_disable_mention_notifications
+        )
+        r"""If true, the value for the topic's chat, the chat's community, or the relevant type of chat is used instead of disable\_mention\_notifications"""
+        self.disable_mention_notifications = disable_mention_notifications
+        r"""If true, notifications for messages with mentions will be created as for an ordinary unread message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["chatNotificationSettings"]:
+        return "chatNotificationSettings"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatNotificationSettings"]:
+        return "ChatNotificationSettings"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "use_default_mute_for": self.use_default_mute_for,
+            "mute_for": self.mute_for,
+            "use_default_sound": self.use_default_sound,
+            "sound_id": self.sound_id,
+            "use_default_show_preview": self.use_default_show_preview,
+            "show_preview": self.show_preview,
+            "use_default_mute_stories": self.use_default_mute_stories,
+            "mute_stories": self.mute_stories,
+            "use_default_story_sound": self.use_default_story_sound,
+            "story_sound_id": self.story_sound_id,
+            "use_default_show_story_poster": self.use_default_show_story_poster,
+            "show_story_poster": self.show_story_poster,
+            "use_default_disable_pinned_message_notifications": self.use_default_disable_pinned_message_notifications,
+            "disable_pinned_message_notifications": self.disable_pinned_message_notifications,
+            "use_default_disable_mention_notifications": self.use_default_disable_mention_notifications,
+            "disable_mention_notifications": self.disable_mention_notifications,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ChatNotificationSettings | None:
+        if data:
+            data_class = cls()
+            data_class.use_default_mute_for = data.get("use_default_mute_for", False)
+            data_class.mute_for = int(data.get("mute_for", 0))
+            data_class.use_default_sound = data.get("use_default_sound", False)
+            data_class.sound_id = int(data.get("sound_id", 0))
+            data_class.use_default_show_preview = data.get(
+                "use_default_show_preview", False
+            )
+            data_class.show_preview = data.get("show_preview", False)
+            data_class.use_default_mute_stories = data.get(
+                "use_default_mute_stories", False
+            )
+            data_class.mute_stories = data.get("mute_stories", False)
+            data_class.use_default_story_sound = data.get(
+                "use_default_story_sound", False
+            )
+            data_class.story_sound_id = int(data.get("story_sound_id", 0))
+            data_class.use_default_show_story_poster = data.get(
+                "use_default_show_story_poster", False
+            )
+            data_class.show_story_poster = data.get("show_story_poster", False)
+            data_class.use_default_disable_pinned_message_notifications = data.get(
+                "use_default_disable_pinned_message_notifications", False
+            )
+            data_class.disable_pinned_message_notifications = data.get(
+                "disable_pinned_message_notifications", False
+            )
+            data_class.use_default_disable_mention_notifications = data.get(
+                "use_default_disable_mention_notifications", False
+            )
+            data_class.disable_mention_notifications = data.get(
+                "disable_mention_notifications", False
+            )
+
+        return data_class
+
+
+class ScopeNotificationSettings(TlObject):
+    r"""Contains information about notification settings for several chats
+
+    Parameters:
+        mute_for (:class:`int`):
+            Time left before notifications will be unmuted, in seconds
+
+        sound_id (:class:`int`):
+            Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound
+
+        show_preview (:class:`bool`):
+            True, if message content must be displayed in notifications
+
+        use_default_mute_stories (:class:`bool`):
+            If true, story notifications are received only for the first 5 chats from topChatCategoryUsers regardless of the value of mute\_stories
+
+        mute_stories (:class:`bool`):
+            True, if story notifications are disabled
+
+        story_sound_id (:class:`int`):
+            Identifier of the notification sound to be played for stories; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound
+
+        show_story_poster (:class:`bool`):
+            True, if the chat that posted a story must be displayed in notifications
+
+        disable_pinned_message_notifications (:class:`bool`):
+            True, if notifications for incoming pinned messages will be created as for an ordinary unread message
+
+        disable_mention_notifications (:class:`bool`):
+            True, if notifications for messages with mentions will be created as for an ordinary unread message
+
+    """
+
+    def __init__(
+        self,
+        *,
+        mute_for: int | None = 0,
+        sound_id: int | None = 0,
+        show_preview: bool | None = False,
+        use_default_mute_stories: bool | None = False,
+        mute_stories: bool | None = False,
+        story_sound_id: int | None = 0,
+        show_story_poster: bool | None = False,
+        disable_pinned_message_notifications: bool | None = False,
+        disable_mention_notifications: bool | None = False,
+    ) -> None:
+        self.mute_for = mute_for
+        r"""Time left before notifications will be unmuted, in seconds"""
+        self.sound_id = sound_id
+        r"""Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound"""
+        self.show_preview = show_preview
+        r"""True, if message content must be displayed in notifications"""
+        self.use_default_mute_stories = use_default_mute_stories
+        r"""If true, story notifications are received only for the first 5 chats from topChatCategoryUsers regardless of the value of mute\_stories"""
+        self.mute_stories = mute_stories
+        r"""True, if story notifications are disabled"""
+        self.story_sound_id = story_sound_id
+        r"""Identifier of the notification sound to be played for stories; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound"""
+        self.show_story_poster = show_story_poster
+        r"""True, if the chat that posted a story must be displayed in notifications"""
+        self.disable_pinned_message_notifications = disable_pinned_message_notifications
+        r"""True, if notifications for incoming pinned messages will be created as for an ordinary unread message"""
+        self.disable_mention_notifications = disable_mention_notifications
+        r"""True, if notifications for messages with mentions will be created as for an ordinary unread message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["scopeNotificationSettings"]:
+        return "scopeNotificationSettings"
+
+    @classmethod
+    def getClass(self) -> Literal["ScopeNotificationSettings"]:
+        return "ScopeNotificationSettings"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "mute_for": self.mute_for,
+            "sound_id": self.sound_id,
+            "show_preview": self.show_preview,
+            "use_default_mute_stories": self.use_default_mute_stories,
+            "mute_stories": self.mute_stories,
+            "story_sound_id": self.story_sound_id,
+            "show_story_poster": self.show_story_poster,
+            "disable_pinned_message_notifications": self.disable_pinned_message_notifications,
+            "disable_mention_notifications": self.disable_mention_notifications,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ScopeNotificationSettings | None:
+        if data:
+            data_class = cls()
+            data_class.mute_for = int(data.get("mute_for", 0))
+            data_class.sound_id = int(data.get("sound_id", 0))
+            data_class.show_preview = data.get("show_preview", False)
+            data_class.use_default_mute_stories = data.get(
+                "use_default_mute_stories", False
+            )
+            data_class.mute_stories = data.get("mute_stories", False)
+            data_class.story_sound_id = int(data.get("story_sound_id", 0))
+            data_class.show_story_poster = data.get("show_story_poster", False)
+            data_class.disable_pinned_message_notifications = data.get(
+                "disable_pinned_message_notifications", False
+            )
+            data_class.disable_mention_notifications = data.get(
+                "disable_mention_notifications", False
+            )
+
+        return data_class
+
+
+class ReactionNotificationSourceNone(TlObject, ReactionNotificationSource):
+    r"""Notifications for reactions are disabled"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["reactionNotificationSourceNone"]:
+        return "reactionNotificationSourceNone"
+
+    @classmethod
+    def getClass(self) -> Literal["ReactionNotificationSource"]:
+        return "ReactionNotificationSource"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ReactionNotificationSourceNone | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ReactionNotificationSourceContacts(TlObject, ReactionNotificationSource):
+    r"""Notifications for reactions are shown only for reactions from contacts"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["reactionNotificationSourceContacts"]:
+        return "reactionNotificationSourceContacts"
+
+    @classmethod
+    def getClass(self) -> Literal["ReactionNotificationSource"]:
+        return "ReactionNotificationSource"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ReactionNotificationSourceContacts | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ReactionNotificationSourceAll(TlObject, ReactionNotificationSource):
+    r"""Notifications for reactions are shown for all reactions"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["reactionNotificationSourceAll"]:
+        return "reactionNotificationSourceAll"
+
+    @classmethod
+    def getClass(self) -> Literal["ReactionNotificationSource"]:
+        return "ReactionNotificationSource"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ReactionNotificationSourceAll | None:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ReactionNotificationSettings(TlObject):
+    r"""Contains information about notification settings for reactions and poll votes
+
+    Parameters:
+        message_reaction_source (:class:`~pytdbot.types.ReactionNotificationSource`):
+            Source of message reactions for which notifications are shown
+
+        story_reaction_source (:class:`~pytdbot.types.ReactionNotificationSource`):
+            Source of story reactions for which notifications are shown
+
+        poll_vote_source (:class:`~pytdbot.types.ReactionNotificationSource`):
+            Source of poll votes for which notifications are shown
+
+        sound_id (:class:`int`):
+            Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound
+
+        show_preview (:class:`bool`):
+            True, if reaction sender and emoji must be displayed in notifications
+
+    """
+
+    def __init__(
+        self,
+        *,
+        message_reaction_source: ReactionNotificationSourceNone
+        | ReactionNotificationSourceContacts
+        | ReactionNotificationSourceAll
+        | None = None,
+        story_reaction_source: ReactionNotificationSourceNone
+        | ReactionNotificationSourceContacts
+        | ReactionNotificationSourceAll
+        | None = None,
+        poll_vote_source: ReactionNotificationSourceNone
+        | ReactionNotificationSourceContacts
+        | ReactionNotificationSourceAll
+        | None = None,
+        sound_id: int | None = 0,
+        show_preview: bool | None = False,
+    ) -> None:
+        self.message_reaction_source = message_reaction_source
+        r"""Source of message reactions for which notifications are shown"""
+        self.story_reaction_source = story_reaction_source
+        r"""Source of story reactions for which notifications are shown"""
+        self.poll_vote_source = poll_vote_source
+        r"""Source of poll votes for which notifications are shown"""
+        self.sound_id = sound_id
+        r"""Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound"""
+        self.show_preview = show_preview
+        r"""True, if reaction sender and emoji must be displayed in notifications"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["reactionNotificationSettings"]:
+        return "reactionNotificationSettings"
+
+    @classmethod
+    def getClass(self) -> Literal["ReactionNotificationSettings"]:
+        return "ReactionNotificationSettings"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "message_reaction_source": self.message_reaction_source,
+            "story_reaction_source": self.story_reaction_source,
+            "poll_vote_source": self.poll_vote_source,
+            "sound_id": self.sound_id,
+            "show_preview": self.show_preview,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> ReactionNotificationSettings | None:
+        if data:
+            data_class = cls()
+            data_class.message_reaction_source = data.get(
+                "message_reaction_source", None
+            )
+            data_class.story_reaction_source = data.get("story_reaction_source", None)
+            data_class.poll_vote_source = data.get("poll_vote_source", None)
+            data_class.sound_id = int(data.get("sound_id", 0))
+            data_class.show_preview = data.get("show_preview", False)
+
+        return data_class
+
+
 class CommunityId(TlObject):
     r"""Contains identifier of a community
 
@@ -26931,6 +27608,9 @@ class Community(TlObject):
         permissions (:class:`~pytdbot.types.CommunityPermissions`):
             Actions that non\-administrator community members are allowed to take in the community
 
+        are_chats_collapsed (:class:`bool`):
+            True, if all chats of the community are collapsed into one entry in the chat list
+
     """
 
     def __init__(
@@ -26948,6 +27628,7 @@ class Community(TlObject):
         | CommunityMemberStatusBanned
         | None = None,
         permissions: CommunityPermissions | None = None,
+        are_chats_collapsed: bool | None = False,
     ) -> None:
         self.id = id
         r"""Community identifier"""
@@ -26963,6 +27644,8 @@ class Community(TlObject):
         r"""Status of the current user in the community"""
         self.permissions = permissions
         r"""Actions that non\-administrator community members are allowed to take in the community"""
+        self.are_chats_collapsed = are_chats_collapsed
+        r"""True, if all chats of the community are collapsed into one entry in the chat list"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -26988,6 +27671,7 @@ class Community(TlObject):
             "date": self.date,
             "status": self.status,
             "permissions": self.permissions,
+            "are_chats_collapsed": self.are_chats_collapsed,
         }
 
     @classmethod
@@ -27001,6 +27685,7 @@ class Community(TlObject):
             data_class.date = int(data.get("date", 0))
             data_class.status = data.get("status", None)
             data_class.permissions = data.get("permissions", None)
+            data_class.are_chats_collapsed = data.get("are_chats_collapsed", False)
 
         return data_class
 
@@ -27086,6 +27771,9 @@ class CommunityFullInfo(TlObject):
         add_chat_request_count (:class:`int`):
             Number of pending requests for addition of chats to the community; 0 if the current user isn't an administrator of the community
 
+        notification_settings (:class:`~pytdbot.types.ChatNotificationSettings`):
+            Notification settings for the community\. Default notification settings are chosen based on the type of a chat in the community
+
     """
 
     def __init__(
@@ -27096,6 +27784,7 @@ class CommunityFullInfo(TlObject):
         administrator_count: int | None = 0,
         banned_count: int | None = 0,
         add_chat_request_count: int | None = 0,
+        notification_settings: ChatNotificationSettings | None = None,
     ) -> None:
         self.photo = photo
         r"""Photo of the community"""
@@ -27107,6 +27796,8 @@ class CommunityFullInfo(TlObject):
         r"""Number of users banned from the community; 0 if the current user isn't an administrator of the community"""
         self.add_chat_request_count = add_chat_request_count
         r"""Number of pending requests for addition of chats to the community; 0 if the current user isn't an administrator of the community"""
+        self.notification_settings = notification_settings
+        r"""Notification settings for the community\. Default notification settings are chosen based on the type of a chat in the community"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -27130,6 +27821,7 @@ class CommunityFullInfo(TlObject):
             "administrator_count": self.administrator_count,
             "banned_count": self.banned_count,
             "add_chat_request_count": self.add_chat_request_count,
+            "notification_settings": self.notification_settings,
         }
 
     @classmethod
@@ -27143,6 +27835,232 @@ class CommunityFullInfo(TlObject):
             data_class.add_chat_request_count = int(
                 data.get("add_chat_request_count", 0)
             )
+            data_class.notification_settings = data.get("notification_settings", None)
+
+        return data_class
+
+
+class Communities(TlObject):
+    r"""Represents a list of communities
+
+    Parameters:
+        community_ids (list[:class:`int`]):
+            List of community identifiers
+
+    """
+
+    def __init__(self, *, community_ids: list[int] | None = None) -> None:
+        self.community_ids = community_ids or []
+        r"""List of community identifiers"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["communities"]:
+        return "communities"
+
+    @classmethod
+    def getClass(self) -> Literal["Communities"]:
+        return "Communities"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "community_ids": self.community_ids}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Communities | None:
+        if data:
+            data_class = cls()
+            data_class.community_ids = data.get("community_ids", None)
+
+        return data_class
+
+
+class CommunityAddChatRequest(TlObject):
+    r"""Describes a request to add a chat to a community
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat to be added
+
+        is_hidden (:class:`bool`):
+            True, if the chat will be visible only to administrators of the community
+
+        sender_user_id (:class:`int`):
+            Identifier of the user who sent the request
+
+        date (:class:`int`):
+            Point in time \(Unix timestamp\) when the request was sent
+
+    """
+
+    def __init__(
+        self,
+        *,
+        chat_id: int | None = 0,
+        is_hidden: bool | None = False,
+        sender_user_id: int | None = 0,
+        date: int | None = 0,
+    ) -> None:
+        self.chat_id = chat_id
+        r"""Identifier of the chat to be added"""
+        self.is_hidden = is_hidden
+        r"""True, if the chat will be visible only to administrators of the community"""
+        self.sender_user_id = sender_user_id
+        r"""Identifier of the user who sent the request"""
+        self.date = date
+        r"""Point in time \(Unix timestamp\) when the request was sent"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["communityAddChatRequest"]:
+        return "communityAddChatRequest"
+
+    @classmethod
+    def getClass(self) -> Literal["CommunityAddChatRequest"]:
+        return "CommunityAddChatRequest"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "is_hidden": self.is_hidden,
+            "sender_user_id": self.sender_user_id,
+            "date": self.date,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> CommunityAddChatRequest | None:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.is_hidden = data.get("is_hidden", False)
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
+            data_class.date = int(data.get("date", 0))
+
+        return data_class
+
+
+class CommunityAddChatRequests(TlObject):
+    r"""Contains a list of requests to add chats to a community
+
+    Parameters:
+        total_count (:class:`int`):
+            Approximate total number of requests found
+
+        requests (list[:class:`~pytdbot.types.CommunityAddChatRequest`]):
+            List of the requests
+
+        next_offset (:class:`str`):
+            The offset for the next getCommunityAddChatRequests request\. If empty, then there are no more results
+
+    """
+
+    def __init__(
+        self,
+        *,
+        total_count: int | None = 0,
+        requests: list[CommunityAddChatRequest] | None = None,
+        next_offset: str | None = "",
+    ) -> None:
+        self.total_count = total_count
+        r"""Approximate total number of requests found"""
+        self.requests = requests or []
+        r"""List of the requests"""
+        self.next_offset = next_offset
+        r"""The offset for the next getCommunityAddChatRequests request\. If empty, then there are no more results"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["communityAddChatRequests"]:
+        return "communityAddChatRequests"
+
+    @classmethod
+    def getClass(self) -> Literal["CommunityAddChatRequests"]:
+        return "CommunityAddChatRequests"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "total_count": self.total_count,
+            "requests": self.requests,
+            "next_offset": self.next_offset,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> CommunityAddChatRequests | None:
+        if data:
+            data_class = cls()
+            data_class.total_count = int(data.get("total_count", 0))
+            data_class.requests = data.get("requests", None)
+            data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
+class CommunityMemberChats(TlObject):
+    r"""Contains information about chats in a community, which are joined or owned by a member of the community
+
+    Parameters:
+        owned_chat_ids (list[:class:`int`]):
+            Identifiers of the chats owned by the member\. The chats will be removed from the community if the member is banned in the community
+
+        joined_chat_ids (list[:class:`int`]):
+            Identifiers of the non\-owned chats joined by the member
+
+    """
+
+    def __init__(
+        self,
+        *,
+        owned_chat_ids: list[int] | None = None,
+        joined_chat_ids: list[int] | None = None,
+    ) -> None:
+        self.owned_chat_ids = owned_chat_ids or []
+        r"""Identifiers of the chats owned by the member\. The chats will be removed from the community if the member is banned in the community"""
+        self.joined_chat_ids = joined_chat_ids or []
+        r"""Identifiers of the non\-owned chats joined by the member"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["communityMemberChats"]:
+        return "communityMemberChats"
+
+    @classmethod
+    def getClass(self) -> Literal["CommunityMemberChats"]:
+        return "CommunityMemberChats"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "owned_chat_ids": self.owned_chat_ids,
+            "joined_chat_ids": self.joined_chat_ids,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> CommunityMemberChats | None:
+        if data:
+            data_class = cls()
+            data_class.owned_chat_ids = data.get("owned_chat_ids", None)
+            data_class.joined_chat_ids = data.get("joined_chat_ids", None)
 
         return data_class
 
@@ -31272,6 +32190,9 @@ class Supergroup(TlObject):
         has_forum_tabs (:class:`bool`):
             True, if the supergroup is a forum, which topics are shown in the same way as in channel direct messages groups
 
+        has_forum_sidebar (:class:`bool`):
+            True, if the supergroup is a forum, which topics are shown in a sidebar\. If true, then has\_forum\_tabs is false
+
         restriction_info (:class:`~pytdbot.types.RestrictionInfo`):
             Information about the restrictions that must be applied to the corresponding supergroup or channel chat; may be null if none
 
@@ -31314,6 +32235,7 @@ class Supergroup(TlObject):
         verification_status: VerificationStatus | None = None,
         has_direct_messages_group: bool | None = False,
         has_forum_tabs: bool | None = False,
+        has_forum_sidebar: bool | None = False,
         restriction_info: RestrictionInfo | None = None,
         paid_message_star_count: int | None = 0,
         active_story_state: ActiveStoryStateLive
@@ -31367,6 +32289,8 @@ class Supergroup(TlObject):
         r"""True, if the channel has direct messages group"""
         self.has_forum_tabs = has_forum_tabs
         r"""True, if the supergroup is a forum, which topics are shown in the same way as in channel direct messages groups"""
+        self.has_forum_sidebar = has_forum_sidebar
+        r"""True, if the supergroup is a forum, which topics are shown in a sidebar\. If true, then has\_forum\_tabs is false"""
         self.restriction_info = restriction_info
         r"""Information about the restrictions that must be applied to the corresponding supergroup or channel chat; may be null if none"""
         self.paid_message_star_count = paid_message_star_count
@@ -31413,6 +32337,7 @@ class Supergroup(TlObject):
             "verification_status": self.verification_status,
             "has_direct_messages_group": self.has_direct_messages_group,
             "has_forum_tabs": self.has_forum_tabs,
+            "has_forum_sidebar": self.has_forum_sidebar,
             "restriction_info": self.restriction_info,
             "paid_message_star_count": self.paid_message_star_count,
             "active_story_state": self.active_story_state,
@@ -31452,6 +32377,7 @@ class Supergroup(TlObject):
                 "has_direct_messages_group", False
             )
             data_class.has_forum_tabs = data.get("has_forum_tabs", False)
+            data_class.has_forum_sidebar = data.get("has_forum_sidebar", False)
             data_class.restriction_info = data.get("restriction_info", None)
             data_class.paid_message_star_count = int(
                 data.get("paid_message_star_count", 0)
@@ -34471,7 +35397,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             Point in time \(Unix timestamp\) when the message was sent if the message was from another chat or topic; 0 for messages from the same chat
 
         content (:class:`~pytdbot.types.MessageContent`):
-            Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageStakeDice, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote
+            Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageStakeDice, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, messageVoiceNote, or messageWidget
 
     """
 
@@ -34514,6 +35440,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         | MessagePoll
         | MessageStakeDice
         | MessageStory
+        | MessageWidget
         | MessageChecklist
         | MessageInvoice
         | MessageCall
@@ -34614,7 +35541,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         self.origin_send_date = origin_send_date
         r"""Point in time \(Unix timestamp\) when the message was sent if the message was from another chat or topic; 0 for messages from the same chat"""
         self.content = content
-        r"""Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageStakeDice, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote"""
+        r"""Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageStakeDice, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, messageVoiceNote, or messageWidget"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -35050,6 +35977,7 @@ class EphemeralMessageContent(TlObject):
         | MessagePoll
         | MessageStakeDice
         | MessageStory
+        | MessageWidget
         | MessageChecklist
         | MessageInvoice
         | MessageCall
@@ -35404,6 +36332,7 @@ class Message(TlObject, MessageBoundMethods):
         | MessagePoll
         | MessageStakeDice
         | MessageStory
+        | MessageWidget
         | MessageChecklist
         | MessageInvoice
         | MessageCall
@@ -36741,6 +37670,7 @@ class SponsoredMessage(TlObject):
         | MessagePoll
         | MessageStakeDice
         | MessageStory
+        | MessageWidget
         | MessageChecklist
         | MessageInvoice
         | MessageCall
@@ -37643,583 +38573,6 @@ class FoundFileDownloads(TlObject):
             data_class.total_counts = data.get("total_counts", None)
             data_class.files = data.get("files", None)
             data_class.next_offset = data.get("next_offset", "")
-
-        return data_class
-
-
-class NotificationSettingsScopePrivateChats(TlObject, NotificationSettingsScope):
-    r"""Notification settings applied to all private and secret chats when the corresponding chat setting has a default value"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def __repr__(self):
-        return self.__str__()
-
-    @classmethod
-    def getType(self) -> Literal["notificationSettingsScopePrivateChats"]:
-        return "notificationSettingsScopePrivateChats"
-
-    @classmethod
-    def getClass(self) -> Literal["NotificationSettingsScope"]:
-        return "NotificationSettingsScope"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> NotificationSettingsScopePrivateChats | None:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class NotificationSettingsScopeGroupChats(TlObject, NotificationSettingsScope):
-    r"""Notification settings applied to all basic group and supergroup chats when the corresponding chat setting has a default value"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def __repr__(self):
-        return self.__str__()
-
-    @classmethod
-    def getType(self) -> Literal["notificationSettingsScopeGroupChats"]:
-        return "notificationSettingsScopeGroupChats"
-
-    @classmethod
-    def getClass(self) -> Literal["NotificationSettingsScope"]:
-        return "NotificationSettingsScope"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> NotificationSettingsScopeGroupChats | None:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class NotificationSettingsScopeChannelChats(TlObject, NotificationSettingsScope):
-    r"""Notification settings applied to all channel chats when the corresponding chat setting has a default value"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def __repr__(self):
-        return self.__str__()
-
-    @classmethod
-    def getType(self) -> Literal["notificationSettingsScopeChannelChats"]:
-        return "notificationSettingsScopeChannelChats"
-
-    @classmethod
-    def getClass(self) -> Literal["NotificationSettingsScope"]:
-        return "NotificationSettingsScope"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> NotificationSettingsScopeChannelChats | None:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class ChatNotificationSettings(TlObject):
-    r"""Contains information about notification settings for a chat or a forum topic
-
-    Parameters:
-        use_default_mute_for (:class:`bool`):
-            If true, the value for the relevant type of chat or the forum chat is used instead of mute\_for
-
-        mute_for (:class:`int`):
-            Time left before notifications will be unmuted, in seconds
-
-        use_default_sound (:class:`bool`):
-            If true, the value for the relevant type of chat or the forum chat is used instead of sound\_id
-
-        sound_id (:class:`int`):
-            Identifier of the notification sound to be played for messages; 0 if sound is disabled
-
-        use_default_show_preview (:class:`bool`):
-            If true, the value for the relevant type of chat or the forum chat is used instead of show\_preview
-
-        show_preview (:class:`bool`):
-            True, if message content must be displayed in notifications
-
-        use_default_mute_stories (:class:`bool`):
-            If true, the value for the relevant type of chat is used instead of mute\_stories
-
-        mute_stories (:class:`bool`):
-            True, if story notifications are disabled for the chat
-
-        use_default_story_sound (:class:`bool`):
-            If true, the value for the relevant type of chat is used instead of story\_sound\_id
-
-        story_sound_id (:class:`int`):
-            Identifier of the notification sound to be played for stories; 0 if sound is disabled
-
-        use_default_show_story_poster (:class:`bool`):
-            If true, the value for the relevant type of chat is used instead of show\_story\_poster
-
-        show_story_poster (:class:`bool`):
-            True, if the chat that posted a story must be displayed in notifications
-
-        use_default_disable_pinned_message_notifications (:class:`bool`):
-            If true, the value for the relevant type of chat or the forum chat is used instead of disable\_pinned\_message\_notifications
-
-        disable_pinned_message_notifications (:class:`bool`):
-            If true, notifications for incoming pinned messages will be created as for an ordinary unread message
-
-        use_default_disable_mention_notifications (:class:`bool`):
-            If true, the value for the relevant type of chat or the forum chat is used instead of disable\_mention\_notifications
-
-        disable_mention_notifications (:class:`bool`):
-            If true, notifications for messages with mentions will be created as for an ordinary unread message
-
-    """
-
-    def __init__(
-        self,
-        *,
-        use_default_mute_for: bool | None = False,
-        mute_for: int | None = 0,
-        use_default_sound: bool | None = False,
-        sound_id: int | None = 0,
-        use_default_show_preview: bool | None = False,
-        show_preview: bool | None = False,
-        use_default_mute_stories: bool | None = False,
-        mute_stories: bool | None = False,
-        use_default_story_sound: bool | None = False,
-        story_sound_id: int | None = 0,
-        use_default_show_story_poster: bool | None = False,
-        show_story_poster: bool | None = False,
-        use_default_disable_pinned_message_notifications: bool | None = False,
-        disable_pinned_message_notifications: bool | None = False,
-        use_default_disable_mention_notifications: bool | None = False,
-        disable_mention_notifications: bool | None = False,
-    ) -> None:
-        self.use_default_mute_for = use_default_mute_for
-        r"""If true, the value for the relevant type of chat or the forum chat is used instead of mute\_for"""
-        self.mute_for = mute_for
-        r"""Time left before notifications will be unmuted, in seconds"""
-        self.use_default_sound = use_default_sound
-        r"""If true, the value for the relevant type of chat or the forum chat is used instead of sound\_id"""
-        self.sound_id = sound_id
-        r"""Identifier of the notification sound to be played for messages; 0 if sound is disabled"""
-        self.use_default_show_preview = use_default_show_preview
-        r"""If true, the value for the relevant type of chat or the forum chat is used instead of show\_preview"""
-        self.show_preview = show_preview
-        r"""True, if message content must be displayed in notifications"""
-        self.use_default_mute_stories = use_default_mute_stories
-        r"""If true, the value for the relevant type of chat is used instead of mute\_stories"""
-        self.mute_stories = mute_stories
-        r"""True, if story notifications are disabled for the chat"""
-        self.use_default_story_sound = use_default_story_sound
-        r"""If true, the value for the relevant type of chat is used instead of story\_sound\_id"""
-        self.story_sound_id = story_sound_id
-        r"""Identifier of the notification sound to be played for stories; 0 if sound is disabled"""
-        self.use_default_show_story_poster = use_default_show_story_poster
-        r"""If true, the value for the relevant type of chat is used instead of show\_story\_poster"""
-        self.show_story_poster = show_story_poster
-        r"""True, if the chat that posted a story must be displayed in notifications"""
-        self.use_default_disable_pinned_message_notifications = (
-            use_default_disable_pinned_message_notifications
-        )
-        r"""If true, the value for the relevant type of chat or the forum chat is used instead of disable\_pinned\_message\_notifications"""
-        self.disable_pinned_message_notifications = disable_pinned_message_notifications
-        r"""If true, notifications for incoming pinned messages will be created as for an ordinary unread message"""
-        self.use_default_disable_mention_notifications = (
-            use_default_disable_mention_notifications
-        )
-        r"""If true, the value for the relevant type of chat or the forum chat is used instead of disable\_mention\_notifications"""
-        self.disable_mention_notifications = disable_mention_notifications
-        r"""If true, notifications for messages with mentions will be created as for an ordinary unread message"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def __repr__(self):
-        return self.__str__()
-
-    @classmethod
-    def getType(self) -> Literal["chatNotificationSettings"]:
-        return "chatNotificationSettings"
-
-    @classmethod
-    def getClass(self) -> Literal["ChatNotificationSettings"]:
-        return "ChatNotificationSettings"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "use_default_mute_for": self.use_default_mute_for,
-            "mute_for": self.mute_for,
-            "use_default_sound": self.use_default_sound,
-            "sound_id": self.sound_id,
-            "use_default_show_preview": self.use_default_show_preview,
-            "show_preview": self.show_preview,
-            "use_default_mute_stories": self.use_default_mute_stories,
-            "mute_stories": self.mute_stories,
-            "use_default_story_sound": self.use_default_story_sound,
-            "story_sound_id": self.story_sound_id,
-            "use_default_show_story_poster": self.use_default_show_story_poster,
-            "show_story_poster": self.show_story_poster,
-            "use_default_disable_pinned_message_notifications": self.use_default_disable_pinned_message_notifications,
-            "disable_pinned_message_notifications": self.disable_pinned_message_notifications,
-            "use_default_disable_mention_notifications": self.use_default_disable_mention_notifications,
-            "disable_mention_notifications": self.disable_mention_notifications,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> ChatNotificationSettings | None:
-        if data:
-            data_class = cls()
-            data_class.use_default_mute_for = data.get("use_default_mute_for", False)
-            data_class.mute_for = int(data.get("mute_for", 0))
-            data_class.use_default_sound = data.get("use_default_sound", False)
-            data_class.sound_id = int(data.get("sound_id", 0))
-            data_class.use_default_show_preview = data.get(
-                "use_default_show_preview", False
-            )
-            data_class.show_preview = data.get("show_preview", False)
-            data_class.use_default_mute_stories = data.get(
-                "use_default_mute_stories", False
-            )
-            data_class.mute_stories = data.get("mute_stories", False)
-            data_class.use_default_story_sound = data.get(
-                "use_default_story_sound", False
-            )
-            data_class.story_sound_id = int(data.get("story_sound_id", 0))
-            data_class.use_default_show_story_poster = data.get(
-                "use_default_show_story_poster", False
-            )
-            data_class.show_story_poster = data.get("show_story_poster", False)
-            data_class.use_default_disable_pinned_message_notifications = data.get(
-                "use_default_disable_pinned_message_notifications", False
-            )
-            data_class.disable_pinned_message_notifications = data.get(
-                "disable_pinned_message_notifications", False
-            )
-            data_class.use_default_disable_mention_notifications = data.get(
-                "use_default_disable_mention_notifications", False
-            )
-            data_class.disable_mention_notifications = data.get(
-                "disable_mention_notifications", False
-            )
-
-        return data_class
-
-
-class ScopeNotificationSettings(TlObject):
-    r"""Contains information about notification settings for several chats
-
-    Parameters:
-        mute_for (:class:`int`):
-            Time left before notifications will be unmuted, in seconds
-
-        sound_id (:class:`int`):
-            Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound
-
-        show_preview (:class:`bool`):
-            True, if message content must be displayed in notifications
-
-        use_default_mute_stories (:class:`bool`):
-            If true, story notifications are received only for the first 5 chats from topChatCategoryUsers regardless of the value of mute\_stories
-
-        mute_stories (:class:`bool`):
-            True, if story notifications are disabled
-
-        story_sound_id (:class:`int`):
-            Identifier of the notification sound to be played for stories; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound
-
-        show_story_poster (:class:`bool`):
-            True, if the chat that posted a story must be displayed in notifications
-
-        disable_pinned_message_notifications (:class:`bool`):
-            True, if notifications for incoming pinned messages will be created as for an ordinary unread message
-
-        disable_mention_notifications (:class:`bool`):
-            True, if notifications for messages with mentions will be created as for an ordinary unread message
-
-    """
-
-    def __init__(
-        self,
-        *,
-        mute_for: int | None = 0,
-        sound_id: int | None = 0,
-        show_preview: bool | None = False,
-        use_default_mute_stories: bool | None = False,
-        mute_stories: bool | None = False,
-        story_sound_id: int | None = 0,
-        show_story_poster: bool | None = False,
-        disable_pinned_message_notifications: bool | None = False,
-        disable_mention_notifications: bool | None = False,
-    ) -> None:
-        self.mute_for = mute_for
-        r"""Time left before notifications will be unmuted, in seconds"""
-        self.sound_id = sound_id
-        r"""Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound"""
-        self.show_preview = show_preview
-        r"""True, if message content must be displayed in notifications"""
-        self.use_default_mute_stories = use_default_mute_stories
-        r"""If true, story notifications are received only for the first 5 chats from topChatCategoryUsers regardless of the value of mute\_stories"""
-        self.mute_stories = mute_stories
-        r"""True, if story notifications are disabled"""
-        self.story_sound_id = story_sound_id
-        r"""Identifier of the notification sound to be played for stories; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound"""
-        self.show_story_poster = show_story_poster
-        r"""True, if the chat that posted a story must be displayed in notifications"""
-        self.disable_pinned_message_notifications = disable_pinned_message_notifications
-        r"""True, if notifications for incoming pinned messages will be created as for an ordinary unread message"""
-        self.disable_mention_notifications = disable_mention_notifications
-        r"""True, if notifications for messages with mentions will be created as for an ordinary unread message"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def __repr__(self):
-        return self.__str__()
-
-    @classmethod
-    def getType(self) -> Literal["scopeNotificationSettings"]:
-        return "scopeNotificationSettings"
-
-    @classmethod
-    def getClass(self) -> Literal["ScopeNotificationSettings"]:
-        return "ScopeNotificationSettings"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "mute_for": self.mute_for,
-            "sound_id": self.sound_id,
-            "show_preview": self.show_preview,
-            "use_default_mute_stories": self.use_default_mute_stories,
-            "mute_stories": self.mute_stories,
-            "story_sound_id": self.story_sound_id,
-            "show_story_poster": self.show_story_poster,
-            "disable_pinned_message_notifications": self.disable_pinned_message_notifications,
-            "disable_mention_notifications": self.disable_mention_notifications,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> ScopeNotificationSettings | None:
-        if data:
-            data_class = cls()
-            data_class.mute_for = int(data.get("mute_for", 0))
-            data_class.sound_id = int(data.get("sound_id", 0))
-            data_class.show_preview = data.get("show_preview", False)
-            data_class.use_default_mute_stories = data.get(
-                "use_default_mute_stories", False
-            )
-            data_class.mute_stories = data.get("mute_stories", False)
-            data_class.story_sound_id = int(data.get("story_sound_id", 0))
-            data_class.show_story_poster = data.get("show_story_poster", False)
-            data_class.disable_pinned_message_notifications = data.get(
-                "disable_pinned_message_notifications", False
-            )
-            data_class.disable_mention_notifications = data.get(
-                "disable_mention_notifications", False
-            )
-
-        return data_class
-
-
-class ReactionNotificationSourceNone(TlObject, ReactionNotificationSource):
-    r"""Notifications for reactions are disabled"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def __repr__(self):
-        return self.__str__()
-
-    @classmethod
-    def getType(self) -> Literal["reactionNotificationSourceNone"]:
-        return "reactionNotificationSourceNone"
-
-    @classmethod
-    def getClass(self) -> Literal["ReactionNotificationSource"]:
-        return "ReactionNotificationSource"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> ReactionNotificationSourceNone | None:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class ReactionNotificationSourceContacts(TlObject, ReactionNotificationSource):
-    r"""Notifications for reactions are shown only for reactions from contacts"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def __repr__(self):
-        return self.__str__()
-
-    @classmethod
-    def getType(self) -> Literal["reactionNotificationSourceContacts"]:
-        return "reactionNotificationSourceContacts"
-
-    @classmethod
-    def getClass(self) -> Literal["ReactionNotificationSource"]:
-        return "ReactionNotificationSource"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> ReactionNotificationSourceContacts | None:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class ReactionNotificationSourceAll(TlObject, ReactionNotificationSource):
-    r"""Notifications for reactions are shown for all reactions"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def __repr__(self):
-        return self.__str__()
-
-    @classmethod
-    def getType(self) -> Literal["reactionNotificationSourceAll"]:
-        return "reactionNotificationSourceAll"
-
-    @classmethod
-    def getClass(self) -> Literal["ReactionNotificationSource"]:
-        return "ReactionNotificationSource"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> ReactionNotificationSourceAll | None:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class ReactionNotificationSettings(TlObject):
-    r"""Contains information about notification settings for reactions and poll votes
-
-    Parameters:
-        message_reaction_source (:class:`~pytdbot.types.ReactionNotificationSource`):
-            Source of message reactions for which notifications are shown
-
-        story_reaction_source (:class:`~pytdbot.types.ReactionNotificationSource`):
-            Source of story reactions for which notifications are shown
-
-        poll_vote_source (:class:`~pytdbot.types.ReactionNotificationSource`):
-            Source of poll votes for which notifications are shown
-
-        sound_id (:class:`int`):
-            Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound
-
-        show_preview (:class:`bool`):
-            True, if reaction sender and emoji must be displayed in notifications
-
-    """
-
-    def __init__(
-        self,
-        *,
-        message_reaction_source: ReactionNotificationSourceNone
-        | ReactionNotificationSourceContacts
-        | ReactionNotificationSourceAll
-        | None = None,
-        story_reaction_source: ReactionNotificationSourceNone
-        | ReactionNotificationSourceContacts
-        | ReactionNotificationSourceAll
-        | None = None,
-        poll_vote_source: ReactionNotificationSourceNone
-        | ReactionNotificationSourceContacts
-        | ReactionNotificationSourceAll
-        | None = None,
-        sound_id: int | None = 0,
-        show_preview: bool | None = False,
-    ) -> None:
-        self.message_reaction_source = message_reaction_source
-        r"""Source of message reactions for which notifications are shown"""
-        self.story_reaction_source = story_reaction_source
-        r"""Source of story reactions for which notifications are shown"""
-        self.poll_vote_source = poll_vote_source
-        r"""Source of poll votes for which notifications are shown"""
-        self.sound_id = sound_id
-        r"""Identifier of the notification sound to be played; 0 if sound is disabled; pass \-1 to use the app\-dependent default sound"""
-        self.show_preview = show_preview
-        r"""True, if reaction sender and emoji must be displayed in notifications"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def __repr__(self):
-        return self.__str__()
-
-    @classmethod
-    def getType(self) -> Literal["reactionNotificationSettings"]:
-        return "reactionNotificationSettings"
-
-    @classmethod
-    def getClass(self) -> Literal["ReactionNotificationSettings"]:
-        return "ReactionNotificationSettings"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "message_reaction_source": self.message_reaction_source,
-            "story_reaction_source": self.story_reaction_source,
-            "poll_vote_source": self.poll_vote_source,
-            "sound_id": self.sound_id,
-            "show_preview": self.show_preview,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> ReactionNotificationSettings | None:
-        if data:
-            data_class = cls()
-            data_class.message_reaction_source = data.get(
-                "message_reaction_source", None
-            )
-            data_class.story_reaction_source = data.get("story_reaction_source", None)
-            data_class.poll_vote_source = data.get("poll_vote_source", None)
-            data_class.sound_id = int(data.get("sound_id", 0))
-            data_class.show_preview = data.get("show_preview", False)
 
         return data_class
 
@@ -43025,7 +43378,7 @@ class MessageThreadInfo(TlObject):
             Approximate number of unread messages in the message thread
 
         messages (list[:class:`~pytdbot.types.Message`]):
-            The messages from which the thread starts\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+            The messages from which the thread starts\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\.id\)
 
         draft_message (:class:`~pytdbot.types.DraftMessage`):
             A draft of a message in the message thread; may be null if none
@@ -43051,7 +43404,7 @@ class MessageThreadInfo(TlObject):
         self.unread_message_count = unread_message_count
         r"""Approximate number of unread messages in the message thread"""
         self.messages = messages or []
-        r"""The messages from which the thread starts\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)"""
+        r"""The messages from which the thread starts\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\.id\)"""
         self.draft_message = draft_message
         r"""A draft of a message in the message thread; may be null if none"""
 
@@ -60010,6 +60363,136 @@ class MessageStory(TlObject, MessageContent):
         return data_class
 
 
+class MessageWidget(TlObject, MessageContent):
+    r"""A message with an HTML widget
+
+    Parameters:
+        width (:class:`int`):
+            Width of the widget; 0 if the widget must occupy the whole width of the message bubble
+
+        height (:class:`int`):
+            Height of the widget; 0 if the height of the widget isn't fixed
+
+        html (:class:`str`):
+            HTML code of the widget
+
+        public_data (:class:`str`):
+            Public data of the widget
+
+        chat_data (:class:`str`):
+            Data of the widget, which is specific to the chat
+
+        widget_id (:class:`int`):
+            Identifier of the shared widget; 0 if the widget isn't shared
+
+        caption (:class:`~pytdbot.types.FormattedText`):
+            Widget caption
+
+        show_caption_above_media (:class:`bool`):
+            True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget
+
+        is_copy (:class:`bool`):
+            True, if the message is a copy of the widget
+
+        can_send_queries (:class:`bool`):
+            True, if the widget can send queries to the bot
+
+        can_send_background_queries (:class:`bool`):
+            True, if the widget can send queries to the bot in the background
+
+    """
+
+    def __init__(
+        self,
+        *,
+        width: int | None = 0,
+        height: int | None = 0,
+        html: str | None = "",
+        public_data: str | None = "",
+        chat_data: str | None = "",
+        widget_id: int | None = 0,
+        caption: FormattedText | None = None,
+        show_caption_above_media: bool | None = False,
+        is_copy: bool | None = False,
+        can_send_queries: bool | None = False,
+        can_send_background_queries: bool | None = False,
+    ) -> None:
+        self.width = width
+        r"""Width of the widget; 0 if the widget must occupy the whole width of the message bubble"""
+        self.height = height
+        r"""Height of the widget; 0 if the height of the widget isn't fixed"""
+        self.html = html
+        r"""HTML code of the widget"""
+        self.public_data = public_data
+        r"""Public data of the widget"""
+        self.chat_data = chat_data
+        r"""Data of the widget, which is specific to the chat"""
+        self.widget_id = widget_id
+        r"""Identifier of the shared widget; 0 if the widget isn't shared"""
+        self.caption = caption
+        r"""Widget caption"""
+        self.show_caption_above_media = show_caption_above_media
+        r"""True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget"""
+        self.is_copy = is_copy
+        r"""True, if the message is a copy of the widget"""
+        self.can_send_queries = can_send_queries
+        r"""True, if the widget can send queries to the bot"""
+        self.can_send_background_queries = can_send_background_queries
+        r"""True, if the widget can send queries to the bot in the background"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["messageWidget"]:
+        return "messageWidget"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "width": self.width,
+            "height": self.height,
+            "html": self.html,
+            "public_data": self.public_data,
+            "chat_data": self.chat_data,
+            "widget_id": self.widget_id,
+            "caption": self.caption,
+            "show_caption_above_media": self.show_caption_above_media,
+            "is_copy": self.is_copy,
+            "can_send_queries": self.can_send_queries,
+            "can_send_background_queries": self.can_send_background_queries,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> MessageWidget | None:
+        if data:
+            data_class = cls()
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+            data_class.html = data.get("html", "")
+            data_class.public_data = data.get("public_data", "")
+            data_class.chat_data = data.get("chat_data", "")
+            data_class.widget_id = int(data.get("widget_id", 0))
+            data_class.caption = data.get("caption", None)
+            data_class.show_caption_above_media = data.get(
+                "show_caption_above_media", False
+            )
+            data_class.is_copy = data.get("is_copy", False)
+            data_class.can_send_queries = data.get("can_send_queries", False)
+            data_class.can_send_background_queries = data.get(
+                "can_send_background_queries", False
+            )
+
+        return data_class
+
+
 class MessageChecklist(TlObject, MessageContent):
     r"""A message with a checklist
 
@@ -66120,7 +66603,7 @@ class InputThumbnail(TlObject):
 
     Parameters:
         thumbnail (:class:`~pytdbot.types.InputFile`):
-            Thumbnail file to send\. Sending thumbnails by file\_id is currently not supported
+            Thumbnail file to send\. Sending thumbnails by inputFileId or inputFileRemote is currently not supported
 
         width (:class:`int`):
             Thumbnail width, usually shouldn't exceed 320\. Use 0 if unknown
@@ -66142,7 +66625,7 @@ class InputThumbnail(TlObject):
         height: int | None = 0,
     ) -> None:
         self.thumbnail = thumbnail
-        r"""Thumbnail file to send\. Sending thumbnails by file\_id is currently not supported"""
+        r"""Thumbnail file to send\. Sending thumbnails by inputFileId or inputFileRemote is currently not supported"""
         self.width = width
         r"""Thumbnail width, usually shouldn't exceed 320\. Use 0 if unknown"""
         self.height = height
@@ -70846,6 +71329,190 @@ class InputMessageChecklist(TlObject, InputMessageContent):
         return data_class
 
 
+class InputMessageWidget(TlObject, InputMessageContent):
+    r"""A message with an HTML widget; for bots only
+
+    Parameters:
+        width (:class:`int`):
+            Width of the widget; 0 if the widget must occupy the whole width of the message bubble
+
+        height (:class:`int`):
+            Height of the widget; 0 if the height of the widget isn't fixed
+
+        html (:class:`str`):
+            HTML code of the widget; 1\-32768 bytes; must not exceed 4096 bytes when compressed by zlib with the maximal compression level
+
+        public_data (:class:`str`):
+            Public data of the widget, which will be available in copies and forwards of the message
+
+        chat_data (:class:`str`):
+            Data of the widget, which is specific to the chat
+
+        caption (:class:`~pytdbot.types.FormattedText`):
+            Widget caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
+
+        show_caption_above_media (:class:`bool`):
+            True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget
+
+        allow_queries (:class:`bool`):
+            Pass true to allow the widget to send queries to the bot
+
+        is_shared (:class:`bool`):
+            Pass true to create a shared widget, which can be sent again by its identifier
+
+    """
+
+    def __init__(
+        self,
+        *,
+        width: int | None = 0,
+        height: int | None = 0,
+        html: str | None = "",
+        public_data: str | None = "",
+        chat_data: str | None = "",
+        caption: FormattedText | None = None,
+        show_caption_above_media: bool | None = False,
+        allow_queries: bool | None = False,
+        is_shared: bool | None = False,
+    ) -> None:
+        self.width = width
+        r"""Width of the widget; 0 if the widget must occupy the whole width of the message bubble"""
+        self.height = height
+        r"""Height of the widget; 0 if the height of the widget isn't fixed"""
+        self.html = html
+        r"""HTML code of the widget; 1\-32768 bytes; must not exceed 4096 bytes when compressed by zlib with the maximal compression level"""
+        self.public_data = public_data
+        r"""Public data of the widget, which will be available in copies and forwards of the message"""
+        self.chat_data = chat_data
+        r"""Data of the widget, which is specific to the chat"""
+        self.caption = caption
+        r"""Widget caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
+        self.show_caption_above_media = show_caption_above_media
+        r"""True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget"""
+        self.allow_queries = allow_queries
+        r"""Pass true to allow the widget to send queries to the bot"""
+        self.is_shared = is_shared
+        r"""Pass true to create a shared widget, which can be sent again by its identifier"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["inputMessageWidget"]:
+        return "inputMessageWidget"
+
+    @classmethod
+    def getClass(self) -> Literal["InputMessageContent"]:
+        return "InputMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "width": self.width,
+            "height": self.height,
+            "html": self.html,
+            "public_data": self.public_data,
+            "chat_data": self.chat_data,
+            "caption": self.caption,
+            "show_caption_above_media": self.show_caption_above_media,
+            "allow_queries": self.allow_queries,
+            "is_shared": self.is_shared,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputMessageWidget | None:
+        if data:
+            data_class = cls()
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+            data_class.html = data.get("html", "")
+            data_class.public_data = data.get("public_data", "")
+            data_class.chat_data = data.get("chat_data", "")
+            data_class.caption = data.get("caption", None)
+            data_class.show_caption_above_media = data.get(
+                "show_caption_above_media", False
+            )
+            data_class.allow_queries = data.get("allow_queries", False)
+            data_class.is_shared = data.get("is_shared", False)
+
+        return data_class
+
+
+class InputMessageSharedWidget(TlObject, InputMessageContent):
+    r"""A message with an existing shared widget; for bots only
+
+    Parameters:
+        widget_id (:class:`int`):
+            Identifier of the shared widget
+
+        chat_data (:class:`str`):
+            Data of the widget, which is specific to the chat
+
+        caption (:class:`~pytdbot.types.FormattedText`):
+            Widget caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
+
+        show_caption_above_media (:class:`bool`):
+            True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget
+
+    """
+
+    def __init__(
+        self,
+        *,
+        widget_id: int | None = 0,
+        chat_data: str | None = "",
+        caption: FormattedText | None = None,
+        show_caption_above_media: bool | None = False,
+    ) -> None:
+        self.widget_id = widget_id
+        r"""Identifier of the shared widget"""
+        self.chat_data = chat_data
+        r"""Data of the widget, which is specific to the chat"""
+        self.caption = caption
+        r"""Widget caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
+        self.show_caption_above_media = show_caption_above_media
+        r"""True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["inputMessageSharedWidget"]:
+        return "inputMessageSharedWidget"
+
+    @classmethod
+    def getClass(self) -> Literal["InputMessageContent"]:
+        return "InputMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "widget_id": self.widget_id,
+            "chat_data": self.chat_data,
+            "caption": self.caption,
+            "show_caption_above_media": self.show_caption_above_media,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> InputMessageSharedWidget | None:
+        if data:
+            data_class = cls()
+            data_class.widget_id = int(data.get("widget_id", 0))
+            data_class.chat_data = data.get("chat_data", "")
+            data_class.caption = data.get("caption", None)
+            data_class.show_caption_above_media = data.get(
+                "show_caption_above_media", False
+            )
+
+        return data_class
+
+
 class InputMessageForwarded(TlObject, InputMessageContent):
     r"""A forwarded message
 
@@ -74358,55 +75025,6 @@ class InputStoryAreaTypeLocation(TlObject, InputStoryAreaType):
         return data_class
 
 
-class InputStoryAreaTypeFoundVenue(TlObject, InputStoryAreaType):
-    r"""An area pointing to a venue found by the bot getOption\(\"venue\_search\_bot\_username\"\)
-
-    Parameters:
-        query_id (:class:`int`):
-            Identifier of the inline query, used to find the venue
-
-        result_id (:class:`str`):
-            Identifier of the inline query result
-
-    """
-
-    def __init__(self, *, query_id: int | None = 0, result_id: str | None = "") -> None:
-        self.query_id = query_id
-        r"""Identifier of the inline query, used to find the venue"""
-        self.result_id = result_id
-        r"""Identifier of the inline query result"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def __repr__(self):
-        return self.__str__()
-
-    @classmethod
-    def getType(self) -> Literal["inputStoryAreaTypeFoundVenue"]:
-        return "inputStoryAreaTypeFoundVenue"
-
-    @classmethod
-    def getClass(self) -> Literal["InputStoryAreaType"]:
-        return "InputStoryAreaType"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "query_id": self.query_id,
-            "result_id": self.result_id,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> InputStoryAreaTypeFoundVenue | None:
-        if data:
-            data_class = cls()
-            data_class.query_id = int(data.get("query_id", 0))
-            data_class.result_id = data.get("result_id", "")
-
-        return data_class
-
-
 class InputStoryAreaTypePreviousVenue(TlObject, InputStoryAreaType):
     r"""An area pointing to a venue already added to the story
 
@@ -74729,7 +75347,6 @@ class InputStoryArea(TlObject):
         *,
         position: AreaPosition | None = None,
         type: InputStoryAreaTypeLocation
-        | InputStoryAreaTypeFoundVenue
         | InputStoryAreaTypePreviousVenue
         | InputStoryAreaTypeSuggestedReaction
         | InputStoryAreaTypeMessage
@@ -74775,13 +75392,13 @@ class InputStoryAreas(TlObject):
 
     Parameters:
         areas (list[:class:`~pytdbot.types.InputStoryArea`]):
-            List of input story areas\. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption\(\"story\_suggested\_reaction\_area\_count\_max\"\) inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption\(\"story\_link\_area\_count\_max\"\) inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, up to 3 inputStoryAreaTypeWeather areas, and up to 1 inputStoryAreaTypeUpgradedGift area
+            List of input story areas\. Currently, a story can have up to 10 inputStoryAreaTypeLocation and inputStoryAreaTypePreviousVenue areas, up to getOption\(\"story\_suggested\_reaction\_area\_count\_max\"\) inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption\(\"story\_link\_area\_count\_max\"\) inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, up to 3 inputStoryAreaTypeWeather areas, and up to 1 inputStoryAreaTypeUpgradedGift area
 
     """
 
     def __init__(self, *, areas: list[InputStoryArea] | None = None) -> None:
         self.areas = areas or []
-        r"""List of input story areas\. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption\(\"story\_suggested\_reaction\_area\_count\_max\"\) inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption\(\"story\_link\_area\_count\_max\"\) inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, up to 3 inputStoryAreaTypeWeather areas, and up to 1 inputStoryAreaTypeUpgradedGift area"""
+        r"""List of input story areas\. Currently, a story can have up to 10 inputStoryAreaTypeLocation and inputStoryAreaTypePreviousVenue areas, up to getOption\(\"story\_suggested\_reaction\_area\_count\_max\"\) inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption\(\"story\_link\_area\_count\_max\"\) inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, up to 3 inputStoryAreaTypeWeather areas, and up to 1 inputStoryAreaTypeUpgradedGift area"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -75722,6 +76339,9 @@ class Story(TlObject):
         caption (:class:`~pytdbot.types.FormattedText`):
             Caption of the story
 
+        music (:class:`~pytdbot.types.Audio`):
+            Music attached to the story; may be null if none
+
         album_ids (list[:class:`int`]):
             Identifiers of story albums to which the story is added; only for manageable stories
 
@@ -75767,6 +76387,7 @@ class Story(TlObject):
         | None = None,
         areas: list[StoryArea] | None = None,
         caption: FormattedText | None = None,
+        music: Audio | None = None,
         album_ids: list[int] | None = None,
     ) -> None:
         self.id = id
@@ -75821,6 +76442,8 @@ class Story(TlObject):
         r"""Clickable areas to be shown on the story content"""
         self.caption = caption
         r"""Caption of the story"""
+        self.music = music
+        r"""Music attached to the story; may be null if none"""
         self.album_ids = album_ids or []
         r"""Identifiers of story albums to which the story is added; only for manageable stories"""
 
@@ -75867,6 +76490,7 @@ class Story(TlObject):
             "content": self.content,
             "areas": self.areas,
             "caption": self.caption,
+            "music": self.music,
             "album_ids": self.album_ids,
         }
 
@@ -75908,6 +76532,7 @@ class Story(TlObject):
             data_class.content = data.get("content", None)
             data_class.areas = data.get("areas", None)
             data_class.caption = data.get("caption", None)
+            data_class.music = data.get("music", None)
             data_class.album_ids = data.get("album_ids", None)
 
         return data_class
@@ -76278,7 +76903,7 @@ class ChatActiveStories(TlObject):
             Identifier of the story list in which the stories are shown; may be null if the stories aren't shown in a story list
 
         order (:class:`int`):
-            A parameter used to determine order of the stories in the story list; 0 if the stories don't need to be shown in the story list\. Stories must be sorted by the pair \(order, story\_poster\_chat\_id\) in descending order
+            A parameter used to determine order of the stories in the story list; 0 if the stories don't need to be shown in the story list\. Stories must be sorted by the pair \(order, chat\_id\) in descending order
 
         can_be_archived (:class:`bool`):
             True, if the stories are shown in the main story list and can be archived; otherwise, the stories can be hidden from the main story list only by calling removeTopChat with topChatCategoryUsers and the chat\_id\. Stories of the current user can't be archived nor hidden using removeTopChat
@@ -76306,7 +76931,7 @@ class ChatActiveStories(TlObject):
         self.list = list
         r"""Identifier of the story list in which the stories are shown; may be null if the stories aren't shown in a story list"""
         self.order = order
-        r"""A parameter used to determine order of the stories in the story list; 0 if the stories don't need to be shown in the story list\. Stories must be sorted by the pair \(order, story\_poster\_chat\_id\) in descending order"""
+        r"""A parameter used to determine order of the stories in the story list; 0 if the stories don't need to be shown in the story list\. Stories must be sorted by the pair \(order, chat\_id\) in descending order"""
         self.can_be_archived = can_be_archived
         r"""True, if the stories are shown in the main story list and can be archived; otherwise, the stories can be hidden from the main story list only by calling removeTopChat with topChatCategoryUsers and the chat\_id\. Stories of the current user can't be archived nor hidden using removeTopChat"""
         self.max_read_story_id = max_read_story_id
@@ -76697,6 +77322,7 @@ class QuickReplyMessage(TlObject):
         | MessagePoll
         | MessageStakeDice
         | MessageStory
+        | MessageWidget
         | MessageChecklist
         | MessageInvoice
         | MessageCall
@@ -76997,6 +77623,7 @@ class WelcomeMessage(TlObject):
         | MessagePoll
         | MessageStakeDice
         | MessageStory
+        | MessageWidget
         | MessageChecklist
         | MessageInvoice
         | MessageCall
@@ -82433,6 +83060,45 @@ class SpeechRecognitionResultError(TlObject, SpeechRecognitionResult):
         return data_class
 
 
+class SpeechRecognitionLanguages(TlObject):
+    r"""Contains a list of probable languages of speech
+
+    Parameters:
+        language_codes (list[:class:`str`]):
+            IETF language tags of the languages in descending order of their probability; for example, \"en\-US\"
+
+    """
+
+    def __init__(self, *, language_codes: list[str] | None = None) -> None:
+        self.language_codes = language_codes or []
+        r"""IETF language tags of the languages in descending order of their probability; for example, \"en\-US\""""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["speechRecognitionLanguages"]:
+        return "speechRecognitionLanguages"
+
+    @classmethod
+    def getClass(self) -> Literal["SpeechRecognitionLanguages"]:
+        return "SpeechRecognitionLanguages"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "language_codes": self.language_codes}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> SpeechRecognitionLanguages | None:
+        if data:
+            data_class = cls()
+            data_class.language_codes = data.get("language_codes", None)
+
+        return data_class
+
+
 class BusinessConnection(TlObject):
     r"""Describes a connection of the bot with a business account
 
@@ -83322,7 +83988,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact
 
     """
 
@@ -83365,6 +84031,8 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -83389,7 +84057,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAnimation, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -83469,7 +84137,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact
 
     """
 
@@ -83510,6 +84178,8 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -83530,7 +84200,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -83600,7 +84270,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact
 
     """
 
@@ -83639,6 +84309,8 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -83655,7 +84327,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageAudio, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -83721,7 +84393,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact
 
     """
 
@@ -83760,6 +84432,8 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -83776,7 +84450,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -83851,7 +84525,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact
 
     """
 
@@ -83893,6 +84567,8 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -83915,7 +84591,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageDocument, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -84059,7 +84735,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact
 
     """
 
@@ -84100,6 +84776,8 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -84120,7 +84798,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -84196,7 +84874,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact
 
     """
 
@@ -84237,6 +84915,8 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -84257,7 +84937,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessagePhoto, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -84327,7 +85007,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact
 
     """
 
@@ -84366,6 +85046,8 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -84382,7 +85064,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageSticker, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -84448,7 +85130,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact
 
     """
 
@@ -84487,6 +85169,8 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -84503,7 +85187,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -84581,7 +85265,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact
 
     """
 
@@ -84624,6 +85308,8 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -84648,7 +85334,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVideo, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -84719,7 +85405,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
         input_message_content (:class:`~pytdbot.types.InputMessageContent`):
-            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact
+            The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact
 
     """
 
@@ -84757,6 +85443,8 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
         | InputMessageStakeDice
         | InputMessageStory
         | InputMessageChecklist
+        | InputMessageWidget
+        | InputMessageSharedWidget
         | InputMessageForwarded
         | None = None,
     ) -> None:
@@ -84771,7 +85459,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
         self.reply_markup = reply_markup
         r"""The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null"""
         self.input_message_content = input_message_content
-        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, or inputMessageContact"""
+        r"""The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageRichMessage, inputMessageVoiceNote, inputMessageInvoice, inputMessageLiveLocation, inputMessageLocation, inputMessageVenue, inputMessageWidget, inputMessageSharedWidget, or inputMessageContact"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -86096,6 +86784,305 @@ class CallbackQueryAnswer(TlObject):
             data_class.text = data.get("text", "")
             data_class.show_alert = data.get("show_alert", False)
             data_class.url = data.get("url", "")
+
+        return data_class
+
+
+class WidgetQueryWallet(TlObject):
+    r"""Describes a TON wallet of the user, who is used in a widget query
+
+    Parameters:
+        address (:class:`str`):
+            Address of the wallet
+
+        gram_amount (:class:`int`):
+            Balance of the wallet, in the smallest units of the cryptocurrency
+
+        public_key (:class:`bytes`):
+            Public key of the wallet; may be empty if unknown
+
+        state_init (:class:`bytes`):
+            Serialized StateInit of the wallet contract; must be empty if and only if public\_key is empty
+
+    """
+
+    def __init__(
+        self,
+        *,
+        address: str | None = "",
+        gram_amount: int | None = 0,
+        public_key: bytes | None = b"",
+        state_init: bytes | None = b"",
+    ) -> None:
+        self.address = address
+        r"""Address of the wallet"""
+        self.gram_amount = gram_amount
+        r"""Balance of the wallet, in the smallest units of the cryptocurrency"""
+        self.public_key = public_key
+        r"""Public key of the wallet; may be empty if unknown"""
+        self.state_init = state_init
+        r"""Serialized StateInit of the wallet contract; must be empty if and only if public\_key is empty"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["widgetQueryWallet"]:
+        return "widgetQueryWallet"
+
+    @classmethod
+    def getClass(self) -> Literal["WidgetQueryWallet"]:
+        return "WidgetQueryWallet"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "address": self.address,
+            "gram_amount": self.gram_amount,
+            "public_key": self.public_key,
+            "state_init": self.state_init,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WidgetQueryWallet | None:
+        if data:
+            data_class = cls()
+            data_class.address = data.get("address", "")
+            data_class.gram_amount = int(data.get("gram_amount", 0))
+            data_class.public_key = b64decode(data.get("public_key", b""))
+            data_class.state_init = b64decode(data.get("state_init", b""))
+
+        return data_class
+
+
+class WidgetQueryTypeData(TlObject, WidgetQueryType):
+    r"""The query contains data for the bot
+
+    Parameters:
+        with_wallet (:class:`bool`):
+            True, if the TON wallet card of the user who sends the query is sent to the bot along with the query
+
+    """
+
+    def __init__(self, *, with_wallet: bool | None = False) -> None:
+        self.with_wallet = with_wallet
+        r"""True, if the TON wallet card of the user who sends the query is sent to the bot along with the query"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["widgetQueryTypeData"]:
+        return "widgetQueryTypeData"
+
+    @classmethod
+    def getClass(self) -> Literal["WidgetQueryType"]:
+        return "WidgetQueryType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "with_wallet": self.with_wallet}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WidgetQueryTypeData | None:
+        if data:
+            data_class = cls()
+            data_class.with_wallet = data.get("with_wallet", False)
+
+        return data_class
+
+
+class WidgetQueryTypeSignData(TlObject, WidgetQueryType):
+    r"""The query contains data signed by a TON wallet of the user who sends the query
+
+    Parameters:
+        wallet (:class:`~pytdbot.types.WidgetQueryWallet`):
+            The wallet that signed the data
+
+        sign_data (:class:`str`):
+            JSON\-serialized signed data
+
+    """
+
+    def __init__(
+        self, *, wallet: WidgetQueryWallet | None = None, sign_data: str | None = ""
+    ) -> None:
+        self.wallet = wallet
+        r"""The wallet that signed the data"""
+        self.sign_data = sign_data
+        r"""JSON\-serialized signed data"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["widgetQueryTypeSignData"]:
+        return "widgetQueryTypeSignData"
+
+    @classmethod
+    def getClass(self) -> Literal["WidgetQueryType"]:
+        return "WidgetQueryType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "wallet": self.wallet,
+            "sign_data": self.sign_data,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WidgetQueryTypeSignData | None:
+        if data:
+            data_class = cls()
+            data_class.wallet = data.get("wallet", None)
+            data_class.sign_data = data.get("sign_data", "")
+
+        return data_class
+
+
+class WidgetQueryTypeSentTransaction(TlObject, WidgetQueryType):
+    r"""The query notifies the bot about a transaction sent from a TON wallet of the user who sends the query
+
+    Parameters:
+        wallet (:class:`~pytdbot.types.WidgetQueryWallet`):
+            The wallet from which the transaction was sent
+
+        msg_hash (:class:`str`):
+            Value of msg\_hash of the transaction
+
+    """
+
+    def __init__(
+        self, *, wallet: WidgetQueryWallet | None = None, msg_hash: str | None = ""
+    ) -> None:
+        self.wallet = wallet
+        r"""The wallet from which the transaction was sent"""
+        self.msg_hash = msg_hash
+        r"""Value of msg\_hash of the transaction"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["widgetQueryTypeSentTransaction"]:
+        return "widgetQueryTypeSentTransaction"
+
+    @classmethod
+    def getClass(self) -> Literal["WidgetQueryType"]:
+        return "WidgetQueryType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "wallet": self.wallet,
+            "msg_hash": self.msg_hash,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WidgetQueryTypeSentTransaction | None:
+        if data:
+            data_class = cls()
+            data_class.wallet = data.get("wallet", None)
+            data_class.msg_hash = data.get("msg_hash", "")
+
+        return data_class
+
+
+class WidgetQueryAnswer(TlObject):
+    r"""Contains an answer to a widget query
+
+    Parameters:
+        data (:class:`str`):
+            Data returned by the bot
+
+    """
+
+    def __init__(self, *, data: str | None = "") -> None:
+        self.data = data
+        r"""Data returned by the bot"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["widgetQueryAnswer"]:
+        return "widgetQueryAnswer"
+
+    @classmethod
+    def getClass(self) -> Literal["WidgetQueryAnswer"]:
+        return "WidgetQueryAnswer"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "data": self.data}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WidgetQueryAnswer | None:
+        if data:
+            data_class = cls()
+            data_class.data = data.get("data", "")
+
+        return data_class
+
+
+class WidgetPublicData(TlObject):
+    r"""Contains public data of a widget
+
+    Parameters:
+        data (:class:`str`):
+            Public data of the widget
+
+        poll_period (:class:`int`):
+            The number of seconds after which the public data can be polled again
+
+    """
+
+    def __init__(self, *, data: str | None = "", poll_period: int | None = 0) -> None:
+        self.data = data
+        r"""Public data of the widget"""
+        self.poll_period = poll_period
+        r"""The number of seconds after which the public data can be polled again"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["widgetPublicData"]:
+        return "widgetPublicData"
+
+    @classmethod
+    def getClass(self) -> Literal["WidgetPublicData"]:
+        return "WidgetPublicData"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "data": self.data,
+            "poll_period": self.poll_period,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> WidgetPublicData | None:
+        if data:
+            data_class = cls()
+            data_class.data = data.get("data", "")
+            data_class.poll_period = int(data.get("poll_period", 0))
 
         return data_class
 
@@ -114598,6 +115585,7 @@ class UpdateMessageContent(TlObject, Update):
         | MessagePoll
         | MessageStakeDice
         | MessageStory
+        | MessageWidget
         | MessageChecklist
         | MessageInvoice
         | MessageCall
@@ -118609,6 +119597,7 @@ class UpdatePendingMessage(TlObject, Update):
         | MessagePoll
         | MessageStakeDice
         | MessageStory
+        | MessageWidget
         | MessageChecklist
         | MessageInvoice
         | MessageCall
@@ -119313,6 +120302,7 @@ class UpdateServiceNotification(TlObject, Update):
         | MessagePoll
         | MessageStakeDice
         | MessageStory
+        | MessageWidget
         | MessageChecklist
         | MessageInvoice
         | MessageCall
@@ -123249,6 +124239,57 @@ class UpdateSpeechRecognitionTrial(TlObject, Update):
         return data_class
 
 
+class UpdateSpeechRecognitionInFile(TlObject, Update):
+    r"""Speech in an audio file was partially recognized\. The final result will be returned by the corresponding recognizeSpeechInFile request
+
+    Parameters:
+        recognition_id (:class:`int`):
+            Identifier of the speech recognition as specified in recognizeSpeechInFile
+
+        partial_text (:class:`str`):
+            Partially recognized text
+
+    """
+
+    def __init__(
+        self, *, recognition_id: int | None = 0, partial_text: str | None = ""
+    ) -> None:
+        self.recognition_id = recognition_id
+        r"""Identifier of the speech recognition as specified in recognizeSpeechInFile"""
+        self.partial_text = partial_text
+        r"""Partially recognized text"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateSpeechRecognitionInFile"]:
+        return "updateSpeechRecognitionInFile"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "recognition_id": self.recognition_id,
+            "partial_text": self.partial_text,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateSpeechRecognitionInFile | None:
+        if data:
+            data_class = cls()
+            data_class.recognition_id = int(data.get("recognition_id", 0))
+            data_class.partial_text = data.get("partial_text", "")
+
+        return data_class
+
+
 class UpdateGroupCallMessageLevels(TlObject, Update):
     r"""The levels of live story group call messages have changed
 
@@ -124397,6 +125438,329 @@ class UpdateNewBusinessCallbackQuery(TlObject, Update):
             data_class.message = data.get("message", None)
             data_class.chat_instance = int(data.get("chat_instance", 0))
             data_class.payload = data.get("payload", None)
+
+        return data_class
+
+
+class UpdateNewWidgetQuery(TlObject, Update):
+    r"""A new incoming widget query; for bots only
+
+    Parameters:
+        id (:class:`int`):
+            Unique query identifier
+
+        sender_user_id (:class:`int`):
+            Identifier of the user who sent the query
+
+        chat_id (:class:`int`):
+            Identifier of the chat where the query was sent
+
+        message_id (:class:`int`):
+            Identifier of the message from which the query originated
+
+        chat_instance (:class:`int`):
+            Identifier that uniquely corresponds to the chat to which the message was sent
+
+        chat_type (:class:`str`):
+            Type of the chat to which the message was sent
+
+        query_type (:class:`~pytdbot.types.WidgetQueryType`):
+            Type of the query
+
+        data (:class:`bytes`):
+            Data of the query
+
+        widget_id (:class:`int`):
+            Identifier of the shared widget from which the query originated; 0 if the widget isn't shared
+
+        wallet_card (:class:`~pytdbot.types.TonWalletCard`):
+            TON wallet card of the user who sent the query; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        id: int | None = 0,
+        sender_user_id: int | None = 0,
+        chat_id: int | None = 0,
+        message_id: int | None = 0,
+        chat_instance: int | None = 0,
+        chat_type: str | None = "",
+        query_type: WidgetQueryTypeData
+        | WidgetQueryTypeSignData
+        | WidgetQueryTypeSentTransaction
+        | None = None,
+        data: bytes | None = b"",
+        widget_id: int | None = 0,
+        wallet_card: TonWalletCard | None = None,
+    ) -> None:
+        self.id = id
+        r"""Unique query identifier"""
+        self.sender_user_id = sender_user_id
+        r"""Identifier of the user who sent the query"""
+        self.chat_id = chat_id
+        r"""Identifier of the chat where the query was sent"""
+        self.message_id = message_id
+        r"""Identifier of the message from which the query originated"""
+        self.chat_instance = chat_instance
+        r"""Identifier that uniquely corresponds to the chat to which the message was sent"""
+        self.chat_type = chat_type
+        r"""Type of the chat to which the message was sent"""
+        self.query_type = query_type
+        r"""Type of the query"""
+        self.data = data
+        r"""Data of the query"""
+        self.widget_id = widget_id
+        r"""Identifier of the shared widget from which the query originated; 0 if the widget isn't shared"""
+        self.wallet_card = wallet_card
+        r"""TON wallet card of the user who sent the query; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateNewWidgetQuery"]:
+        return "updateNewWidgetQuery"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "sender_user_id": self.sender_user_id,
+            "chat_id": self.chat_id,
+            "message_id": self.message_id,
+            "chat_instance": self.chat_instance,
+            "chat_type": self.chat_type,
+            "query_type": self.query_type,
+            "data": self.data,
+            "widget_id": self.widget_id,
+            "wallet_card": self.wallet_card,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateNewWidgetQuery | None:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.chat_instance = int(data.get("chat_instance", 0))
+            data_class.chat_type = data.get("chat_type", "")
+            data_class.query_type = data.get("query_type", None)
+            data_class.data = b64decode(data.get("data", b""))
+            data_class.widget_id = int(data.get("widget_id", 0))
+            data_class.wallet_card = data.get("wallet_card", None)
+
+        return data_class
+
+
+class UpdateNewInlineWidgetQuery(TlObject, Update):
+    r"""A new incoming widget query from a message sent via a bot; for bots only
+
+    Parameters:
+        id (:class:`int`):
+            Unique query identifier
+
+        sender_user_id (:class:`int`):
+            Identifier of the user who sent the query
+
+        inline_message_id (:class:`str`):
+            Identifier of the inline message from which the query originated
+
+        chat_instance (:class:`int`):
+            Identifier that uniquely corresponds to the chat to which the message was sent
+
+        chat_type (:class:`str`):
+            Type of the chat to which the message was sent
+
+        query_type (:class:`~pytdbot.types.WidgetQueryType`):
+            Type of the query
+
+        data (:class:`bytes`):
+            Data of the query
+
+        widget_id (:class:`int`):
+            Identifier of the shared widget from which the query originated; 0 if the widget isn't shared
+
+        wallet_card (:class:`~pytdbot.types.TonWalletCard`):
+            TON wallet card of the user who sent the query; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        id: int | None = 0,
+        sender_user_id: int | None = 0,
+        inline_message_id: str | None = "",
+        chat_instance: int | None = 0,
+        chat_type: str | None = "",
+        query_type: WidgetQueryTypeData
+        | WidgetQueryTypeSignData
+        | WidgetQueryTypeSentTransaction
+        | None = None,
+        data: bytes | None = b"",
+        widget_id: int | None = 0,
+        wallet_card: TonWalletCard | None = None,
+    ) -> None:
+        self.id = id
+        r"""Unique query identifier"""
+        self.sender_user_id = sender_user_id
+        r"""Identifier of the user who sent the query"""
+        self.inline_message_id = inline_message_id
+        r"""Identifier of the inline message from which the query originated"""
+        self.chat_instance = chat_instance
+        r"""Identifier that uniquely corresponds to the chat to which the message was sent"""
+        self.chat_type = chat_type
+        r"""Type of the chat to which the message was sent"""
+        self.query_type = query_type
+        r"""Type of the query"""
+        self.data = data
+        r"""Data of the query"""
+        self.widget_id = widget_id
+        r"""Identifier of the shared widget from which the query originated; 0 if the widget isn't shared"""
+        self.wallet_card = wallet_card
+        r"""TON wallet card of the user who sent the query; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateNewInlineWidgetQuery"]:
+        return "updateNewInlineWidgetQuery"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "sender_user_id": self.sender_user_id,
+            "inline_message_id": self.inline_message_id,
+            "chat_instance": self.chat_instance,
+            "chat_type": self.chat_type,
+            "query_type": self.query_type,
+            "data": self.data,
+            "widget_id": self.widget_id,
+            "wallet_card": self.wallet_card,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateNewInlineWidgetQuery | None:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
+            data_class.inline_message_id = data.get("inline_message_id", "")
+            data_class.chat_instance = int(data.get("chat_instance", 0))
+            data_class.chat_type = data.get("chat_type", "")
+            data_class.query_type = data.get("query_type", None)
+            data_class.data = b64decode(data.get("data", b""))
+            data_class.widget_id = int(data.get("widget_id", 0))
+            data_class.wallet_card = data.get("wallet_card", None)
+
+        return data_class
+
+
+class UpdateNewWidgetCopyQuery(TlObject, Update):
+    r"""A new incoming widget query from a copy of a shared widget; for bots only
+
+    Parameters:
+        id (:class:`int`):
+            Unique query identifier
+
+        sender_user_id (:class:`int`):
+            Identifier of the user who sent the query
+
+        query_type (:class:`~pytdbot.types.WidgetQueryType`):
+            Type of the query
+
+        data (:class:`bytes`):
+            Data of the query
+
+        widget_id (:class:`int`):
+            Identifier of the shared widget from which the query originated
+
+        wallet_card (:class:`~pytdbot.types.TonWalletCard`):
+            TON wallet card of the user who sent the query; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        *,
+        id: int | None = 0,
+        sender_user_id: int | None = 0,
+        query_type: WidgetQueryTypeData
+        | WidgetQueryTypeSignData
+        | WidgetQueryTypeSentTransaction
+        | None = None,
+        data: bytes | None = b"",
+        widget_id: int | None = 0,
+        wallet_card: TonWalletCard | None = None,
+    ) -> None:
+        self.id = id
+        r"""Unique query identifier"""
+        self.sender_user_id = sender_user_id
+        r"""Identifier of the user who sent the query"""
+        self.query_type = query_type
+        r"""Type of the query"""
+        self.data = data
+        r"""Data of the query"""
+        self.widget_id = widget_id
+        r"""Identifier of the shared widget from which the query originated"""
+        self.wallet_card = wallet_card
+        r"""TON wallet card of the user who sent the query; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def getType(self) -> Literal["updateNewWidgetCopyQuery"]:
+        return "updateNewWidgetCopyQuery"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "sender_user_id": self.sender_user_id,
+            "query_type": self.query_type,
+            "data": self.data,
+            "widget_id": self.widget_id,
+            "wallet_card": self.wallet_card,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> UpdateNewWidgetCopyQuery | None:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
+            data_class.query_type = data.get("query_type", None)
+            data_class.data = b64decode(data.get("data", b""))
+            data_class.widget_id = int(data.get("widget_id", 0))
+            data_class.wallet_card = data.get("wallet_card", None)
 
         return data_class
 
