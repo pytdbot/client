@@ -18,7 +18,7 @@ invalid-raise = "error"
 invalid-exception-caught = "error"
 
 unresolved-reference = "error"
-unresolved-import = "error"
+import-not-found = "error"
 
 index-out-of-bounds = "error"
 invalid-key = "error"
