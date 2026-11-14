@@ -6558,8 +6558,8 @@ class TDLibFunctions:
         | pytdbot.types.InputMessageSharedWidget
         | pytdbot.types.InputMessageForwarded
         | None = None,
-    ) -> pytdbot.types.Error | pytdbot.types.Ok:
-        r"""Replies to a callback query with an ephemeral message; for bots only
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Replies to a callback query with an ephemeral message; for bots only\. Returns the sent message
 
         Parameters:
             callback_query_id (:class:`int`):
@@ -6578,7 +6578,7 @@ class TDLibFunctions:
                 New content of the message\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageSticker, inputMessageVideo, inputMessageVideoNote, inputMessageVoiceNote, inputMessageLocation, inputMessageVenue, inputMessageContact
 
         Returns:
-            :class:`~pytdbot.types.Ok`
+            :class:`~pytdbot.types.Message`
         """
 
         return await self.invoke(
@@ -13850,7 +13850,7 @@ class TDLibFunctions:
                 Story caption; pass null to use an empty caption; 0\-getOption\(\"story\_caption\_length\_max\"\) characters; can have entities only if getOption\(\"can\_use\_text\_entities\_in\_story\_caption\"\)
 
             music (:class:`~pytdbot.types.InputAudio`):
-                Music to be attached to the story; pass null if none\. The music can be up to 60 seconds long
+                Music to be attached to the story; pass null if none\. The music can be up to 60 seconds long\. The bot getOption\(\"audio\_search\_bot\_username\"\) can be used to find the music files
 
             privacy_settings (:class:`~pytdbot.types.StoryPrivacySettings`):
                 The privacy settings for the story; ignored for stories posted on behalf of supergroup and channel chats

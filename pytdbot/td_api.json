@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
     "version": "1.8.70",
-    "commit_hash": "23383aef218a3123f02b744bfa91bde21056a814",
+    "commit_hash": "c8828d50f5eac2fc7089ce1089d7ce9095c61b5e",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -46224,7 +46224,7 @@
             "type": "Ok"
         },
         "replyToCallbackQueryWithEphemeralMessage": {
-            "description": "Replies to a callback query with an ephemeral message; for bots only",
+            "description": "Replies to a callback query with an ephemeral message; for bots only. Returns the sent message",
             "args": {
                 "callback_query_id": {
                     "description": "Identifier of the callback query",
@@ -46252,7 +46252,7 @@
                     "type": "InputMessageContent"
                 }
             },
-            "type": "Ok"
+            "type": "Message"
         },
         "editMessageSchedulingState": {
             "description": "Edits the time when a scheduled message will be sent. Scheduling state of all messages in the same album or forwarded together with the message will be also changed",
@@ -50815,7 +50815,7 @@
                     "type": "formattedText"
                 },
                 "music": {
-                    "description": "Music to be attached to the story; pass null if none. The music can be up to 60 seconds long",
+                    "description": "Music to be attached to the story; pass null if none. The music can be up to 60 seconds long. The bot getOption(\"audio_search_bot_username\") can be used to find the music files",
                     "is_optional": true,
                     "type": "inputAudio"
                 },
