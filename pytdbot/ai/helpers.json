@@ -347,6 +347,30 @@
     "returns": "pytdbot.types.Error | pytdbot.types.Message"
   },
   {
+    "name": "edit_widget_data",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": true,
+    "args": [
+      {
+        "name": "public_data",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "chat_data",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit data of the widget message. Shortcut for :meth:`~pytdbot.Client.editWidgetData`.",
+    "doc": "Edit data of the widget message. Shortcut for :meth:`~pytdbot.Client.editWidgetData`.",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Ok"
+  },
+  {
     "name": "forward",
     "kind": "bound_method",
     "on": "Message",
@@ -1782,6 +1806,136 @@
     "returns": "pytdbot.types.Error | pytdbot.types.Message"
   },
   {
+    "name": "reply_widget",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": true,
+    "args": [
+      {
+        "name": "html",
+        "type": "str"
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "public_data",
+        "type": "str",
+        "optional": true,
+        "default": "''"
+      },
+      {
+        "name": "chat_data",
+        "type": "str",
+        "optional": true,
+        "default": "''"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "allow_queries",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "is_shared",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "disable_notification",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "protect_content",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "topic_id",
+        "type": "pytdbot.types.MessageTopic | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "quote",
+        "type": "pytdbot.types.InputTextQuote | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "no_reply",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "ephemeral",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkupInlineKeyboard | pytdbot.types.ReplyMarkupShowKeyboard | pytdbot.types.ReplyMarkupForceReply | pytdbot.types.ReplyMarkupRemoveKeyboard | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Reply to the message with a widget. Shortcut for :meth:`~pytdbot.Client.sendWidget`.",
+    "doc": "Reply to the message with a widget. Shortcut for :meth:`~pytdbot.Client.sendWidget`.",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message"
+  },
+  {
     "name": "restrict",
     "kind": "bound_method",
     "on": "Message",
@@ -1996,6 +2150,33 @@
     "returns": "pytdbot.types.Error | pytdbot.types.Message | None"
   },
   {
+    "name": "answer",
+    "kind": "bound_method",
+    "on": "UpdateNewWidgetQuery",
+    "async": true,
+    "args": [
+      {
+        "name": "data",
+        "type": "str"
+      }
+    ],
+    "description": "Answer to widget query. Shortcut for :meth:`~pytdbot.Client.answerWidgetQuery`",
+    "doc": "Answer to widget query. Shortcut for :meth:`~pytdbot.Client.answerWidgetQuery`",
+    "source": "pytdbot/types/bound_methods/widget_query.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Ok"
+  },
+  {
+    "name": "getMessage",
+    "kind": "bound_method",
+    "on": "UpdateNewWidgetQuery",
+    "async": true,
+    "args": [],
+    "description": "Get widget query message",
+    "doc": "Get widget query message",
+    "source": "pytdbot/types/bound_methods/widget_query.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | None"
+  },
+  {
     "name": "sendAction",
     "kind": "chat_action",
     "on": "ChatActions",
@@ -2110,6 +2291,34 @@
     "doc": "Create an invoice link for Telegram Stars\n\nParameters:\n    title (``str``):\n        Product title; 1-32 characters\n\n    amount (``int``):\n        Amount of Telegram Stars to be paid\n\n    payload (``bytes``):\n        The invoice payload\n\n    description (``str``, *optional*):\n        Product description; 0-255 characters\n\n    subscription_period (``int``, *optional*):\n        The number of seconds between consecutive Telegram Star debiting for subscription invoices; 0 if the invoice doesn't create subscription\n\n    start_parameter (``str``, *optional*):\n        Unique invoice bot deep link parameter for the generation of this invoice. If empty, it would be possible to pay directly from forwards of the invoice message\n\n    photo_url (``str``, *optional*):\n        Product photo URL; optional\n\n    photo_size (``int``, *optional*):\n        Product photo size\n\n    photo_width (``int``, *optional*):\n        Product photo width\n\n    photo_height (``int``, *optional*):\n        Product photo height\n\n    recurring_payment_terms_of_service_url (``str``, *optional*):\n        An HTTP URL with terms of service for recurring payments. If non-empty, the invoice payment will result in recurring payments and the user must accept the terms of service before allowed to pay\n\n    terms_of_service_url (``str``, *optional*):\n        An HTTP URL with terms of service for non-recurring payments. If non-empty, then the user must accept the terms of service before allowed to pay\n\nReturns:\n    :class:`~pytdbot.types.HttpUrl`",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | HttpUrl"
+  },
+  {
+    "name": "editInlineWidgetData",
+    "kind": "client_method",
+    "on": "Client",
+    "async": true,
+    "args": [
+      {
+        "name": "inline_message_id",
+        "type": "str"
+      },
+      {
+        "name": "public_data",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "chat_data",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit data of a widget in an inline message sent via the bot; for bots only",
+    "doc": "Edit data of a widget in an inline message sent via the bot; for bots only\n\nParameters:\n    inline_message_id (``str``):\n        Identifier of the inline message\n\n    public_data (``str``, *optional*):\n        New public data of the widget\n\n    chat_data (``str``, *optional*):\n        New data of the widget, which is specific to the chat\n\nReturns:\n    :class:`~pytdbot.types.Ok`",
+    "source": "pytdbot/methods/methods.py",
+    "returns": "Error | Ok"
   },
   {
     "name": "editRichMessage",
@@ -2266,6 +2475,38 @@
     "doc": "Edit text message\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    text (``str``):\n        New text of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the message to be deleted; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities in the message text\n\n    entities (``list``, *optional*):\n        List of ``MessageEntity`` objects representing entities that may appear in the message text\n\n    disable_web_page_preview (``bool``, *optional*):\n        Disables link previews for links in this message. Default is ``False``\n\n    url (``str``, *optional*):\n        URL to use for link preview. If empty, then the first URL found in the message text will be used. Default is ``None``\n\n    force_small_media (``bool``, *optional*):\n        True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``\n\n    force_large_media (``bool``, *optional*):\n        True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``\n\n    show_above_text (``bool``, *optional*):\n        True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats. Default is ``None``\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message`",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | Message"
+  },
+  {
+    "name": "editWidgetData",
+    "kind": "client_method",
+    "on": "Client",
+    "async": true,
+    "args": [
+      {
+        "name": "chat_id",
+        "type": "int"
+      },
+      {
+        "name": "message_id",
+        "type": "int"
+      },
+      {
+        "name": "public_data",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "chat_data",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit data of a widget sent by the bot; for bots only",
+    "doc": "Edit data of a widget sent by the bot; for bots only\n\nParameters:\n    chat_id (``int``):\n        The chat the message belongs to\n\n    message_id (``int``):\n        Identifier of the widget message\n\n    public_data (``str``, *optional*):\n        New public data of the widget\n\n    chat_data (``str``, *optional*):\n        New data of the widget, which is specific to the chat\n\nReturns:\n    :class:`~pytdbot.types.Ok`",
+    "source": "pytdbot/methods/methods.py",
+    "returns": "Error | Ok"
   },
   {
     "name": "forwardMessage",
@@ -3310,6 +3551,116 @@
     "returns": "Error | Message"
   },
   {
+    "name": "sendSharedWidget",
+    "kind": "client_method",
+    "on": "Client",
+    "async": true,
+    "args": [
+      {
+        "name": "chat_id",
+        "type": "int"
+      },
+      {
+        "name": "widget_id",
+        "type": "int"
+      },
+      {
+        "name": "chat_data",
+        "type": "str",
+        "optional": true,
+        "default": "''"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "disable_notification",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "protect_content",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "topic_id",
+        "type": "MessageTopic",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "quote",
+        "type": "InputTextQuote",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "reply_to",
+        "type": "InputMessageReplyTo",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "reply_to_message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "callback_query_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "reply_markup",
+        "type": "ReplyMarkupInlineKeyboard | ReplyMarkupShowKeyboard | ReplyMarkupForceReply | ReplyMarkupRemoveKeyboard",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Send an existing shared widget to chat; for bots only",
+    "doc": "Send an existing shared widget to chat; for bots only\n\nParameters:\n    chat_id (``int``):\n        Target chat\n\n    widget_id (``int``):\n        Identifier of the shared widget\n\n    chat_data (``str``, *optional*):\n        Data of the widget, which is specific to the chat\n\n    caption (``str``, *optional*):\n        Widget caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    show_caption_above_media (``bool``, *optional*):\n        True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget. Default is ``False``\n\n    disable_notification (``bool``, *optional*):\n        If True, disable notification for the message. Default is ``None``\n\n    protect_content (``bool``, *optional*):\n        If True, the content of the message must be protected from forwarding and saving\n\n    allow_paid_broadcast (``bool``, *optional*):\n        Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``\n\n    topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):\n        Topic in which the message will be sent; pass null if none\n\n    quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):\n        Chosen quote from the replied message; may be null if none\n\n    reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):\n        Information about the message or the story this message is replying to; may be null if none\n\n    reply_to_message_id (``int``, *optional*):\n        Identifier of the message to reply. Ignored if ``reply_to`` is specified\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    callback_query_id (``int``, *optional*):\n        Identifier of the callback query which triggered the message; for Ephemeral messages only\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message`",
+    "source": "pytdbot/methods/methods.py",
+    "returns": "Error | Message"
+  },
+  {
     "name": "sendSticker",
     "kind": "client_method",
     "on": "Client",
@@ -3896,6 +4247,146 @@
     "returns": "Error | Message"
   },
   {
+    "name": "sendWidget",
+    "kind": "client_method",
+    "on": "Client",
+    "async": true,
+    "args": [
+      {
+        "name": "chat_id",
+        "type": "int"
+      },
+      {
+        "name": "html",
+        "type": "str"
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "public_data",
+        "type": "str",
+        "optional": true,
+        "default": "''"
+      },
+      {
+        "name": "chat_data",
+        "type": "str",
+        "optional": true,
+        "default": "''"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "allow_queries",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "is_shared",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "disable_notification",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "protect_content",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "topic_id",
+        "type": "MessageTopic",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "quote",
+        "type": "InputTextQuote",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "reply_to",
+        "type": "InputMessageReplyTo",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "reply_to_message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "callback_query_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "reply_markup",
+        "type": "ReplyMarkupInlineKeyboard | ReplyMarkupShowKeyboard | ReplyMarkupForceReply | ReplyMarkupRemoveKeyboard",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Send widget to chat; for bots only",
+    "doc": "Send widget to chat; for bots only\n\nParameters:\n    chat_id (``int``):\n        Target chat\n\n    html (``str``):\n        HTML code of the widget; 1-32768 bytes; must not exceed 4096 bytes when compressed by zlib with the maximal compression level\n\n    width (``int``, *optional*):\n        Width of the widget; 0 if the widget must occupy the whole width of the message bubble. Default is ``0``\n\n    height (``int``, *optional*):\n        Height of the widget; 0 if the height of the widget isn't fixed. Default is ``0``\n\n    public_data (``str``, *optional*):\n        Public data of the widget, which will be available in copies and forwards of the message\n\n    chat_data (``str``, *optional*):\n        Data of the widget, which is specific to the chat\n\n    caption (``str``, *optional*):\n        Widget caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    show_caption_above_media (``bool``, *optional*):\n        True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget. Default is ``False``\n\n    allow_queries (``bool``, *optional*):\n        Pass true to allow the widget to send queries to the bot. Default is ``False``\n\n    is_shared (``bool``, *optional*):\n        Pass true to create a shared widget, which can be sent again by its identifier. Default is ``False``\n\n    disable_notification (``bool``, *optional*):\n        If True, disable notification for the message. Default is ``None``\n\n    protect_content (``bool``, *optional*):\n        If True, the content of the message must be protected from forwarding and saving\n\n    allow_paid_broadcast (``bool``, *optional*):\n        Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``\n\n    topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):\n        Topic in which the message will be sent; pass null if none\n\n    quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):\n        Chosen quote from the replied message; may be null if none\n\n    reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):\n        Information about the message or the story this message is replying to; may be null if none\n\n    reply_to_message_id (``int``, *optional*):\n        Identifier of the message to reply. Ignored if ``reply_to`` is specified\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    callback_query_id (``int``, *optional*):\n        Identifier of the callback query which triggered the message; for Ephemeral messages only\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message`",
+    "source": "pytdbot/methods/methods.py",
+    "returns": "Error | Message"
+  },
+  {
     "name": "caption",
     "kind": "property",
     "on": "Message",
@@ -4017,6 +4508,17 @@
     "returns": "str"
   },
   {
+    "name": "widget",
+    "kind": "property",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Widget content of the message",
+    "doc": "Widget content of the message",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "pytdbot.types.MessageWidget | None"
+  },
+  {
     "name": "from_id",
     "kind": "property",
     "on": "MessageSender",
@@ -4069,6 +4571,28 @@
     "description": "Callback data decoded as str",
     "doc": "Callback data decoded as str",
     "source": "pytdbot/types/bound_methods/callback_query.py",
+    "returns": "str"
+  },
+  {
+    "name": "query_data",
+    "kind": "property",
+    "on": "UpdateNewWidgetQuery",
+    "async": false,
+    "args": [],
+    "description": "Query data that was set by :func:`~pytdbot.utils.callback_data`",
+    "doc": "Query data that was set by :func:`~pytdbot.utils.callback_data`\n\nArgs:\n    action (``Any``):\n        Action name\n\n    data (``Any``, *optional*):\n        Query data",
+    "source": "pytdbot/types/bound_methods/widget_query.py",
+    "returns": "pytdbot.utils.CallbackData"
+  },
+  {
+    "name": "text",
+    "kind": "property",
+    "on": "UpdateNewWidgetQuery",
+    "async": false,
+    "args": [],
+    "description": "Query data decoded as str",
+    "doc": "Query data decoded as str",
+    "source": "pytdbot/types/bound_methods/widget_query.py",
     "returns": "str"
   },
   {
@@ -4193,8 +4717,8 @@
         "default": "None"
       }
     ],
-    "description": "Create callback data for inline buttons",
-    "doc": "Create callback data for inline buttons\n\nParameters:\n    action (``Any``):\n        Action name, can be any type, but must be JSON serializable\n\n    data (``Any``, *optional*):\n        Callback data, can be any type, but must be JSON serializable\n\nReturns:\n    ``bytes``: Callback data encoded as bytes",
+    "description": "Create callback data for inline buttons and widget queries",
+    "doc": "Create callback data for inline buttons and widget queries\n\nParameters:\n    action (``Any``):\n        Action name, can be any type, but must be JSON serializable\n\n    data (``Any``, *optional*):\n        Callback data, can be any type, but must be JSON serializable\n\nReturns:\n    ``bytes``: Callback data encoded as bytes",
     "source": "pytdbot/utils/json_utils.py",
     "returns": "bytes"
   },
@@ -4657,8 +5181,8 @@
         "type": "bytes"
       }
     ],
-    "description": "loads already created callback data by :func:`~pytdbot.utils.callback_data`. Returns empty CallbackData on error",
-    "doc": "loads already created callback data by :func:`~pytdbot.utils.callback_data`. Returns empty CallbackData on error",
+    "description": "loads already created callback data or widget query data by :func:`~pytdbot.utils.callback_data`. Returns empty CallbackData on error",
+    "doc": "loads already created callback data or widget query data by :func:`~pytdbot.utils.callback_data`. Returns empty CallbackData on error",
     "source": "pytdbot/utils/json_utils.py",
     "returns": "CallbackData"
   },

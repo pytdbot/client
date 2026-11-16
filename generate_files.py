@@ -7,6 +7,9 @@ bound_methods_class = {
     "File": "FileBoundMethods",
     "RemoteFile": "FileBoundMethods",
     "UpdateNewCallbackQuery": "CallbackQueryBoundMethods",
+    "UpdateNewInlineWidgetQuery": "WidgetQueryBoundMethods",
+    "UpdateNewWidgetCopyQuery": "WidgetQueryBoundMethods",
+    "UpdateNewWidgetQuery": "WidgetQueryBoundMethods",
     "MessageSender": "MessageSenderBoundMethods",
 }
 

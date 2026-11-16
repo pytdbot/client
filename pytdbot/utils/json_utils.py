@@ -45,7 +45,7 @@ empty_callback_data = CallbackData("")
 
 
 def load_callback_data(data: bytes) -> CallbackData:
-    r"""loads already created callback data by :func:`~pytdbot.utils.callback_data`. Returns empty CallbackData on error"""
+    r"""loads already created callback data or widget query data by :func:`~pytdbot.utils.callback_data`. Returns empty CallbackData on error"""
 
     if not data or not (data[0] == 0x5B and data[-1] == 0x5D):
         return empty_callback_data
@@ -61,7 +61,7 @@ def load_callback_data(data: bytes) -> CallbackData:
 
 
 def callback_data(action: Any, data: Any = None) -> bytes:
-    r"""Create callback data for inline buttons
+    r"""Create callback data for inline buttons and widget queries
 
     Parameters:
         action (``Any``):

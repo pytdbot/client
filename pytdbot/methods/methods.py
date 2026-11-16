@@ -20,11 +20,13 @@ from ..types import (
     InputMessageReplyTo,
     InputMessageReplyToMessage,
     InputMessageRichMessage,
+    InputMessageSharedWidget,
     InputMessageSticker,
     InputMessageText,
     InputMessageVideo,
     InputMessageVideoNote,
     InputMessageVoiceNote,
+    InputMessageWidget,
     InputPhoto,
     InputRichMessage,
     InputRichMessageMedia,
@@ -40,6 +42,7 @@ from ..types import (
     MessageSelfDestructType,
     MessageSendOptions,
     MessageTopic,
+    Ok,
     ReplyMarkup,
     ReplyMarkupForceReply,
     ReplyMarkupInlineKeyboard,
@@ -435,6 +438,261 @@ class Methods(TDLibFunctions):
                     detect_automatic_blocks=detect_automatic_blocks,
                 ),
                 clear_draft=clear_draft,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
+            topic_id=topic_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            receiver_user_id=receiver_user_id,
+            callback_query_id=callback_query_id,
+            reply_markup=reply_markup,
+        )
+
+    async def sendWidget(
+        self,
+        chat_id: int,
+        html: str,
+        *,
+        width: int = 0,
+        height: int = 0,
+        public_data: str = "",
+        chat_data: str = "",
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        show_caption_above_media: bool = False,
+        allow_queries: bool = False,
+        is_shared: bool = False,
+        disable_notification: bool = False,
+        protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
+        topic_id: MessageTopic = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
+        reply_to_message_id: int = 0,
+        receiver_user_id: int = 0,
+        callback_query_id: int = 0,
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
+        r"""Send widget to chat; for bots only
+
+        Parameters:
+            chat_id (``int``):
+                Target chat
+
+            html (``str``):
+                HTML code of the widget; 1-32768 bytes; must not exceed 4096 bytes when compressed by zlib with the maximal compression level
+
+            width (``int``, *optional*):
+                Width of the widget; 0 if the widget must occupy the whole width of the message bubble. Default is ``0``
+
+            height (``int``, *optional*):
+                Height of the widget; 0 if the height of the widget isn't fixed. Default is ``0``
+
+            public_data (``str``, *optional*):
+                Public data of the widget, which will be available in copies and forwards of the message
+
+            chat_data (``str``, *optional*):
+                Data of the widget, which is specific to the chat
+
+            caption (``str``, *optional*):
+                Widget caption
+
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
+
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Default is ``markdown``
+
+            show_caption_above_media (``bool``, *optional*):
+                True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget. Default is ``False``
+
+            allow_queries (``bool``, *optional*):
+                Pass true to allow the widget to send queries to the bot. Default is ``False``
+
+            is_shared (``bool``, *optional*):
+                Pass true to create a shared widget, which can be sent again by its identifier. Default is ``False``
+
+            disable_notification (``bool``, *optional*):
+                If True, disable notification for the message. Default is ``None``
+
+            protect_content (``bool``, *optional*):
+                If True, the content of the message must be protected from forwarding and saving
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
+
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
+
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
+
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
+
+            reply_to_message_id (``int``, *optional*):
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
+
+            receiver_user_id (``int``, *optional*):
+                Identifier of the user who will receive the message; for Ephemeral messages only
+
+            callback_query_id (``int``, *optional*):
+                Identifier of the callback query which triggered the message; for Ephemeral messages only
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
+                The message reply markup
+
+        Returns:
+            :class:`~pytdbot.types.Message`
+        """
+
+        parse_mode = parse_mode or self.default_parse_mode
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif parse_mode and isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
+        else:
+            caption = FormattedText(text=caption)
+
+        return await self.sendMessageWithContent(
+            chat_id=chat_id,
+            content=InputMessageWidget(
+                width=width,
+                height=height,
+                html=html,
+                public_data=public_data,
+                chat_data=chat_data,
+                caption=caption,
+                show_caption_above_media=show_caption_above_media,
+                allow_queries=allow_queries,
+                is_shared=is_shared,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
+            topic_id=topic_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            receiver_user_id=receiver_user_id,
+            callback_query_id=callback_query_id,
+            reply_markup=reply_markup,
+        )
+
+    async def sendSharedWidget(
+        self,
+        chat_id: int,
+        widget_id: int,
+        *,
+        chat_data: str = "",
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        show_caption_above_media: bool = False,
+        disable_notification: bool = False,
+        protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
+        topic_id: MessageTopic = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
+        reply_to_message_id: int = 0,
+        receiver_user_id: int = 0,
+        callback_query_id: int = 0,
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
+        r"""Send an existing shared widget to chat; for bots only
+
+        Parameters:
+            chat_id (``int``):
+                Target chat
+
+            widget_id (``int``):
+                Identifier of the shared widget
+
+            chat_data (``str``, *optional*):
+                Data of the widget, which is specific to the chat
+
+            caption (``str``, *optional*):
+                Widget caption
+
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
+
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Default is ``markdown``
+
+            show_caption_above_media (``bool``, *optional*):
+                True, if the caption must be shown above the widget; otherwise, the caption must be shown below the widget. Default is ``False``
+
+            disable_notification (``bool``, *optional*):
+                If True, disable notification for the message. Default is ``None``
+
+            protect_content (``bool``, *optional*):
+                If True, the content of the message must be protected from forwarding and saving
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
+
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
+
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
+
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
+
+            reply_to_message_id (``int``, *optional*):
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
+
+            receiver_user_id (``int``, *optional*):
+                Identifier of the user who will receive the message; for Ephemeral messages only
+
+            callback_query_id (``int``, *optional*):
+                Identifier of the callback query which triggered the message; for Ephemeral messages only
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
+                The message reply markup
+
+        Returns:
+            :class:`~pytdbot.types.Message`
+        """
+
+        parse_mode = parse_mode or self.default_parse_mode
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif parse_mode and isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
+        else:
+            caption = FormattedText(text=caption)
+
+        return await self.sendMessageWithContent(
+            chat_id=chat_id,
+            content=InputMessageSharedWidget(
+                widget_id=widget_id,
+                chat_data=chat_data,
+                caption=caption,
+                show_caption_above_media=show_caption_above_media,
             ),
             disable_notification=disable_notification,
             protect_content=protect_content,
@@ -1936,6 +2194,79 @@ class Methods(TDLibFunctions):
                     detect_automatic_blocks=detect_automatic_blocks,
                 ),
             ),
+        )
+
+    async def editWidgetData(
+        self,
+        chat_id: int,
+        message_id: int,
+        *,
+        public_data: str = None,
+        chat_data: str = None,
+    ) -> Error | Ok:
+        r"""Edit data of a widget sent by the bot; for bots only
+
+        Parameters:
+            chat_id (``int``):
+                The chat the message belongs to
+
+            message_id (``int``):
+                Identifier of the widget message
+
+            public_data (``str``, *optional*):
+                New public data of the widget
+
+            chat_data (``str``, *optional*):
+                New data of the widget, which is specific to the chat
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        if public_data is None and chat_data is None:
+            raise ValueError("Either public_data or chat_data must be provided")
+
+        return await self.editMessageWidgetData(
+            chat_id=chat_id,
+            message_id=message_id,
+            edit_public_data=public_data is not None,
+            public_data=public_data or "",
+            edit_chat_data=chat_data is not None,
+            chat_data=chat_data or "",
+        )
+
+    async def editInlineWidgetData(
+        self,
+        inline_message_id: str,
+        *,
+        public_data: str = None,
+        chat_data: str = None,
+    ) -> Error | Ok:
+        r"""Edit data of a widget in an inline message sent via the bot; for bots only
+
+        Parameters:
+            inline_message_id (``str``):
+                Identifier of the inline message
+
+            public_data (``str``, *optional*):
+                New public data of the widget
+
+            chat_data (``str``, *optional*):
+                New data of the widget, which is specific to the chat
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        if public_data is None and chat_data is None:
+            raise ValueError("Either public_data or chat_data must be provided")
+
+        return await self.editInlineMessageWidgetData(
+            inline_message_id=inline_message_id,
+            edit_public_data=public_data is not None,
+            public_data=public_data or "",
+            edit_chat_data=chat_data is not None,
+            chat_data=chat_data or "",
         )
 
     async def sendMessageWithContent(

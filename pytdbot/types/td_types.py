@@ -10,6 +10,7 @@ from .bound_methods import (
     FileBoundMethods,
     MessageBoundMethods,
     MessageSenderBoundMethods,
+    WidgetQueryBoundMethods,
 )
 
 
@@ -65782,7 +65783,7 @@ class TextEntityTypeCashtag(TlObject, TextEntityType):
 
 
 class TextEntityTypeBotCommand(TlObject, TextEntityType):
-    r"""A bot command, beginning with \"/\""""
+    r"""A bot command, beginning with \"/\" """
 
     def __init__(self) -> None:
         pass
@@ -101414,7 +101415,7 @@ class UserPrivacySettingAllowPeerToPeerCalls(TlObject, UserPrivacySetting):
 
 
 class UserPrivacySettingAllowFindingByPhoneNumber(TlObject, UserPrivacySetting):
-    r"""A privacy setting for managing whether the user can be found by their phone number\. Checked only if the phone number is not known to the other user\. Can be set only to \"Allow contacts\" or \"Allow all\""""
+    r"""A privacy setting for managing whether the user can be found by their phone number\. Checked only if the phone number is not known to the other user\. Can be set only to \"Allow contacts\" or \"Allow all\" """
 
     def __init__(self) -> None:
         pass
@@ -125442,7 +125443,7 @@ class UpdateNewBusinessCallbackQuery(TlObject, Update):
         return data_class
 
 
-class UpdateNewWidgetQuery(TlObject, Update):
+class UpdateNewWidgetQuery(TlObject, Update, WidgetQueryBoundMethods):
     r"""A new incoming widget query; for bots only
 
     Parameters:
@@ -125563,7 +125564,7 @@ class UpdateNewWidgetQuery(TlObject, Update):
         return data_class
 
 
-class UpdateNewInlineWidgetQuery(TlObject, Update):
+class UpdateNewInlineWidgetQuery(TlObject, Update, WidgetQueryBoundMethods):
     r"""A new incoming widget query from a message sent via a bot; for bots only
 
     Parameters:
@@ -125676,7 +125677,7 @@ class UpdateNewInlineWidgetQuery(TlObject, Update):
         return data_class
 
 
-class UpdateNewWidgetCopyQuery(TlObject, Update):
+class UpdateNewWidgetCopyQuery(TlObject, Update, WidgetQueryBoundMethods):
     r"""A new incoming widget query from a copy of a shared widget; for bots only
 
     Parameters:

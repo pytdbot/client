@@ -84,6 +84,14 @@ class MessageBoundMethods:
         ):
             return self.content.caption.entities
 
+    @property
+    @lru_cache(1)
+    def widget(self) -> pytdbot.types.MessageWidget | None:
+        r"""Widget content of the message"""
+
+        if isinstance(self.content, pytdbot.types.MessageWidget):
+            return self.content
+
     def _get_rich_media(self, block):
         if isinstance(block, pytdbot.types.PageBlockPhoto):
             return block.photo
@@ -715,6 +723,72 @@ class MessageBoundMethods:
             reply_markup=reply_markup,
         )
 
+    async def reply_widget(
+        self,
+        html: str,
+        *,
+        width: int = 0,
+        height: int = 0,
+        public_data: str = "",
+        chat_data: str = "",
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        show_caption_above_media: bool = False,
+        allow_queries: bool = False,
+        is_shared: bool = False,
+        disable_notification: bool = False,
+        protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
+        no_reply: bool = False,
+        ephemeral: bool = False,
+        receiver_user_id: int = 0,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the message with a widget. Shortcut for :meth:`~pytdbot.Client.sendWidget`."""
+
+        reply_to = None
+        if not no_reply:
+            if self.ephemeral_message_id:
+                reply_to = pytdbot.types.InputMessageReplyToEphemeralMessage(
+                    ephemeral_message_id=self.ephemeral_message_id
+                )
+                ephemeral = True
+            else:
+                reply_to = pytdbot.types.InputMessageReplyToMessage(
+                    message_id=self.id, quote=quote
+                )
+
+        return await self._client.sendWidget(
+            chat_id=self.chat_id,
+            html=html,
+            width=width,
+            height=height,
+            public_data=public_data,
+            chat_data=chat_data,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            show_caption_above_media=show_caption_above_media,
+            allow_queries=allow_queries,
+            is_shared=is_shared,
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
+            topic_id=topic_id,
+            reply_to=reply_to,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (self.from_id if ephemeral else 0),
+            reply_markup=reply_markup,
+        )
+
     async def reply_animation(
         self,
         animation: pytdbot.types.InputFile | str,
@@ -1324,4 +1398,19 @@ class MessageBoundMethods:
             detect_automatic_blocks=detect_automatic_blocks,
             receiver_user_id=receiver_user_id,
             reply_markup=reply_markup,
+        )
+
+    async def edit_widget_data(
+        self,
+        *,
+        public_data: str = None,
+        chat_data: str = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
+        r"""Edit data of the widget message. Shortcut for :meth:`~pytdbot.Client.editWidgetData`."""
+
+        return await self._client.editWidgetData(
+            chat_id=self.chat_id,
+            message_id=self.id,
+            public_data=public_data,
+            chat_data=chat_data,
         )

@@ -41,6 +41,7 @@ BOUND_ON = {
     "MessageBoundMethods": "Message",
     "FileBoundMethods": "File",
     "CallbackQueryBoundMethods": "UpdateNewCallbackQuery",
+    "WidgetQueryBoundMethods": "UpdateNewWidgetQuery",
     "MessageSenderBoundMethods": "MessageSender",
     "ChatActions": "ChatActions",
     "ChosenInlineResultBoundMethods": "UpdateNewChosenInlineResult",
