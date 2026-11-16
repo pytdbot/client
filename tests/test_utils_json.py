@@ -27,6 +27,15 @@ def test_load_callback_data_invalid_returns_empty():
     assert utils.empty_callback_data.action == ""
 
 
+def test_load_callback_data_html_escaped():
+    raw = utils.callback_data("th", (1088394097, "AiRXEpaarTg"))
+    escaped = raw.replace(b'"', b"&quot;")
+
+    loaded = utils.load_callback_data(escaped)
+    assert loaded.action == "th"
+    assert loaded.data == [1088394097, "AiRXEpaarTg"]
+
+
 def test_callback_data_too_large():
     with pytest.raises(ValueError, match="less than 64 bytes"):
         utils.callback_data("x" * 70)

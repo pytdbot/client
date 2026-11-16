@@ -1,3 +1,4 @@
+from html import unescape
 from typing import Any
 
 try:
@@ -52,12 +53,16 @@ def load_callback_data(data: bytes) -> CallbackData:
 
     try:
         d = json_loads(data)
-        if not isinstance(d, list) or len(d) != 2:
-            return empty_callback_data
     except (ValueError, TypeError):
+        try:
+            d = json_loads(unescape(data.decode("utf-8")))
+        except (ValueError, TypeError, UnicodeDecodeError):
+            return empty_callback_data
+
+    if not isinstance(d, list) or len(d) != 2:
         return empty_callback_data
-    else:
-        return CallbackData(*d)
+
+    return CallbackData(*d)
 
 
 def callback_data(action: Any, data: Any = None) -> bytes:
