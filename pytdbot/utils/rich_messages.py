@@ -1,3 +1,5 @@
+from html import escape
+
 _SELF_CLOSING = frozenset({"img", "hr", "input", "tg-map"})
 _TRUE_ONLY = frozenset(
     {
@@ -46,7 +48,7 @@ def tag(tag_name, *children, **attrs):
         if tk in _TRUE_ONLY and (v is True or v == ""):
             parts.append(tk)
         else:
-            parts.append(f'{tk}="{v}"')
+            parts.append(f'{tk}="{escape(str(v))}"')
 
     attr_str = (" " + " ".join(parts)) if parts else ""
     content = "".join(children) if children else ""
