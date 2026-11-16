@@ -287,7 +287,10 @@ def _entity_page(lookup, linker: Linker, kind: str, name: str, meta: dict) -> st
     lines = [
         f"[](){{ #{ident} }}",
     ]
-    if kind == "function":
+    if kind == "function" and not any(
+        (h.get("on") or "Client") == "Client"
+        for h in linker.helpers_by_name.get(name) or []
+    ):
         lines.append(f"[](){{ #pytdbot.Client.{name} }}")
     kind_label = {"function": "Function", "type": "Type", "update": "Update", "class": "Class"}[kind]
     lines += [
