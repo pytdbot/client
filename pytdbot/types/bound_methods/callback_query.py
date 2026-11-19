@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from functools import lru_cache
+from functools import cached_property
 
 import pytdbot
 
@@ -9,8 +9,7 @@ class CallbackQueryBoundMethods:
     def __init__(self):
         self._client: pytdbot.Client
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def callback_data(self) -> pytdbot.utils.CallbackData:
         r"""Callback data that was set by :func:`~pytdbot.utils.callback_data`
 
@@ -27,8 +26,7 @@ class CallbackQueryBoundMethods:
 
         return pytdbot.utils.empty_callback_data
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def text(self) -> str:
         r"""Callback data decoded as str"""
 

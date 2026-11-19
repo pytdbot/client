@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from functools import lru_cache
+from functools import cached_property
 from typing import Literal
 
 import pytdbot
@@ -12,8 +12,7 @@ class MessageBoundMethods:
     def __init__(self):
         self._client: pytdbot.Client
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def from_id(self) -> int | None:
         r"""Message Sender ID"""
 
@@ -22,16 +21,14 @@ class MessageBoundMethods:
         elif isinstance(self.sender_id, pytdbot.types.MessageSenderUser):
             return self.sender_id.user_id
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def reply_to_message_id(self) -> int:
         r"""Replied message ID"""
 
         if isinstance(self.reply_to, pytdbot.types.MessageReplyToMessage):
             return self.reply_to.message_id
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def text(self) -> str:
         r"""Text of the message"""
 
@@ -40,16 +37,14 @@ class MessageBoundMethods:
 
         return ""
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def entities(self) -> list[pytdbot.types.TextEntity] | None:
         r"""Entities of the message"""
 
         if isinstance(self.content, pytdbot.types.MessageText):
             return self.content.text.entities
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def caption(self) -> str | None:
         r"""Caption of the received media"""
 
@@ -66,8 +61,7 @@ class MessageBoundMethods:
         ):
             return self.content.caption.text
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def caption_entities(self) -> list[pytdbot.types.TextEntity] | None:
         r"""Caption entities of the received media"""
 
@@ -84,8 +78,7 @@ class MessageBoundMethods:
         ):
             return self.content.caption.entities
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def widget(self) -> pytdbot.types.MessageWidget | None:
         r"""Widget content of the message"""
 
@@ -126,8 +119,7 @@ class MessageBoundMethods:
 
         return None
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def rich_media(
         self,
     ) -> (
@@ -157,8 +149,7 @@ class MessageBoundMethods:
 
         return media or None
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def remote_file_id(self) -> str | None:
         r"""Remote file id"""
 
@@ -182,8 +173,7 @@ class MessageBoundMethods:
 
         return file_id
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def remote_unique_file_id(self) -> str | None:
         r"""Remote unique file id"""
 
@@ -207,8 +197,7 @@ class MessageBoundMethods:
 
         return unique_file_id
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def remote_file_size(self) -> int:
         r"""Remote file size in bytes; 0 if unknown"""
 
@@ -232,8 +221,7 @@ class MessageBoundMethods:
 
         return file_size
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def remote_duration(self) -> int:
         r"""Remote media file duration in seconds as defined by the sender; 0 if unknown"""
 

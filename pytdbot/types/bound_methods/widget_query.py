@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from functools import lru_cache
+from functools import cached_property
 
 import pytdbot
 
@@ -9,8 +9,7 @@ class WidgetQueryBoundMethods:
     def __init__(self):
         self._client: pytdbot.Client
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def query_data(self) -> pytdbot.utils.CallbackData:
         r"""Query data that was set by :func:`~pytdbot.utils.callback_data`
 
@@ -24,8 +23,7 @@ class WidgetQueryBoundMethods:
 
         return pytdbot.utils.load_callback_data(self.data)
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def text(self) -> str:
         r"""Query data decoded as str"""
 
