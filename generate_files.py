@@ -194,26 +194,34 @@ def generate_to_dict_return(args):
     return ", ".join(args_list)
 
 
-def generate_from_dict_kwargs(args):
-    args_list = []
+def generate_from_dict_body(args):
+    lines = []
     for arg_name, arg_data in args.items():
-        if arg_name in keyword.kwlist:
-            arg_name += "_"
-
+        name = arg_name + "_" if arg_name in keyword.kwlist else arg_name
         arg_type = getArgTypePython(arg_data["type"])
+        default = generate_arg_default(arg_type)
 
-        if arg_type == "bytes":
-            args_list.append(
-                f'data_class.{arg_name} = b64decode(data.get("{arg_name}", b""))'
+        if arg_type == "int":  # int64 fields arrive as JSON strings
+            lines.append(
+                f'v = data.get("{arg_name}")\n{indent * 2}'
+                f'd["{name}"] = v if v.__class__ is int else ({default} if v is None else int(v))'
             )
-        elif arg_type == "int":  # Some values are int but in string format
-            args_list.append(f'data_class.{arg_name} = int(data.get("{arg_name}", 0))')
-        else:
-            args_list.append(
-                f'data_class.{arg_name} = data.get("{arg_name}", {generate_arg_default(arg_type)})'
+        elif arg_type == "bytes":
+            lines.append(
+                f'v = data.get("{arg_name}")\n{indent * 2}'
+                f'd["{name}"] = b64decode(v) if v.__class__ is str else ({default} if v is None else v)'
             )
+        elif arg_type.startswith("list[") or arg_type == "list":
+            lines.append(
+                f'v = data.get("{arg_name}")\n{indent * 2}'
+                f'd["{name}"] = [_decode(x, client) for x in v] if v is not None else {default}'
+            )
+        elif arg_type in ("bool", "str", "float"):
+            lines.append(f'd["{name}"] = data.get("{arg_name}", {default})')
+        else:  # nested TlObject
+            lines.append(f'd["{name}"] = _decode(data.get("{arg_name}"), client)')
 
-    return "; ".join(args_list)
+    return f"\n{indent * 2}".join(lines)
 
 
 def generate_function_invoke_args(args):
@@ -295,12 +303,20 @@ types_template = """class {class_name}({inherited_class}):
         return {{{to_dict_return}}}
 
     @classmethod
-    def from_dict(cls, data: dict) -> {class_name} | None:
-        if data:
-            data_class = cls()
-            {from_dict_kwargs}
+    def from_dict(cls, data: dict, client: pytdbot.Client | None = None) -> {class_name} | None:
+        if not data:
+            return None
 
-        return data_class"""
+        self = cls.__new__(cls)
+
+        d = self.__dict__
+        {from_dict_body}
+        d["extra_id"] = data.get("@extra")
+
+        if client is not None:
+            d["_client"] = client
+
+        return self"""
 
 
 def generate_types(f, types, updates, classes):
@@ -309,7 +325,7 @@ def generate_types(f, types, updates, classes):
             args_def = generate_args_def(type_data["args"], classes)
             self_args = generate_self_args(type_data["args"], classes)
             to_return_dict = generate_to_dict_return(type_data["args"])
-            from_dict_kwargs = generate_from_dict_kwargs(type_data["args"])
+            from_dict_body = generate_from_dict_body(type_data["args"])
             class_name = to_camel_case(type_name, is_class=True)
 
             f.write(
@@ -325,7 +341,7 @@ def generate_types(f, types, updates, classes):
                     self_args=self_args,
                     type_name=type_name,
                     to_dict_return=to_return_dict,
-                    from_dict_kwargs=from_dict_kwargs,
+                    from_dict_body=from_dict_body,
                 )
                 + "\n\n"
             )
@@ -467,7 +483,29 @@ if __name__ == "__main__":
 
     @classmethod
     def from_dict(cls, data: dict):
-        raise NotImplementedError\n\n"""
+        raise NotImplementedError\n\n\n_type_lookup: dict = {}
+
+
+def _decode(value, client):
+    if value is None:
+        return None
+
+    value_class = value.__class__
+    if value_class is dict:
+        td_type = value.get("@type")
+        if td_type is not None:
+            obj_type = _type_lookup.get(td_type)
+            if obj_type is None:
+                obj_type = globals()[pytdbot.utils.to_camel_case(td_type)]
+                _type_lookup[td_type] = obj_type
+            return obj_type.from_dict(value, client)
+
+        return {key: _decode(child, client) for key, child in value.items()}
+
+    if value_class is list:
+        return [_decode(item, client) for item in value]
+
+    return value\n\n"""
         )
 
         generate_classes(types_file, tl_json["classes"])

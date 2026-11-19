@@ -1,12 +1,10 @@
 from __future__ import annotations
-
-from collections.abc import Callable
-from inspect import iscoroutinefunction
-from logging import getLogger
-
 import pytdbot
 
 from .handler import Handler
+from collections.abc import Callable
+from inspect import iscoroutinefunction
+from logging import getLogger
 
 logger = getLogger(__name__)
 

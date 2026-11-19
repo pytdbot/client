@@ -32,12 +32,9 @@ def dict_to_obj(dict_obj: Any, client: Any = None) -> Any:
                 obj_type = getattr(types, utils.to_camel_case(td_type))
                 _type_cache[td_type] = obj_type
 
-            obj = obj_type.from_dict(
-                {key: dict_to_obj(value, client) for key, value in dict_obj.items()}
-            )
-            if client:
-                obj._client = client
-            return obj
+            # from_dict performs the nested decoding itself and propagates
+            # `client` to every child node (sets `_client` on each object)
+            return obj_type.from_dict(dict_obj, client)
         else:
             return {key: dict_to_obj(value, client) for key, value in dict_obj.items()}
     elif isinstance(dict_obj, list):

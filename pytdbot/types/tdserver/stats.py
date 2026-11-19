@@ -56,7 +56,7 @@ class ServerStats:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> ServerStats | None:
+    def from_dict(cls, data: dict, client=None) -> ServerStats | None:
         if not data:
             return None
 
@@ -65,5 +65,7 @@ class ServerStats:
         data_class.uptime = data.get("uptime", None)
         data_class.updates_count = data.get("updates_count", None)
         data_class.requests_count = data.get("requests_count", None)
+        if client is not None:
+            data_class._client = client
 
         return data_class

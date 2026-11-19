@@ -42,13 +42,15 @@ class ScheduledEvent:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> ScheduledEvent | None:
+    def from_dict(cls, data: dict, client=None) -> ScheduledEvent | None:
         if not data:
             return None
 
         data_class = cls()
         data_class.event_id = data.get("event_id", None)
         data_class.send_at = data.get("send_at", None)
+        if client is not None:
+            data_class._client = client
 
         return data_class
 
@@ -98,7 +100,7 @@ class UpdateScheduledEvent:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> UpdateScheduledEvent | None:
+    def from_dict(cls, data: dict, client=None) -> UpdateScheduledEvent | None:
         if not data:
             return None
 
@@ -106,5 +108,7 @@ class UpdateScheduledEvent:
         data_class.name = data.get("name", None)
         data_class.event_id = data.get("event_id", None)
         data_class.payload = data.get("payload", None)
+        if client is not None:
+            data_class._client = client
 
         return data_class
