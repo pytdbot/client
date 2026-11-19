@@ -543,10 +543,10 @@ class Client(Decorators, Methods):
         Example:
             .. code-block:: python
 
-                async def activate(client, message):
-                    await message.reply_text("Done")
+                async def start(client, message):
+                    await message.reply_text("Started")
 
-                client.add_command(activate, "تفعيل")
+                client.add_command(start, "start")
 
         Parameters:
             func (``Callable``):

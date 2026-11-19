@@ -100,22 +100,22 @@ async def run_linear(stub, message):
 def test_on_command_class_level_decorator():
     calls = []
 
-    @Client.on_command("تفعيل", "تشفيل")
-    async def activate(client, message):
+    @Client.on_command("start", "go")
+    async def start(client, message):
         calls.append(message.text)
 
-    assert activate._handler.commands == ("تفعيل", "تشفيل")
-    assert activate._handler.prefix is False
-    assert activate._handler.update_type == "updateNewMessage"
-    assert activate._handler.inner_object is True
+    assert start._handler.commands == ("start", "go")
+    assert start._handler.prefix is False
+    assert start._handler.update_type == "updateNewMessage"
+    assert start._handler.inner_object is True
 
 
 def test_on_command_prefix_decorator():
-    @Client.on_command("بحث", prefix=True)
+    @Client.on_command("search", prefix=True)
     async def search(client, message):
         pass
 
-    assert search._handler.commands == ("بحث",)
+    assert search._handler.commands == ("search",)
     assert search._handler.prefix is True
 
 
@@ -179,14 +179,14 @@ async def test_exact_command_dispatch():
     async def other(client, message):
         calls.append(("other", message.text))
 
-    stub.add_command(activate, "تفعيل")
-    stub.add_command(other, "تعطيل")
+    stub.add_command(activate, "start")
+    stub.add_command(other, "disable")
 
-    await stub.dispatch_commands(make_message("تفعيل"))
-    assert calls == [("activate", "تفعيل")]
+    await stub.dispatch_commands(make_message("start"))
+    assert calls == [("activate", "start")]
 
-    await stub.dispatch_commands(make_message("سلام"))
-    assert calls == [("activate", "تفعيل")], "no match -> nothing runs"
+    await stub.dispatch_commands(make_message("hello there"))
+    assert calls == [("activate", "start")], "no match -> nothing runs"
 
 
 async def test_prefix_command_dispatch():
@@ -199,15 +199,15 @@ async def test_prefix_command_dispatch():
     async def exact(client, message):
         calls.append(("exact", message.text))
 
-    stub.add_command(search, "بحث", prefix=True)
-    stub.add_command(exact, "بحث")
+    stub.add_command(search, "search", prefix=True)
+    stub.add_command(exact, "search")
 
-    await stub.dispatch_commands(make_message("بحث مقطع جميل"))
-    assert calls == ["بحث مقطع جميل"]
+    await stub.dispatch_commands(make_message("search cute cat videos"))
+    assert calls == ["search cute cat videos"]
 
     calls.clear()
-    await stub.dispatch_commands(make_message("بحث"))
-    assert calls == [("exact", "بحث")], "exact match wins over prefix"
+    await stub.dispatch_commands(make_message("search"))
+    assert calls == [("exact", "search")], "exact match wins over prefix"
 
 
 async def test_filter_blocks_command():
@@ -217,9 +217,9 @@ async def test_filter_blocks_command():
     async def activate(client, message):
         calls.append(1)
 
-    stub.add_command(activate, "تفعيل", filters=is_active)
+    stub.add_command(activate, "start", filters=is_active)
 
-    message = make_message("تفعيل")
+    message = make_message("start")
     message.is_active_chat = False
     await stub.dispatch_commands(message)
     assert calls == []
@@ -237,10 +237,10 @@ async def test_stop_handlers_propagates():
     async def stopper(client, message):
         raise StopHandlers
 
-    stub.add_command(stopper, "توقف")
+    stub.add_command(stopper, "halt")
 
     with pytest.raises(StopHandlers):
-        await stub.dispatch_commands(make_message("توقف"))
+        await stub.dispatch_commands(make_message("halt"))
 
 
 async def test_exception_logged_and_continues():
@@ -253,10 +253,10 @@ async def test_exception_logged_and_continues():
     async def second(client, message):
         calls.append(2)
 
-    stub.add_command(broken, "امر")
-    stub.add_command(second, "امر")
+    stub.add_command(broken, "cmd")
+    stub.add_command(second, "cmd")
 
-    await stub.dispatch_commands(make_message("امر"))
+    await stub.dispatch_commands(make_message("cmd"))
     assert calls == [2], "second handler must still run"
 
 
@@ -270,9 +270,9 @@ async def test_multiple_handlers_one_command_order():
     async def second(client, message):
         calls.append("second")
 
-    stub.add_command(first, "امر")
-    stub.add_command(second, "امر")
-    await stub.dispatch_commands(make_message("امر"))
+    stub.add_command(first, "cmd")
+    stub.add_command(second, "cmd")
+    await stub.dispatch_commands(make_message("cmd"))
     assert calls == ["first", "second"]
 
 
@@ -283,7 +283,7 @@ async def test_non_text_message_short_circuits():
     async def activate(client, message):
         calls.append(1)
 
-    stub.add_command(activate, "تفعيل")
+    stub.add_command(activate, "start")
 
     photo = dict_to_obj(
         {
@@ -298,7 +298,7 @@ async def test_non_text_message_short_circuits():
                     "photo": {"@type": "photo", "has_stickers": False, "sizes": []},
                     "caption": {
                         "@type": "formattedText",
-                        "text": "تفعيل",
+                        "text": "start",
                         "entities": [],
                     },
                 },
@@ -332,13 +332,13 @@ async def test_dispatcher_runs_in_linear_list():
     stub._handlers["updateNewMessage"] = [
         Handler(moderation, "updateNewMessage", None, 0, True)
     ]
-    stub.add_command(activate, "تفعيل", position=3)
+    stub.add_command(activate, "start", position=3)
     stub._handlers["updateNewMessage"].append(
         Handler(pass_through, "updateNewMessage", None, None, True)
     )
     stub._update_handlers()
 
-    await run_linear(stub, make_message("تفعيل"))
+    await run_linear(stub, make_message("start"))
     assert order == ["moderation", "command", "pass-through"]
 
 
@@ -349,12 +349,12 @@ async def test_remove_command():
     async def activate(client, message):
         calls.append(1)
 
-    stub.add_command(activate, "تفعيل", "تشفيل")
-    stub.add_command(activate, "بحث", prefix=True)
+    stub.add_command(activate, "start", "go")
+    stub.add_command(activate, "search", prefix=True)
 
     assert stub.remove_command(activate) is True
-    await stub.dispatch_commands(make_message("تفعيل"))
-    await stub.dispatch_commands(make_message("بحث x"))
+    await stub.dispatch_commands(make_message("start"))
+    await stub.dispatch_commands(make_message("search x"))
     assert calls == []
     assert stub._command_handlers == {}
     assert stub._prefix_handlers == []
@@ -370,8 +370,8 @@ async def test_reload_clears_plugin_commands_only():
     async def local_h(client, message):
         calls.append("local")
 
-    stub.add_command(plugin_h, "امر", is_from_plugin=True)
-    stub.add_command(local_h, "امر2", is_from_plugin=False)
+    stub.add_command(plugin_h, "cmd", is_from_plugin=True)
+    stub.add_command(local_h, "cmd2", is_from_plugin=False)
 
     stub._command_handlers = {
         c: [h for h in hs if not h.is_from_plugin]
@@ -383,8 +383,8 @@ async def test_reload_clears_plugin_commands_only():
     ]
     stub._update_handlers()
 
-    await stub.dispatch_commands(make_message("امر"))
-    await stub.dispatch_commands(make_message("امر2"))
+    await stub.dispatch_commands(make_message("cmd"))
+    await stub.dispatch_commands(make_message("cmd2"))
     assert calls == ["local"]
 
 
@@ -396,8 +396,8 @@ async def test_command_handler_timeout():
         await asyncio.sleep(1)
         calls.append("never")
 
-    stub.add_command(slow, "بطيء")
-    await stub.dispatch_commands(make_message("بطيء"))
+    stub.add_command(slow, "slow")
+    await stub.dispatch_commands(make_message("slow"))
     assert calls == [], "timeout must cancel the handler"
 
 
@@ -408,6 +408,6 @@ async def test_default_timeout_none_runs_bare():
     async def h(client, message):
         calls.append(1)
 
-    stub.add_command(h, "امر")
-    await stub.dispatch_commands(make_message("امر"))
+    stub.add_command(h, "cmd")
+    await stub.dispatch_commands(make_message("cmd"))
     assert calls == [1]
