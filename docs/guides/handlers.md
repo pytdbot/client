@@ -15,6 +15,7 @@ async def on_raw(c: Client, update: types.UpdateNewMessage):
 | Decorator | Payload |
 | --- | --- |
 | `on_message()` | [`Message`][pytdbot.types.Message] (unpacked from [`updateNewMessage`][pytdbot.types.UpdateNewMessage]) |
+| `on_command()` | [`Message`][pytdbot.types.Message] routed by `message.text` |
 | `on_updateNewMessage()` and other `on_update…` | Full update object |
 | `on_updateNewCallbackQuery()` | [`UpdateNewCallbackQuery`][pytdbot.types.UpdateNewCallbackQuery] |
 | `initializer` / `finalizer` | Run before / after other handlers |
@@ -38,3 +39,21 @@ async def gate(c: Client, message: types.Message):
 ```
 
 Remove a function later with `client.remove_handler(func)`.
+
+## Commands
+
+`on_command()` routes on `message.text` instead of scanning every `on_message()` handler, so each message costs one dict lookup. In a plugin, decorate `Client` itself like any other handler.
+
+```python
+@client.on_command("start", "help")
+async def start(c: Client, message: types.Message):
+    await message.reply_text("Hi!")
+
+@client.on_command("echo", prefix=True)
+async def echo(c: Client, message: types.Message):
+    await message.reply_text(message.text.removeprefix("echo").strip())
+```
+
+- Exact match by default; `prefix=True` matches with `startswith`, and an exact registration always wins over a prefix one
+- A single internal dispatcher joins the normal handler list, at the smallest `position=` across all registrations
+- Remove with `client.remove_command(func)`

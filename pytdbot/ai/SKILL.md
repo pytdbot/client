@@ -66,6 +66,7 @@ Userbot: `user_bot=True` (no token) and handle authorization — see `examples/u
 
 - `async def handler(client, update_or_message)`
 - `@client.on_message()` → `types.Message`
+- `@client.on_command("start")` → `types.Message` routed by `message.text` (exact; `prefix=True` for commands that take arguments) instead of scanning every handler
 - `@client.on_updateNewMessage()` / other `on_update…` → full update
 - Filters: `from pytdbot import filters` → `filters.create(...)` then `@client.on_message(filters=my_filter)`
 
