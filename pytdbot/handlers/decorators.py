@@ -204,6 +204,82 @@ class Decorators(Updates):
 
         return decorator
 
+    def on_command(
+        self: "pytdbot.Client | str | None" = None,
+        *commands: str,
+        filters: "pytdbot.filters.Filter | None" = None,
+        position: int | None = None,
+        timeout: float | None = None,
+        prefix: bool = False,
+    ) -> HandlerDecorator:
+        r"""A decorator to handle ``updateNewMessage`` by routing on the message text,
+        instead of scanning every ``on_message`` handler.
+
+        Commands are matched against ``message.text``: exact match by default, or
+        ``startswith`` when ``prefix=True`` (for commands that take arguments).
+        An exact match always takes precedence and prefix handlers are not checked.
+
+        Internally a single dispatcher handler is inserted into the
+        ``updateNewMessage`` handlers list (at the smallest ``position`` seen
+        across ``on_command`` registrations; appended at the end when no
+        position is given), so ordering with regular handlers is preserved.
+
+        Parameters:
+            commands (``str``):
+                One or more command strings. Required.
+
+            filters (:class:`~pytdbot.filters.Filter`, *optional*):
+                A filter applied to the matched message before the handler runs
+
+            position (``int``, *optional*):
+                The dispatcher position in the handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+            prefix (``bool``, *optional*):
+                Match with ``startswith`` instead of exact equality.
+                Default is ``False``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        if isinstance(self, str):
+            commands = (self, *commands)
+            self = None
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_command(
+                        func,
+                        *commands,
+                        filters=filters,
+                        position=position,
+                        timeout=timeout,
+                        prefix=prefix,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            else:
+                handler = Handler(
+                    func=func,
+                    update_type="updateNewMessage",
+                    filter=filters,
+                    position=position,
+                    inner_object=True,
+                    timeout=timeout,
+                )
+                handler.commands = commands
+                handler.prefix = prefix
+                func._handler = handler
+            return func
+
+        return decorator
+
     def on_updateScheduledEvent(
         self: pytdbot.Client | None = None,
         filters: pytdbot.filters.Filter | None = None,

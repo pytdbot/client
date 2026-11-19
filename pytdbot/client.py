@@ -202,6 +202,11 @@ class Client(Decorators, Methods):
 
         self._handlers = {"initializer": [], "finalizer": []}
         self._current_handlers = {}
+        self._command_handlers: dict[str, list] = {}
+        self._prefix_handlers: list = []
+        self._current_command_handlers: dict[str, tuple] = {}
+        self._current_prefix_handlers: tuple = ()
+        self.__command_dispatcher = None
         self._results: dict[str, asyncio.Future] = {}
         self._workers_tasks = None
         self.__wait_login: asyncio.Event = None
@@ -447,6 +452,21 @@ class Client(Decorators, Methods):
                 if handler.is_from_plugin:
                     self.remove_handler(handler.func)
 
+        self._command_handlers = {
+            command: [handler for handler in handlers_ if not handler.is_from_plugin]
+            for command, handlers_ in self._command_handlers.items()
+        }
+        self._command_handlers = {
+            command: handlers_
+            for command, handlers_ in self._command_handlers.items()
+            if handlers_
+        }
+        self._prefix_handlers = [
+            (prefix, handler)
+            for prefix, handler in self._prefix_handlers
+            if not handler.is_from_plugin
+        ]
+
         self._load_plugins(reload_plugins=True)
         self.is_reloading_plugins = False
 
@@ -474,9 +494,203 @@ class Client(Decorators, Methods):
                     handlers.remove(handler)
                     removed = True
 
+        if self._remove_command_handler(func):
+            removed = True
+
         if removed:
             self._update_handlers()
         return removed
+
+    def _remove_command_handler(self, func: Callable) -> bool:
+        removed = False
+
+        for commands in self._command_handlers.values():
+            for handler in commands.copy():
+                if handler.func == func:
+                    commands.remove(handler)
+                    removed = True
+
+        self._command_handlers = {
+            command: handlers
+            for command, handlers in self._command_handlers.items()
+            if handlers
+        }
+        prefix_handlers = [
+            (prefix, handler)
+            for prefix, handler in self._prefix_handlers
+            if handler.func != func
+        ]
+
+        if len(prefix_handlers) != len(self._prefix_handlers):
+            removed = True
+
+        self._prefix_handlers = prefix_handlers
+
+        return removed
+
+    def add_command(
+        self,
+        func: Callable,
+        *commands: str,
+        filters: Filter = None,
+        position: int = None,
+        timeout: float = None,
+        prefix: bool = False,
+        is_from_plugin: bool = False,
+    ) -> None:
+        r"""Add a command handler routed by ``message.text``
+
+        Example:
+            .. code-block:: python
+
+                async def activate(client, message):
+                    await message.reply_text("Done")
+
+                client.add_command(activate, "تفعيل")
+
+        Parameters:
+            func (``Callable``):
+                A callable function
+
+            commands (``str``):
+                One or more command strings
+
+            filters (:class:`~pytdbot.filters.Filter`, *optional*):
+                A message filter
+
+            position (``int``, *optional*):
+                The dispatcher position in the handlers list. The smallest
+                position across all command registrations wins.
+                Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. If ``None``, ``Client.default_handlers_timeout`` is preferred. Default is ``None``
+
+            prefix (``bool``, *optional*):
+                Match with ``startswith`` instead of exact equality.
+                Default is ``False``
+
+            is_from_plugin (``bool``, *optional*):
+                Whether this handler comes from a loaded plugin. Default is ``False``
+
+        Raises:
+            TypeError
+        """
+
+        if not commands or not all(
+            isinstance(command, str) and command for command in commands
+        ):
+            raise TypeError("commands must be non-empty strings")
+        if not isinstance(func, Callable):
+            raise TypeError("func must be callable")
+        if filters is not None and not isinstance(filters, Filter):
+            raise TypeError("filters must be instance of pytdbot.filters.Filter")
+        if not iscoroutinefunction(func):
+            raise TypeError("Handler must be async")
+
+        handler = Handler(
+            func=func,
+            update_type="updateNewMessage",
+            filter=filters,
+            position=position,
+            inner_object=True,
+            timeout=timeout,
+            is_from_plugin=is_from_plugin,
+        )
+
+        if prefix:
+            for command in commands:
+                self._prefix_handlers.append((command, handler))
+        else:
+            for command in commands:
+                self._command_handlers.setdefault(command, []).append(handler)
+
+        self.__ensure_command_dispatcher(position)
+        self._update_handlers()
+
+    def remove_command(self, func: Callable) -> bool:
+        r"""Remove a command handler
+
+        Parameters:
+            func (``Callable``):
+                A callable function
+
+        Returns:
+            :py:class:`bool`: True if a registration was removed, False otherwise
+        """
+
+        if not isinstance(func, Callable):
+            raise TypeError("func must be callable")
+
+        removed = self._remove_command_handler(func)
+        if removed:
+            self._update_handlers()
+        return removed
+
+    def __ensure_command_dispatcher(self, position: int = None) -> None:
+        if self.__command_dispatcher is None:
+            self.__command_dispatcher = Handler(
+                func=self.__dispatch_commands,
+                update_type="updateNewMessage",
+                filter=None,
+                position=position,
+                inner_object=True,
+                timeout=None,
+                is_from_plugin=False,
+            )
+            self._handlers.setdefault("updateNewMessage", []).append(
+                self.__command_dispatcher
+            )
+        elif position is not None and (
+            self.__command_dispatcher.position is None
+            or position < self.__command_dispatcher.position
+        ):
+            self.__command_dispatcher.position = position
+
+    @staticmethod
+    async def __dispatch_commands(client: "pytdbot.Client", message):
+        # staticmethod: Handler.__call__ invokes func(client, update)
+        text = message.text
+        if not text:
+            return
+
+        handlers = client._current_command_handlers.get(text)
+        if handlers is None and client._current_prefix_handlers:
+            for prefix, handler in client._current_prefix_handlers:
+                if text.startswith(prefix):
+                    handlers = (handler,)
+                    break
+
+        if handlers is None:
+            return
+
+        for handler in handlers:
+            try:
+                if handler.filter is not None:
+                    filter_function = handler.filter.func
+
+                    if client.is_coro_filter(filter_function):
+                        if not await filter_function(client, message):
+                            continue
+                    elif not filter_function(client, message):
+                        continue
+
+                if client.default_handlers_timeout is None and handler.timeout is None:
+                    await handler(client, message)
+                else:
+                    timeout = handler.timeout or client.default_handlers_timeout
+                    try:
+                        await asyncio.wait_for(
+                            handler(client, message), timeout=timeout
+                        )
+                    except asyncio.TimeoutError:
+                        client.logger.warning(
+                            f"Command handler {handler} timed out after {timeout} seconds"
+                        )
+            except StopHandlers as e:
+                raise e
+            except Exception:
+                client.logger.exception(f"Exception in {handler}")
 
     async def invoke(
         self,
@@ -753,6 +967,13 @@ class Client(Decorators, Methods):
             k: tuple(sorted(v, key=lambda x: (x.position is None, x.position)))
             for k, v in self._handlers.items()
         }
+        self._current_command_handlers = {
+            command: tuple(
+                sorted(handlers, key=lambda x: (x.position is None, x.position))
+            )
+            for command, handlers in self._command_handlers.items()
+        }
+        self._current_prefix_handlers = tuple(self._prefix_handlers)
 
     def _load_plugins(self, reload_plugins: bool = False):
         count = 0
@@ -795,15 +1016,26 @@ class Client(Decorators, Methods):
 
             for handler in handlers_to_load:
                 if iscoroutinefunction(handler.func):
-                    self.add_handler(
-                        update_type=handler.update_type,
-                        func=handler.func,
-                        filters=handler.filter,
-                        position=handler.position,
-                        inner_object=handler.inner_object,
-                        timeout=handler.timeout,
-                        is_from_plugin=True,
-                    )
+                    if handler.commands:
+                        self.add_command(
+                            handler.func,
+                            *handler.commands,
+                            filters=handler.filter,
+                            position=handler.position,
+                            timeout=handler.timeout,
+                            prefix=handler.prefix,
+                            is_from_plugin=True,
+                        )
+                    else:
+                        self.add_handler(
+                            update_type=handler.update_type,
+                            func=handler.func,
+                            filters=handler.filter,
+                            position=handler.position,
+                            inner_object=handler.inner_object,
+                            timeout=handler.timeout,
+                            is_from_plugin=True,
+                        )
                     handlers += 1
                     plugin_handlers_count += 1
 
