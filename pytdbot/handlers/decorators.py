@@ -215,7 +215,9 @@ class Decorators(Updates):
         r"""A decorator to handle ``updateNewMessage`` by routing on the message text,
         instead of scanning every ``on_message`` handler.
 
-        Commands are matched against ``message.text``: exact match by default, or
+        Commands are matched against ``message.text`` exactly as received: no
+        slash is prepended, so register ``"/start"`` to answer ``/start`` while
+        ``"start"`` matches only the bare word. Match is exact by default, or
         ``startswith`` when ``prefix=True`` (for commands that take arguments).
         An exact match always takes precedence and prefix handlers are not checked.
 

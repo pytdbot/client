@@ -22,21 +22,21 @@ client = Client(
 )
 
 
-@client.on_command("start", "help")
+@client.on_command("/start", "/help")
 async def start(_: Client, message: types.Message):
     await message.reply_text(
-        "Hi! Send `echo <text>` and I will send it back.", parse_mode="markdown"
+        "Hi! Send `/echo <text>` and I will send it back.", parse_mode="markdown"
     )
 
 
-@client.on_command("echo", prefix=True)
+@client.on_command("/echo", prefix=True)
 async def echo(_: Client, message: types.Message):
-    text = message.text.removeprefix("echo").strip()
+    text = message.text.removeprefix("/echo").strip()
     if text:
         await message.reply_text(text)
 
 
-@client.on_command("id")
+@client.on_command("/id")
 async def id(_: Client, message: types.Message):
     await message.reply_text(
         f"Chat ID: <code>{message.chat_id}</code>", parse_mode="html"

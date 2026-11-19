@@ -44,14 +44,16 @@ Remove a function later with `client.remove_handler(func)`.
 
 `on_command()` routes on `message.text` instead of scanning every `on_message()` handler, so each message costs one dict lookup. In a plugin, decorate `Client` itself like any other handler.
 
+Commands are matched against `message.text` exactly as received, no slash is added for you: register `"/start"` to answer `/start`, while `"start"` matches only the bare word `start`.
+
 ```python
-@client.on_command("start", "help")
+@client.on_command("/start", "/help")
 async def start(c: Client, message: types.Message):
     await message.reply_text("Hi!")
 
-@client.on_command("echo", prefix=True)
+@client.on_command("/echo", prefix=True)
 async def echo(c: Client, message: types.Message):
-    await message.reply_text(message.text.removeprefix("echo").strip())
+    await message.reply_text(message.text.removeprefix("/echo").strip())
 ```
 
 - Exact match by default; `prefix=True` matches with `startswith`, and an exact registration always wins over a prefix one

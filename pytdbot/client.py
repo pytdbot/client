@@ -540,13 +540,16 @@ class Client(Decorators, Methods):
     ) -> None:
         r"""Add a command handler routed by ``message.text``
 
+        Commands are matched exactly as received: no slash is prepended,
+        so register ``"/start"`` to answer ``/start``.
+
         Example:
             .. code-block:: python
 
                 async def start(client, message):
                     await message.reply_text("Started")
 
-                client.add_command(start, "start")
+                client.add_command(start, "/start")
 
         Parameters:
             func (``Callable``):

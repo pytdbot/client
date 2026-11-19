@@ -189,6 +189,23 @@ async def test_exact_command_dispatch():
     assert calls == [("activate", "start")], "no match -> nothing runs"
 
 
+async def test_no_slash_prepended():
+    """Commands match message.text as-is: no slash is added for you."""
+    stub = CommandClientStub()
+    calls = []
+
+    async def start(client, message):
+        calls.append(1)
+
+    stub.add_command(start, "start")
+
+    await stub.dispatch_commands(make_message("/start"))
+    assert calls == [], "a slash command must not match a bare word registration"
+
+    await stub.dispatch_commands(make_message("start"))
+    assert calls == [1]
+
+
 async def test_prefix_command_dispatch():
     stub = CommandClientStub()
     calls = []
