@@ -76,3 +76,135 @@ def test_get_formatted_text_bold():
     )
     assert utils.get_formatted_text(ft) == "<b>hello</b>"
     assert utils.get_formatted_text(ft, html=False) == "*hello*"
+
+
+def test_get_formatted_text_utf16_offsets():
+    ft = types.FormattedText(
+        text="👋hi friend",
+        entities=[
+            types.TextEntity(offset=2, length=2, type=types.TextEntityTypeBold())
+        ],
+    )
+    assert utils.get_formatted_text(ft) == "👋<b>hi</b> friend"
+
+
+def test_get_formatted_text_nested():
+    ft = types.FormattedText(
+        text="hello world",
+        entities=[
+            types.TextEntity(offset=0, length=11, type=types.TextEntityTypeBold()),
+            types.TextEntity(
+                offset=6,
+                length=5,
+                type=types.TextEntityTypeTextUrl(url="https://example.com"),
+            ),
+        ],
+    )
+    assert (
+        utils.get_formatted_text(ft)
+        == '<b>hello <a href="https://example.com">world</a></b>'
+    )
+
+
+def test_get_formatted_text_skips_none_entities():
+    ft = types.FormattedText(
+        text="hello",
+        entities=[
+            None,
+            types.TextEntity(offset=0, length=5, type=types.TextEntityTypeBold()),
+        ],
+    )
+    assert utils.get_formatted_text(ft) == "<b>hello</b>"
+
+
+def test_get_formatted_text_lone_surrogate():
+    ft = types.FormattedText(
+        text="a\ud800b",
+        entities=[
+            types.TextEntity(offset=0, length=1, type=types.TextEntityTypeBold())
+        ],
+    )
+    assert utils.get_formatted_text(ft) == "<b>a</b>\ud800b"
+
+
+def test_get_formatted_text_escaped_plain():
+    ft = types.FormattedText(text="a<b & c")
+    assert utils.get_formatted_text(ft) == "a&lt;b &amp; c"
+    assert utils.get_formatted_text(ft, escape=False) == "a<b & c"
+
+
+def test_get_formatted_text_adjacent():
+    ft = types.FormattedText(
+        text="abcdef",
+        entities=[
+            types.TextEntity(offset=0, length=3, type=types.TextEntityTypeBold()),
+            types.TextEntity(offset=3, length=3, type=types.TextEntityTypeItalic()),
+        ],
+    )
+    assert utils.get_formatted_text(ft) == "<b>abc</b><i>def</i>"
+
+
+def test_message_to_html():
+    text = types.FormattedText(
+        text="hi",
+        entities=[
+            types.TextEntity(offset=0, length=2, type=types.TextEntityTypeBold())
+        ],
+    )
+    message = types.Message(
+        content=types.MessageText(text=text, link_preview_options=None)
+    )
+    assert utils.message_to_html(message) == "<b>hi</b>"
+    assert utils.message_to_html(types.Message()) == ""
+
+
+def test_message_to_html_caption():
+    caption = types.FormattedText(
+        text="a & b",
+        entities=[
+            types.TextEntity(offset=4, length=1, type=types.TextEntityTypeBold())
+        ],
+    )
+    message = types.Message(
+        content=types.MessagePhoto(
+            photo=None,
+            video=None,
+            caption=caption,
+            show_caption_above_media=False,
+            has_spoiler=False,
+            is_secret=False,
+        )
+    )
+    assert utils.message_to_html(message) == "a &amp; <b>b</b>"
+    widget = types.Message(
+        content=types.MessageWidget(
+            width=0,
+            height=0,
+            html="",
+            public_data="",
+            chat_data="",
+            widget_id=0,
+            caption=caption,
+            show_caption_above_media=False,
+            is_copy=False,
+            can_send_queries=False,
+            can_send_background_queries=False,
+        )
+    )
+    assert utils.message_to_html(widget) == "a &amp; <b>b</b>"
+    assert widget.caption == "a & b"
+    assert (
+        utils.message_to_html(
+            types.Message(
+                content=types.MessagePhoto(
+                    photo=None,
+                    video=None,
+                    caption=types.FormattedText(text=""),
+                    show_caption_above_media=False,
+                    has_spoiler=False,
+                    is_secret=False,
+                )
+            )
+        )
+        == ""
+    )

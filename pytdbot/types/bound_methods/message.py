@@ -57,6 +57,7 @@ class MessageBoundMethods:
                 pytdbot.types.MessageAudio,
                 pytdbot.types.MessageDocument,
                 pytdbot.types.MessageVoiceNote,
+                pytdbot.types.MessageWidget,
             ),
         ):
             return self.content.caption.text
@@ -74,6 +75,7 @@ class MessageBoundMethods:
                 pytdbot.types.MessageAudio,
                 pytdbot.types.MessageDocument,
                 pytdbot.types.MessageVoiceNote,
+                pytdbot.types.MessageWidget,
             ),
         ):
             return self.content.caption.entities

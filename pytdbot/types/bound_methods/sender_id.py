@@ -1,4 +1,4 @@
-from functools import lru_cache
+from functools import cached_property
 
 import pytdbot
 
@@ -7,8 +7,7 @@ class MessageSenderBoundMethods:
     def __init__(self):
         self._client: pytdbot.Client
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def from_id(self) -> int | None:
         """Returns the message sender's ID. ``None`` if not found"""
 
@@ -20,15 +19,13 @@ class MessageSenderBoundMethods:
 
         return None
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def is_user(self) -> bool:
         """Returns ``True`` if the message sender is a user"""
 
         return isinstance(self, pytdbot.types.MessageSenderUser)
 
-    @property
-    @lru_cache(1)
+    @cached_property
     def is_chat(self) -> bool:
         """Returns ``True`` if the message sender is a chat"""
 

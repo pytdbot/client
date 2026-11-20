@@ -2,7 +2,27 @@ from __future__ import annotations
 
 import pytdbot
 
+from ..types import (
+    MessageAnimation,
+    MessageAudio,
+    MessageDocument,
+    MessagePhoto,
+    MessageText,
+    MessageVideo,
+    MessageVoiceNote,
+    MessageWidget,
+)
 from .escape import escape_html, escape_markdown
+
+_CAPTION_CONTENT = (
+    MessagePhoto,
+    MessageVideo,
+    MessageAnimation,
+    MessageAudio,
+    MessageDocument,
+    MessageVoiceNote,
+    MessageWidget,
+)
 
 
 def get_formatted_text(
@@ -33,14 +53,58 @@ def get_formatted_text(
     entities = formatted_text.entities or []
 
     if not entities:
-        if not escape:
-            return text
-        return escape_html(text) if html else escape_markdown(text)
-
-    utf16_map = _build_utf16_map(text)
-    map_len = len(utf16_map) - 1
+        return _escape_text(text, html, escape)
 
     events: list[tuple[int, int, int, int, str]] = []
+
+    if text.isascii():
+        length = len(text)
+
+        for index, entity in enumerate(entities):
+            if entity is None or entity.type is None:
+                continue
+
+            tags = _entity_tags(entity.type, html=html)
+            if tags is None:
+                continue
+
+            start = entity.offset or 0
+            end = start + (entity.length or 0)
+
+            if start < 0 or start > length:
+                continue
+
+            end = min(end, length)
+            if start >= end:
+                continue
+
+            open_tag, close_tag = tags
+            events.append((start, 1, -end, index, open_tag))
+            events.append((end, 0, -start, -index, close_tag))
+
+        if not events:
+            return _escape_text(text, html, escape)
+
+        events.sort(key=_event_order)
+        escape_func = (
+            (escape_html if html else escape_markdown) if escape else (lambda s: s)
+        )
+        parts: list[str] = []
+        last = 0
+
+        for pos, _kind, _nest, _index, tag in events:
+            if pos > last:
+                parts.append(escape_func(text[last:pos]))
+            parts.append(tag)
+            last = pos
+
+        if last < length:
+            parts.append(escape_func(text[last:]))
+
+        return "".join(parts)
+
+    data = text.encode("utf-16-le", "surrogatepass")
+    length = len(data)
 
     for index, entity in enumerate(entities):
         if entity is None or entity.type is None:
@@ -50,67 +114,83 @@ def get_formatted_text(
         if tags is None:
             continue
 
-        open_tag, close_tag = tags
-        offset = entity.offset or 0
-        length = entity.length or 0
+        start = (entity.offset or 0) * 2
+        end = start + (entity.length or 0) * 2
 
-        if offset < 0 or offset > map_len:
+        if start < 0 or start > length:
             continue
 
-        end_offset = offset + length
-        if end_offset > map_len:
-            end_offset = map_len
-
-        start = utf16_map[offset]
-        end = utf16_map[end_offset]
-
+        end = min(end, length)
         if start >= end:
             continue
 
+        start_unit = int.from_bytes(data[start : start + 2], "little")
+        if 0xDC00 <= start_unit < 0xE000:
+            continue
+
+        end_unit = int.from_bytes(data[end - 2 : end], "little")
+        if 0xD800 <= end_unit < 0xDC00:
+            continue
+
+        open_tag, close_tag = tags
         events.append((start, 1, -end, index, open_tag))
         events.append((end, 0, -start, -index, close_tag))
 
     if not events:
-        if not escape:
-            return text
-        return escape_html(text) if html else escape_markdown(text)
+        return _escape_text(text, html, escape)
 
-    events.sort(key=lambda item: (item[0], item[1], item[2], item[3]))
-
-    escape_func = (
-        (escape_html if html else escape_markdown) if escape else (lambda s: s)
-    )
-    parts: list[str] = []
+    events.sort(key=_event_order)
+    parts = []
     last = 0
 
     for pos, _kind, _nest, _index, tag in events:
         if pos > last:
-            parts.append(escape_func(text[last:pos]))
+            segment = data[last:pos].decode("utf-16-le", "surrogatepass")
+            parts.append(_escape_text(segment, html, escape))
         parts.append(tag)
         last = pos
 
-    if last < len(text):
-        parts.append(escape_func(text[last:]))
+    if last < length:
+        parts.append(
+            _escape_text(data[last:].decode("utf-16-le", "surrogatepass"), html, escape)
+        )
 
     return "".join(parts)
 
 
-def _build_utf16_map(text: str) -> list[int]:
-    r"""Build a map from UTF-16 code unit offset to Python string index
+def message_to_html(message: pytdbot.types.Message, escape: bool = True) -> str:
+    r"""Convert a message text or caption to its HTML representation
 
-    TDLib entity offsets/lengths are in UTF-16 code units. Non-BMP characters
-    (e.g. most emoji) occupy two units. The returned list has length
-    ``utf16_len(text) + 1`` so both start and end offsets can be looked up
-    in ``O(1)``.
+    Parameters:
+        message (:class:`~pytdbot.types.Message`):
+            The message to convert
+
+        escape (``bool``, *optional*):
+            Whether to escape special characters in plain text segments. Default is ``True``
+
+    Returns:
+        :py:class:`str`: The HTML formatted text, empty string if the message has no text or caption
     """
 
-    mapping: list[int] = []
-    for index, char in enumerate(text):
-        mapping.append(index)
-        if ord(char) > 0xFFFF:
-            mapping.append(index)
-    mapping.append(len(text))
-    return mapping
+    content = message.content
+
+    if isinstance(content, MessageText):
+        return get_formatted_text(content.text, html=True, escape=escape)
+
+    if isinstance(content, _CAPTION_CONTENT):
+        return get_formatted_text(content.caption, html=True, escape=escape)
+
+    return ""
+
+
+def _escape_text(text: str, html: bool, escape: bool) -> str:
+    if not escape:
+        return text
+    return escape_html(text) if html else escape_markdown(text)
+
+
+def _event_order(event: tuple) -> tuple:
+    return (event[0], event[1], event[2], event[3])
 
 
 _DATE_FORMAT = {
@@ -164,76 +244,103 @@ def _datetime_format(
     return ""
 
 
+_HTML_TAGS = {
+    "textEntityTypeBold": ("<b>", "</b>"),
+    "textEntityTypeItalic": ("<i>", "</i>"),
+    "textEntityTypeUnderline": ("<u>", "</u>"),
+    "textEntityTypeStrikethrough": ("<s>", "</s>"),
+    "textEntityTypeSpoiler": ('<span class="tg-spoiler">', "</span>"),
+    "textEntityTypeCode": ("<code>", "</code>"),
+    "textEntityTypePre": ("<pre>", "</pre>"),
+    "textEntityTypeBlockQuote": ("<blockquote>", "</blockquote>"),
+    "textEntityTypeExpandableBlockQuote": ("<blockquote expandable>", "</blockquote>"),
+}
+
+_MD_TAGS = {
+    "textEntityTypeBold": ("*", "*"),
+    "textEntityTypeItalic": ("_", "_"),
+    "textEntityTypeUnderline": ("__", "__"),
+    "textEntityTypeStrikethrough": ("~", "~"),
+    "textEntityTypeSpoiler": ("||", "||"),
+    "textEntityTypeCode": ("`", "`"),
+    "textEntityTypePre": ("```\n", "\n```"),
+    "textEntityTypeBlockQuote": (">", ""),
+    "textEntityTypeExpandableBlockQuote": ("**>", ""),
+}
+
+
+def _pre_code_tags(
+    entity_type: pytdbot.types.TextEntityTypePreCode, html: bool
+) -> tuple[str, str]:
+    language = entity_type.language or ""
+    if html:
+        return (f'<pre><code class="language-{language}">', "</code></pre>")
+    return (f"```{language}\n", "\n```")
+
+
+def _text_url_tags(
+    entity_type: pytdbot.types.TextEntityTypeTextUrl, html: bool
+) -> tuple[str, str]:
+    url = entity_type.url or ""
+    if html:
+        return (f'<a href="{url}">', "</a>")
+    return ("[", f"]({url})")
+
+
+def _mention_name_tags(
+    entity_type: pytdbot.types.TextEntityTypeMentionName, html: bool
+) -> tuple[str, str]:
+    user_id = entity_type.user_id or 0
+    if html:
+        return (f'<a href="tg://user?id={user_id}">', "</a>")
+    return ("[", f"](tg://user?id={user_id})")
+
+
+def _custom_emoji_tags(
+    entity_type: pytdbot.types.TextEntityTypeCustomEmoji, html: bool
+) -> tuple[str, str]:
+    custom_emoji_id = entity_type.custom_emoji_id or 0
+    if html:
+        return (f'<tg-emoji emoji-id="{custom_emoji_id}">', "</tg-emoji>")
+    return ("![", f"](tg://emoji?id={custom_emoji_id})")
+
+
+def _date_time_tags(
+    entity_type: pytdbot.types.TextEntityTypeDateTime, html: bool
+) -> tuple[str, str] | None:
+    if not html:
+        return None
+
+    unix_time = entity_type.unix_time or 0
+    fmt = _datetime_format(entity_type.formatting_type)
+    return (
+        f'<tg-time unix="{unix_time}" format="{fmt}">',
+        "</tg-time>",
+    )
+
+
+_PARAM_TAGS = {
+    "textEntityTypePreCode": _pre_code_tags,
+    "textEntityTypeTextUrl": _text_url_tags,
+    "textEntityTypeMentionName": _mention_name_tags,
+    "textEntityTypeCustomEmoji": _custom_emoji_tags,
+    "textEntityTypeDateTime": _date_time_tags,
+}
+
+
 def _entity_tags(
     entity_type: pytdbot.types.TextEntityType, html: bool
 ) -> tuple[str, str] | None:
     r"""Return ``(open_tag, close_tag)`` for a text entity type, or ``None`` if plain"""
 
-    t = pytdbot.types
+    name = entity_type.getType()
 
-    if isinstance(entity_type, t.TextEntityTypeBold):
-        return ("<b>", "</b>") if html else ("*", "*")
+    tags = _HTML_TAGS.get(name) if html else _MD_TAGS.get(name)
+    if tags is not None:
+        return tags
 
-    if isinstance(entity_type, t.TextEntityTypeItalic):
-        return ("<i>", "</i>") if html else ("_", "_")
-
-    if isinstance(entity_type, t.TextEntityTypeUnderline):
-        return ("<u>", "</u>") if html else ("__", "__")
-
-    if isinstance(entity_type, t.TextEntityTypeStrikethrough):
-        return ("<s>", "</s>") if html else ("~", "~")
-
-    if isinstance(entity_type, t.TextEntityTypeSpoiler):
-        return ('<span class="tg-spoiler">', "</span>") if html else ("||", "||")
-
-    if isinstance(entity_type, t.TextEntityTypeCode):
-        return ("<code>", "</code>") if html else ("`", "`")
-
-    if isinstance(entity_type, t.TextEntityTypePre):
-        return ("<pre>", "</pre>") if html else ("```\n", "\n```")
-
-    if isinstance(entity_type, t.TextEntityTypePreCode):
-        language = entity_type.language or ""
-        if html:
-            return (f'<pre><code class="language-{language}">', "</code></pre>")
-        return (f"```{language}\n", "\n```")
-
-    if isinstance(entity_type, t.TextEntityTypeTextUrl):
-        url = entity_type.url or ""
-        if html:
-            return (f'<a href="{url}">', "</a>")
-        return ("[", f"]({url})")
-
-    if isinstance(entity_type, t.TextEntityTypeMentionName):
-        user_id = entity_type.user_id or 0
-        if html:
-            return (f'<a href="tg://user?id={user_id}">', "</a>")
-        return ("[", f"](tg://user?id={user_id})")
-
-    if isinstance(entity_type, t.TextEntityTypeCustomEmoji):
-        custom_emoji_id = entity_type.custom_emoji_id or 0
-        if html:
-            return (f'<tg-emoji emoji-id="{custom_emoji_id}">', "</tg-emoji>")
-        return ("![", f"](tg://emoji?id={custom_emoji_id})")
-
-    if isinstance(entity_type, t.TextEntityTypeBlockQuote):
-        return ("<blockquote>", "</blockquote>") if html else (">", "")
-
-    if isinstance(entity_type, t.TextEntityTypeExpandableBlockQuote):
-        return ("<blockquote expandable>", "</blockquote>") if html else ("**>", "")
-
-    if isinstance(entity_type, t.TextEntityTypeDateTime):
-        if not html:
-            return None
-
-        unix_time = entity_type.unix_time or 0
-        fmt = _datetime_format(entity_type.formatting_type)
-        return (
-            f'<tg-time unix="{unix_time}" format="{fmt}">',
-            "</tg-time>",
-        )
-
-    return None
+    param = _PARAM_TAGS.get(name)
+    return param(entity_type, html) if param else None
 
 
 def bold(text: str, html: bool = True, escape: bool = True) -> str:

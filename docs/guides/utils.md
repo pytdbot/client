@@ -24,7 +24,7 @@ await message.reply_text(text, parse_mode="html")
 
 Escape raw user text with [`escape_html`][pytdbot.utils.escape_html] or [`escape_markdown`][pytdbot.utils.escape_markdown] when you interpolate it yourself.
 
-Turn a received [`FormattedText`][pytdbot.types.FormattedText] back into a string with [`get_formatted_text`][pytdbot.utils.get_formatted_text].
+Turn a received [`FormattedText`][pytdbot.types.FormattedText] back into a string with [`get_formatted_text`][pytdbot.utils.get_formatted_text]. For a whole message, [`message_to_html`][pytdbot.utils.message_to_html] returns the HTML of the message text, or the caption for media messages (empty string otherwise).
 
 ## Callback data
 

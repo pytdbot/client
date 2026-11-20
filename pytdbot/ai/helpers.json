@@ -87,6 +87,28 @@
     "returns": "pytdbot.types.Error | pytdbot.types.Ok"
   },
   {
+    "name": "caption",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Caption of the received media",
+    "doc": "Caption of the received media",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "str | None"
+  },
+  {
+    "name": "caption_entities",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Caption entities of the received media",
+    "doc": "Caption entities of the received media",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "list[pytdbot.types.TextEntity] | None"
+  },
+  {
     "name": "copy",
     "kind": "bound_method",
     "on": "Message",
@@ -371,6 +393,17 @@
     "returns": "pytdbot.types.Error | pytdbot.types.Ok"
   },
   {
+    "name": "entities",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Entities of the message",
+    "doc": "Entities of the message",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "list[pytdbot.types.TextEntity] | None"
+  },
+  {
     "name": "forward",
     "kind": "bound_method",
     "on": "Message",
@@ -397,6 +430,17 @@
     "doc": "Forward message to chat. Shortcut for :meth:`~pytdbot.Client.forwardMessage`.",
     "source": "pytdbot/types/bound_methods/message.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Message"
+  },
+  {
+    "name": "from_id",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Message Sender ID",
+    "doc": "Message Sender ID",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "int | None"
   },
   {
     "name": "getChat",
@@ -570,6 +614,50 @@
     "doc": "React to the current message\n\nParameters:\n    emoji (``str``, *optional*):\n        Text representation of the reaction; pass ``None`` to remove the current reaction. Default is ``👍``\n\n    is_big (``bool``, *optional*):\n        Pass true if the reactions are added with a big animation. Default is ``False``",
     "source": "pytdbot/types/bound_methods/message.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Ok"
+  },
+  {
+    "name": "remote_duration",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Remote media file duration in seconds as defined by the sender; 0 if unknown",
+    "doc": "Remote media file duration in seconds as defined by the sender; 0 if unknown",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "int"
+  },
+  {
+    "name": "remote_file_id",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Remote file id",
+    "doc": "Remote file id",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "str | None"
+  },
+  {
+    "name": "remote_file_size",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Remote file size in bytes; 0 if unknown",
+    "doc": "Remote file size in bytes; 0 if unknown",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "int"
+  },
+  {
+    "name": "remote_unique_file_id",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Remote unique file id",
+    "doc": "Remote unique file id",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "str | None"
   },
   {
     "name": "reply_album",
@@ -1482,6 +1570,17 @@
     "returns": "pytdbot.types.Error | pytdbot.types.Message"
   },
   {
+    "name": "reply_to_message_id",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Replied message ID",
+    "doc": "Replied message ID",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "int"
+  },
+  {
     "name": "reply_video",
     "kind": "bound_method",
     "on": "Message",
@@ -1958,6 +2057,17 @@
     "returns": "pytdbot.types.Error | pytdbot.types.Ok"
   },
   {
+    "name": "rich_media",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Returns all media attachments available in the Rich message",
+    "doc": "Returns all media attachments available in the Rich message",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "list[pytdbot.types.Photo | pytdbot.types.Video | pytdbot.types.Audio | pytdbot.types.VoiceNote | pytdbot.types.Animation] | None"
+  },
+  {
     "name": "setChatMemberStatus",
     "kind": "bound_method",
     "on": "Message",
@@ -1974,6 +2084,17 @@
     "returns": "pytdbot.types.Error | pytdbot.types.Ok"
   },
   {
+    "name": "text",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Text of the message",
+    "doc": "Text of the message",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "str"
+  },
+  {
     "name": "unpin",
     "kind": "bound_method",
     "on": "Message",
@@ -1983,6 +2104,50 @@
     "doc": "Unpin the message",
     "source": "pytdbot/types/bound_methods/message.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Ok"
+  },
+  {
+    "name": "widget",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": false,
+    "args": [],
+    "description": "Widget content of the message",
+    "doc": "Widget content of the message",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "pytdbot.types.MessageWidget | None"
+  },
+  {
+    "name": "from_id",
+    "kind": "bound_method",
+    "on": "MessageSender",
+    "async": false,
+    "args": [],
+    "description": "Returns the message sender's ID. ``None`` if not found",
+    "doc": "Returns the message sender's ID. ``None`` if not found",
+    "source": "pytdbot/types/bound_methods/sender_id.py",
+    "returns": "int | None"
+  },
+  {
+    "name": "is_chat",
+    "kind": "bound_method",
+    "on": "MessageSender",
+    "async": false,
+    "args": [],
+    "description": "Returns ``True`` if the message sender is a chat",
+    "doc": "Returns ``True`` if the message sender is a chat",
+    "source": "pytdbot/types/bound_methods/sender_id.py",
+    "returns": "bool"
+  },
+  {
+    "name": "is_user",
+    "kind": "bound_method",
+    "on": "MessageSender",
+    "async": false,
+    "args": [],
+    "description": "Returns ``True`` if the message sender is a user",
+    "doc": "Returns ``True`` if the message sender is a user",
+    "source": "pytdbot/types/bound_methods/sender_id.py",
+    "returns": "bool"
   },
   {
     "name": "answer",
@@ -2017,6 +2182,17 @@
     "doc": "Answer to callback query. Shortcut for :meth:`~pytdbot.Client.answerCallbackQuery`",
     "source": "pytdbot/types/bound_methods/callback_query.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Ok"
+  },
+  {
+    "name": "callback_data",
+    "kind": "bound_method",
+    "on": "UpdateNewCallbackQuery",
+    "async": false,
+    "args": [],
+    "description": "Callback data that was set by :func:`~pytdbot.utils.callback_data`",
+    "doc": "Callback data that was set by :func:`~pytdbot.utils.callback_data`\n\nArgs:\n    action (``Any``):\n        Action name\n\n    data (``Any``, *optional*):\n        Callback data",
+    "source": "pytdbot/types/bound_methods/callback_query.py",
+    "returns": "pytdbot.utils.CallbackData"
   },
   {
     "name": "edit_message_caption",
@@ -2150,6 +2326,17 @@
     "returns": "pytdbot.types.Error | pytdbot.types.Message | None"
   },
   {
+    "name": "text",
+    "kind": "bound_method",
+    "on": "UpdateNewCallbackQuery",
+    "async": false,
+    "args": [],
+    "description": "Callback data decoded as str",
+    "doc": "Callback data decoded as str",
+    "source": "pytdbot/types/bound_methods/callback_query.py",
+    "returns": "str"
+  },
+  {
     "name": "answer",
     "kind": "bound_method",
     "on": "UpdateNewWidgetQuery",
@@ -2175,6 +2362,28 @@
     "doc": "Get widget query message",
     "source": "pytdbot/types/bound_methods/widget_query.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Message | None"
+  },
+  {
+    "name": "query_data",
+    "kind": "bound_method",
+    "on": "UpdateNewWidgetQuery",
+    "async": false,
+    "args": [],
+    "description": "Query data that was set by :func:`~pytdbot.utils.callback_data`",
+    "doc": "Query data that was set by :func:`~pytdbot.utils.callback_data`\n\nArgs:\n    action (``Any``):\n        Action name\n\n    data (``Any``, *optional*):\n        Query data",
+    "source": "pytdbot/types/bound_methods/widget_query.py",
+    "returns": "pytdbot.utils.CallbackData"
+  },
+  {
+    "name": "text",
+    "kind": "bound_method",
+    "on": "UpdateNewWidgetQuery",
+    "async": false,
+    "args": [],
+    "description": "Query data decoded as str",
+    "doc": "Query data decoded as str",
+    "source": "pytdbot/types/bound_methods/widget_query.py",
+    "returns": "str"
   },
   {
     "name": "sendAction",
@@ -4387,215 +4596,6 @@
     "returns": "Error | Message"
   },
   {
-    "name": "caption",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Caption of the received media",
-    "doc": "Caption of the received media",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "str | None"
-  },
-  {
-    "name": "caption_entities",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Caption entities of the received media",
-    "doc": "Caption entities of the received media",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "list[pytdbot.types.TextEntity] | None"
-  },
-  {
-    "name": "entities",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Entities of the message",
-    "doc": "Entities of the message",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "list[pytdbot.types.TextEntity] | None"
-  },
-  {
-    "name": "from_id",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Message Sender ID",
-    "doc": "Message Sender ID",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "int | None"
-  },
-  {
-    "name": "remote_duration",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Remote media file duration in seconds as defined by the sender; 0 if unknown",
-    "doc": "Remote media file duration in seconds as defined by the sender; 0 if unknown",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "int"
-  },
-  {
-    "name": "remote_file_id",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Remote file id",
-    "doc": "Remote file id",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "str | None"
-  },
-  {
-    "name": "remote_file_size",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Remote file size in bytes; 0 if unknown",
-    "doc": "Remote file size in bytes; 0 if unknown",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "int"
-  },
-  {
-    "name": "remote_unique_file_id",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Remote unique file id",
-    "doc": "Remote unique file id",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "str | None"
-  },
-  {
-    "name": "reply_to_message_id",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Replied message ID",
-    "doc": "Replied message ID",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "int"
-  },
-  {
-    "name": "rich_media",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Returns all media attachments available in the Rich message",
-    "doc": "Returns all media attachments available in the Rich message",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "list[pytdbot.types.Photo | pytdbot.types.Video | pytdbot.types.Audio | pytdbot.types.VoiceNote | pytdbot.types.Animation] | None"
-  },
-  {
-    "name": "text",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Text of the message",
-    "doc": "Text of the message",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "str"
-  },
-  {
-    "name": "widget",
-    "kind": "property",
-    "on": "Message",
-    "async": false,
-    "args": [],
-    "description": "Widget content of the message",
-    "doc": "Widget content of the message",
-    "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "pytdbot.types.MessageWidget | None"
-  },
-  {
-    "name": "from_id",
-    "kind": "property",
-    "on": "MessageSender",
-    "async": false,
-    "args": [],
-    "description": "Returns the message sender's ID. ``None`` if not found",
-    "doc": "Returns the message sender's ID. ``None`` if not found",
-    "source": "pytdbot/types/bound_methods/sender_id.py",
-    "returns": "int | None"
-  },
-  {
-    "name": "is_chat",
-    "kind": "property",
-    "on": "MessageSender",
-    "async": false,
-    "args": [],
-    "description": "Returns ``True`` if the message sender is a chat",
-    "doc": "Returns ``True`` if the message sender is a chat",
-    "source": "pytdbot/types/bound_methods/sender_id.py",
-    "returns": "bool"
-  },
-  {
-    "name": "is_user",
-    "kind": "property",
-    "on": "MessageSender",
-    "async": false,
-    "args": [],
-    "description": "Returns ``True`` if the message sender is a user",
-    "doc": "Returns ``True`` if the message sender is a user",
-    "source": "pytdbot/types/bound_methods/sender_id.py",
-    "returns": "bool"
-  },
-  {
-    "name": "callback_data",
-    "kind": "property",
-    "on": "UpdateNewCallbackQuery",
-    "async": false,
-    "args": [],
-    "description": "Callback data that was set by :func:`~pytdbot.utils.callback_data`",
-    "doc": "Callback data that was set by :func:`~pytdbot.utils.callback_data`\n\nArgs:\n    action (``Any``):\n        Action name\n\n    data (``Any``, *optional*):\n        Callback data",
-    "source": "pytdbot/types/bound_methods/callback_query.py",
-    "returns": "pytdbot.utils.CallbackData"
-  },
-  {
-    "name": "text",
-    "kind": "property",
-    "on": "UpdateNewCallbackQuery",
-    "async": false,
-    "args": [],
-    "description": "Callback data decoded as str",
-    "doc": "Callback data decoded as str",
-    "source": "pytdbot/types/bound_methods/callback_query.py",
-    "returns": "str"
-  },
-  {
-    "name": "query_data",
-    "kind": "property",
-    "on": "UpdateNewWidgetQuery",
-    "async": false,
-    "args": [],
-    "description": "Query data that was set by :func:`~pytdbot.utils.callback_data`",
-    "doc": "Query data that was set by :func:`~pytdbot.utils.callback_data`\n\nArgs:\n    action (``Any``):\n        Action name\n\n    data (``Any``, *optional*):\n        Query data",
-    "source": "pytdbot/types/bound_methods/widget_query.py",
-    "returns": "pytdbot.utils.CallbackData"
-  },
-  {
-    "name": "text",
-    "kind": "property",
-    "on": "UpdateNewWidgetQuery",
-    "async": false,
-    "args": [],
-    "description": "Query data decoded as str",
-    "doc": "Query data decoded as str",
-    "source": "pytdbot/types/bound_methods/widget_query.py",
-    "returns": "str"
-  },
-  {
     "name": "anchor",
     "kind": "util",
     "on": "utils",
@@ -5246,6 +5246,28 @@
     ],
     "description": "Convert the given text to inline mention format",
     "doc": "Convert the given text to inline mention format\n\nParameters:\n    text (``str``):\n        The text of inline mention\n\n    user_id (``str``):\n        The inline user id to mention\n\n    html (``bool``, *optional*):\n        If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``\n\n    escape (``bool``, *optional*):\n        Whether escape special characters to the given text or not. Default is ``True``\n\nReturns:\n    :py:class:`str`: The formated text",
+    "source": "pytdbot/utils/text_format.py",
+    "returns": "str"
+  },
+  {
+    "name": "message_to_html",
+    "kind": "util",
+    "on": "utils",
+    "async": false,
+    "args": [
+      {
+        "name": "message",
+        "type": "pytdbot.types.Message"
+      },
+      {
+        "name": "escape",
+        "type": "bool",
+        "optional": true,
+        "default": "True"
+      }
+    ],
+    "description": "Convert a message text or caption to its HTML representation",
+    "doc": "Convert a message text or caption to its HTML representation\n\nParameters:\n    message (:class:`~pytdbot.types.Message`):\n        The message to convert\n\n    escape (``bool``, *optional*):\n        Whether to escape special characters in plain text segments. Default is ``True``\n\nReturns:\n    :py:class:`str`: The HTML formatted text, empty string if the message has no text or caption",
     "source": "pytdbot/utils/text_format.py",
     "returns": "str"
   },
