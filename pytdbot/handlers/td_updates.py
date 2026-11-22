@@ -1,10 +1,12 @@
 from __future__ import annotations
-import pytdbot
 
-from .handler import Handler
 from collections.abc import Callable
 from inspect import iscoroutinefunction
 from logging import getLogger
+
+import pytdbot
+
+from .handler import Handler
 
 logger = getLogger(__name__)
 
@@ -608,7 +610,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The message content was opened\. Updates voice note messages to \"listened\", video note messages to \"viewed\" and starts the self\-destruct timer
+        r"""The message content was opened\. Updates voice note messages to \"listened\", video note messages to \"viewed\", and starts the self\-destruct timer
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -785,7 +787,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Unread votes were added or removed from a poll message
+        r"""Unread votes were added to or removed from a poll message
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -903,7 +905,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Information about suggested post of a message was changed
+        r"""Information about the suggested post of a message was changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1021,7 +1023,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""An automatically scheduled message with video has been successfully sent after conversion
+        r"""An automatically scheduled message with a video has been successfully sent after conversion
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1788,7 +1790,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The bar for managing business bot was changed in a chat
+        r"""The bar for managing a business bot was changed in a chat
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1959,13 +1961,72 @@ class Updates:
 
         return decorator
 
+    def on_updateChatTextCompositionParameters(
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
+    ) -> Callable:
+        r"""Default parameters for text composition with AI in a chat have changed
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateChatTextCompositionParameters",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatTextCompositionParameters",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatTextCompositionParameters",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
     def on_updateChatEmojiStatus(
         self: pytdbot.Client | None = None,
         filters: pytdbot.filters.Filter | None = None,
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Chat emoji status has changed
+        r"""The emoji status of a chat has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2614,7 +2675,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""A chat video chat state has changed
+        r"""A chat's video chat state has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2732,7 +2793,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""A chat content was allowed or restricted for saving
+        r"""Chat content was allowed or restricted for saving
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2909,7 +2970,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""A chat default appearance has changed
+        r"""A chat's default appearance has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3204,7 +3265,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The number of online group members has changed\. This update with non\-zero number of online group members is sent only for currently opened chats\. There is no guarantee that it is sent just after the number of online users has changed
+        r"""The number of online group members has changed\. This update with a non\-zero number of online group members is sent only for currently opened chats\. There is no guarantee that it is sent just after the number of online users has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3322,7 +3383,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Number of Saved Messages topics has changed
+        r"""The number of Saved Messages topics has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3440,7 +3501,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Number of messages in a topic has changed; for Saved Messages and channel direct messages chat topics only
+        r"""The number of messages in a topic has changed; for Saved Messages and channel direct messages chat topics only
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4148,7 +4209,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Contains active notifications that were shown on previous application launches\. This update is sent only if the message database is used\. In that case it comes once before any updateNotification and updateNotificationGroup update
+        r"""Contains active notifications that were shown on previous application launches\. This update is sent only if the message database is used\. In that case, it comes once before any updateNotification and updateNotificationGroup updates
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4207,7 +4268,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Describes whether there are some pending notification updates\. Can be used to prevent application from killing, while there are some pending notifications
+        r"""Describes whether there are some pending notification updates\. Can be used to prevent the application from being killed while there are some pending notifications
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4325,7 +4386,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""A message sender activity in the chat has changed
+        r"""A message sender's activity in the chat has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5092,7 +5153,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""A service notification from the server was received\. Upon receiving this the application must show a popup with the content of the notification
+        r"""A service notification from the server was received\. Upon receiving this, the application must show a popup with the content of the notification
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5446,7 +5507,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""A file was added to the file download list\. This update is sent only after file download list is loaded for the first time
+        r"""A file was added to the file download list\. This update is sent only after the file download list is loaded for the first time
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5505,7 +5566,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""A file download was changed\. This update is sent only after file download list is loaded for the first time
+        r"""A file download was changed\. This update is sent only after the file download list is loaded for the first time
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5564,7 +5625,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""A file was removed from the file download list\. This update is sent only after file download list is loaded for the first time
+        r"""A file was removed from the file download list\. This update is sent only after the file download list is loaded for the first time
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5741,7 +5802,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""New call was created or information about a call was updated
+        r"""A new call was created or information about a call was updated
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5918,7 +5979,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The list of group call participants that can send and receive encrypted call data has changed; for group calls not bound to a chat only
+        r"""The list of group call participants who can send and receive encrypted call data has changed; for group calls not bound to a chat only
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -6272,7 +6333,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The list of top donors in live story group call has changed
+        r"""The list of top donors in the live story group call has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -6390,7 +6451,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""State of a gift auction was updated
+        r"""The state of a gift auction was updated
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -6567,7 +6628,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Number of unread messages in a chat list has changed\. This update is sent only if the message database is used
+        r"""The number of unread messages in a chat list has changed\. This update is sent only if the message database is used
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -6626,7 +6687,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Number of unread chats, i\.e\. with unread messages or marked as unread, has changed\. This update is sent only if the message database is used
+        r"""The number of unread chats, i\.e\., with unread messages or marked as unread, has changed\. This update is sent only if the message database is used
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -7039,7 +7100,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Number of chats in a story list has changed
+        r"""The number of chats in a story list has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -7157,7 +7218,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Lists of suffixes allowed in secondary bot usernames, which can be added additionally to the main username if the bot's owner has a Telegram Premium subscription
+        r"""Lists of suffixes allowed in secondary bot usernames, which can be added in addition to the main username if the bot's owner has a Telegram Premium subscription
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -7216,7 +7277,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Lists of bots which Mini Apps must be allowed to read text from clipboard and must be opened without a warning
+        r"""Lists of bots whose Mini Apps must be allowed to read text from the clipboard and must be opened without a warning
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -8573,7 +8634,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The list of bots added to attachment or side menu has changed
+        r"""The list of bots added to the attachment or side menu has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -8986,7 +9047,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The list of messages with active live location that need to be updated by the application has changed\. The list is persistent across application restarts only if the message database is used
+        r"""The list of messages with an active live location that need to be updated by the application has changed\. The list is persistent across application restarts only if the message database is used
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -9281,7 +9342,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""A session of a TON Connect has changed
+        r"""A TON Connect session has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -9399,7 +9460,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The revenue earned from sponsored messages in a chat has changed\. If chat revenue screen is opened, then getChatRevenueTransactions may be called to fetch new transactions
+        r"""The revenue earned from sponsored messages in a chat has changed\. If the chat revenue screen is opened, then getChatRevenueTransactions may be called to fetch new transactions
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -9458,7 +9519,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The Telegram Star revenue earned by a user or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
+        r"""The Telegram Star revenue earned by a user or a chat has changed\. If the Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -9517,7 +9578,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The TON Gram revenue earned by the current user has changed\. If Gram transaction screen of the chat is opened, then getTonTransactions may be called to fetch new transactions
+        r"""The TON Gram revenue earned by the current user has changed\. If the Gram transaction screen of the chat is opened, then getTonTransactions may be called to fetch new transactions
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -9576,7 +9637,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The parameters of speech recognition without Telegram Premium subscription have changed
+        r"""The parameters of speech recognition without a Telegram Premium subscription have changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -9930,7 +9991,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The parameters of animation search through getOption\(\"animation\_search\_bot\_username\"\) bot have changed
+        r"""The parameters of animation search through the getOption\(\"animation\_search\_bot\_username\"\) bot have changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -10048,7 +10109,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The list of suggested to the user actions has changed
+        r"""The list of actions suggested to the user has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -10107,7 +10168,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a file being downloaded or uploaded is visible to the user\. Use getOption\(\"premium\_download\_speedup\"\) or getOption\(\"premium\_upload\_speedup\"\) to get expected speedup after subscription to Telegram Premium
+        r"""Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a file being downloaded or uploaded is visible to the user\. Use getOption\(\"premium\_download\_speedup\"\) or getOption\(\"premium\_upload\_speedup\"\) to get the expected speedup after subscription to Telegram Premium
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -10166,7 +10227,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""The list of contacts that had birthdays recently or will have birthday soon has changed
+        r"""The list of contacts who had birthdays recently or will have a birthday soon has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -11051,7 +11112,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""A new incoming shipping query; for bots only\. Only for invoices with flexible price
+        r"""A new incoming shipping query; for bots only\. Only for invoices with a flexible price
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -11287,7 +11348,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""Subscription of a user to the bot was changed; for bots only
+        r"""The subscription of a user to the bot was changed; for bots only
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -11700,7 +11761,7 @@ class Updates:
         position: int | None = None,
         timeout: float | None = None,
     ) -> Callable:
-        r"""User changed its reactions on a message with public reactions; for bots only
+        r"""A user changed their reactions on a message with public reactions; for bots only
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
