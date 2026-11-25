@@ -71,7 +71,7 @@ class CallbackQueryBoundMethods:
         force_large_media: bool | None = None,
         show_above_text: bool | None = None,
         reply_markup: pytdbot.types.ReplyMarkup | None = None,
-    ) -> pytdbot.types.Error | pytdbot.types.Message:
+    ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
         r"""Edit callback query message text. Shortcut for :meth:`~pytdbot.Client.editTextMessage`"""
 
         ephemeral_message_id = 0
@@ -110,7 +110,7 @@ class CallbackQueryBoundMethods:
         show_caption_above_media: bool | None = None,
         reply_markup: pytdbot.types.ReplyMarkup | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message:
-        r"""Edit message caption"""
+        r"""Edit message caption. Ephemeral messages aren't supported"""
 
         parse_mode = parse_mode or self._client.default_parse_mode
         if isinstance(caption_entities, list):
@@ -137,8 +137,19 @@ class CallbackQueryBoundMethods:
 
     async def edit_message_reply_markup(
         self, reply_markup: "pytdbot.types.ReplyMarkup"
-    ) -> pytdbot.types.Error | pytdbot.types.Message:
+    ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
         r"""Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup`"""
+
+        message = await self.getMessage()
+        if message and message.ephemeral_message_id and message.receiver_id:
+            return await self._client.editEphemeralMessage(
+                chat_id=self.chat_id,
+                receiver_user_id=pytdbot.utils.get_message_sender_id(
+                    message.receiver_id
+                ),
+                ephemeral_message_id=message.ephemeral_message_id,
+                reply_markup=reply_markup,
+            )
 
         return await self._client.editMessageReplyMarkup(
             chat_id=self.chat_id, message_id=self.message_id, reply_markup=reply_markup

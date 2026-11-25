@@ -1347,12 +1347,19 @@ class MessageBoundMethods:
         force_large_media: bool = None,
         show_above_text: bool = None,
         reply_markup: pytdbot.types.ReplyMarkup | None = None,
-    ) -> pytdbot.types.Error | pytdbot.types.Message:
+    ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
         r"""Edit text message. Shortcut for :meth:`~pytdbot.Client.editTextMessage`."""
+
+        ephemeral_message_id = self.ephemeral_message_id
+        receiver_user_id = 0
+        if ephemeral_message_id and self.receiver_id:
+            receiver_user_id = pytdbot.utils.get_message_sender_id(self.receiver_id)
 
         return await self._client.editTextMessage(
             chat_id=self.chat_id,
             message_id=self.id,
+            ephemeral_message_id=ephemeral_message_id,
+            receiver_user_id=receiver_user_id,
             text=text,
             parse_mode=parse_mode,
             entities=entities,
@@ -1374,7 +1381,7 @@ class MessageBoundMethods:
         detect_automatic_blocks: bool = False,
         receiver_user_id: int = 0,
         reply_markup: pytdbot.types.ReplyMarkup | None = None,
-    ) -> pytdbot.types.Error | pytdbot.types.Message:
+    ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
         r"""Edit rich message. Shortcut for :meth:`~pytdbot.Client.editRichMessage`."""
 
         return await self._client.editRichMessage(
@@ -1386,7 +1393,13 @@ class MessageBoundMethods:
             media=media,
             is_rtl=is_rtl,
             detect_automatic_blocks=detect_automatic_blocks,
-            receiver_user_id=receiver_user_id,
+            receiver_user_id=receiver_user_id
+            if receiver_user_id
+            else (
+                pytdbot.utils.get_message_sender_id(self.receiver_id)
+                if self.ephemeral_message_id and self.receiver_id
+                else 0
+            ),
             reply_markup=reply_markup,
         )
 

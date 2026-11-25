@@ -302,7 +302,7 @@
     "description": "Edit rich message. Shortcut for :meth:`~pytdbot.Client.editRichMessage`.",
     "doc": "Edit rich message. Shortcut for :meth:`~pytdbot.Client.editRichMessage`.",
     "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "pytdbot.types.Error | pytdbot.types.Message"
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
   },
   {
     "name": "edit_text",
@@ -366,7 +366,7 @@
     "description": "Edit text message. Shortcut for :meth:`~pytdbot.Client.editTextMessage`.",
     "doc": "Edit text message. Shortcut for :meth:`~pytdbot.Client.editTextMessage`.",
     "source": "pytdbot/types/bound_methods/message.py",
-    "returns": "pytdbot.types.Error | pytdbot.types.Message"
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
   },
   {
     "name": "edit_widget_data",
@@ -2229,8 +2229,8 @@
         "default": "None"
       }
     ],
-    "description": "Edit message caption",
-    "doc": "Edit message caption",
+    "description": "Edit message caption. Ephemeral messages aren't supported",
+    "doc": "Edit message caption. Ephemeral messages aren't supported",
     "source": "pytdbot/types/bound_methods/callback_query.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Message"
   },
@@ -2248,7 +2248,7 @@
     "description": "Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup`",
     "doc": "Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup`",
     "source": "pytdbot/types/bound_methods/callback_query.py",
-    "returns": "pytdbot.types.Error | pytdbot.types.Message"
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
   },
   {
     "name": "edit_message_text",
@@ -2312,7 +2312,7 @@
     "description": "Edit callback query message text. Shortcut for :meth:`~pytdbot.Client.editTextMessage`",
     "doc": "Edit callback query message text. Shortcut for :meth:`~pytdbot.Client.editTextMessage`",
     "source": "pytdbot/types/bound_methods/callback_query.py",
-    "returns": "pytdbot.types.Error | pytdbot.types.Message"
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
   },
   {
     "name": "getMessage",
