@@ -1,3 +1,2 @@
-__all__ = ("ServerStats", "ScheduledEvent", "UpdateScheduledEvent")
-from .schedule import ScheduledEvent, UpdateScheduledEvent
+__all__ = ("ServerStats",)
 from .stats import ServerStats

@@ -263,59 +263,6 @@ class Client(Decorators, Methods):
 
         return await self.invoke({"@type": "getServerStats"})
 
-    async def scheduleEvent(
-        self, name: str, payload: str, send_at: int
-    ) -> pytdbot.types.ScheduledEvent | pytdbot.types.Error:
-        """Schedule an event
-
-        Parameters:
-            name (:class:`str`):
-                Event name
-
-            payload (:class:`str`):
-                The event payload to be scheduled
-
-            send_at (:class:`int`):
-                Unix timestamp when the event should be sent
-        """
-
-        self._check_nats()
-
-        if not isinstance(name, str):
-            raise ValueError("name must be str")
-        if not isinstance(payload, str):
-            raise ValueError("payload must be str")
-        if not isinstance(send_at, (int, float)):
-            raise ValueError("send_at must be int")
-
-        return await self.invoke(
-            {
-                "@type": "scheduleEvent",
-                "name": name,
-                "payload": payload,
-                "send_at": send_at,
-            }
-        )
-
-    async def cancelScheduledEvent(
-        self, event_id: str
-    ) -> pytdbot.types.Ok | pytdbot.types.Error:
-        """Cancel a scheduled event
-
-        Parameters:
-            event_id (:class:`str`):
-                Event ID to cancel
-        """
-
-        self._check_nats()
-
-        if not isinstance(event_id, str):
-            raise ValueError("event_id must be str")
-
-        return await self.invoke(
-            {"@type": "cancelScheduledEvent", "event_id": event_id}
-        )
-
     async def start(self, wait_login: bool = True) -> None:
         r"""Start pytdbot client
 

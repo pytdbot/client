@@ -2,8 +2,6 @@ __all__ = [
     "TlObject",
     "Plugins",
     "ServerStats",
-    "ScheduledEvent",
-    "UpdateScheduledEvent",
     "AuthenticationCodeType",
     "EmailAddressAuthentication",
     "EmailAddressResetState",
@@ -5168,6 +5166,6 @@ from .td_types import (
     Updates,
 )
 from .plugins import Plugins
-from .tdserver import ServerStats, ScheduledEvent, UpdateScheduledEvent
+from .tdserver import ServerStats
 
 TDLIB_VERSION = "1.8.71"
