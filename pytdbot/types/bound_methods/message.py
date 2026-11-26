@@ -1403,6 +1403,195 @@ class MessageBoundMethods:
             reply_markup=reply_markup,
         )
 
+    async def edit_animation(
+        self,
+        animation: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        added_sticker_file_ids: list = None,
+        duration: int = 0,
+        width: int = 0,
+        height: int = 0,
+        show_caption_above_media: bool = False,
+        has_spoiler: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkup | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
+        r"""Edit animation message. Shortcut for :meth:`~pytdbot.Client.editAnimationMessage`."""
+
+        ephemeral_message_id = self.ephemeral_message_id
+        receiver_user_id = 0
+        if ephemeral_message_id and self.receiver_id:
+            receiver_user_id = pytdbot.utils.get_message_sender_id(self.receiver_id)
+
+        return await self._client.editAnimationMessage(
+            chat_id=self.chat_id,
+            animation=animation,
+            message_id=self.id,
+            ephemeral_message_id=ephemeral_message_id,
+            receiver_user_id=receiver_user_id,
+            thumbnail=thumbnail,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            added_sticker_file_ids=added_sticker_file_ids,
+            duration=duration,
+            width=width,
+            height=height,
+            show_caption_above_media=show_caption_above_media,
+            has_spoiler=has_spoiler,
+            reply_markup=reply_markup,
+        )
+
+    async def edit_audio(
+        self,
+        audio: pytdbot.types.InputFile | str,
+        album_cover_thumbnail: pytdbot.types.InputThumbnail | None = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        title: str = None,
+        performer: str = None,
+        duration: int = 0,
+        reply_markup: pytdbot.types.ReplyMarkup | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
+        r"""Edit audio message. Shortcut for :meth:`~pytdbot.Client.editAudioMessage`."""
+
+        ephemeral_message_id = self.ephemeral_message_id
+        receiver_user_id = 0
+        if ephemeral_message_id and self.receiver_id:
+            receiver_user_id = pytdbot.utils.get_message_sender_id(self.receiver_id)
+
+        return await self._client.editAudioMessage(
+            chat_id=self.chat_id,
+            audio=audio,
+            message_id=self.id,
+            ephemeral_message_id=ephemeral_message_id,
+            receiver_user_id=receiver_user_id,
+            album_cover_thumbnail=album_cover_thumbnail,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            title=title,
+            performer=performer,
+            duration=duration,
+            reply_markup=reply_markup,
+        )
+
+    async def edit_document(
+        self,
+        document: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        disable_content_type_detection: bool = True,
+        reply_markup: pytdbot.types.ReplyMarkup | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
+        r"""Edit document message. Shortcut for :meth:`~pytdbot.Client.editDocumentMessage`."""
+
+        ephemeral_message_id = self.ephemeral_message_id
+        receiver_user_id = 0
+        if ephemeral_message_id and self.receiver_id:
+            receiver_user_id = pytdbot.utils.get_message_sender_id(self.receiver_id)
+
+        return await self._client.editDocumentMessage(
+            chat_id=self.chat_id,
+            document=document,
+            message_id=self.id,
+            ephemeral_message_id=ephemeral_message_id,
+            receiver_user_id=receiver_user_id,
+            thumbnail=thumbnail,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            disable_content_type_detection=disable_content_type_detection,
+            reply_markup=reply_markup,
+        )
+
+    async def edit_photo(
+        self,
+        photo: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        added_sticker_file_ids: list = None,
+        width: int = 0,
+        height: int = 0,
+        show_caption_above_media: bool = False,
+        has_spoiler: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkup | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
+        r"""Edit photo message. Shortcut for :meth:`~pytdbot.Client.editPhotoMessage`."""
+
+        ephemeral_message_id = self.ephemeral_message_id
+        receiver_user_id = 0
+        if ephemeral_message_id and self.receiver_id:
+            receiver_user_id = pytdbot.utils.get_message_sender_id(self.receiver_id)
+
+        return await self._client.editPhotoMessage(
+            chat_id=self.chat_id,
+            photo=photo,
+            message_id=self.id,
+            ephemeral_message_id=ephemeral_message_id,
+            receiver_user_id=receiver_user_id,
+            thumbnail=thumbnail,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            added_sticker_file_ids=added_sticker_file_ids,
+            width=width,
+            height=height,
+            show_caption_above_media=show_caption_above_media,
+            has_spoiler=has_spoiler,
+            reply_markup=reply_markup,
+        )
+
+    async def edit_video(
+        self,
+        video: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        added_sticker_file_ids: list = None,
+        supports_streaming: bool = None,
+        duration: int = 0,
+        width: int = 0,
+        height: int = 0,
+        show_caption_above_media: bool = False,
+        has_spoiler: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkup | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
+        r"""Edit video message. Shortcut for :meth:`~pytdbot.Client.editVideoMessage`."""
+
+        ephemeral_message_id = self.ephemeral_message_id
+        receiver_user_id = 0
+        if ephemeral_message_id and self.receiver_id:
+            receiver_user_id = pytdbot.utils.get_message_sender_id(self.receiver_id)
+
+        return await self._client.editVideoMessage(
+            chat_id=self.chat_id,
+            video=video,
+            message_id=self.id,
+            ephemeral_message_id=ephemeral_message_id,
+            receiver_user_id=receiver_user_id,
+            thumbnail=thumbnail,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            added_sticker_file_ids=added_sticker_file_ids,
+            supports_streaming=supports_streaming,
+            duration=duration,
+            width=width,
+            height=height,
+            show_caption_above_media=show_caption_above_media,
+            has_spoiler=has_spoiler,
+            reply_markup=reply_markup,
+        )
+
     async def edit_widget_data(
         self,
         *,

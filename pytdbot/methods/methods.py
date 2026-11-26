@@ -2196,6 +2196,516 @@ class Methods(TDLibFunctions):
             ),
         )
 
+    async def editAnimationMessage(
+        self,
+        *,
+        chat_id: int,
+        animation: InputFile | str,
+        message_id: int = 0,
+        ephemeral_message_id: int = 0,
+        receiver_user_id: int = 0,
+        thumbnail: InputThumbnail = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        added_sticker_file_ids: list = None,
+        duration: int = 0,
+        width: int = 0,
+        height: int = 0,
+        show_caption_above_media: bool = False,
+        has_spoiler: bool = False,
+        reply_markup: ReplyMarkup = None,
+    ) -> Error | Message | Ok:
+        r"""Edit animation message; the message content is fully replaced
+
+        Parameters:
+            chat_id (``int``):
+                Chat identifier
+
+            animation (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
+                New animation of the message
+
+            message_id (``int``):
+                Message identifier in the chat
+
+            ephemeral_message_id (``int``, *optional*):
+                Identifier of the ephemeral message; for Ephemeral messages only
+
+            receiver_user_id (``int``, *optional*):
+                Identifier of the user who received the message; for Ephemeral messages only
+
+            thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
+                Thumbnail of the animation to be set; not supported for remote files
+
+            caption (``str``, *optional*):
+                Animation caption
+
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead
+
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Default is ``markdown``
+
+            added_sticker_file_ids (``list``, *optional*):
+                File identifiers of the stickers added to the animation, if applicable
+
+            duration (``int``, *optional*):
+                Duration of the animation, in seconds
+
+            width (``int``, *optional*):
+                Width of the animation
+
+            height (``int``, *optional*):
+                Height of the animation
+
+            show_caption_above_media (``bool``, *optional*):
+                True, if the caption must be shown above the animation; otherwise, the caption must be shown below the animation. Default is ``False``
+
+            has_spoiler (``bool``, *optional*):
+                True, if the animation preview must be covered by a spoiler animation; not supported in secret chats
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
+                The message reply markup
+
+        Returns:
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+        """
+
+        parse_mode = parse_mode or self.default_parse_mode
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif parse_mode and isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
+        else:
+            caption = FormattedText(text=caption)
+
+        if isinstance(animation, str):
+            animation = InputFileRemote(id=animation)
+
+        return await self.editMessageWithContent(
+            chat_id=chat_id,
+            content=InputMessageAnimation(
+                animation=InputAnimation(
+                    animation=animation,
+                    thumbnail=thumbnail,
+                    added_sticker_file_ids=added_sticker_file_ids,
+                    duration=duration,
+                    width=width,
+                    height=height,
+                ),
+                caption=caption,
+                show_caption_above_media=show_caption_above_media,
+                has_spoiler=has_spoiler,
+            ),
+            message_id=message_id,
+            ephemeral_message_id=ephemeral_message_id,
+            receiver_user_id=receiver_user_id,
+            reply_markup=reply_markup,
+        )
+
+    async def editAudioMessage(
+        self,
+        *,
+        chat_id: int,
+        audio: InputFile | str,
+        message_id: int = 0,
+        ephemeral_message_id: int = 0,
+        receiver_user_id: int = 0,
+        album_cover_thumbnail: InputThumbnail = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        title: str = None,
+        performer: str = None,
+        duration: int = 0,
+        reply_markup: ReplyMarkup = None,
+    ) -> Error | Message | Ok:
+        r"""Edit audio message; the message content is fully replaced
+
+        Parameters:
+            chat_id (``int``):
+                Chat identifier
+
+            audio (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
+                New audio of the message
+
+            message_id (``int``):
+                Message identifier in the chat
+
+            ephemeral_message_id (``int``, *optional*):
+                Identifier of the ephemeral message; for Ephemeral messages only
+
+            receiver_user_id (``int``, *optional*):
+                Identifier of the user who received the message; for Ephemeral messages only
+
+            album_cover_thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
+                Thumbnail of the album cover to be set; not supported for remote files
+
+            caption (``str``, *optional*):
+                Audio caption
+
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead
+
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Default is ``markdown``
+
+            title (``str``, *optional*):
+                Title of the audio
+
+            performer (``str``, *optional*):
+                Performer of the audio
+
+            duration (``int``, *optional*):
+                Duration of the audio, in seconds
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
+                The message reply markup
+
+        Returns:
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+        """
+
+        parse_mode = parse_mode or self.default_parse_mode
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif parse_mode and isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
+        else:
+            caption = FormattedText(text=caption)
+
+        if isinstance(audio, str):
+            audio = InputFileRemote(id=audio)
+
+        return await self.editMessageWithContent(
+            chat_id=chat_id,
+            content=InputMessageAudio(
+                audio=InputAudio(
+                    audio=audio,
+                    album_cover_thumbnail=album_cover_thumbnail,
+                    title=title,
+                    performer=performer,
+                    duration=duration,
+                ),
+                caption=caption,
+            ),
+            message_id=message_id,
+            ephemeral_message_id=ephemeral_message_id,
+            receiver_user_id=receiver_user_id,
+            reply_markup=reply_markup,
+        )
+
+    async def editDocumentMessage(
+        self,
+        *,
+        chat_id: int,
+        document: InputFile | str,
+        message_id: int = 0,
+        ephemeral_message_id: int = 0,
+        receiver_user_id: int = 0,
+        thumbnail: InputThumbnail = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        disable_content_type_detection: bool = True,
+        reply_markup: ReplyMarkup = None,
+    ) -> Error | Message | Ok:
+        r"""Edit document message; the message content is fully replaced
+
+        Parameters:
+            chat_id (``int``):
+                Chat identifier
+
+            document (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
+                New document of the message
+
+            message_id (``int``):
+                Message identifier in the chat
+
+            ephemeral_message_id (``int``, *optional*):
+                Identifier of the ephemeral message; for Ephemeral messages only
+
+            receiver_user_id (``int``, *optional*):
+                Identifier of the user who received the message; for Ephemeral messages only
+
+            thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
+                Thumbnail of the document to be set; not supported for remote files
+
+            caption (``str``, *optional*):
+                Document caption
+
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead
+
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Default is ``markdown``
+
+            disable_content_type_detection (``bool``, *optional*):
+                If true, automatic file type detection will be disabled and the document will be always sent as file. Always true for files sent to secret chats
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
+                The message reply markup
+
+        Returns:
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+        """
+
+        parse_mode = parse_mode or self.default_parse_mode
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif parse_mode and isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
+        else:
+            caption = FormattedText(text=caption)
+
+        if isinstance(document, str):
+            document = InputFileRemote(id=document)
+
+        return await self.editMessageWithContent(
+            chat_id=chat_id,
+            content=InputMessageDocument(
+                document=InputDocument(
+                    document=document,
+                    thumbnail=thumbnail,
+                    disable_content_type_detection=disable_content_type_detection,
+                ),
+                caption=caption,
+            ),
+            message_id=message_id,
+            ephemeral_message_id=ephemeral_message_id,
+            receiver_user_id=receiver_user_id,
+            reply_markup=reply_markup,
+        )
+
+    async def editPhotoMessage(
+        self,
+        *,
+        chat_id: int,
+        photo: InputFile | str,
+        message_id: int = 0,
+        ephemeral_message_id: int = 0,
+        receiver_user_id: int = 0,
+        thumbnail: InputThumbnail = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        added_sticker_file_ids: list = None,
+        width: int = 0,
+        height: int = 0,
+        show_caption_above_media: bool = False,
+        has_spoiler: bool = False,
+        reply_markup: ReplyMarkup = None,
+    ) -> Error | Message | Ok:
+        r"""Edit photo message; the message content is fully replaced
+
+        Parameters:
+            chat_id (``int``):
+                Chat identifier
+
+            photo (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
+                New photo of the message
+
+            message_id (``int``):
+                Message identifier in the chat
+
+            ephemeral_message_id (``int``, *optional*):
+                Identifier of the ephemeral message; for Ephemeral messages only
+
+            receiver_user_id (``int``, *optional*):
+                Identifier of the user who received the message; for Ephemeral messages only
+
+            thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
+                Thumbnail of the photo to be set; not supported for remote files
+
+            caption (``str``, *optional*):
+                Photo caption
+
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead
+
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Default is ``markdown``
+
+            added_sticker_file_ids (``list``, *optional*):
+                List of file identifiers of added stickers
+
+            width (``int``, *optional*):
+                Photo width
+
+            height (``int``, *optional*):
+                Photo height
+
+            show_caption_above_media (``bool``, *optional*):
+                True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo. Default is ``False``
+
+            has_spoiler (``bool``, *optional*):
+                True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
+                The message reply markup
+
+        Returns:
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+        """
+
+        parse_mode = parse_mode or self.default_parse_mode
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif parse_mode and isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
+        else:
+            caption = FormattedText(text=caption)
+
+        if isinstance(photo, str):
+            photo = InputFileRemote(id=photo)
+
+        return await self.editMessageWithContent(
+            chat_id=chat_id,
+            content=InputMessagePhoto(
+                photo=InputPhoto(
+                    photo=photo,
+                    thumbnail=thumbnail,
+                    added_sticker_file_ids=added_sticker_file_ids,
+                    width=width,
+                    height=height,
+                ),
+                caption=caption,
+                show_caption_above_media=show_caption_above_media,
+                has_spoiler=has_spoiler,
+            ),
+            message_id=message_id,
+            ephemeral_message_id=ephemeral_message_id,
+            receiver_user_id=receiver_user_id,
+            reply_markup=reply_markup,
+        )
+
+    async def editVideoMessage(
+        self,
+        *,
+        chat_id: int,
+        video: InputFile | str,
+        message_id: int = 0,
+        ephemeral_message_id: int = 0,
+        receiver_user_id: int = 0,
+        thumbnail: InputThumbnail = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        added_sticker_file_ids: list = None,
+        supports_streaming: bool = None,
+        duration: int = 0,
+        width: int = 0,
+        height: int = 0,
+        show_caption_above_media: bool = False,
+        has_spoiler: bool = False,
+        reply_markup: ReplyMarkup = None,
+    ) -> Error | Message | Ok:
+        r"""Edit video message; the message content is fully replaced
+
+        Parameters:
+            chat_id (``int``):
+                Chat identifier
+
+            video (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
+                New video of the message
+
+            message_id (``int``):
+                Message identifier in the chat
+
+            ephemeral_message_id (``int``, *optional*):
+                Identifier of the ephemeral message; for Ephemeral messages only
+
+            receiver_user_id (``int``, *optional*):
+                Identifier of the user who received the message; for Ephemeral messages only
+
+            thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
+                Thumbnail of the video to be set; not supported for remote files
+
+            caption (``str``, *optional*):
+                Video caption
+
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead
+
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Default is ``markdown``
+
+            added_sticker_file_ids (``list``, *optional*):
+                List of file identifiers of added stickers
+
+            supports_streaming (``bool``, *optional*):
+                True, if the video should be tried to be streamed
+
+            duration (``int``, *optional*):
+                Duration of sent video in seconds
+
+            width (``int``, *optional*):
+                Video width
+
+            height (``int``, *optional*):
+                Video height
+
+            show_caption_above_media (``bool``, *optional*):
+                True, if the caption must be shown above the video; otherwise, the caption must be shown below the video. Default is ``False``
+
+            has_spoiler (``bool``, *optional*):
+                True, if the video preview must be covered by a spoiler animation; not supported in secret chats
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
+                The message reply markup
+
+        Returns:
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+        """
+
+        parse_mode = parse_mode or self.default_parse_mode
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif parse_mode and isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
+        else:
+            caption = FormattedText(text=caption)
+
+        if isinstance(video, str):
+            video = InputFileRemote(id=video)
+
+        return await self.editMessageWithContent(
+            chat_id=chat_id,
+            content=InputMessageVideo(
+                video=InputVideo(
+                    video=video,
+                    thumbnail=thumbnail,
+                    added_sticker_file_ids=added_sticker_file_ids,
+                    duration=duration,
+                    width=width,
+                    height=height,
+                    supports_streaming=supports_streaming,
+                ),
+                caption=caption,
+                show_caption_above_media=show_caption_above_media,
+                has_spoiler=has_spoiler,
+            ),
+            message_id=message_id,
+            ephemeral_message_id=ephemeral_message_id,
+            receiver_user_id=receiver_user_id,
+            reply_markup=reply_markup,
+        )
+
     async def editWidgetData(
         self,
         chat_id: int,
@@ -2267,6 +2777,68 @@ class Methods(TDLibFunctions):
             public_data=public_data or "",
             edit_chat_data=chat_data is not None,
             chat_data=chat_data or "",
+        )
+
+    async def editMessageWithContent(
+        self,
+        chat_id: int,
+        content: InputMessageContent,
+        message_id: int = 0,
+        ephemeral_message_id: int = 0,
+        receiver_user_id: int = 0,
+        reply_markup: ReplyMarkup = None,
+    ) -> Error | Message | Ok:
+        r"""Edit message content
+
+        Parameters:
+            chat_id (``int``):
+                Chat identifier
+
+            content (:class:`~pytdbot.types.InputMessageContent`):
+                New content of the message. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, or inputMessageVideo
+
+            message_id (``int``):
+                Message identifier in the chat
+
+            ephemeral_message_id (``int``, *optional*):
+                Identifier of the ephemeral message; for Ephemeral messages only
+
+            receiver_user_id (``int``, *optional*):
+                Identifier of the user who received the message; for Ephemeral messages only
+
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
+                The message reply markup
+
+        Returns:
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+        """
+
+        if not message_id and not ephemeral_message_id:
+            raise ValueError(
+                "Either message_id or ephemeral_message_id must be provided"
+            )
+
+        reply_markup = reply_markup if isinstance(reply_markup, ReplyMarkup) else None
+
+        if ephemeral_message_id:
+            return await self.editEphemeralMessage(
+                chat_id=chat_id,
+                receiver_user_id=receiver_user_id,
+                ephemeral_message_id=ephemeral_message_id,
+                reply_markup=reply_markup,
+                input_message_content=content,
+            )
+
+        if not self.use_message_database:
+            load_message = await self.getMessage(chat_id=chat_id, message_id=message_id)
+            if isinstance(load_message, Error):
+                return load_message
+
+        return await self.editMessageMedia(
+            chat_id=chat_id,
+            message_id=message_id,
+            reply_markup=reply_markup,
+            input_message_content=content,
         )
 
     async def sendMessageWithContent(

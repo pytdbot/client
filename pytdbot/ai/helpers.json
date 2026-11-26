@@ -251,6 +251,280 @@
     "returns": "pytdbot.types.Error | pytdbot.types.LocalFile"
   },
   {
+    "name": "edit_animation",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": true,
+    "args": [
+      {
+        "name": "animation",
+        "type": "pytdbot.types.InputFile | str"
+      },
+      {
+        "name": "thumbnail",
+        "type": "pytdbot.types.InputThumbnail | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "added_sticker_file_ids",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "duration",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkup | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit animation message. Shortcut for :meth:`~pytdbot.Client.editAnimationMessage`.",
+    "doc": "Edit animation message. Shortcut for :meth:`~pytdbot.Client.editAnimationMessage`.",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
+  },
+  {
+    "name": "edit_audio",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": true,
+    "args": [
+      {
+        "name": "audio",
+        "type": "pytdbot.types.InputFile | str"
+      },
+      {
+        "name": "album_cover_thumbnail",
+        "type": "pytdbot.types.InputThumbnail | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "title",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "performer",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "duration",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkup | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit audio message. Shortcut for :meth:`~pytdbot.Client.editAudioMessage`.",
+    "doc": "Edit audio message. Shortcut for :meth:`~pytdbot.Client.editAudioMessage`.",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
+  },
+  {
+    "name": "edit_document",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": true,
+    "args": [
+      {
+        "name": "document",
+        "type": "pytdbot.types.InputFile | str"
+      },
+      {
+        "name": "thumbnail",
+        "type": "pytdbot.types.InputThumbnail | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "disable_content_type_detection",
+        "type": "bool",
+        "optional": true,
+        "default": "True"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkup | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit document message. Shortcut for :meth:`~pytdbot.Client.editDocumentMessage`.",
+    "doc": "Edit document message. Shortcut for :meth:`~pytdbot.Client.editDocumentMessage`.",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
+  },
+  {
+    "name": "edit_photo",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": true,
+    "args": [
+      {
+        "name": "photo",
+        "type": "pytdbot.types.InputFile | str"
+      },
+      {
+        "name": "thumbnail",
+        "type": "pytdbot.types.InputThumbnail | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "added_sticker_file_ids",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkup | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit photo message. Shortcut for :meth:`~pytdbot.Client.editPhotoMessage`.",
+    "doc": "Edit photo message. Shortcut for :meth:`~pytdbot.Client.editPhotoMessage`.",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
+  },
+  {
     "name": "edit_rich_message",
     "kind": "bound_method",
     "on": "Message",
@@ -365,6 +639,94 @@
     ],
     "description": "Edit text message. Shortcut for :meth:`~pytdbot.Client.editTextMessage`.",
     "doc": "Edit text message. Shortcut for :meth:`~pytdbot.Client.editTextMessage`.",
+    "source": "pytdbot/types/bound_methods/message.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
+  },
+  {
+    "name": "edit_video",
+    "kind": "bound_method",
+    "on": "Message",
+    "async": true,
+    "args": [
+      {
+        "name": "video",
+        "type": "pytdbot.types.InputFile | str"
+      },
+      {
+        "name": "thumbnail",
+        "type": "pytdbot.types.InputThumbnail | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "added_sticker_file_ids",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "supports_streaming",
+        "type": "bool",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "duration",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkup | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit video message. Shortcut for :meth:`~pytdbot.Client.editVideoMessage`.",
+    "doc": "Edit video message. Shortcut for :meth:`~pytdbot.Client.editVideoMessage`.",
     "source": "pytdbot/types/bound_methods/message.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
   },
@@ -2195,6 +2557,152 @@
     "returns": "pytdbot.utils.CallbackData"
   },
   {
+    "name": "edit_message_animation",
+    "kind": "bound_method",
+    "on": "UpdateNewCallbackQuery",
+    "async": true,
+    "args": [
+      {
+        "name": "animation",
+        "type": "pytdbot.types.InputFile | str"
+      },
+      {
+        "name": "thumbnail",
+        "type": "pytdbot.types.InputThumbnail | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "added_sticker_file_ids",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "duration",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkup | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit callback query message animation. Shortcut for :meth:`~pytdbot.Client.editAnimationMessage`",
+    "doc": "Edit callback query message animation. Shortcut for :meth:`~pytdbot.Client.editAnimationMessage`",
+    "source": "pytdbot/types/bound_methods/callback_query.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
+  },
+  {
+    "name": "edit_message_audio",
+    "kind": "bound_method",
+    "on": "UpdateNewCallbackQuery",
+    "async": true,
+    "args": [
+      {
+        "name": "audio",
+        "type": "pytdbot.types.InputFile | str"
+      },
+      {
+        "name": "album_cover_thumbnail",
+        "type": "pytdbot.types.InputThumbnail | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "title",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "performer",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "duration",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkup | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit callback query message audio. Shortcut for :meth:`~pytdbot.Client.editAudioMessage`",
+    "doc": "Edit callback query message audio. Shortcut for :meth:`~pytdbot.Client.editAudioMessage`",
+    "source": "pytdbot/types/bound_methods/callback_query.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
+  },
+  {
     "name": "edit_message_caption",
     "kind": "bound_method",
     "on": "UpdateNewCallbackQuery",
@@ -2233,6 +2741,134 @@
     "doc": "Edit message caption. Ephemeral messages aren't supported",
     "source": "pytdbot/types/bound_methods/callback_query.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Message"
+  },
+  {
+    "name": "edit_message_document",
+    "kind": "bound_method",
+    "on": "UpdateNewCallbackQuery",
+    "async": true,
+    "args": [
+      {
+        "name": "document",
+        "type": "pytdbot.types.InputFile | str"
+      },
+      {
+        "name": "thumbnail",
+        "type": "pytdbot.types.InputThumbnail | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "disable_content_type_detection",
+        "type": "bool",
+        "optional": true,
+        "default": "True"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkup | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit callback query message document. Shortcut for :meth:`~pytdbot.Client.editDocumentMessage`",
+    "doc": "Edit callback query message document. Shortcut for :meth:`~pytdbot.Client.editDocumentMessage`",
+    "source": "pytdbot/types/bound_methods/callback_query.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
+  },
+  {
+    "name": "edit_message_photo",
+    "kind": "bound_method",
+    "on": "UpdateNewCallbackQuery",
+    "async": true,
+    "args": [
+      {
+        "name": "photo",
+        "type": "pytdbot.types.InputFile | str"
+      },
+      {
+        "name": "thumbnail",
+        "type": "pytdbot.types.InputThumbnail | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "added_sticker_file_ids",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkup | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit callback query message photo. Shortcut for :meth:`~pytdbot.Client.editPhotoMessage`",
+    "doc": "Edit callback query message photo. Shortcut for :meth:`~pytdbot.Client.editPhotoMessage`",
+    "source": "pytdbot/types/bound_methods/callback_query.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
   },
   {
     "name": "edit_message_reply_markup",
@@ -2311,6 +2947,94 @@
     ],
     "description": "Edit callback query message text. Shortcut for :meth:`~pytdbot.Client.editTextMessage`",
     "doc": "Edit callback query message text. Shortcut for :meth:`~pytdbot.Client.editTextMessage`",
+    "source": "pytdbot/types/bound_methods/callback_query.py",
+    "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
+  },
+  {
+    "name": "edit_message_video",
+    "kind": "bound_method",
+    "on": "UpdateNewCallbackQuery",
+    "async": true,
+    "args": [
+      {
+        "name": "video",
+        "type": "pytdbot.types.InputFile | str"
+      },
+      {
+        "name": "thumbnail",
+        "type": "pytdbot.types.InputThumbnail | None",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "added_sticker_file_ids",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "supports_streaming",
+        "type": "bool",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "duration",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "reply_markup",
+        "type": "pytdbot.types.ReplyMarkup | None",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit callback query message video. Shortcut for :meth:`~pytdbot.Client.editVideoMessage`",
+    "doc": "Edit callback query message video. Shortcut for :meth:`~pytdbot.Client.editVideoMessage`",
     "source": "pytdbot/types/bound_methods/callback_query.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
   },
@@ -2502,6 +3226,270 @@
     "returns": "Error | HttpUrl"
   },
   {
+    "name": "editAnimationMessage",
+    "kind": "client_method",
+    "on": "Client",
+    "async": true,
+    "args": [
+      {
+        "name": "chat_id",
+        "type": "int"
+      },
+      {
+        "name": "animation",
+        "type": "InputFile | str"
+      },
+      {
+        "name": "message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "ephemeral_message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "thumbnail",
+        "type": "InputThumbnail",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "added_sticker_file_ids",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "duration",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "reply_markup",
+        "type": "ReplyMarkup",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit animation message; the message content is fully replaced",
+    "doc": "Edit animation message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    animation (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New animation of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the animation to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Animation caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    added_sticker_file_ids (``list``, *optional*):\n        File identifiers of the stickers added to the animation, if applicable\n\n    duration (``int``, *optional*):\n        Duration of the animation, in seconds\n\n    width (``int``, *optional*):\n        Width of the animation\n\n    height (``int``, *optional*):\n        Height of the animation\n\n    show_caption_above_media (``bool``, *optional*):\n        True, if the caption must be shown above the animation; otherwise, the caption must be shown below the animation. Default is ``False``\n\n    has_spoiler (``bool``, *optional*):\n        True, if the animation preview must be covered by a spoiler animation; not supported in secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "source": "pytdbot/methods/methods.py",
+    "returns": "Error | Message | Ok"
+  },
+  {
+    "name": "editAudioMessage",
+    "kind": "client_method",
+    "on": "Client",
+    "async": true,
+    "args": [
+      {
+        "name": "chat_id",
+        "type": "int"
+      },
+      {
+        "name": "audio",
+        "type": "InputFile | str"
+      },
+      {
+        "name": "message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "ephemeral_message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "album_cover_thumbnail",
+        "type": "InputThumbnail",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "title",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "performer",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "duration",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "reply_markup",
+        "type": "ReplyMarkup",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit audio message; the message content is fully replaced",
+    "doc": "Edit audio message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    audio (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New audio of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    album_cover_thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the album cover to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Audio caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    title (``str``, *optional*):\n        Title of the audio\n\n    performer (``str``, *optional*):\n        Performer of the audio\n\n    duration (``int``, *optional*):\n        Duration of the audio, in seconds\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "source": "pytdbot/methods/methods.py",
+    "returns": "Error | Message | Ok"
+  },
+  {
+    "name": "editDocumentMessage",
+    "kind": "client_method",
+    "on": "Client",
+    "async": true,
+    "args": [
+      {
+        "name": "chat_id",
+        "type": "int"
+      },
+      {
+        "name": "document",
+        "type": "InputFile | str"
+      },
+      {
+        "name": "message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "ephemeral_message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "thumbnail",
+        "type": "InputThumbnail",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "disable_content_type_detection",
+        "type": "bool",
+        "optional": true,
+        "default": "True"
+      },
+      {
+        "name": "reply_markup",
+        "type": "ReplyMarkup",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit document message; the message content is fully replaced",
+    "doc": "Edit document message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    document (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New document of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the document to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Document caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    disable_content_type_detection (``bool``, *optional*):\n        If true, automatic file type detection will be disabled and the document will be always sent as file. Always true for files sent to secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "source": "pytdbot/methods/methods.py",
+    "returns": "Error | Message | Ok"
+  },
+  {
     "name": "editInlineWidgetData",
     "kind": "client_method",
     "on": "Client",
@@ -2528,6 +3516,148 @@
     "doc": "Edit data of a widget in an inline message sent via the bot; for bots only\n\nParameters:\n    inline_message_id (``str``):\n        Identifier of the inline message\n\n    public_data (``str``, *optional*):\n        New public data of the widget\n\n    chat_data (``str``, *optional*):\n        New data of the widget, which is specific to the chat\n\nReturns:\n    :class:`~pytdbot.types.Ok`",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | Ok"
+  },
+  {
+    "name": "editMessageWithContent",
+    "kind": "client_method",
+    "on": "Client",
+    "async": true,
+    "args": [
+      {
+        "name": "chat_id",
+        "type": "int"
+      },
+      {
+        "name": "content",
+        "type": "InputMessageContent"
+      },
+      {
+        "name": "message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "ephemeral_message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "reply_markup",
+        "type": "ReplyMarkup",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit message content",
+    "doc": "Edit message content\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    content (:class:`~pytdbot.types.InputMessageContent`):\n        New content of the message. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, or inputMessageVideo\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "source": "pytdbot/methods/methods.py",
+    "returns": "Error | Message | Ok"
+  },
+  {
+    "name": "editPhotoMessage",
+    "kind": "client_method",
+    "on": "Client",
+    "async": true,
+    "args": [
+      {
+        "name": "chat_id",
+        "type": "int"
+      },
+      {
+        "name": "photo",
+        "type": "InputFile | str"
+      },
+      {
+        "name": "message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "ephemeral_message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "thumbnail",
+        "type": "InputThumbnail",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "added_sticker_file_ids",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "reply_markup",
+        "type": "ReplyMarkup",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit photo message; the message content is fully replaced",
+    "doc": "Edit photo message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    photo (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New photo of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the photo to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Photo caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    added_sticker_file_ids (``list``, *optional*):\n        List of file identifiers of added stickers\n\n    width (``int``, *optional*):\n        Photo width\n\n    height (``int``, *optional*):\n        Photo height\n\n    show_caption_above_media (``bool``, *optional*):\n        True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo. Default is ``False``\n\n    has_spoiler (``bool``, *optional*):\n        True, if the photo preview must be covered by a spoiler animation; not supported in secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "source": "pytdbot/methods/methods.py",
+    "returns": "Error | Message | Ok"
   },
   {
     "name": "editRichMessage",
@@ -2684,6 +3814,116 @@
     "doc": "Edit text message\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    text (``str``):\n        New text of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the message to be deleted; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities in the message text\n\n    entities (``list``, *optional*):\n        List of ``MessageEntity`` objects representing entities that may appear in the message text\n\n    disable_web_page_preview (``bool``, *optional*):\n        Disables link previews for links in this message. Default is ``False``\n\n    url (``str``, *optional*):\n        URL to use for link preview. If empty, then the first URL found in the message text will be used. Default is ``None``\n\n    force_small_media (``bool``, *optional*):\n        True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``\n\n    force_large_media (``bool``, *optional*):\n        True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``\n\n    show_above_text (``bool``, *optional*):\n        True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats. Default is ``None``\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message`",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | Message"
+  },
+  {
+    "name": "editVideoMessage",
+    "kind": "client_method",
+    "on": "Client",
+    "async": true,
+    "args": [
+      {
+        "name": "chat_id",
+        "type": "int"
+      },
+      {
+        "name": "video",
+        "type": "InputFile | str"
+      },
+      {
+        "name": "message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "ephemeral_message_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "receiver_user_id",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "thumbnail",
+        "type": "InputThumbnail",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "caption_entities",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "parse_mode",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "added_sticker_file_ids",
+        "type": "list",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "supports_streaming",
+        "type": "bool",
+        "optional": true,
+        "default": "None"
+      },
+      {
+        "name": "duration",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "width",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "height",
+        "type": "int",
+        "optional": true,
+        "default": "0"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "bool",
+        "optional": true,
+        "default": "False"
+      },
+      {
+        "name": "reply_markup",
+        "type": "ReplyMarkup",
+        "optional": true,
+        "default": "None"
+      }
+    ],
+    "description": "Edit video message; the message content is fully replaced",
+    "doc": "Edit video message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    video (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New video of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the video to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Video caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    added_sticker_file_ids (``list``, *optional*):\n        List of file identifiers of added stickers\n\n    supports_streaming (``bool``, *optional*):\n        True, if the video should be tried to be streamed\n\n    duration (``int``, *optional*):\n        Duration of sent video in seconds\n\n    width (``int``, *optional*):\n        Video width\n\n    height (``int``, *optional*):\n        Video height\n\n    show_caption_above_media (``bool``, *optional*):\n        True, if the caption must be shown above the video; otherwise, the caption must be shown below the video. Default is ``False``\n\n    has_spoiler (``bool``, *optional*):\n        True, if the video preview must be covered by a spoiler animation; not supported in secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "source": "pytdbot/methods/methods.py",
+    "returns": "Error | Message | Ok"
   },
   {
     "name": "editWidgetData",
