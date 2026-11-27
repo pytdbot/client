@@ -2047,11 +2047,12 @@ class Methods(TDLibFunctions):
     async def editTextMessage(
         self,
         *,
-        chat_id: int,
+        chat_id: int = 0,
         text: str,
         message_id: int = 0,
         ephemeral_message_id: int = 0,
         receiver_user_id: int = 0,
+        inline_message_id: str = None,
         parse_mode: str = None,
         entities: list = None,
         disable_web_page_preview: bool = False,
@@ -2060,7 +2061,7 @@ class Methods(TDLibFunctions):
         force_large_media: bool = None,
         show_above_text: bool = None,
         reply_markup: ReplyMarkup = None,
-    ) -> Error | Message:
+    ) -> Error | Message | Ok:
         r"""Edit text message
 
         Parameters:
@@ -2078,6 +2079,9 @@ class Methods(TDLibFunctions):
 
             receiver_user_id (``int``, *optional*):
                 Identifier of the user who will receive the message; for Ephemeral messages only
+
+            inline_message_id (``str``, *optional*):
+                Identifier of the inline message. When set, ``chat_id`` is ignored
 
             parse_mode (``str``, *optional*):
                 Mode for parsing entities in the message text
@@ -2104,10 +2108,10 @@ class Methods(TDLibFunctions):
                 The message reply markup
 
         Returns:
-            :class:`~pytdbot.types.Message`
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages
         """
 
-        if not self.use_message_database:
+        if not inline_message_id and not self.use_message_database:
             load_message = await self.getMessage(chat_id=chat_id, message_id=message_id)
             if isinstance(load_message, Error):
                 return load_message
@@ -2122,6 +2126,24 @@ class Methods(TDLibFunctions):
             text = parse
         else:
             text = FormattedText(text=text)
+
+        if inline_message_id:
+            return await self.editInlineMessageText(
+                inline_message_id=inline_message_id,
+                reply_markup=reply_markup
+                if isinstance(reply_markup, ReplyMarkup)
+                else None,
+                input_message_content=InputMessageText(
+                    text=text,
+                    link_preview_options=LinkPreviewOptions(
+                        is_disabled=disable_web_page_preview,
+                        url=url,
+                        force_small_media=force_small_media,
+                        force_large_media=force_large_media,
+                        show_above_text=show_above_text,
+                    ),
+                ),
+            )
 
         if ephemeral_message_id:
             return await self.editEphemeralMessage(
@@ -2162,9 +2184,10 @@ class Methods(TDLibFunctions):
     async def editRichMessage(
         self,
         *,
-        chat_id: int,
+        chat_id: int = 0,
         message_id: int = 0,
         ephemeral_message_id: int = 0,
+        inline_message_id: str = None,
         html: str = None,
         markdown: str = None,
         media: list[InputRichMessageMedia] = None,
@@ -2172,7 +2195,7 @@ class Methods(TDLibFunctions):
         detect_automatic_blocks: bool = False,
         receiver_user_id: int = 0,
         reply_markup: ReplyMarkup = None,
-    ) -> Error | Message:
+    ) -> Error | Message | Ok:
         r"""Edit rich message
 
         Parameters:
@@ -2184,6 +2207,9 @@ class Methods(TDLibFunctions):
 
             ephemeral_message_id (``int``, *optional*):
                 Identifier of the message to be deleted; for Ephemeral messages only
+
+            inline_message_id (``str``, *optional*):
+                Identifier of the inline message. When set, ``chat_id`` is ignored
 
             html (``str``, *optional*):
                 New HTML content of the message
@@ -2207,12 +2233,12 @@ class Methods(TDLibFunctions):
                 The message reply markup
 
         Returns:
-            :class:`~pytdbot.types.Message`
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages
         """
 
-        if not message_id and not ephemeral_message_id:
+        if not message_id and not ephemeral_message_id and not inline_message_id:
             raise ValueError(
-                "Either message_id or ephemeral_message_id must be provided"
+                "Either message_id, ephemeral_message_id or inline_message_id must be provided"
             )
 
         if not markdown and not html:
@@ -2221,7 +2247,7 @@ class Methods(TDLibFunctions):
         if markdown and html:
             raise ValueError("Only one of markdown or html can be provided")
 
-        if not self.use_message_database:
+        if not inline_message_id and not self.use_message_database:
             load_message = await self.getMessage(chat_id=chat_id, message_id=message_id)
             if isinstance(load_message, Error):
                 return load_message
@@ -2230,6 +2256,21 @@ class Methods(TDLibFunctions):
             source = RichMessageSourceMarkdown(text=markdown, media=media)
         else:
             source = RichMessageSourceHtml(text=html, media=media)
+
+        if inline_message_id:
+            return await self.editInlineMessageText(
+                inline_message_id=inline_message_id,
+                reply_markup=reply_markup
+                if isinstance(reply_markup, ReplyMarkup)
+                else None,
+                input_message_content=InputMessageRichMessage(
+                    message=InputRichMessage(
+                        source=source,
+                        is_rtl=is_rtl,
+                        detect_automatic_blocks=detect_automatic_blocks,
+                    ),
+                ),
+            )
 
         if ephemeral_message_id:
             return await self.editEphemeralMessage(
@@ -2264,11 +2305,12 @@ class Methods(TDLibFunctions):
     async def editAnimationMessage(
         self,
         *,
-        chat_id: int,
+        chat_id: int = 0,
         animation: InputFile | str,
         message_id: int = 0,
         ephemeral_message_id: int = 0,
         receiver_user_id: int = 0,
+        inline_message_id: str = None,
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
@@ -2298,6 +2340,9 @@ class Methods(TDLibFunctions):
 
             receiver_user_id (``int``, *optional*):
                 Identifier of the user who received the message; for Ephemeral messages only
+
+            inline_message_id (``str``, *optional*):
+                Identifier of the inline message. When set, ``chat_id`` is ignored
 
             thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
                 Thumbnail of the animation to be set; not supported for remote files
@@ -2333,7 +2378,7 @@ class Methods(TDLibFunctions):
                 The message reply markup
 
         Returns:
-            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages
         """
 
         parse_mode = parse_mode or self.default_parse_mode
@@ -2368,17 +2413,19 @@ class Methods(TDLibFunctions):
             message_id=message_id,
             ephemeral_message_id=ephemeral_message_id,
             receiver_user_id=receiver_user_id,
+            inline_message_id=inline_message_id,
             reply_markup=reply_markup,
         )
 
     async def editAudioMessage(
         self,
         *,
-        chat_id: int,
+        chat_id: int = 0,
         audio: InputFile | str,
         message_id: int = 0,
         ephemeral_message_id: int = 0,
         receiver_user_id: int = 0,
+        inline_message_id: str = None,
         album_cover_thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
@@ -2406,6 +2453,9 @@ class Methods(TDLibFunctions):
             receiver_user_id (``int``, *optional*):
                 Identifier of the user who received the message; for Ephemeral messages only
 
+            inline_message_id (``str``, *optional*):
+                Identifier of the inline message. When set, ``chat_id`` is ignored
+
             album_cover_thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
                 Thumbnail of the album cover to be set; not supported for remote files
 
@@ -2431,7 +2481,7 @@ class Methods(TDLibFunctions):
                 The message reply markup
 
         Returns:
-            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages
         """
 
         parse_mode = parse_mode or self.default_parse_mode
@@ -2463,17 +2513,19 @@ class Methods(TDLibFunctions):
             message_id=message_id,
             ephemeral_message_id=ephemeral_message_id,
             receiver_user_id=receiver_user_id,
+            inline_message_id=inline_message_id,
             reply_markup=reply_markup,
         )
 
     async def editDocumentMessage(
         self,
         *,
-        chat_id: int,
+        chat_id: int = 0,
         document: InputFile | str,
         message_id: int = 0,
         ephemeral_message_id: int = 0,
         receiver_user_id: int = 0,
+        inline_message_id: str = None,
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
@@ -2499,6 +2551,9 @@ class Methods(TDLibFunctions):
             receiver_user_id (``int``, *optional*):
                 Identifier of the user who received the message; for Ephemeral messages only
 
+            inline_message_id (``str``, *optional*):
+                Identifier of the inline message. When set, ``chat_id`` is ignored
+
             thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
                 Thumbnail of the document to be set; not supported for remote files
 
@@ -2518,7 +2573,7 @@ class Methods(TDLibFunctions):
                 The message reply markup
 
         Returns:
-            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages
         """
 
         parse_mode = parse_mode or self.default_parse_mode
@@ -2548,17 +2603,19 @@ class Methods(TDLibFunctions):
             message_id=message_id,
             ephemeral_message_id=ephemeral_message_id,
             receiver_user_id=receiver_user_id,
+            inline_message_id=inline_message_id,
             reply_markup=reply_markup,
         )
 
     async def editPhotoMessage(
         self,
         *,
-        chat_id: int,
+        chat_id: int = 0,
         photo: InputFile | str,
         message_id: int = 0,
         ephemeral_message_id: int = 0,
         receiver_user_id: int = 0,
+        inline_message_id: str = None,
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
@@ -2587,6 +2644,9 @@ class Methods(TDLibFunctions):
 
             receiver_user_id (``int``, *optional*):
                 Identifier of the user who received the message; for Ephemeral messages only
+
+            inline_message_id (``str``, *optional*):
+                Identifier of the inline message. When set, ``chat_id`` is ignored
 
             thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
                 Thumbnail of the photo to be set; not supported for remote files
@@ -2619,7 +2679,7 @@ class Methods(TDLibFunctions):
                 The message reply markup
 
         Returns:
-            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages
         """
 
         parse_mode = parse_mode or self.default_parse_mode
@@ -2653,17 +2713,19 @@ class Methods(TDLibFunctions):
             message_id=message_id,
             ephemeral_message_id=ephemeral_message_id,
             receiver_user_id=receiver_user_id,
+            inline_message_id=inline_message_id,
             reply_markup=reply_markup,
         )
 
     async def editVideoMessage(
         self,
         *,
-        chat_id: int,
+        chat_id: int = 0,
         video: InputFile | str,
         message_id: int = 0,
         ephemeral_message_id: int = 0,
         receiver_user_id: int = 0,
+        inline_message_id: str = None,
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
@@ -2694,6 +2756,9 @@ class Methods(TDLibFunctions):
 
             receiver_user_id (``int``, *optional*):
                 Identifier of the user who received the message; for Ephemeral messages only
+
+            inline_message_id (``str``, *optional*):
+                Identifier of the inline message. When set, ``chat_id`` is ignored
 
             thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
                 Thumbnail of the video to be set; not supported for remote files
@@ -2732,7 +2797,7 @@ class Methods(TDLibFunctions):
                 The message reply markup
 
         Returns:
-            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages
         """
 
         parse_mode = parse_mode or self.default_parse_mode
@@ -2768,6 +2833,7 @@ class Methods(TDLibFunctions):
             message_id=message_id,
             ephemeral_message_id=ephemeral_message_id,
             receiver_user_id=receiver_user_id,
+            inline_message_id=inline_message_id,
             reply_markup=reply_markup,
         )
 
@@ -2851,6 +2917,7 @@ class Methods(TDLibFunctions):
         message_id: int = 0,
         ephemeral_message_id: int = 0,
         receiver_user_id: int = 0,
+        inline_message_id: str = None,
         reply_markup: ReplyMarkup = None,
     ) -> Error | Message | Ok:
         r"""Edit message content
@@ -2871,19 +2938,29 @@ class Methods(TDLibFunctions):
             receiver_user_id (``int``, *optional*):
                 Identifier of the user who received the message; for Ephemeral messages only
 
+            inline_message_id (``str``, *optional*):
+                Identifier of the inline message. When set, ``chat_id`` is ignored
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
         Returns:
-            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages
+            :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages
         """
 
-        if not message_id and not ephemeral_message_id:
+        if not message_id and not ephemeral_message_id and not inline_message_id:
             raise ValueError(
-                "Either message_id or ephemeral_message_id must be provided"
+                "Either message_id, ephemeral_message_id or inline_message_id must be provided"
             )
 
         reply_markup = reply_markup if isinstance(reply_markup, ReplyMarkup) else None
+
+        if inline_message_id:
+            return await self.editInlineMessageMedia(
+                inline_message_id=inline_message_id,
+                reply_markup=reply_markup,
+                input_message_content=content,
+            )
 
         if ephemeral_message_id:
             return await self.editEphemeralMessage(

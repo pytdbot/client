@@ -36,7 +36,10 @@ class CallbackQueryBoundMethods:
         return ""
 
     async def getMessage(self) -> pytdbot.types.Error | pytdbot.types.Message | None:
-        r"""Get callback query message"""
+        r"""Get callback query message; ``None`` for inline callback queries"""
+
+        if isinstance(self, pytdbot.types.UpdateNewInlineCallbackQuery):
+            return
 
         if self.message_id:
             return await self._client.getMessage(
@@ -83,7 +86,7 @@ class CallbackQueryBoundMethods:
         r"""Reply to the callback query with an ephemeral text message. Shortcut for :meth:`~pytdbot.Client.sendTextMessage`"""
 
         return await self._client.sendTextMessage(
-            chat_id=self.chat_id,
+            chat_id=getattr(self, "chat_id", 0),
             text=text,
             entities=entities,
             parse_mode=parse_mode,
@@ -121,7 +124,7 @@ class CallbackQueryBoundMethods:
         r"""Reply to the callback query with an ephemeral rich message. Shortcut for :meth:`~pytdbot.Client.sendRichMessage`"""
 
         return await self._client.sendRichMessage(
-            chat_id=self.chat_id,
+            chat_id=getattr(self, "chat_id", 0),
             markdown=markdown,
             html=html,
             media=media,
@@ -159,7 +162,7 @@ class CallbackQueryBoundMethods:
         r"""Reply to the callback query with an ephemeral animation. Shortcut for :meth:`~pytdbot.Client.sendAnimation`"""
 
         return await self._client.sendAnimation(
-            chat_id=self.chat_id,
+            chat_id=getattr(self, "chat_id", 0),
             animation=animation,
             thumbnail=thumbnail,
             caption=caption,
@@ -199,7 +202,7 @@ class CallbackQueryBoundMethods:
         r"""Reply to the callback query with an ephemeral audio. Shortcut for :meth:`~pytdbot.Client.sendAudio`"""
 
         return await self._client.sendAudio(
-            chat_id=self.chat_id,
+            chat_id=getattr(self, "chat_id", 0),
             audio=audio,
             album_cover_thumbnail=album_cover_thumbnail,
             caption=caption,
@@ -235,7 +238,7 @@ class CallbackQueryBoundMethods:
         r"""Reply to the callback query with an ephemeral document. Shortcut for :meth:`~pytdbot.Client.sendDocument`"""
 
         return await self._client.sendDocument(
-            chat_id=self.chat_id,
+            chat_id=getattr(self, "chat_id", 0),
             document=document,
             thumbnail=thumbnail,
             caption=caption,
@@ -273,7 +276,7 @@ class CallbackQueryBoundMethods:
         r"""Reply to the callback query with an ephemeral photo. Shortcut for :meth:`~pytdbot.Client.sendPhoto`"""
 
         return await self._client.sendPhoto(
-            chat_id=self.chat_id,
+            chat_id=getattr(self, "chat_id", 0),
             photo=photo,
             thumbnail=thumbnail,
             caption=caption,
@@ -317,7 +320,7 @@ class CallbackQueryBoundMethods:
         r"""Reply to the callback query with an ephemeral video. Shortcut for :meth:`~pytdbot.Client.sendVideo`"""
 
         return await self._client.sendVideo(
-            chat_id=self.chat_id,
+            chat_id=getattr(self, "chat_id", 0),
             video=video,
             thumbnail=thumbnail,
             caption=caption,
@@ -355,7 +358,7 @@ class CallbackQueryBoundMethods:
         r"""Reply to the callback query with an ephemeral video note. Shortcut for :meth:`~pytdbot.Client.sendVideoNote`"""
 
         return await self._client.sendVideoNote(
-            chat_id=self.chat_id,
+            chat_id=getattr(self, "chat_id", 0),
             video_note=video_note,
             thumbnail=thumbnail,
             duration=duration,
@@ -387,7 +390,7 @@ class CallbackQueryBoundMethods:
         r"""Reply to the callback query with an ephemeral voice note. Shortcut for :meth:`~pytdbot.Client.sendVoice`"""
 
         return await self._client.sendVoice(
-            chat_id=self.chat_id,
+            chat_id=getattr(self, "chat_id", 0),
             voice=voice,
             caption=caption,
             caption_entities=caption_entities,
@@ -420,7 +423,7 @@ class CallbackQueryBoundMethods:
         r"""Reply to the callback query with an ephemeral sticker. Shortcut for :meth:`~pytdbot.Client.sendSticker`"""
 
         return await self._client.sendSticker(
-            chat_id=self.chat_id,
+            chat_id=getattr(self, "chat_id", 0),
             sticker=sticker,
             emoji=emoji,
             thumbnail=thumbnail,
@@ -446,6 +449,20 @@ class CallbackQueryBoundMethods:
         reply_markup: pytdbot.types.ReplyMarkup | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
         r"""Edit callback query message text. Shortcut for :meth:`~pytdbot.Client.editTextMessage`"""
+
+        if isinstance(self, pytdbot.types.UpdateNewInlineCallbackQuery):
+            return await self._client.editTextMessage(
+                inline_message_id=self.inline_message_id,
+                text=text,
+                parse_mode=parse_mode,
+                entities=entities,
+                disable_web_page_preview=disable_web_page_preview,
+                url=url,
+                force_small_media=force_small_media,
+                force_large_media=force_large_media,
+                show_above_text=show_above_text,
+                reply_markup=reply_markup,
+            )
 
         ephemeral_message_id = 0
         receiver_user_id = 0
@@ -498,6 +515,14 @@ class CallbackQueryBoundMethods:
         else:
             caption = pytdbot.types.FormattedText(text=caption)
 
+        if isinstance(self, pytdbot.types.UpdateNewInlineCallbackQuery):
+            return await self._client.editInlineMessageCaption(
+                inline_message_id=self.inline_message_id,
+                caption=caption,
+                show_caption_above_media=show_caption_above_media,
+                reply_markup=reply_markup,
+            )
+
         return await self._client.editMessageCaption(
             chat_id=self.chat_id,
             message_id=self.message_id,
@@ -522,6 +547,23 @@ class CallbackQueryBoundMethods:
         reply_markup: pytdbot.types.ReplyMarkup | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
         r"""Edit callback query message animation. Shortcut for :meth:`~pytdbot.Client.editAnimationMessage`"""
+
+        if isinstance(self, pytdbot.types.UpdateNewInlineCallbackQuery):
+            return await self._client.editAnimationMessage(
+                inline_message_id=self.inline_message_id,
+                animation=animation,
+                thumbnail=thumbnail,
+                caption=caption,
+                caption_entities=caption_entities,
+                parse_mode=parse_mode,
+                added_sticker_file_ids=added_sticker_file_ids,
+                duration=duration,
+                width=width,
+                height=height,
+                show_caption_above_media=show_caption_above_media,
+                has_spoiler=has_spoiler,
+                reply_markup=reply_markup,
+            )
 
         ephemeral_message_id = 0
         receiver_user_id = 0
@@ -568,6 +610,20 @@ class CallbackQueryBoundMethods:
     ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
         r"""Edit callback query message audio. Shortcut for :meth:`~pytdbot.Client.editAudioMessage`"""
 
+        if isinstance(self, pytdbot.types.UpdateNewInlineCallbackQuery):
+            return await self._client.editAudioMessage(
+                inline_message_id=self.inline_message_id,
+                audio=audio,
+                album_cover_thumbnail=album_cover_thumbnail,
+                caption=caption,
+                caption_entities=caption_entities,
+                parse_mode=parse_mode,
+                title=title,
+                performer=performer,
+                duration=duration,
+                reply_markup=reply_markup,
+            )
+
         ephemeral_message_id = 0
         receiver_user_id = 0
 
@@ -607,6 +663,18 @@ class CallbackQueryBoundMethods:
         reply_markup: pytdbot.types.ReplyMarkup | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
         r"""Edit callback query message document. Shortcut for :meth:`~pytdbot.Client.editDocumentMessage`"""
+
+        if isinstance(self, pytdbot.types.UpdateNewInlineCallbackQuery):
+            return await self._client.editDocumentMessage(
+                inline_message_id=self.inline_message_id,
+                document=document,
+                thumbnail=thumbnail,
+                caption=caption,
+                caption_entities=caption_entities,
+                parse_mode=parse_mode,
+                disable_content_type_detection=disable_content_type_detection,
+                reply_markup=reply_markup,
+            )
 
         ephemeral_message_id = 0
         receiver_user_id = 0
@@ -649,6 +717,22 @@ class CallbackQueryBoundMethods:
         reply_markup: pytdbot.types.ReplyMarkup | None = None,
     ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
         r"""Edit callback query message photo. Shortcut for :meth:`~pytdbot.Client.editPhotoMessage`"""
+
+        if isinstance(self, pytdbot.types.UpdateNewInlineCallbackQuery):
+            return await self._client.editPhotoMessage(
+                inline_message_id=self.inline_message_id,
+                photo=photo,
+                thumbnail=thumbnail,
+                caption=caption,
+                caption_entities=caption_entities,
+                parse_mode=parse_mode,
+                added_sticker_file_ids=added_sticker_file_ids,
+                width=width,
+                height=height,
+                show_caption_above_media=show_caption_above_media,
+                has_spoiler=has_spoiler,
+                reply_markup=reply_markup,
+            )
 
         ephemeral_message_id = 0
         receiver_user_id = 0
@@ -698,6 +782,24 @@ class CallbackQueryBoundMethods:
     ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
         r"""Edit callback query message video. Shortcut for :meth:`~pytdbot.Client.editVideoMessage`"""
 
+        if isinstance(self, pytdbot.types.UpdateNewInlineCallbackQuery):
+            return await self._client.editVideoMessage(
+                inline_message_id=self.inline_message_id,
+                video=video,
+                thumbnail=thumbnail,
+                caption=caption,
+                caption_entities=caption_entities,
+                parse_mode=parse_mode,
+                added_sticker_file_ids=added_sticker_file_ids,
+                supports_streaming=supports_streaming,
+                duration=duration,
+                width=width,
+                height=height,
+                show_caption_above_media=show_caption_above_media,
+                has_spoiler=has_spoiler,
+                reply_markup=reply_markup,
+            )
+
         ephemeral_message_id = 0
         receiver_user_id = 0
 
@@ -733,7 +835,12 @@ class CallbackQueryBoundMethods:
     async def edit_message_reply_markup(
         self, reply_markup: "pytdbot.types.ReplyMarkup"
     ) -> pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok:
-        r"""Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup`"""
+        r"""Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup` or :meth:`~pytdbot.Client.editInlineMessageReplyMarkup` for inline messages"""
+
+        if isinstance(self, pytdbot.types.UpdateNewInlineCallbackQuery):
+            return await self._client.editInlineMessageReplyMarkup(
+                inline_message_id=self.inline_message_id, reply_markup=reply_markup
+            )
 
         message = await self.getMessage()
         if message and message.ephemeral_message_id:

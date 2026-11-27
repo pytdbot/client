@@ -154208,7 +154208,7 @@ class UpdateNewCallbackQuery(TlObject, Update, CallbackQueryBoundMethods):
         return self
 
 
-class UpdateNewInlineCallbackQuery(TlObject, Update):
+class UpdateNewInlineCallbackQuery(TlObject, Update, CallbackQueryBoundMethods):
     r"""A new incoming callback query from a message sent via a bot; for bots only
 
     Parameters:

@@ -2881,8 +2881,8 @@
         "type": "'pytdbot.types.ReplyMarkup'"
       }
     ],
-    "description": "Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup`",
-    "doc": "Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup`",
+    "description": "Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup` or :meth:`~pytdbot.Client.editInlineMessageReplyMarkup` for inline messages",
+    "doc": "Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup` or :meth:`~pytdbot.Client.editInlineMessageReplyMarkup` for inline messages",
     "source": "pytdbot/types/bound_methods/callback_query.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Message | pytdbot.types.Ok"
   },
@@ -3044,8 +3044,8 @@
     "on": "UpdateNewCallbackQuery",
     "async": true,
     "args": [],
-    "description": "Get callback query message",
-    "doc": "Get callback query message",
+    "description": "Get callback query message; ``None`` for inline callback queries",
+    "doc": "Get callback query message; ``None`` for inline callback queries",
     "source": "pytdbot/types/bound_methods/callback_query.py",
     "returns": "pytdbot.types.Error | pytdbot.types.Message | None"
   },
@@ -4031,7 +4031,9 @@
     "args": [
       {
         "name": "chat_id",
-        "type": "int"
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "animation",
@@ -4054,6 +4056,12 @@
         "type": "int",
         "optional": true,
         "default": "0"
+      },
+      {
+        "name": "inline_message_id",
+        "type": "str",
+        "optional": true,
+        "default": "None"
       },
       {
         "name": "thumbnail",
@@ -4123,7 +4131,7 @@
       }
     ],
     "description": "Edit animation message; the message content is fully replaced",
-    "doc": "Edit animation message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    animation (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New animation of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the animation to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Animation caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    added_sticker_file_ids (``list``, *optional*):\n        File identifiers of the stickers added to the animation, if applicable\n\n    duration (``int``, *optional*):\n        Duration of the animation, in seconds\n\n    width (``int``, *optional*):\n        Width of the animation\n\n    height (``int``, *optional*):\n        Height of the animation\n\n    show_caption_above_media (``bool``, *optional*):\n        True, if the caption must be shown above the animation; otherwise, the caption must be shown below the animation. Default is ``False``\n\n    has_spoiler (``bool``, *optional*):\n        True, if the animation preview must be covered by a spoiler animation; not supported in secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "doc": "Edit animation message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    animation (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New animation of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    inline_message_id (``str``, *optional*):\n        Identifier of the inline message. When set, ``chat_id`` is ignored\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the animation to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Animation caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    added_sticker_file_ids (``list``, *optional*):\n        File identifiers of the stickers added to the animation, if applicable\n\n    duration (``int``, *optional*):\n        Duration of the animation, in seconds\n\n    width (``int``, *optional*):\n        Width of the animation\n\n    height (``int``, *optional*):\n        Height of the animation\n\n    show_caption_above_media (``bool``, *optional*):\n        True, if the caption must be shown above the animation; otherwise, the caption must be shown below the animation. Default is ``False``\n\n    has_spoiler (``bool``, *optional*):\n        True, if the animation preview must be covered by a spoiler animation; not supported in secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | Message | Ok"
   },
@@ -4135,7 +4143,9 @@
     "args": [
       {
         "name": "chat_id",
-        "type": "int"
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "audio",
@@ -4158,6 +4168,12 @@
         "type": "int",
         "optional": true,
         "default": "0"
+      },
+      {
+        "name": "inline_message_id",
+        "type": "str",
+        "optional": true,
+        "default": "None"
       },
       {
         "name": "album_cover_thumbnail",
@@ -4209,7 +4225,7 @@
       }
     ],
     "description": "Edit audio message; the message content is fully replaced",
-    "doc": "Edit audio message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    audio (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New audio of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    album_cover_thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the album cover to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Audio caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    title (``str``, *optional*):\n        Title of the audio\n\n    performer (``str``, *optional*):\n        Performer of the audio\n\n    duration (``int``, *optional*):\n        Duration of the audio, in seconds\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "doc": "Edit audio message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    audio (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New audio of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    inline_message_id (``str``, *optional*):\n        Identifier of the inline message. When set, ``chat_id`` is ignored\n\n    album_cover_thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the album cover to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Audio caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    title (``str``, *optional*):\n        Title of the audio\n\n    performer (``str``, *optional*):\n        Performer of the audio\n\n    duration (``int``, *optional*):\n        Duration of the audio, in seconds\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | Message | Ok"
   },
@@ -4221,7 +4237,9 @@
     "args": [
       {
         "name": "chat_id",
-        "type": "int"
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "document",
@@ -4244,6 +4262,12 @@
         "type": "int",
         "optional": true,
         "default": "0"
+      },
+      {
+        "name": "inline_message_id",
+        "type": "str",
+        "optional": true,
+        "default": "None"
       },
       {
         "name": "thumbnail",
@@ -4283,7 +4307,7 @@
       }
     ],
     "description": "Edit document message; the message content is fully replaced",
-    "doc": "Edit document message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    document (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New document of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the document to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Document caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    disable_content_type_detection (``bool``, *optional*):\n        If true, automatic file type detection will be disabled and the document will be always sent as file. Always true for files sent to secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "doc": "Edit document message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    document (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New document of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    inline_message_id (``str``, *optional*):\n        Identifier of the inline message. When set, ``chat_id`` is ignored\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the document to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Document caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    disable_content_type_detection (``bool``, *optional*):\n        If true, automatic file type detection will be disabled and the document will be always sent as file. Always true for files sent to secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | Message | Ok"
   },
@@ -4348,6 +4372,12 @@
         "default": "0"
       },
       {
+        "name": "inline_message_id",
+        "type": "str",
+        "optional": true,
+        "default": "None"
+      },
+      {
         "name": "reply_markup",
         "type": "ReplyMarkup",
         "optional": true,
@@ -4355,7 +4385,7 @@
       }
     ],
     "description": "Edit message content",
-    "doc": "Edit message content\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    content (:class:`~pytdbot.types.InputMessageContent`):\n        New content of the message. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, or inputMessageVideo\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "doc": "Edit message content\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    content (:class:`~pytdbot.types.InputMessageContent`):\n        New content of the message. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto, or inputMessageVideo\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    inline_message_id (``str``, *optional*):\n        Identifier of the inline message. When set, ``chat_id`` is ignored\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | Message | Ok"
   },
@@ -4367,7 +4397,9 @@
     "args": [
       {
         "name": "chat_id",
-        "type": "int"
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "photo",
@@ -4390,6 +4422,12 @@
         "type": "int",
         "optional": true,
         "default": "0"
+      },
+      {
+        "name": "inline_message_id",
+        "type": "str",
+        "optional": true,
+        "default": "None"
       },
       {
         "name": "thumbnail",
@@ -4453,7 +4491,7 @@
       }
     ],
     "description": "Edit photo message; the message content is fully replaced",
-    "doc": "Edit photo message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    photo (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New photo of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the photo to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Photo caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    added_sticker_file_ids (``list``, *optional*):\n        List of file identifiers of added stickers\n\n    width (``int``, *optional*):\n        Photo width\n\n    height (``int``, *optional*):\n        Photo height\n\n    show_caption_above_media (``bool``, *optional*):\n        True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo. Default is ``False``\n\n    has_spoiler (``bool``, *optional*):\n        True, if the photo preview must be covered by a spoiler animation; not supported in secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "doc": "Edit photo message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    photo (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New photo of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    inline_message_id (``str``, *optional*):\n        Identifier of the inline message. When set, ``chat_id`` is ignored\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the photo to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Photo caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    added_sticker_file_ids (``list``, *optional*):\n        List of file identifiers of added stickers\n\n    width (``int``, *optional*):\n        Photo width\n\n    height (``int``, *optional*):\n        Photo height\n\n    show_caption_above_media (``bool``, *optional*):\n        True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo. Default is ``False``\n\n    has_spoiler (``bool``, *optional*):\n        True, if the photo preview must be covered by a spoiler animation; not supported in secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | Message | Ok"
   },
@@ -4465,7 +4503,9 @@
     "args": [
       {
         "name": "chat_id",
-        "type": "int"
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "message_id",
@@ -4478,6 +4518,12 @@
         "type": "int",
         "optional": true,
         "default": "0"
+      },
+      {
+        "name": "inline_message_id",
+        "type": "str",
+        "optional": true,
+        "default": "None"
       },
       {
         "name": "html",
@@ -4523,9 +4569,9 @@
       }
     ],
     "description": "Edit rich message",
-    "doc": "Edit rich message\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the message to be deleted; for Ephemeral messages only\n\n    html (``str``, *optional*):\n        New HTML content of the message\n\n    markdown (``str``, *optional*):\n        New Markdown content of the message\n\n    media (list[:class:`~pytdbot.types.InputRichMessageMedia`], *optional*):\n        Media used in the message\n\n    is_rtl (``bool``, *optional*):\n        Pass true if the message must be shown from right to left. Default is ``False``\n\n    detect_automatic_blocks (``bool``, *optional*):\n        Pass true to enable detection of URLs, email addresses and other automatic blocks. Default is ``False``\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message`",
+    "doc": "Edit rich message\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the message to be deleted; for Ephemeral messages only\n\n    inline_message_id (``str``, *optional*):\n        Identifier of the inline message. When set, ``chat_id`` is ignored\n\n    html (``str``, *optional*):\n        New HTML content of the message\n\n    markdown (``str``, *optional*):\n        New Markdown content of the message\n\n    media (list[:class:`~pytdbot.types.InputRichMessageMedia`], *optional*):\n        Media used in the message\n\n    is_rtl (``bool``, *optional*):\n        Pass true if the message must be shown from right to left. Default is ``False``\n\n    detect_automatic_blocks (``bool``, *optional*):\n        Pass true to enable detection of URLs, email addresses and other automatic blocks. Default is ``False``\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages",
     "source": "pytdbot/methods/methods.py",
-    "returns": "Error | Message"
+    "returns": "Error | Message | Ok"
   },
   {
     "name": "editTextMessage",
@@ -4535,7 +4581,9 @@
     "args": [
       {
         "name": "chat_id",
-        "type": "int"
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "text",
@@ -4558,6 +4606,12 @@
         "type": "int",
         "optional": true,
         "default": "0"
+      },
+      {
+        "name": "inline_message_id",
+        "type": "str",
+        "optional": true,
+        "default": "None"
       },
       {
         "name": "parse_mode",
@@ -4609,9 +4663,9 @@
       }
     ],
     "description": "Edit text message",
-    "doc": "Edit text message\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    text (``str``):\n        New text of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the message to be deleted; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities in the message text\n\n    entities (``list``, *optional*):\n        List of ``MessageEntity`` objects representing entities that may appear in the message text\n\n    disable_web_page_preview (``bool``, *optional*):\n        Disables link previews for links in this message. Default is ``False``\n\n    url (``str``, *optional*):\n        URL to use for link preview. If empty, then the first URL found in the message text will be used. Default is ``None``\n\n    force_small_media (``bool``, *optional*):\n        True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``\n\n    force_large_media (``bool``, *optional*):\n        True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``\n\n    show_above_text (``bool``, *optional*):\n        True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats. Default is ``None``\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message`",
+    "doc": "Edit text message\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    text (``str``):\n        New text of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the message to be deleted; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who will receive the message; for Ephemeral messages only\n\n    inline_message_id (``str``, *optional*):\n        Identifier of the inline message. When set, ``chat_id`` is ignored\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities in the message text\n\n    entities (``list``, *optional*):\n        List of ``MessageEntity`` objects representing entities that may appear in the message text\n\n    disable_web_page_preview (``bool``, *optional*):\n        Disables link previews for links in this message. Default is ``False``\n\n    url (``str``, *optional*):\n        URL to use for link preview. If empty, then the first URL found in the message text will be used. Default is ``None``\n\n    force_small_media (``bool``, *optional*):\n        True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``\n\n    force_large_media (``bool``, *optional*):\n        True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``\n\n    show_above_text (``bool``, *optional*):\n        True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats. Default is ``None``\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages",
     "source": "pytdbot/methods/methods.py",
-    "returns": "Error | Message"
+    "returns": "Error | Message | Ok"
   },
   {
     "name": "editVideoMessage",
@@ -4621,7 +4675,9 @@
     "args": [
       {
         "name": "chat_id",
-        "type": "int"
+        "type": "int",
+        "optional": true,
+        "default": "0"
       },
       {
         "name": "video",
@@ -4644,6 +4700,12 @@
         "type": "int",
         "optional": true,
         "default": "0"
+      },
+      {
+        "name": "inline_message_id",
+        "type": "str",
+        "optional": true,
+        "default": "None"
       },
       {
         "name": "thumbnail",
@@ -4719,7 +4781,7 @@
       }
     ],
     "description": "Edit video message; the message content is fully replaced",
-    "doc": "Edit video message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    video (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New video of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the video to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Video caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    added_sticker_file_ids (``list``, *optional*):\n        List of file identifiers of added stickers\n\n    supports_streaming (``bool``, *optional*):\n        True, if the video should be tried to be streamed\n\n    duration (``int``, *optional*):\n        Duration of sent video in seconds\n\n    width (``int``, *optional*):\n        Video width\n\n    height (``int``, *optional*):\n        Video height\n\n    show_caption_above_media (``bool``, *optional*):\n        True, if the caption must be shown above the video; otherwise, the caption must be shown below the video. Default is ``False``\n\n    has_spoiler (``bool``, *optional*):\n        True, if the video preview must be covered by a spoiler animation; not supported in secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral messages",
+    "doc": "Edit video message; the message content is fully replaced\n\nParameters:\n    chat_id (``int``):\n        Chat identifier\n\n    video (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):\n        New video of the message\n\n    message_id (``int``):\n        Message identifier in the chat\n\n    ephemeral_message_id (``int``, *optional*):\n        Identifier of the ephemeral message; for Ephemeral messages only\n\n    receiver_user_id (``int``, *optional*):\n        Identifier of the user who received the message; for Ephemeral messages only\n\n    inline_message_id (``str``, *optional*):\n        Identifier of the inline message. When set, ``chat_id`` is ignored\n\n    thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):\n        Thumbnail of the video to be set; not supported for remote files\n\n    caption (``str``, *optional*):\n        Video caption\n\n    caption_entities (``list``, *optional*):\n        List of ``MessageEntity`` objects to parse in the caption. If you want to edit the caption with formatting, use ``parse_mode`` instead\n\n    parse_mode (``str``, *optional*):\n        Mode for parsing entities. Default is ``markdown``\n\n    added_sticker_file_ids (``list``, *optional*):\n        List of file identifiers of added stickers\n\n    supports_streaming (``bool``, *optional*):\n        True, if the video should be tried to be streamed\n\n    duration (``int``, *optional*):\n        Duration of sent video in seconds\n\n    width (``int``, *optional*):\n        Video width\n\n    height (``int``, *optional*):\n        Video height\n\n    show_caption_above_media (``bool``, *optional*):\n        True, if the caption must be shown above the video; otherwise, the caption must be shown below the video. Default is ``False``\n\n    has_spoiler (``bool``, *optional*):\n        True, if the video preview must be covered by a spoiler animation; not supported in secret chats\n\n    reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):\n        The message reply markup\n\nReturns:\n    :class:`~pytdbot.types.Message` or :class:`~pytdbot.types.Ok` for Ephemeral and inline messages",
     "source": "pytdbot/methods/methods.py",
     "returns": "Error | Message | Ok"
   },
