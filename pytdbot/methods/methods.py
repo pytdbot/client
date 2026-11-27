@@ -3014,7 +3014,15 @@ class Methods(TDLibFunctions):
         ):
             await self.getMessage(chat_id=chat_id, message_id=reply_to.message_id)
 
-        if not receiver_user_id and not callback_query_id:
+        if callback_query_id and not topic_id and not reply_to:
+            res = await self.replyToCallbackQueryWithEphemeralMessage(
+                callback_query_id=callback_query_id,
+                replace_callback_query_message=replace_callback_query_message,
+                protect_content=protect_content,
+                reply_markup=reply_markup,
+                input_message_content=content,
+            )
+        elif not receiver_user_id and not callback_query_id:
             res = await self.sendMessage(
                 chat_id=chat_id,
                 topic_id=topic_id,

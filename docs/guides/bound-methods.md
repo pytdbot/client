@@ -7,7 +7,7 @@ Types carry shortcuts so you do not rebuild TDLib requests by hand.
 | [`Message`][pytdbot.types.Message] | [`text`][pytdbot.Message.text], [`caption`][pytdbot.Message.caption], [`from_id`][pytdbot.Message.from_id], [`reply_text`][pytdbot.Message.reply_text], [`reply_photo`][pytdbot.Message.reply_photo], [`edit_text`][pytdbot.Message.edit_text], [`edit_photo`][pytdbot.Message.edit_photo], [`action`][pytdbot.Message.action], [`mention`][pytdbot.Message.mention] |
 | [`File`][pytdbot.types.File] | [`download`][pytdbot.File.download], [`delete`][pytdbot.File.delete] |
 | [`UpdateNewCallbackQuery`][pytdbot.types.UpdateNewCallbackQuery] | [`answer`][pytdbot.UpdateNewCallbackQuery.answer], [`reply_text`][pytdbot.UpdateNewCallbackQuery.reply_text], [`edit_message_text`][pytdbot.UpdateNewCallbackQuery.edit_message_text], [`edit_message_photo`][pytdbot.UpdateNewCallbackQuery.edit_message_photo] |
-| [`UpdateNewInlineCallbackQuery`][pytdbot.types.UpdateNewInlineCallbackQuery] | The `answer`, `text` and `edit_message_*` methods above; `getMessage` returns `None` |
+| [`UpdateNewInlineCallbackQuery`][pytdbot.types.UpdateNewInlineCallbackQuery] | The `answer`, `reply_*`, `text` and `edit_message_*` methods above; `getMessage` returns `None` |
 
 ```python
 @client.on_message()

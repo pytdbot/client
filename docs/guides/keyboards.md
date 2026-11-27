@@ -27,7 +27,7 @@ async def on_cb(c: Client, update: types.UpdateNewCallbackQuery):
 
 To reply with a message that only the sender sees, use [`update.reply_text`][pytdbot.UpdateNewCallbackQuery.reply_text] or the other `reply_*` methods. With `replace_callback_query_message=True` the ephemeral message replaces the whole message the callback query came from.
 
-Queries from messages the bot sent through inline mode arrive as [`updateNewInlineCallbackQuery`][pytdbot.types.UpdateNewInlineCallbackQuery] instead. It carries the same `answer`, `text`, `callback_data` and `edit_message_*` methods, which edit the inline message; `getMessage` returns `None` there.
+Queries from messages the bot sent through inline mode arrive as [`updateNewInlineCallbackQuery`][pytdbot.types.UpdateNewInlineCallbackQuery] instead. It carries the same `answer`, `reply_*`, `text`, `callback_data` and `edit_message_*` methods, the last of which edit the inline message; `getMessage` returns `None` there.
 
 To pack a Python object instead of raw bytes, use [`utils.callback_data`][pytdbot.utils.callback_data] (JSON, still max 64 bytes). Read it back with [`load_callback_data`][pytdbot.utils.load_callback_data] or [`update.callback_data`][pytdbot.UpdateNewCallbackQuery.callback_data]:
 

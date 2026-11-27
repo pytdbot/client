@@ -75,7 +75,6 @@ class CallbackQueryBoundMethods:
         show_above_text: bool = None,
         clear_draft: bool = False,
         protect_content: bool = False,
-        topic_id: pytdbot.types.MessageTopic | None = None,
         replace_callback_query_message: bool = False,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
@@ -97,7 +96,6 @@ class CallbackQueryBoundMethods:
             show_above_text=show_above_text,
             clear_draft=clear_draft,
             protect_content=protect_content,
-            topic_id=topic_id,
             callback_query_id=self.id,
             replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
@@ -113,7 +111,6 @@ class CallbackQueryBoundMethods:
         detect_automatic_blocks: bool = False,
         clear_draft: bool = False,
         protect_content: bool = False,
-        topic_id: pytdbot.types.MessageTopic | None = None,
         replace_callback_query_message: bool = False,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
@@ -132,7 +129,6 @@ class CallbackQueryBoundMethods:
             detect_automatic_blocks=detect_automatic_blocks,
             clear_draft=clear_draft,
             protect_content=protect_content,
-            topic_id=topic_id,
             callback_query_id=self.id,
             replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
@@ -151,7 +147,6 @@ class CallbackQueryBoundMethods:
         height: int = 0,
         has_spoiler: bool = False,
         protect_content: bool = False,
-        topic_id: pytdbot.types.MessageTopic | None = None,
         replace_callback_query_message: bool = False,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
@@ -174,7 +169,6 @@ class CallbackQueryBoundMethods:
             height=height,
             has_spoiler=has_spoiler,
             protect_content=protect_content,
-            topic_id=topic_id,
             callback_query_id=self.id,
             replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
@@ -191,7 +185,6 @@ class CallbackQueryBoundMethods:
         performer: str = None,
         duration: int = 0,
         protect_content: bool = False,
-        topic_id: pytdbot.types.MessageTopic | None = None,
         replace_callback_query_message: bool = False,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
@@ -212,7 +205,6 @@ class CallbackQueryBoundMethods:
             performer=performer,
             duration=duration,
             protect_content=protect_content,
-            topic_id=topic_id,
             callback_query_id=self.id,
             replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
@@ -227,7 +219,6 @@ class CallbackQueryBoundMethods:
         parse_mode: str = None,
         disable_content_type_detection: bool = True,
         protect_content: bool = False,
-        topic_id: pytdbot.types.MessageTopic | None = None,
         replace_callback_query_message: bool = False,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
@@ -246,7 +237,6 @@ class CallbackQueryBoundMethods:
             parse_mode=parse_mode,
             disable_content_type_detection=disable_content_type_detection,
             protect_content=protect_content,
-            topic_id=topic_id,
             callback_query_id=self.id,
             replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
@@ -262,10 +252,8 @@ class CallbackQueryBoundMethods:
         added_sticker_file_ids: list = None,
         width: int = 0,
         height: int = 0,
-        self_destruct_type: pytdbot.types.MessageSelfDestructType | None = None,
         has_spoiler: bool = False,
         protect_content: bool = False,
-        topic_id: pytdbot.types.MessageTopic | None = None,
         replace_callback_query_message: bool = False,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
@@ -285,10 +273,8 @@ class CallbackQueryBoundMethods:
             added_sticker_file_ids=added_sticker_file_ids,
             width=width,
             height=height,
-            self_destruct_type=self_destruct_type,
             has_spoiler=has_spoiler,
             protect_content=protect_content,
-            topic_id=topic_id,
             callback_query_id=self.id,
             replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
@@ -306,10 +292,8 @@ class CallbackQueryBoundMethods:
         duration: int = 0,
         width: int = 0,
         height: int = 0,
-        self_destruct_type: pytdbot.types.MessageSelfDestructType | None = None,
         has_spoiler: bool = False,
         protect_content: bool = False,
-        topic_id: pytdbot.types.MessageTopic | None = None,
         replace_callback_query_message: bool = False,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
@@ -331,10 +315,8 @@ class CallbackQueryBoundMethods:
             duration=duration,
             width=width,
             height=height,
-            self_destruct_type=self_destruct_type,
             has_spoiler=has_spoiler,
             protect_content=protect_content,
-            topic_id=topic_id,
             callback_query_id=self.id,
             replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
@@ -347,7 +329,6 @@ class CallbackQueryBoundMethods:
         duration: int = 0,
         length: int = 0,
         protect_content: bool = False,
-        topic_id: pytdbot.types.MessageTopic | None = None,
         replace_callback_query_message: bool = False,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
@@ -364,7 +345,6 @@ class CallbackQueryBoundMethods:
             duration=duration,
             length=length,
             protect_content=protect_content,
-            topic_id=topic_id,
             callback_query_id=self.id,
             replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
@@ -379,7 +359,6 @@ class CallbackQueryBoundMethods:
         duration: int = 0,
         waveform: bytes = None,
         protect_content: bool = False,
-        topic_id: pytdbot.types.MessageTopic | None = None,
         replace_callback_query_message: bool = False,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
@@ -398,7 +377,6 @@ class CallbackQueryBoundMethods:
             duration=duration,
             waveform=waveform,
             protect_content=protect_content,
-            topic_id=topic_id,
             callback_query_id=self.id,
             replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
@@ -412,7 +390,6 @@ class CallbackQueryBoundMethods:
         width: int = 0,
         height: int = 0,
         protect_content: bool = False,
-        topic_id: pytdbot.types.MessageTopic | None = None,
         replace_callback_query_message: bool = False,
         reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
         | pytdbot.types.ReplyMarkupShowKeyboard
@@ -430,7 +407,6 @@ class CallbackQueryBoundMethods:
             width=width,
             height=height,
             protect_content=protect_content,
-            topic_id=topic_id,
             callback_query_id=self.id,
             replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
