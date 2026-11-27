@@ -224,6 +224,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -291,6 +292,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -331,6 +335,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -353,6 +358,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -411,6 +417,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -448,6 +457,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -475,6 +485,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -548,6 +559,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -588,6 +602,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -610,6 +625,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -668,6 +684,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -703,6 +722,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -728,6 +748,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -798,6 +819,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -843,6 +867,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -866,6 +891,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -930,6 +956,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -974,6 +1003,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -995,6 +1025,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -1053,6 +1084,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -1094,6 +1128,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -1218,6 +1253,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -1288,6 +1324,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -1333,6 +1372,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -1360,6 +1400,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -1436,6 +1477,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -1483,6 +1527,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -1502,6 +1547,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -1554,6 +1600,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -1584,6 +1633,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -1605,6 +1655,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -1663,6 +1714,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -1704,6 +1758,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -1724,6 +1779,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -1779,6 +1835,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -1810,6 +1869,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -1832,6 +1892,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -1893,6 +1954,9 @@ class Methods(TDLibFunctions):
             callback_query_id (``int``, *optional*):
                 Identifier of the callback query which triggered the message; for Ephemeral messages only
 
+            replace_callback_query_message (``bool``, *optional*):
+                Pass true if the ephemeral message must replace the message from which the callback query originated. Default is ``False``
+
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -1931,6 +1995,7 @@ class Methods(TDLibFunctions):
             reply_to_message_id=reply_to_message_id,
             receiver_user_id=receiver_user_id,
             callback_query_id=callback_query_id,
+            replace_callback_query_message=replace_callback_query_message,
             reply_markup=reply_markup,
         )
 
@@ -2854,6 +2919,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         receiver_user_id: int = 0,
         callback_query_id: int = 0,
+        replace_callback_query_message: bool = False,
         reply_markup: (
             ReplyMarkupInlineKeyboard
             | ReplyMarkupShowKeyboard
@@ -2892,7 +2958,9 @@ class Methods(TDLibFunctions):
                 topic_id=topic_id,
                 receiver_user_id=receiver_user_id,
                 callback_query_id=callback_query_id,
+                replace_callback_query_message=replace_callback_query_message,
                 reply_to=reply_to,
+                protect_content=protect_content,
                 reply_markup=reply_markup,
                 input_message_content=content,
             )

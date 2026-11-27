@@ -60,6 +60,379 @@ class CallbackQueryBoundMethods:
             cache_time=cache_time,
         )
 
+    async def reply_text(
+        self,
+        text: str,
+        entities: list[pytdbot.types.TextEntity] = None,
+        parse_mode: str = None,
+        disable_web_page_preview: bool = False,
+        url: str = None,
+        force_small_media: bool = None,
+        force_large_media: bool = None,
+        show_above_text: bool = None,
+        clear_draft: bool = False,
+        protect_content: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        replace_callback_query_message: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the callback query with an ephemeral text message. Shortcut for :meth:`~pytdbot.Client.sendTextMessage`"""
+
+        return await self._client.sendTextMessage(
+            chat_id=self.chat_id,
+            text=text,
+            entities=entities,
+            parse_mode=parse_mode,
+            disable_web_page_preview=disable_web_page_preview,
+            url=url,
+            force_small_media=force_small_media,
+            force_large_media=force_large_media,
+            show_above_text=show_above_text,
+            clear_draft=clear_draft,
+            protect_content=protect_content,
+            topic_id=topic_id,
+            callback_query_id=self.id,
+            replace_callback_query_message=replace_callback_query_message,
+            reply_markup=reply_markup,
+        )
+
+    async def reply_rich_message(
+        self,
+        *,
+        markdown: str = None,
+        html: str = None,
+        media: list[pytdbot.types.InputRichMessageMedia] = None,
+        is_rtl: bool = False,
+        detect_automatic_blocks: bool = False,
+        clear_draft: bool = False,
+        protect_content: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        replace_callback_query_message: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the callback query with an ephemeral rich message. Shortcut for :meth:`~pytdbot.Client.sendRichMessage`"""
+
+        return await self._client.sendRichMessage(
+            chat_id=self.chat_id,
+            markdown=markdown,
+            html=html,
+            media=media,
+            is_rtl=is_rtl,
+            detect_automatic_blocks=detect_automatic_blocks,
+            clear_draft=clear_draft,
+            protect_content=protect_content,
+            topic_id=topic_id,
+            callback_query_id=self.id,
+            replace_callback_query_message=replace_callback_query_message,
+            reply_markup=reply_markup,
+        )
+
+    async def reply_animation(
+        self,
+        animation: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        added_sticker_file_ids: list = None,
+        duration: int = 0,
+        width: int = 0,
+        height: int = 0,
+        has_spoiler: bool = False,
+        protect_content: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        replace_callback_query_message: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the callback query with an ephemeral animation. Shortcut for :meth:`~pytdbot.Client.sendAnimation`"""
+
+        return await self._client.sendAnimation(
+            chat_id=self.chat_id,
+            animation=animation,
+            thumbnail=thumbnail,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            added_sticker_file_ids=added_sticker_file_ids,
+            duration=duration,
+            width=width,
+            height=height,
+            has_spoiler=has_spoiler,
+            protect_content=protect_content,
+            topic_id=topic_id,
+            callback_query_id=self.id,
+            replace_callback_query_message=replace_callback_query_message,
+            reply_markup=reply_markup,
+        )
+
+    async def reply_audio(
+        self,
+        audio: pytdbot.types.InputFile | str,
+        album_cover_thumbnail: pytdbot.types.InputThumbnail | None = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        title: str = None,
+        performer: str = None,
+        duration: int = 0,
+        protect_content: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        replace_callback_query_message: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the callback query with an ephemeral audio. Shortcut for :meth:`~pytdbot.Client.sendAudio`"""
+
+        return await self._client.sendAudio(
+            chat_id=self.chat_id,
+            audio=audio,
+            album_cover_thumbnail=album_cover_thumbnail,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            title=title,
+            performer=performer,
+            duration=duration,
+            protect_content=protect_content,
+            topic_id=topic_id,
+            callback_query_id=self.id,
+            replace_callback_query_message=replace_callback_query_message,
+            reply_markup=reply_markup,
+        )
+
+    async def reply_document(
+        self,
+        document: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        disable_content_type_detection: bool = True,
+        protect_content: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        replace_callback_query_message: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the callback query with an ephemeral document. Shortcut for :meth:`~pytdbot.Client.sendDocument`"""
+
+        return await self._client.sendDocument(
+            chat_id=self.chat_id,
+            document=document,
+            thumbnail=thumbnail,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            disable_content_type_detection=disable_content_type_detection,
+            protect_content=protect_content,
+            topic_id=topic_id,
+            callback_query_id=self.id,
+            replace_callback_query_message=replace_callback_query_message,
+            reply_markup=reply_markup,
+        )
+
+    async def reply_photo(
+        self,
+        photo: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        added_sticker_file_ids: list = None,
+        width: int = 0,
+        height: int = 0,
+        self_destruct_type: pytdbot.types.MessageSelfDestructType | None = None,
+        has_spoiler: bool = False,
+        protect_content: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        replace_callback_query_message: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the callback query with an ephemeral photo. Shortcut for :meth:`~pytdbot.Client.sendPhoto`"""
+
+        return await self._client.sendPhoto(
+            chat_id=self.chat_id,
+            photo=photo,
+            thumbnail=thumbnail,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            added_sticker_file_ids=added_sticker_file_ids,
+            width=width,
+            height=height,
+            self_destruct_type=self_destruct_type,
+            has_spoiler=has_spoiler,
+            protect_content=protect_content,
+            topic_id=topic_id,
+            callback_query_id=self.id,
+            replace_callback_query_message=replace_callback_query_message,
+            reply_markup=reply_markup,
+        )
+
+    async def reply_video(
+        self,
+        video: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        added_sticker_file_ids: list = None,
+        supports_streaming: bool = None,
+        duration: int = 0,
+        width: int = 0,
+        height: int = 0,
+        self_destruct_type: pytdbot.types.MessageSelfDestructType | None = None,
+        has_spoiler: bool = False,
+        protect_content: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        replace_callback_query_message: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the callback query with an ephemeral video. Shortcut for :meth:`~pytdbot.Client.sendVideo`"""
+
+        return await self._client.sendVideo(
+            chat_id=self.chat_id,
+            video=video,
+            thumbnail=thumbnail,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            added_sticker_file_ids=added_sticker_file_ids,
+            supports_streaming=supports_streaming,
+            duration=duration,
+            width=width,
+            height=height,
+            self_destruct_type=self_destruct_type,
+            has_spoiler=has_spoiler,
+            protect_content=protect_content,
+            topic_id=topic_id,
+            callback_query_id=self.id,
+            replace_callback_query_message=replace_callback_query_message,
+            reply_markup=reply_markup,
+        )
+
+    async def reply_video_note(
+        self,
+        video_note: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
+        duration: int = 0,
+        length: int = 0,
+        protect_content: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        replace_callback_query_message: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the callback query with an ephemeral video note. Shortcut for :meth:`~pytdbot.Client.sendVideoNote`"""
+
+        return await self._client.sendVideoNote(
+            chat_id=self.chat_id,
+            video_note=video_note,
+            thumbnail=thumbnail,
+            duration=duration,
+            length=length,
+            protect_content=protect_content,
+            topic_id=topic_id,
+            callback_query_id=self.id,
+            replace_callback_query_message=replace_callback_query_message,
+            reply_markup=reply_markup,
+        )
+
+    async def reply_voice(
+        self,
+        voice: pytdbot.types.InputFile | str,
+        caption: str = None,
+        caption_entities: list = None,
+        parse_mode: str = None,
+        duration: int = 0,
+        waveform: bytes = None,
+        protect_content: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        replace_callback_query_message: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the callback query with an ephemeral voice note. Shortcut for :meth:`~pytdbot.Client.sendVoice`"""
+
+        return await self._client.sendVoice(
+            chat_id=self.chat_id,
+            voice=voice,
+            caption=caption,
+            caption_entities=caption_entities,
+            parse_mode=parse_mode,
+            duration=duration,
+            waveform=waveform,
+            protect_content=protect_content,
+            topic_id=topic_id,
+            callback_query_id=self.id,
+            replace_callback_query_message=replace_callback_query_message,
+            reply_markup=reply_markup,
+        )
+
+    async def reply_sticker(
+        self,
+        sticker: pytdbot.types.InputFile | str,
+        emoji: str = None,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
+        width: int = 0,
+        height: int = 0,
+        protect_content: bool = False,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        replace_callback_query_message: bool = False,
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
+        r"""Reply to the callback query with an ephemeral sticker. Shortcut for :meth:`~pytdbot.Client.sendSticker`"""
+
+        return await self._client.sendSticker(
+            chat_id=self.chat_id,
+            sticker=sticker,
+            emoji=emoji,
+            thumbnail=thumbnail,
+            width=width,
+            height=height,
+            protect_content=protect_content,
+            topic_id=topic_id,
+            callback_query_id=self.id,
+            replace_callback_query_message=replace_callback_query_message,
+            reply_markup=reply_markup,
+        )
+
     async def edit_message_text(
         self,
         text: str,
@@ -83,7 +456,7 @@ class CallbackQueryBoundMethods:
             receiver_user_id = (
                 pytdbot.utils.get_message_sender_id(message.receiver_id)
                 if message.receiver_id
-                else 0
+                else self.sender_user_id
             )
 
         return await self._client.editTextMessage(
@@ -159,7 +532,7 @@ class CallbackQueryBoundMethods:
             receiver_user_id = (
                 pytdbot.utils.get_message_sender_id(message.receiver_id)
                 if message.receiver_id
-                else 0
+                else self.sender_user_id
             )
 
         return await self._client.editAnimationMessage(
@@ -204,7 +577,7 @@ class CallbackQueryBoundMethods:
             receiver_user_id = (
                 pytdbot.utils.get_message_sender_id(message.receiver_id)
                 if message.receiver_id
-                else 0
+                else self.sender_user_id
             )
 
         return await self._client.editAudioMessage(
@@ -244,7 +617,7 @@ class CallbackQueryBoundMethods:
             receiver_user_id = (
                 pytdbot.utils.get_message_sender_id(message.receiver_id)
                 if message.receiver_id
-                else 0
+                else self.sender_user_id
             )
 
         return await self._client.editDocumentMessage(
@@ -286,7 +659,7 @@ class CallbackQueryBoundMethods:
             receiver_user_id = (
                 pytdbot.utils.get_message_sender_id(message.receiver_id)
                 if message.receiver_id
-                else 0
+                else self.sender_user_id
             )
 
         return await self._client.editPhotoMessage(
@@ -334,7 +707,7 @@ class CallbackQueryBoundMethods:
             receiver_user_id = (
                 pytdbot.utils.get_message_sender_id(message.receiver_id)
                 if message.receiver_id
-                else 0
+                else self.sender_user_id
             )
 
         return await self._client.editVideoMessage(
@@ -363,11 +736,13 @@ class CallbackQueryBoundMethods:
         r"""Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup`"""
 
         message = await self.getMessage()
-        if message and message.ephemeral_message_id and message.receiver_id:
+        if message and message.ephemeral_message_id:
             return await self._client.editEphemeralMessage(
                 chat_id=self.chat_id,
-                receiver_user_id=pytdbot.utils.get_message_sender_id(
-                    message.receiver_id
+                receiver_user_id=(
+                    pytdbot.utils.get_message_sender_id(message.receiver_id)
+                    if message.receiver_id
+                    else self.sender_user_id
                 ),
                 ephemeral_message_id=message.ephemeral_message_id,
                 reply_markup=reply_markup,

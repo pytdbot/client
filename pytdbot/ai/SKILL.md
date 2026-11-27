@@ -113,6 +113,14 @@ async def on_cb(c: Client, update: types.UpdateNewCallbackQuery):
     await update.answer(text="done")
 ```
 
+Use the query's `reply_*` bound methods (`reply_text`, `reply_photo`, `reply_video`, `reply_document`, `reply_rich_message`, …) to send an ephemeral message for that callback query, which only the user who sent the query sees. With `replace_callback_query_message=True` the ephemeral message replaces the whole message the query came from. The `send*` helpers accept `callback_query_id=` for the same from a `Client`. To edit that message for everyone, use `update.edit_message_text`, `update.edit_message_photo` (and the other media types) or `update.edit_message_reply_markup`.
+
+```python
+await update.reply_text("Only you can see this")
+await update.reply_text("Page 2", replace_callback_query_message=True)
+await update.edit_message_text("Done")
+```
+
 ```python
 async with message.action("typing"):
     await asyncio.sleep(1)
